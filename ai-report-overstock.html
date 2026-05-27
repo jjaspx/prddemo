@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 详细分析报告 - 积压库存结构分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --border: rgba(255,255,255,0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-yellow: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-orange: #f97316;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .glass {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .tag-red { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .tag-yellow { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .tag-green { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+        .tag-blue { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+        
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 24px;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 9px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 12px);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .timeline-item:last-child::after { display: none; }
+        
+        .insight-box {
+            background: linear-gradient(135deg, rgba(249,115,22,0.1) 0%, rgba(239,68,68,0.1) 100%);
+            border: 1px solid rgba(249,115,22,0.3);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        
+        .recommendation-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .recommendation-card:hover {
+            border-color: rgba(249,115,22,0.4);
+            background: rgba(249,115,22,0.05);
+        }
+        
+        .chart-placeholder {
+            background: var(--bg-secondary);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            text-align: left;
+            padding: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        
+        .aging-bar {
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .aging-segment {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="border-b border-white/10 bg-[#12121a]/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wider">AI 智能分析报告</div>
+                        <h1 class="text-lg font-semibold">积压库存结构分析 · OS-01</h1>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="tag tag-yellow">高关注</span>
+                    <span class="text-xs text-gray-500">生成时间: 2026-05-27 14:32</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-6">
+        <!-- Executive Summary -->
+        <section class="glass p-6 mb-6">
+            <div class="section-title">执行摘要</div>
+            <div class="grid grid-cols-3 gap-6">
+                <div class="col-span-2">
+                    <h2 class="text-xl font-semibold mb-3">>360 天库龄 SKU 积压严重，建议立即核销</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        经 AI 模型分析，当前库存中 >360 天库龄 SKU 共 8,157 个，主要集中在 DP Fashion 高跟鞋品类，
+                        残值率已降至 35%。建议立即核销处理，可释放资金 ¥1.86M，同时空出 2,840 个货位用于新品。
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-500/10 text-orange-400 text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                            建议 7 天内执行
+                        </div>
+                        <div class="text-sm text-gray-500">置信度: 89.3%</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    <div class="text-xs text-orange-400 mb-2">预期收益</div>
+                    <div class="text-2xl font-bold text-white mb-1">¥1,860,000</div>
+                    <div class="text-xs text-gray-400">释放资金 + 节省仓储成本</div>
+                    <div class="mt-3 pt-3 border-t border-white/10">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-gray-500">涉及 SKU</span>
+                            <span class="text-white">8,157 个</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">释放货位</span>
+                            <span class="text-green-400 font-medium">2,840 个</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Metrics -->
+        <section class="mb-6">
+            <div class="section-title">关键指标</div>
+            <div class="grid grid-cols-4 gap-4">
+                <div class="metric-card">
+                    <div class="text-xs text-gray-500 mb-1">滞销占比</div>
+                    <div class="metric-value text-yellow-400">8.3%</div>
+                    <div class="text-xs text-green-400 mt-1">↓ 0.6pp vs 上月</div>
+                </div>
+                <div class="metric-card">
+                    <div class="text-xs text-gray-500 mb-1">>360D SKU</div>
+                    <div class="metric-value text-red-400">8,157</div>
+                    <div class="text-xs text-red-400 mt-1">↑ 96 vs 上月</div>
+                </div>
+                <div class="metric-card">
+                    <div class="text-xs text-gray-500 mb-1">占用资金</div>
+                    <div class="metric-value text-white">¥18.4M</div>
+                    <div class="text-xs text-green-400 mt-1">↓ 2.1% vs 上月</div>
+                </div>
+                <div class="metric-card">
+                    <div class="text-xs text-gray-500 mb-1">跌价计提</div>
+                    <div class="metric-value text-red-400">¥2.86M</div>
+                    <div class="text-xs text-red-400 mt-1">↑ 8% vs 上月</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aging Distribution -->
+        <section class="glass p-5 mb-6">
+            <div class="section-title">库龄分布结构</div>
+            <div class="mb-4">
+                <div class="aging-bar">
+                    <div class="aging-segment" style="width: 61%; background: linear-gradient(90deg, #22c55e, #16a34a);">0-90天 61%</div>
+                    <div class="aging-segment" style="width: 25%; background: linear-gradient(90deg, #3b82f6, #2563eb);">90-180天 25%</div>
+                    <div class="aging-segment" style="width: 10%; background: linear-gradient(90deg, #f59e0b, #d97706);">180-360天 10%</div>
+                    <div class="aging-segment" style="width: 4%; background: linear-gradient(90deg, #ef4444, #dc2626);">>360天 4%</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-4 gap-4">
+                <div class="text-center p-3 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-1">0-90天</div>
+                    <div class="text-lg font-bold text-green-400">78,851</div>
+                    <div class="text-xs text-gray-500">SKU · ¥42.6M</div>
+                    <div class="text-xs text-green-400 mt-1">健康</div>
+                </div>
+                <div class="text-center p-3 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-1">90-180天</div>
+                    <div class="text-lg font-bold text-blue-400">32,628</div>
+                    <div class="text-xs text-gray-500">SKU · ¥18.2M</div>
+                    <div class="text-xs text-blue-400 mt-1">正常</div>
+                </div>
+                <div class="text-center p-3 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-1">180-360天</div>
+                    <div class="text-lg font-bold text-yellow-400">16,314</div>
+                    <div class="text-xs text-gray-500">SKU · ¥9.4M</div>
+                    <div class="text-xs text-yellow-400 mt-1">需关注</div>
+                </div>
+                <div class="text-center p-3 bg-white/5 rounded-lg border border-red-500/30">
+                    <div class="text-xs text-gray-500 mb-1">>360天</div>
+                    <div class="text-lg font-bold text-red-400">8,157</div>
+                    <div class="text-xs text-gray-500">SKU · ¥4.8M</div>
+                    <div class="text-xs text-red-400 mt-1">高风险</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-2 gap-6 mb-6">
+            <!-- High Risk SKU List -->
+            <section class="glass p-5">
+                <div class="section-title">高风险积压 SKU TOP 5</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>品牌</th>
+                            <th>库龄</th>
+                            <th>库存</th>
+                            <th>残值率</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="mono text-xs">121717-K-ALLBLACK-005</td>
+                            <td>DP Kids</td>
+                            <td class="mono text-red-400">402 天</td>
+                            <td class="mono">720</td>
+                            <td class="text-red-400">28%</td>
+                        </tr>
+                        <tr>
+                            <td class="mono text-xs">43590-160472-K-RED-06</td>
+                            <td>DP Kids</td>
+                            <td class="mono text-red-400">365 天</td>
+                            <td class="mono">380</td>
+                            <td class="text-red-400">32%</td>
+                        </tr>
+                        <tr>
+                            <td class="mono text-xs">SDKB2487W-CAMO-08</td>
+                            <td>DP Fashion</td>
+                            <td class="mono text-yellow-400">312 天</td>
+                            <td class="mono">1,840</td>
+                            <td class="text-yellow-400">45%</td>
+                        </tr>
+                        <tr>
+                            <td class="mono text-xs">DPF-HEEL-PINK-06</td>
+                            <td>DP Fashion</td>
+                            <td class="mono text-yellow-400">298 天</td>
+                            <td class="mono">420</td>
+                            <td class="text-yellow-400">48%</td>
+                        </tr>
+                        <tr>
+                            <td class="mono text-xs">BM-CLASSIC-BRN-09</td>
+                            <td>Bruno Marc</td>
+                            <td class="mono text-yellow-400">276 天</td>
+                            <td class="mono">156</td>
+                            <td class="text-yellow-400">52%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Root Cause Analysis -->
+            <section class="glass p-5">
+                <div class="section-title">积压根因分析</div>
+                <div class="space-y-4">
+                    <div class="timeline-item">
+                        <div class="text-sm font-medium text-white">季节性误判</div>
+                        <div class="text-xs text-gray-500 mt-1">主要因素 · 贡献度 42%</div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            DP Fashion 夏季凉鞋备货过量，实际销量仅为预测的 58%，
+                            导致 2,400 件库存积压
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="text-sm font-medium text-white">尺码结构失衡</div>
+                        <div class="text-xs text-gray-500 mt-1">次要因素 · 贡献度 31%</div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            Kids 品类小码（US 5-6）占比过高，实际需求集中在大码（US 9-10），
+                            断码率 14%
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="text-sm font-medium text-white">款式过时</div>
+                        <div class="text-xs text-gray-500 mt-1">市场因素 · 贡献度 27%</div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            部分高跟鞋款式已过时，TikTok 热度下降 67%，
+                            自然流量转化率仅 0.8%
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Trend Chart -->
+        <section class="glass p-5 mb-6">
+            <div class="section-title">积压库存趋势</div>
+            <div class="mb-4">
+                <svg viewBox="0 0 800 320" class="w-full h-auto">
+                    <!-- Grid lines -->
+                    <defs>
+                        <pattern id="grid3" width="100" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 100 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                        </pattern>
+                    </defs>
+                    <rect width="800" height="320" fill="url(#grid3)"/>
+                    
+                    <!-- Y Axis labels -->
+                    <text x="40" y="25" fill="#6b7280" font-size="11" text-anchor="end">100K</text>
+                    <text x="40" y="65" fill="#6b7280" font-size="11" text-anchor="end">80K</text>
+                    <text x="40" y="105" fill="#6b7280" font-size="11" text-anchor="end">60K</text>
+                    <text x="40" y="145" fill="#6b7280" font-size="11" text-anchor="end">40K</text>
+                    <text x="40" y="185" fill="#6b7280" font-size="11" text-anchor="end">20K</text>
+                    <text x="40" y="225" fill="#6b7280" font-size="11" text-anchor="end">10K</text>
+                    <text x="40" y="285" fill="#6b7280" font-size="11" text-anchor="end">0</text>
+                    
+                    <!-- X Axis labels -->
+                    <text x="100" y="305" fill="#6b7280" font-size="11" text-anchor="middle">2025-12</text>
+                    <text x="220" y="305" fill="#6b7280" font-size="11" text-anchor="middle">2026-01</text>
+                    <text x="340" y="305" fill="#6b7280" font-size="11" text-anchor="middle">2026-02</text>
+                    <text x="460" y="305" fill="#6b7280" font-size="11" text-anchor="middle">2026-03</text>
+                    <text x="580" y="305" fill="#6b7280" font-size="11" text-anchor="middle">2026-04</text>
+                    <text x="700" y="305" fill="#6b7280" font-size="11" text-anchor="middle">2026-05</text>
+                    
+                    <!-- 0-90 days area (green) -->
+                    <path fill="rgba(34,197,94,0.6)" stroke="none"
+                          d="M 60,200 L 100,195 L 140,190 L 180,185 L 220,180 L 260,175 L 300,170 L 340,165 L 380,160 L 420,155 L 460,150 L 500,148 L 540,145 L 580,142 L 620,140 L 660,138 L 700,135 L 740,132 L 780,130 L 780,285 L 60,285 Z"/>
+                    
+                    <!-- 90-180 days area (blue) -->
+                    <path fill="rgba(59,130,246,0.6)" stroke="none"
+                          d="M 60,200 L 100,198 L 140,195 L 180,192 L 220,188 L 260,185 L 300,182 L 340,178 L 380,175 L 420,172 L 460,168 L 500,165 L 540,162 L 580,158 L 620,155 L 660,152 L 700,148 L 740,145 L 780,142 L 780,130 L 740,132 L 700,135 L 660,138 L 620,140 L 580,142 L 540,145 L 500,148 L 460,150 L 420,155 L 380,160 L 340,165 L 300,170 L 260,175 L 220,180 L 180,185 L 140,190 L 100,195 L 60,200 Z"/>
+                    
+                    <!-- 180-360 days area (yellow) -->
+                    <path fill="rgba(245,158,11,0.6)" stroke="none"
+                          d="M 60,220 L 100,218 L 140,215 L 180,212 L 220,210 L 260,208 L 300,205 L 340,202 L 380,200 L 420,198 L 460,195 L 500,192 L 540,190 L 580,188 L 620,185 L 660,182 L 700,180 L 740,178 L 780,175 L 780,142 L 740,145 L 700,148 L 660,152 L 620,155 L 580,158 L 540,162 L 500,165 L 460,168 L 420,172 L 380,175 L 340,178 L 300,182 L 260,185 L 220,188 L 180,192 L 140,195 L 100,198 L 60,200 Z"/>
+                    
+                    <!-- >360 days area (red) - growing concern -->
+                    <path fill="rgba(239,68,68,0.7)" stroke="none"
+                          d="M 60,250 L 100,248 L 140,245 L 180,242 L 220,240 L 260,238 L 300,235 L 340,232 L 380,230 L 420,225 L 460,220 L 500,215 L 540,210 L 580,205 L 620,200 L 660,195 L 700,190 L 740,185 L 780,180 L 780,175 L 740,178 L 700,180 L 660,182 L 620,185 L 580,188 L 540,190 L 500,192 L 460,195 L 420,198 L 380,200 L 340,202 L 300,205 L 260,208 L 220,210 L 180,212 L 140,215 L 100,218 L 60,220 Z"/>
+                    
+                    <!-- Trend line for >360 days -->
+                    <path fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                          d="M 60,250 L 100,248 L 140,245 L 180,242 L 220,240 L 260,238 L 300,235 L 340,232 L 380,230 L 420,225 L 460,220 L 500,215 L 540,210 L 580,205 L 620,200 L 660,195 L 700,190 L 740,185 L 780,180"/>
+                    
+                    <!-- Warning annotation -->
+                    <line x1="780" y1="180" x2="780" y2="120" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,2"/>
+                    <rect x="720" y="95" width="100" height="22" rx="4" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="1"/>
+                    <text x="770" y="111" fill="#ef4444" font-size="10" text-anchor="middle" font-weight="500">⚠ 持续增长</text>
+                    
+                    <!-- Data labels for >360 days -->
+                    <text x="60" y="265" fill="#ef4444" font-size="9" text-anchor="middle">5.2K</text>
+                    <text x="220" y="255" fill="#ef4444" font-size="9" text-anchor="middle">6.1K</text>
+                    <text x="380" y="245" fill="#ef4444" font-size="9" text-anchor="middle">6.8K</text>
+                    <text x="540" y="225" fill="#ef4444" font-size="9" text-anchor="middle">7.5K</text>
+                    <text x="700" y="205" fill="#ef4444" font-size="9" text-anchor="middle">7.9K</text>
+                    <text x="780" y="195" fill="#ef4444" font-size="10" text-anchor="middle" font-weight="600">8.2K</text>
+                    
+                    <!-- Current total annotation -->
+                    <rect x="680" y="40" width="120" height="28" rx="4" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                    <text x="740" y="58" fill="#ffffff" font-size="11" text-anchor="middle" font-weight="600">总 SKU: 135,950</text>
+                    
+                    <!-- Legend -->
+                    <rect x="60" y="15" width="12" height="12" fill="rgba(34,197,94,0.8)" rx="2"/>
+                    <text x="78" y="25" fill="#9ca3af" font-size="10">0-90天 (健康)</text>
+                    <rect x="160" y="15" width="12" height="12" fill="rgba(59,130,246,0.8)" rx="2"/>
+                    <text x="178" y="25" fill="#9ca3af" font-size="10">90-180天</text>
+                    <rect x="260" y="15" width="12" height="12" fill="rgba(245,158,11,0.8)" rx="2"/>
+                    <text x="278" y="25" fill="#9ca3af" font-size="10">180-360天</text>
+                    <rect x="370" y="15" width="12" height="12" fill="rgba(239,68,68,0.8)" rx="2"/>
+                    <text x="388" y="25" fill="#9ca3af" font-size="10">>360天 (高风险)</text>
+                </svg>
+            </div>
+            <div class="grid grid-cols-4 gap-4 mt-4">
+                <div class="text-center p-3 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-1">6个月前</div>
+                    <div class="text-lg font-bold text-white">128K</div>
+                    <div class="text-xs text-gray-500">总 SKU</div>
+                </div>
+                <div class="text-center p-3 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-1">当前总 SKU</div>
+                    <div class="text-lg font-bold text-white">136K</div>
+                    <div class="text-xs text-green-400">↑ 6.2%</div>
+                </div>
+                <div class="text-center p-3 bg-white/5 rounded-lg border border-red-500/30">
+                    <div class="text-xs text-red-400 mb-1">>360天 SKU</div>
+                    <div class="text-lg font-bold text-red-400">8,157</div>
+                    <div class="text-xs text-red-400">↑ 18% vs 6月前</div>
+                </div>
+                <div class="text-center p-3 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-1">积压占比</div>
+                    <div class="text-lg font-bold text-yellow-400">12.4%</div>
+                    <div class="text-xs text-yellow-400">180天+ SKU</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Recommendations -->
+        <section class="mb-6">
+            <div class="section-title">AI 智能建议</div>
+            <div class="recommendation-card">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-lg bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                        <span class="text-red-400 font-bold text-sm">1</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="font-semibold">立即核销 >360 天 SKU</h3>
+                            <span class="tag tag-red">优先级: P0</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">
+                            8,157 个 >360 天 SKU 残值率已降至 35%，继续仓储只会增加成本。
+                            建议通过 B2B 渠道批量清仓或捐赠处理，立即释放资金和货位。
+                        </p>
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div class="bg-white/5 rounded p-3">
+                                <div class="text-xs text-gray-500">回收资金</div>
+                                <div class="font-medium text-green-400">¥1.68M</div>
+                            </div>
+                            <div class="bg-white/5 rounded p-3">
+                                <div class="text-xs text-gray-500">节省仓储费</div>
+                                <div class="font-medium text-green-400">¥180K/年</div>
+                            </div>
+                            <div class="bg-white/5 rounded p-3">
+                                <div class="text-xs text-gray-500">释放货位</div>
+                                <div class="font-medium text-blue-400">2,840 个</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+                        <span class="text-yellow-400 font-bold text-sm">2</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="font-semibold">TikTok 闪购清理 180-360 天 SKU</h3>
+                            <span class="tag tag-yellow">优先级: P1</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">
+                            针对 180-360 天库龄的 16,314 个 SKU，建议通过 TikTok 闪购活动
+                            以 5-7 折价格快速清理，预计可回笼现金 ¥2.4M。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                        <span class="text-blue-400 font-bold text-sm">3</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="font-semibold">优化尺码配比模型</h3>
+                            <span class="tag tag-blue">优先级: P2</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">
+                            基于历史销售数据重新训练尺码预测模型，将小码占比从 35% 降至 20%，
+                            预计可减少断码积压 30%。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simulation Results -->
+        <section class="glass p-5 mb-6">
+            <div class="section-title">方案模拟结果</div>
+            <div class="grid grid-cols-3 gap-6">
+                <div class="text-center p-4 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-2">维持现状</div>
+                    <div class="text-2xl font-bold text-red-400">¥18.4M</div>
+                    <div class="text-xs text-gray-500 mt-1">资金占用</div>
+                    <div class="mt-3 text-xs text-gray-600">每月仓储成本 ¥45K</div>
+                </div>
+                <div class="text-center p-4 bg-white/5 rounded-lg border-2 border-green-500/30">
+                    <div class="text-xs text-green-400 mb-2">执行核销 + 闪购（推荐）</div>
+                    <div class="text-2xl font-bold text-green-400">¥4.08M</div>
+                    <div class="text-xs text-gray-500 mt-1">回笼资金</div>
+                    <div class="mt-3 text-xs text-gray-600">释放资金 ¥14.32M</div>
+                </div>
+                <div class="text-center p-4 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-2">仅闪购不清仓</div>
+                    <div class="text-2xl font-bold text-yellow-400">¥2.4M</div>
+                    <div class="text-xs text-gray-500 mt-1">回笼资金</div>
+                    <div class="mt-3 text-xs text-gray-600">>360 天 SKU 继续积压</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="flex items-center justify-between pt-4 border-t border-white/10">
+            <div class="flex items-center gap-4">
+                <button class="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    立即执行核销方案
+                </button>
+                <button class="px-6 py-2.5 bg-white/10 hover:bg-white/15 text-white rounded-lg font-medium transition-colors">
+                    导出 PDF 报告
+                </button>
+            </div>
+            <div class="text-xs text-gray-500">
+                报告 ID: AI-RPT-20260527-OS01 · 模型版本: v2.4.1
+            </div>
+        </section>
+    </main>
+</body>
+</html>

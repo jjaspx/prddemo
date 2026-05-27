@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 详细分析报告 - 周转效率深度分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --border: rgba(255,255,255,0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-yellow: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .glass {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .tag-red { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .tag-yellow { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .tag-green { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+        .tag-blue { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+        
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 24px;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 9px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 12px);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .timeline-item:last-child::after { display: none; }
+        
+        .insight-box {
+            background: linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(59,130,246,0.1) 100%);
+            border: 1px solid rgba(34,197,94,0.3);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        
+        .recommendation-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .recommendation-card:hover {
+            border-color: rgba(34,197,94,0.4);
+            background: rgba(34,197,94,0.05);
+        }
+        
+        .chart-placeholder {
+            background: var(--bg-secondary);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            text-align: left;
+            padding: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tr:hover td { background: rgba(255,255,255,0.02); }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="border-b border-white/10 bg-[#12121a]/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wider">AI 智能分析报告</div>
+                        <h1 class="text-lg font-semibold">周转效率深度分析 · TR-01</h1>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="tag tag-yellow">高关注</span>
+                    <span class="text-xs text-gray-500">生成时间: 2026-05-27 14:32</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-6">
+        <!-- Executive Summary -->
+        <section class="glass p-6 mb-6">
+            <div class="section-title">执行摘要</div>
+            <div class="grid grid-cols-3 gap-6">
+                <div class="col-span-2">
+                    <h2 class="text-xl font-semibold mb-3">户外靴品类周转效率领先行业 19%</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        经 AI 模型分析，户外靴品类当前周转天数 63 天，显著优于行业均值 78 天。
+                        主要得益于 Nortiv8 品牌爆款带动，以及精准的季节性备货策略。
+                        预计 Q3 通过优化滞销 SKU 清理，可进一步压缩至 58 天，释放资金 ¥860,000。
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 text-green-400 text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            表现优秀
+                        </div>
+                        <div class="text-sm text-gray-500">置信度: 91.5%</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    <div class="text-xs text-green-400 mb-2">预期收益</div>
+                    <div class="text-2xl font-bold text-white mb-1">¥860,000</div>
+                    <div class="text-xs text-gray-400">释放资金 + 提升周转率</div>
+                    <div class="mt-3 pt-3 border-t border-white/10">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-gray-500">当前周转天数</span>
+                            <span class="text-white">63 天</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">目标周转天数</span>
+                            <span class="text-green-400 font-medium">58 天</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Metrics -->
+        <section class="mb-6">
+            <div class="section-title">关键指标</div>
+            <div class="grid grid-cols-4 gap-4">
+                <div class="metric-card">
+                    <div class="text-xs text-gray-500 mb-1">库存周转率</div>
+                    <div class="metric-value text-green-400">2.1</div>
+                    <div class="text-xs text-gray-500 mt-1">次/年</div>
+                </div>
+                <div class="metric-card">
+                    <div class="text-xs text-gray-500 mb-1">平均周转天数</div>
+                    <div class="metric-value text-green-400">63</div>
+                    <div class="text-xs text-green-400 mt-1">↓ 5 天 vs 上月</div>
+                </div>
+                <div class="metric-card">
+                    <div class="text-xs text-gray-500 mb-1">周转资金占用</div>
+                    <div class="metric-value text-white">¥48.6M</div>
+                    <div class="text-xs text-green-400 mt-1">↓ 3.2% vs 上月</div>
+                </div>
+                <div class="metric-card">
+                    <div class="text-xs text-gray-500 mb-1">GMROI</div>
+                    <div class="metric-value text-green-400">3.42</div>
+                    <div class="text-xs text-green-400 mt-1">↑ 0.21 vs 上月</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-2 gap-6 mb-6">
+            <!-- Brand Performance -->
+            <section class="glass p-5">
+                <div class="section-title">分品牌周转效率</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>品牌</th>
+                            <th>周转率</th>
+                            <th>周转天数</th>
+                            <th>得分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nortiv8</td>
+                            <td class="mono text-green-400">2.6 次/年</td>
+                            <td class="mono">56 天</td>
+                            <td><span class="tag tag-green text-[10px]">91</span></td>
+                        </tr>
+                        <tr>
+                            <td>Bruno Marc</td>
+                            <td class="mono text-green-400">2.3 次/年</td>
+                            <td class="mono">60 天</td>
+                            <td><span class="tag tag-green text-[10px]">87</span></td>
+                        </tr>
+                        <tr>
+                            <td>Dream Pairs Comfort</td>
+                            <td class="mono">2.1 次/年</td>
+                            <td class="mono">64 天</td>
+                            <td><span class="tag tag-green text-[10px]">83</span></td>
+                        </tr>
+                        <tr>
+                            <td>Sneakers</td>
+                            <td class="mono text-yellow-400">1.9 次/年</td>
+                            <td class="mono">71 天</td>
+                            <td><span class="tag tag-yellow text-[10px]">79</span></td>
+                        </tr>
+                        <tr>
+                            <td>Dream Pairs Kids</td>
+                            <td class="mono text-yellow-400">1.7 次/年</td>
+                            <td class="mono">78 天</td>
+                            <td><span class="tag tag-yellow text-[10px]">74</span></td>
+                        </tr>
+                        <tr>
+                            <td>Dream Pairs Fashion</td>
+                            <td class="mono text-red-400">1.4 次/年</td>
+                            <td class="mono">92 天</td>
+                            <td><span class="tag tag-red text-[10px]">68</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Root Cause Analysis -->
+            <section class="glass p-5">
+                <div class="section-title">效率驱动因素</div>
+                <div class="space-y-4">
+                    <div class="timeline-item">
+                        <div class="text-sm font-medium text-white">爆款带动效应</div>
+                        <div class="text-xs text-gray-500 mt-1">主要因素 · 贡献度 45%</div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            Nortiv8 户外靴爆款月销量 12,000+ 件，
+                            单品周转天数仅 42 天，显著拉低整体均值
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="text-sm font-medium text-white">季节性精准备货</div>
+                        <div class="text-xs text-gray-500 mt-1">策略因素 · 贡献度 32%</div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            AI 预测模型提前 6 周识别需求高峰，
+                            备货精准度提升至 94%，减少积压
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="text-sm font-medium text-white">动态定价策略</div>
+                        <div class="text-xs text-gray-500 mt-1">运营因素 · 贡献度 23%</div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            滞销 SKU 自动触发降价促销，
+                            库龄 180+ 天占比从 12% 降至 8%
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Trend Chart -->
+        <section class="glass p-5 mb-6">
+            <div class="section-title">周转效率趋势</div>
+            <div class="mb-4">
+                <svg viewBox="0 0 800 280" class="w-full h-auto">
+                    <!-- Grid lines -->
+                    <defs>
+                        <pattern id="grid" width="80" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 80 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                        </pattern>
+                    </defs>
+                    <rect width="800" height="280" fill="url(#grid)"/>
+                    
+                    <!-- Y Axis labels -->
+                    <text x="30" y="30" fill="#6b7280" font-size="11" text-anchor="end">100天</text>
+                    <text x="30" y="90" fill="#6b7280" font-size="11" text-anchor="end">80天</text>
+                    <text x="30" y="150" fill="#6b7280" font-size="11" text-anchor="end">60天</text>
+                    <text x="30" y="210" fill="#6b7280" font-size="11" text-anchor="end">40天</text>
+                    <text x="30" y="250" fill="#6b7280" font-size="11" text-anchor="end">0天</text>
+                    
+                    <!-- X Axis labels -->
+                    <text x="100" y="275" fill="#6b7280" font-size="11" text-anchor="middle">2025-12</text>
+                    <text x="220" y="275" fill="#6b7280" font-size="11" text-anchor="middle">2026-01</text>
+                    <text x="340" y="275" fill="#6b7280" font-size="11" text-anchor="middle">2026-02</text>
+                    <text x="460" y="275" fill="#6b7280" font-size="11" text-anchor="middle">2026-03</text>
+                    <text x="580" y="275" fill="#6b7280" font-size="11" text-anchor="middle">2026-04</text>
+                    <text x="700" y="275" fill="#6b7280" font-size="11" text-anchor="middle">2026-05</text>
+                    
+                    <!-- Industry average line (dashed gray) -->
+                    <line x1="60" y1="60" x2="740" y2="60" stroke="#6b7280" stroke-width="2" stroke-dasharray="8,4" opacity="0.6"/>
+                    <text x="750" y="65" fill="#6b7280" font-size="11">行业均值 78天</text>
+                    
+                    <!-- Our turnover days line (green) -->
+                    <path fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                          d="M 100,120 L 220,110 L 340,100 L 460,85 L 580,75 L 700,65"/>
+                    
+                    <!-- Fill area under our line -->
+                    <path fill="rgba(34,197,94,0.1)" stroke="none"
+                          d="M 100,120 L 220,110 L 340,100 L 460,85 L 580,75 L 700,65 L 700,250 L 100,250 Z"/>
+                    
+                    <!-- Data points -->
+                    <circle cx="100" cy="120" r="6" fill="#22c55e" stroke="#0a0a0f" stroke-width="2"/>
+                    <circle cx="220" cy="110" r="6" fill="#22c55e" stroke="#0a0a0f" stroke-width="2"/>
+                    <circle cx="340" cy="100" r="6" fill="#22c55e" stroke="#0a0a0f" stroke-width="2"/>
+                    <circle cx="460" cy="85" r="6" fill="#22c55e" stroke="#0a0a0f" stroke-width="2"/>
+                    <circle cx="580" cy="75" r="6" fill="#22c55e" stroke="#0a0a0f" stroke-width="2"/>
+                    <circle cx="700" cy="65" r="6" fill="#22c55e" stroke="#0a0a0f" stroke-width="2"/>
+                    
+                    <!-- Data labels -->
+                    <text x="100" y="105" fill="#22c55e" font-size="11" text-anchor="middle" font-weight="600">72天</text>
+                    <text x="220" y="95" fill="#22c55e" font-size="11" text-anchor="middle" font-weight="600">70天</text>
+                    <text x="340" y="85" fill="#22c55e" font-size="11" text-anchor="middle" font-weight="600">68天</text>
+                    <text x="460" y="70" fill="#22c55e" font-size="11" text-anchor="middle" font-weight="600">65天</text>
+                    <text x="580" y="60" fill="#22c55e" font-size="11" text-anchor="middle" font-weight="600">63天</text>
+                    <text x="700" y="50" fill="#22c55e" font-size="11" text-anchor="middle" font-weight="600">63天</text>
+                    
+                    <!-- Q3 Target annotation -->
+                    <line x1="640" y1="55" x2="640" y2="20" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4,2"/>
+                    <rect x="600" y="5" width="120" height="30" rx="4" fill="rgba(59,130,246,0.15)" stroke="#3b82f6" stroke-width="1"/>
+                    <text x="660" y="25" fill="#3b82f6" font-size="11" text-anchor="middle" font-weight="500">Q3 目标: 58天</text>
+                    
+                    <!-- Legend -->
+                    <rect x="500" y="235" width="12" height="3" fill="#22c55e" rx="1"/>
+                    <text x="520" y="243" fill="#9ca3af" font-size="11">我们的周转天数</text>
+                    <line x1="620" y1="236" x2="640" y2="236" stroke="#6b7280" stroke-width="2" stroke-dasharray="4,2"/>
+                    <text x="650" y="243" fill="#9ca3af" font-size="11">行业均值 78天</text>
+                </svg>
+            </div>
+            <div class="grid grid-cols-3 gap-4 mt-4">
+                <div class="text-center p-3 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-1">6个月前</div>
+                    <div class="text-lg font-bold text-white">72 天</div>
+                    <div class="text-xs text-gray-500">2025-12</div>
+                </div>
+                <div class="text-center p-3 bg-white/5 rounded-lg border border-green-500/30">
+                    <div class="text-xs text-green-400 mb-1">当前</div>
+                    <div class="text-lg font-bold text-green-400">63 天</div>
+                    <div class="text-xs text-green-400">↓ 12.5%</div>
+                </div>
+                <div class="text-center p-3 bg-white/5 rounded-lg border border-blue-500/30">
+                    <div class="text-xs text-blue-400 mb-1">Q3 目标</div>
+                    <div class="text-lg font-bold text-blue-400">58 天</div>
+                    <div class="text-xs text-blue-400">↓ 7.9%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Recommendations -->
+        <section class="mb-6">
+            <div class="section-title">AI 智能建议</div>
+            <div class="recommendation-card">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                        <span class="text-green-400 font-bold text-sm">1</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="font-semibold">清理 DP Fashion 滞销 SKU</h3>
+                            <span class="tag tag-green">优先级: P1</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">
+                            DP Fashion 品牌周转天数 92 天，显著高于均值。建议对库龄 180+ 天的 247 个 SKU
+                            启动清仓促销，预计可释放资金 ¥860K，周转天数压缩至 58 天。
+                        </p>
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div class="bg-white/5 rounded p-3">
+                                <div class="text-xs text-gray-500">涉及 SKU</div>
+                                <div class="font-medium">247 个</div>
+                            </div>
+                            <div class="bg-white/5 rounded p-3">
+                                <div class="text-xs text-gray-500">释放资金</div>
+                                <div class="font-medium text-green-400">¥860K</div>
+                            </div>
+                            <div class="bg-white/5 rounded p-3">
+                                <div class="text-xs text-gray-500">预计损失</div>
+                                <div class="font-medium text-yellow-400">¥120K</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                        <span class="text-blue-400 font-bold text-sm">2</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="font-semibold">复制 Nortiv8 成功经验</h3>
+                            <span class="tag tag-blue">优先级: P2</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">
+                            将 Nortiv8 的爆款运营策略（精准测款 + 快速补货 + 内容营销）
+                            复制到其他品牌，预计整体周转率可提升 15%。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+                        <span class="text-yellow-400 font-bold text-sm">3</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="font-semibold">优化 Kids 品类尺码结构</h3>
+                            <span class="tag tag-yellow">优先级: P2</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">
+                            DP Kids 断码率 14%，导致部分 SKU 周转偏慢。建议优化尺码配比，
+                            增加热销尺码备货，减少长尾尺码采购。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simulation Results -->
+        <section class="glass p-5 mb-6">
+            <div class="section-title">方案模拟结果</div>
+            <div class="grid grid-cols-3 gap-6">
+                <div class="text-center p-4 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-2">维持现状</div>
+                    <div class="text-2xl font-bold text-white">63 天</div>
+                    <div class="text-xs text-gray-500 mt-1">当前周转天数</div>
+                    <div class="mt-3 text-xs text-gray-600">资金占用 ¥48.6M</div>
+                </div>
+                <div class="text-center p-4 bg-white/5 rounded-lg border-2 border-green-500/30">
+                    <div class="text-xs text-green-400 mb-2">执行清理方案（推荐）</div>
+                    <div class="text-2xl font-bold text-green-400">58 天</div>
+                    <div class="text-xs text-gray-500 mt-1">目标周转天数</div>
+                    <div class="mt-3 text-xs text-gray-600">释放资金 ¥860K</div>
+                </div>
+                <div class="text-center p-4 bg-white/5 rounded-lg">
+                    <div class="text-xs text-gray-500 mb-2">全面优化</div>
+                    <div class="text-2xl font-bold text-blue-400">52 天</div>
+                    <div class="text-xs text-gray-500 mt-1">理想周转天数</div>
+                    <div class="mt-3 text-xs text-gray-600">需配合策略复制执行</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="flex items-center justify-between pt-4 border-t border-white/10">
+            <div class="flex items-center gap-4">
+                <button class="px-6 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    立即执行清理方案
+                </button>
+                <button class="px-6 py-2.5 bg-white/10 hover:bg-white/15 text-white rounded-lg font-medium transition-colors">
+                    导出 PDF 报告
+                </button>
+            </div>
+            <div class="text-xs text-gray-500">
+                报告 ID: AI-RPT-20260527-TR01 · 模型版本: v2.4.1
+            </div>
+        </section>
+    </main>
+</body>
+</html>

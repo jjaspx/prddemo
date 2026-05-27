@@ -852,80 +852,190 @@
                 <svg class="w-4 h-4" style="color:#60a5fa" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <h3 class="text-sm font-medium text-white">库龄分布</h3>
             </div>
-            <span class="text-xs text-gray-500">150,013 件</span>
+            <span class="text-xs text-gray-500">总计: 150,013件</span>
         </div>
-        <!-- Stacked Bar Chart -->
-        <div class="relative">
-            <div class="h-10 bg-white/5 rounded-lg overflow-hidden flex">
-                <!-- 0-90天 58.6% -->
-                <div class="h-full flex flex-col justify-center items-center" style="width:58.6%;background:linear-gradient(180deg,#c8f560 0%,#a8d040 100%)">
-                    <span class="text-sm font-bold text-black mono">58.6%</span>
+        <!-- Two Column Layout -->
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Left: 库存占比 -->
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <span class="text-xs text-gray-300">库存占比 <span class="text-gray-500">(真实数据)</span></span>
                 </div>
-                <!-- 90-180天 21.2% -->
-                <div class="h-full flex flex-col justify-center items-center" style="width:21.2%;background:linear-gradient(180deg,#60a5fa 0%,#3b82f6 100%)">
-                    <span class="text-xs font-medium text-white mono">21.2%</span>
+                <!-- 0-90天 -->
+                <div class="mb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#22c55e"></span>
+                        <span class="text-xs text-gray-400 flex-1">0-90天 · 健康</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:58.6%;background:linear-gradient(90deg,#22c55e,#16a34a)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">58.6%</div>
+                            <div class="text-xs text-gray-500 mono">87,908件</div>
+                        </div>
+                    </div>
                 </div>
-                <!-- 180-360天 11.9% -->
-                <div class="h-full flex flex-col justify-center items-center" style="width:11.9%;background:linear-gradient(180deg,#f5c842 0%,#d4a72c 100%)">
-                    <span class="text-xs font-medium text-black mono">11.9%</span>
+                <!-- 90-180天 -->
+                <div class="mb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#3b82f6"></span>
+                        <span class="text-xs text-gray-400 flex-1">90-180天 · 关注</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:21.2%;background:linear-gradient(90deg,#3b82f6,#2563eb)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">21.2%</div>
+                            <div class="text-xs text-gray-500 mono">31,803件</div>
+                        </div>
+                    </div>
                 </div>
-                <!-- 360天+ 8.3% -->
-                <div class="h-full flex flex-col justify-center items-center" style="width:8.3%;background:linear-gradient(180deg,#f56060 0%,#d94040 100%)">
-                    <span class="text-xs font-medium text-white mono">8.3%</span>
+                <!-- 180-270天 -->
+                <div class="mb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#f59e0b"></span>
+                        <span class="text-xs text-gray-400 flex-1">180-270天 · 滞销</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:7.9%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">7.9%</div>
+                            <div class="text-xs text-gray-500 mono">11,860件</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 270-360天 -->
+                <div class="mb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#f97316"></span>
+                        <span class="text-xs text-gray-400 flex-1">270-360天 · 高危</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:4.0%;background:linear-gradient(90deg,#f97316,#ea580c)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">4.0%</div>
+                            <div class="text-xs text-gray-500 mono">5,992件</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 360天+ -->
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#ef4444"></span>
+                        <span class="text-xs text-gray-400 flex-1">360天+ · 呆滞</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:8.3%;background:linear-gradient(90deg,#ef4444,#dc2626)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">8.3%</div>
+                            <div class="text-xs text-gray-500 mono">12,450件</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right: 风险权重 -->
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <span class="text-xs text-gray-300">风险权重 <span class="text-gray-500">(加权影响)</span></span>
+                </div>
+                <!-- 低风险 -->
+                <div class="mb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#22c55e"></span>
+                        <span class="text-xs text-gray-400 flex-1">低风险</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:22%;background:linear-gradient(90deg,#22c55e,#16a34a)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">22</div>
+                            <div class="text-xs text-gray-500">经营影响: 低</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 可控 -->
+                <div class="mb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#3b82f6"></span>
+                        <span class="text-xs text-gray-400 flex-1">可控</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:42%;background:linear-gradient(90deg,#3b82f6,#2563eb)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">42</div>
+                            <div class="text-xs text-gray-500">经营影响: 可控</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- W3=1 -->
+                <div class="mb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#f59e0b"></span>
+                        <span class="text-xs text-gray-400 flex-1">W3=1</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:7.9%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">7.9%</div>
+                            <div class="text-xs text-gray-500">¥71.2万 可回转</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- W2=2 -->
+                <div class="mb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#f97316"></span>
+                        <span class="text-xs text-gray-400 flex-1">W2=2</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:8.0%;background:linear-gradient(90deg,#f97316,#ea580c)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">8.0%</div>
+                            <div class="text-xs text-gray-500">¥42.6万 仓储费</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- W3=4 -->
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full" style="background:#ef4444"></span>
+                        <span class="text-xs text-gray-400 flex-1">W3=4</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full" style="width:33.2%;background:linear-gradient(90deg,#ef4444,#dc2626)"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-bold text-white mono">33.2%</div>
+                            <div class="text-xs text-gray-500">¥186万 侵蚀利润</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Legend Grid -->
-        <div class="mt-3 grid grid-cols-2 gap-3">
-            <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
-                <span class="w-3 h-3 rounded" style="background:#c8f560"></span>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-gray-300">0-90天</span>
-                        <span class="text-sm mono font-medium" style="color:#c8f560">87,908</span>
-                    </div>
-                    <div class="text-xs text-gray-500">健康库存</div>
-                </div>
-            </div>
-            <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
-                <span class="w-3 h-3 rounded" style="background:#60a5fa"></span>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-gray-300">90-180天</span>
-                        <span class="text-sm mono font-medium" style="color:#60a5fa">31,803</span>
-                    </div>
-                    <div class="text-xs text-gray-500">关注库存</div>
-                </div>
-            </div>
-            <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
-                <span class="w-3 h-3 rounded" style="background:#f5c842"></span>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-gray-300">180-360天</span>
-                        <span class="text-sm mono font-medium" style="color:#f5c842">17,852</span>
-                    </div>
-                    <div class="text-xs text-gray-500">滞销风险</div>
-                </div>
-            </div>
-            <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5">
-                <span class="w-3 h-3 rounded" style="background:#f56060"></span>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-gray-300">360天+</span>
-                        <span class="text-sm mono font-medium" style="color:#f56060">12,450</span>
-                    </div>
-                    <div class="text-xs text-gray-500">呆滞库存</div>
-                </div>
-            </div>
-        </div>
-        <!-- Risk Alert -->
-        <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
-            <span class="text-xs text-gray-400">呆滞占比</span>
+        <!-- Bottom Alert -->
+        <div class="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
             <div class="flex items-center gap-2">
-                <div class="w-20 h-2 bg-white/10 rounded-full overflow-hidden">
-                    <div class="h-full rounded-full" style="width:20.2%;background:var(--critical)"></div>
-                </div>
-                <span class="text-sm mono font-medium" style="color:var(--critical)">20.2%</span>
+                <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <span class="text-xs text-red-400">360天+库存仅占8.3%，但风险权重高达33.2%，是利润最大侵蚀源</span>
             </div>
         </div>
     </div>
@@ -996,889 +1106,18 @@
     </div>
 </div>
 
-<!-- ========== DETAIL OVERLAY ========== -->
-<div id="detailOverlay" class="detail-overlay">
-    <!-- Header -->
-    <div class="p-5 border-b border-white/5">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <button class="back-btn" onclick="closeDetail()">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                    返回总览
-                </button>
-                <div>
-                    <div id="detailBreadcrumb" class="text-xs text-gray-500 mb-1">DEEP DIVE · INVENTORY TURNOVER EFFICIENCY</div>
-                    <div class="flex items-center gap-3">
-                        <h2 id="detailTitle" class="text-2xl font-bold text-white">库存周转大盘</h2>
-                        <span id="detailWeightTag" class="tag tag-green">权重 25%</span>
-                    </div>
-                </div>
-            </div>
-            <div class="text-right">
-                <div class="flex items-baseline gap-1">
-                    <span id="detailScore" class="text-4xl font-bold mono" style="color:var(--optimal)">85</span>
-                    <span id="detailMax" class="text-lg text-gray-500 mono">/100</span>
-                </div>
-                <div id="detailTrend" class="text-sm" style="color:var(--optimal)">↗ +2.1 较上月</div>
-            </div>
-        </div>
-        <!-- Score Formula -->
-        <div id="detailFormula" class="mt-3 text-xs text-gray-500 font-mono">
-            Score = 50 × min(2, 周转率/年基准) + 50 × (1 - 周转天数/180)
-        </div>
-    </div>
-
-    <!-- KPI Cards Row -->
-    <div id="kpiRow" class="grid grid-cols-6 gap-3 p-5 border-b border-white/5"></div>
-
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-12 gap-4 p-5">
-        <!-- Left: Trend Chart -->
-        <div class="col-span-6">
-            <div class="glass p-5 h-full">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-sm font-medium text-white">28 日得分趋势</h3>
-                    <span class="text-xs text-gray-500">DAILY SCORE · 0-100</span>
-                </div>
-                <div class="h-56">
-                    <svg id="trendChart" viewBox="0 0 500 160" class="w-full h-full">
-                        <!-- Grid lines -->
-                        <line class="grid-line" x1="0" y1="40" x2="500" y2="40"/>
-                        <line class="grid-line" x1="0" y1="80" x2="500" y2="80"/>
-                        <line class="grid-line" x1="0" y1="120" x2="500" y2="120"/>
-                        <defs>
-                            <linearGradient id="detailGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#c8f560;stop-opacity:0.3"/>
-                                <stop offset="100%" style="stop-color:#c8f560;stop-opacity:0"/>
-                            </linearGradient>
-                        </defs>
-                        <!-- Area -->
-                        <path id="chartArea" fill="url(#detailGrad)" d="M0,120 Q60,100 120,85 T240,70 T360,55 T500,50 L500,160 L0,160 Z"/>
-                        <!-- Line -->
-                        <path id="chartLine" fill="none" stroke="#c8f560" stroke-width="2.5" d="M0,120 Q60,100 120,85 T240,70 T360,55 T500,50"/>
-                        <!-- Data Points -->
-                        <circle cx="0" cy="120" r="3" fill="#c8f560"/>
-                        <circle cx="60" cy="105" r="3" fill="#c8f560"/>
-                        <circle cx="120" cy="88" r="3" fill="#c8f560"/>
-                        <circle cx="180" cy="75" r="3" fill="#c8f560"/>
-                        <circle cx="240" cy="72" r="3" fill="#c8f560"/>
-                        <circle cx="300" cy="62" r="3" fill="#c8f560"/>
-                        <circle cx="360" cy="55" r="3" fill="#c8f560"/>
-                        <circle cx="420" cy="52" r="3" fill="#c8f560"/>
-                        <circle cx="500" cy="50" r="4" fill="#c8f560"/>
-                        <!-- Labels -->
-                        <text x="0" y="150" fill="#52525b" font-size="9" font-family="JetBrains Mono">78</text>
-                        <text x="60" y="150" fill="#52525b" font-size="9" font-family="JetBrains Mono">80</text>
-                        <text x="120" y="150" fill="#52525b" font-size="9" font-family="JetBrains Mono">82</text>
-                        <text x="180" y="150" fill="#52525b" font-size="9" font-family="JetBrains Mono">84</text>
-                        <text x="240" y="150" fill="#52525b" font-size="9" font-family="JetBrains Mono">85</text>
-                        <text x="480" y="40" fill="#c8f560" font-size="10" font-weight="bold" font-family="JetBrains Mono">85</text>
-                    </svg>
-                </div>
-                <div class="flex justify-between text-xs text-gray-500 mt-2 mono">
-                    <span>05-01</span><span>05-05</span><span>05-10</span><span>05-15</span><span>05-20</span><span>05-25</span><span>05-28</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Right: Dimension-specific Chart -->
-        <div class="col-span-6">
-            <div class="glass p-5 h-full">
-                <h3 id="rightChartTitle" class="text-sm font-medium text-white mb-4">分品牌 · 周转效率得分</h3>
-                <div id="rightChartContent" class="space-y-3"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom Grid -->
-    <div class="grid grid-cols-12 gap-4 p-5 pt-0">
-        <!-- Left: SKU Table -->
-        <div class="col-span-7">
-            <div class="glass p-5">
-                <div class="flex items-center justify-between mb-4">
-                    <div>
-                        <h3 class="text-sm font-medium text-white">Top 风险 SKU 穿透</h3>
-                        <span id="skuCount" class="text-xs text-gray-500">5 ITEMS</span>
-                    </div>
-                    <div id="tableActions" class="flex items-center gap-2"></div>
-                </div>
-                <table class="data-table">
-                    <thead id="detailThead"></thead>
-                    <tbody id="detailTbody"></tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Right: AI Decision -->
-        <div class="col-span-5">
-            <div class="glass p-5 h-full">
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="text-lg">🤖</span>
-                    <h3 class="text-sm font-medium text-white">AI 数据解读</h3>
-                </div>
-                <div id="aiDecisions" class="space-y-3"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ========== BRAND DETAIL OVERLAY ========== -->
-<div id="brandOverlay" class="detail-overlay">
-    <!-- Header -->
-    <div class="p-4 border-b border-white/5">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <button class="back-btn" onclick="closeBrandDetail()">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                    返回总览
-                </button>
-                <div>
-                    <div id="brandBreadcrumb" class="text-xs text-gray-500">BRAND DEEP DIVE · INVENTORY HEALTH</div>
-                    <div class="flex items-center gap-3">
-                        <h2 id="brandTitle" class="text-xl font-bold text-white">Nortiv8</h2>
-                        <span id="brandStatusTag" class="tag tag-green">OPTIMAL</span>
-                    </div>
-                </div>
-            </div>
-            <div class="text-right">
-                <div class="flex items-baseline gap-1">
-                    <span id="brandScore" class="text-3xl font-bold mono" style="color:var(--optimal)">87</span>
-                    <span id="brandMax" class="text-lg text-gray-500 mono">/100</span>
-                </div>
-                <div id="brandTrend" class="text-sm" style="color:var(--optimal)">↗ +4.1 较上周</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- KPI Cards Row -->
-    <div id="brandKpiRow" class="grid grid-cols-5 gap-3 p-4 border-b border-white/5"></div>
-
-    <!-- Row 2: Dimension/Trend + Category IHI -->
-    <div class="grid grid-cols-12 gap-4 p-4">
-        <!-- Left: Dimension Scores + 7-Day Trend -->
-        <div class="col-span-5">
-            <div class="glass p-4 h-full flex flex-col">
-                <div class="flex gap-4 flex-1">
-                    <!-- Left: Dimension Sub-scores -->
-                    <div class="w-32 flex flex-col">
-                        <h3 class="text-xs font-medium text-white mb-2">维度评分</h3>
-                        <div class="grid grid-cols-1 gap-2 flex-1">
-                            <div class="p-2 rounded-lg bg-white/5 border border-white/5 flex flex-col justify-center">
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-[9px] text-gray-400">周转效率</span>
-                                    <span class="text-[8px]" style="color:var(--optimal)">↗+1.2</span>
-                                </div>
-                                <div class="flex items-baseline gap-0.5">
-                                    <span id="dimTurnover" class="text-base font-bold mono" style="color:var(--optimal)">21.3</span>
-                                    <span class="text-[7px] text-gray-500 mono">/25</span>
-                                </div>
-                                <div class="h-1 bg-white/10 rounded-full mt-1 overflow-hidden">
-                                    <div class="h-full rounded-full" style="width:85%;background:var(--optimal)"></div>
-                                </div>
-                            </div>
-                            <div class="p-2 rounded-lg bg-white/5 border border-white/5 flex flex-col justify-center">
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-[9px] text-gray-400">缺货风险</span>
-                                    <span class="text-[8px]" style="color:var(--warning)">↘-0.6</span>
-                                </div>
-                                <div class="flex items-baseline gap-0.5">
-                                    <span id="dimShortage" class="text-base font-bold mono" style="color:var(--warning)">23.4</span>
-                                    <span class="text-[7px] text-gray-500 mono">/30</span>
-                                </div>
-                                <div class="h-1 bg-white/10 rounded-full mt-1 overflow-hidden">
-                                    <div class="h-full rounded-full" style="width:78%;background:var(--warning)"></div>
-                                </div>
-                            </div>
-                            <div class="p-2 rounded-lg bg-white/5 border border-white/5 flex flex-col justify-center">
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-[9px] text-gray-400">积压风险</span>
-                                    <span class="text-[8px]" style="color:var(--warning)">↘-0.4</span>
-                                </div>
-                                <div class="flex items-baseline gap-0.5">
-                                    <span id="dimOverstock" class="text-base font-bold mono" style="color:var(--warning)">22.8</span>
-                                    <span class="text-[7px] text-gray-500 mono">/30</span>
-                                </div>
-                                <div class="h-1 bg-white/10 rounded-full mt-1 overflow-hidden">
-                                    <div class="h-full rounded-full" style="width:76%;background:var(--warning)"></div>
-                                </div>
-                            </div>
-                            <div class="p-2 rounded-lg bg-white/5 border border-white/5 flex flex-col justify-center">
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-[9px] text-gray-400">结构健康</span>
-                                    <span class="text-[8px]" style="color:var(--optimal)">↗+0.8</span>
-                                </div>
-                                <div class="flex items-baseline gap-0.5">
-                                    <span id="dimStructure" class="text-base font-bold mono" style="color:var(--optimal)">13.2</span>
-                                    <span class="text-[7px] text-gray-500 mono">/15</span>
-                                </div>
-                                <div class="h-1 bg-white/10 rounded-full mt-1 overflow-hidden">
-                                    <div class="h-full rounded-full" style="width:88%;background:var(--optimal)"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Right: 7-Day Trend -->
-                    <div class="flex-1 flex flex-col">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-xs font-medium text-white">7日 IHI 趋势</h3>
-                            <span id="brandTrendChartLabel" class="text-[10px] text-gray-500">7-DAY TREND</span>
-                        </div>
-                        <div id="brandTrendChart" class="flex-1"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Right: Category IHI Grid (4x3) -->
-        <div class="col-span-7">
-            <div class="glass p-4 h-full">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="text-sm font-medium text-white">品类 IHI 得分</h3>
-                    <span class="text-xs text-gray-500">CATEGORY IHI · 点击查看详情</span>
-                </div>
-                <div id="brandCategoryIhiGrid" class="grid grid-cols-4 gap-2"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Row 3: Warehouse + Category Breakdown + AI Decisions -->
-    <div class="grid grid-cols-12 gap-4 p-4 pt-0">
-        <!-- Left: Warehouse Distribution -->
-        <div class="col-span-4">
-            <div class="glass p-4 h-full">
-                <h3 class="text-sm font-medium text-white mb-3">仓库分布</h3>
-                <div id="brandWarehouseContent" class="space-y-2"></div>
-            </div>
-        </div>
-
-        <!-- Center: Category Breakdown -->
-        <div class="col-span-4">
-            <div class="glass p-4 h-full">
-                <h3 class="text-sm font-medium text-white mb-3">库龄分布</h3>
-                <div id="brandCategoryContent" class="space-y-2"></div>
-            </div>
-        </div>
-
-        <!-- Right: AI Decisions -->
-        <div class="col-span-4">
-            <div class="glass p-4 h-full">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4" style="color:var(--optimal)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        <h3 class="text-sm font-medium text-white">AI 数据解读</h3>
-                    </div>
-                    <span id="brandAiCount" class="text-xs text-gray-500"></span>
-                </div>
-                <div id="brandAiDecisions" class="space-y-2 overflow-y-auto max-h-64"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- SKU Detail Overlay - 单品库存参谋 -->
-<div id="skuOverlay" class="detail-overlay">
-    <div class="detail-content w-[95vw] max-w-[1600px] h-[90vh] overflow-hidden flex flex-col">
-        <!-- Header -->
-        <div class="flex items-center justify-between p-4 border-b border-white/10">
-            <div>
-                <div class="text-xs text-gray-500 mb-1">单品库存参谋 · SKU INVENTORY ADVISOR</div>
-                <div class="flex items-center gap-3">
-                    <h2 id="skuTitle" class="text-xl font-bold text-white">SDFN2379W-BLK-09</h2>
-                    <span class="tag tag-yellow">DP Fashion</span>
-                    <span class="tag tag-green">在售</span>
-                </div>
-            </div>
-            <button onclick="closeSkuDetail()" class="btn btn-ghost p-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-        </div>
-        
-        <!-- Content -->
-        <div class="flex-1 overflow-y-auto p-4">
-            <!-- 视角1: 单品盈利健康视角 -->
-            <div class="mb-4">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="w-5 h-5 rounded bg-green-500/20 flex items-center justify-center text-[10px] font-bold text-green-400">1</span>
-                    <h3 class="text-sm font-medium text-white">单品盈利健康视角</h3>
-                    <span class="text-[10px] text-gray-500">核心：利润率 + 盈利效率</span>
-                </div>
-                <div class="grid grid-cols-6 gap-2">
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">毛利率</div>
-                        <div class="text-base font-bold mono" style="color:var(--optimal)">32.5%</div>
-                        <div class="text-[8px] text-green-400">+2.1pp</div>
-                    </div>
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">净利率</div>
-                        <div class="text-base font-bold mono" style="color:var(--optimal)">18.2%</div>
-                        <div class="text-[8px] text-green-400">+1.3pp</div>
-                    </div>
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">ROI</div>
-                        <div class="text-base font-bold mono" style="color:var(--optimal)">2.8x</div>
-                        <div class="text-[8px] text-gray-500">年化</div>
-                    </div>
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">累计利润</div>
-                        <div class="text-base font-bold mono text-white">¥48.6K</div>
-                        <div class="text-[8px] text-gray-500">本年度</div>
-                    </div>
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">利润贡献</div>
-                        <div class="text-base font-bold mono" style="color:var(--optimal)">TOP 15%</div>
-                        <div class="text-[8px] text-gray-500">类目排名</div>
-                    </div>
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">盈利状态</div>
-                        <div class="text-base font-bold" style="color:var(--optimal)">盈利</div>
-                        <div class="tag tag-green text-[7px]">HEALTHY</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 视角2: 历史-当前-未来库存时序视角 -->
-            <div class="mb-4">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="w-5 h-5 rounded bg-blue-500/20 flex items-center justify-center text-[10px] font-bold text-blue-400">2</span>
-                    <h3 class="text-sm font-medium text-white">库存时序视角</h3>
-                    <span class="text-[10px] text-gray-500">核心：历史-当前-未来</span>
-                </div>
-                <div class="glass p-3">
-                    <div class="grid grid-cols-3 gap-4">
-                        <!-- 历史 -->
-                        <div>
-                            <div class="text-[10px] text-gray-500 mb-2 flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-gray-500"></span>历史库存 (近30天)
-                            </div>
-                            <div class="h-16">
-                                <svg viewBox="0 0 200 60" class="w-full h-full">
-                                    <path fill="rgba(156,163,175,0.2)" d="M0,50 L0,40 Q40,35 80,42 T160,30 L200,35 L200,60 L0,60 Z"/>
-                                    <path fill="none" stroke="#6b7280" stroke-width="1.5" d="M0,40 Q40,35 80,42 T160,30 L200,35"/>
-                                </svg>
-                            </div>
-                            <div class="flex justify-between text-[8px] text-gray-500 mt-1">
-                                <span>最低: 412</span><span>最高: 680</span><span>均值: 512</span>
-                            </div>
-                        </div>
-                        <!-- 当前 -->
-                        <div class="border-x border-white/10 px-4">
-                            <div class="text-[10px] text-gray-500 mb-2 flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-green-400"></span>当前库存
-                            </div>
-                            <div class="text-center">
-                                <div class="text-2xl font-bold mono text-white">612</div>
-                                <div class="text-[9px] text-gray-500">件</div>
-                                <div class="mt-2 grid grid-cols-2 gap-2 text-[8px]">
-                                    <div class="bg-white/5 rounded p-1">
-                                        <div class="text-gray-500">可售</div>
-                                        <div class="text-white font-medium">580</div>
-                                    </div>
-                                    <div class="bg-white/5 rounded p-1">
-                                        <div class="text-gray-500">在途</div>
-                                        <div class="text-white font-medium">32</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 未来 -->
-                        <div>
-                            <div class="text-[10px] text-gray-500 mb-2 flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-yellow-400"></span>未来预测 (14天)
-                            </div>
-                            <div class="h-16">
-                                <svg viewBox="0 0 200 60" class="w-full h-full">
-                                    <path fill="rgba(245,200,66,0.2)" d="M0,35 L0,30 Q50,25 100,28 T200,45 L200,60 L0,60 Z"/>
-                                    <path fill="none" stroke="#f5c842" stroke-width="1.5" stroke-dasharray="4,2" d="M0,30 Q50,25 100,28 T200,45"/>
-                                </svg>
-                            </div>
-                            <div class="flex justify-between text-[8px] text-gray-500 mt-1">
-                                <span>预计销量: 186</span><span>预计结余: 426</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 视角3: 库存周转视角 -->
-            <div class="mb-4">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="w-5 h-5 rounded bg-purple-500/20 flex items-center justify-center text-[10px] font-bold text-purple-400">3</span>
-                    <h3 class="text-sm font-medium text-white">库存周转视角</h3>
-                    <span class="text-[10px] text-gray-500">核心：周转效率 + 资金占用</span>
-                </div>
-                <div class="grid grid-cols-4 gap-2">
-                    <div class="glass p-2">
-                        <div class="text-[9px] text-gray-500 mb-1">周转天数</div>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-lg font-bold mono" style="color:var(--warning)">45</span>
-                            <span class="text-[9px] text-gray-500">天</span>
-                        </div>
-                        <div class="text-[8px] text-yellow-400">类目均值: 38天</div>
-                    </div>
-                    <div class="glass p-2">
-                        <div class="text-[9px] text-gray-500 mb-1">周转率</div>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-lg font-bold mono" style="color:var(--optimal)">8.1</span>
-                            <span class="text-[9px] text-gray-500">次/年</span>
-                        </div>
-                        <div class="text-[8px] text-green-400">高于基准 15%</div>
-                    </div>
-                    <div class="glass p-2">
-                        <div class="text-[9px] text-gray-500 mb-1">资金占用</div>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-lg font-bold mono text-white">¥48.9K</span>
-                        </div>
-                        <div class="text-[8px] text-gray-500">成本 ¥79.9/件</div>
-                    </div>
-                    <div class="glass p-2">
-                        <div class="text-[9px] text-gray-500 mb-1">动销率</div>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-lg font-bold mono" style="color:var(--optimal)">92%</span>
-                        </div>
-                        <div class="text-[8px] text-green-400">健康</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 视角4: 缺货风险视角 -->
-            <div class="mb-4">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="w-5 h-5 rounded bg-red-500/20 flex items-center justify-center text-[10px] font-bold text-red-400">4</span>
-                    <h3 class="text-sm font-medium text-white">缺货风险视角</h3>
-                    <span class="text-[10px] text-gray-500">核心：缺货预警 + 履约保障</span>
-                </div>
-                <div class="grid grid-cols-5 gap-2">
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">缺货风险</div>
-                        <div class="tag tag-green text-[9px] mt-1">低风险</div>
-                    </div>
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">可售天数</div>
-                        <div class="text-base font-bold mono" style="color:var(--optimal)">18</div>
-                        <div class="text-[8px] text-gray-500">天</div>
-                    </div>
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">安全库存</div>
-                        <div class="text-base font-bold mono text-white">200</div>
-                        <div class="text-[8px] text-green-400">充足</div>
-                    </div>
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">断货次数</div>
-                        <div class="text-base font-bold mono text-white">2</div>
-                        <div class="text-[8px] text-gray-500">近90天</div>
-                    </div>
-                    <div class="glass p-2 text-center">
-                        <div class="text-[9px] text-gray-500">履约率</div>
-                        <div class="text-base font-bold mono" style="color:var(--optimal)">98.5%</div>
-                        <div class="text-[8px] text-green-400">优秀</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 视角5: 滞销风险视角 -->
-            <div class="mb-4">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="w-5 h-5 rounded bg-orange-500/20 flex items-center justify-center text-[10px] font-bold text-orange-400">5</span>
-                    <h3 class="text-sm font-medium text-white">滞销风险视角</h3>
-                    <span class="text-[10px] text-gray-500">核心：滞销识别 + 积压清理</span>
-                </div>
-                <div class="grid grid-cols-4 gap-2">
-                    <div class="glass p-2">
-                        <div class="text-[9px] text-gray-500 mb-1">滞销风险</div>
-                        <div class="tag tag-yellow text-[9px]">中等</div>
-                        <div class="text-[8px] text-yellow-400 mt-1">库龄偏长</div>
-                    </div>
-                    <div class="glass p-2">
-                        <div class="text-[9px] text-gray-500 mb-1">滞销库存</div>
-                        <div class="text-base font-bold mono" style="color:var(--warning)">86</div>
-                        <div class="text-[8px] text-gray-500">件 · 占比14%</div>
-                    </div>
-                    <div class="glass p-2">
-                        <div class="text-[9px] text-gray-500 mb-1">最长库龄</div>
-                        <div class="text-base font-bold mono" style="color:var(--warning)">198</div>
-                        <div class="text-[8px] text-gray-500">天</div>
-                    </div>
-                    <div class="glass p-2">
-                        <div class="text-[9px] text-gray-500 mb-1">建议操作</div>
-                        <div class="text-[10px] text-yellow-400 font-medium">促销清仓</div>
-                        <div class="text-[8px] text-gray-500">预计损失 ¥2.1K</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 视角6: SKU分层结构视角 -->
-            <div class="mb-4">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="w-5 h-5 rounded bg-cyan-500/20 flex items-center justify-center text-[10px] font-bold text-cyan-400">6</span>
-                    <h3 class="text-sm font-medium text-white">SKU分层结构视角</h3>
-                    <span class="text-[10px] text-gray-500">核心：价值分层 + 资源倾斜</span>
-                </div>
-                <div class="glass p-3">
-                    <div class="flex items-center gap-4">
-                        <div class="text-center">
-                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 flex items-center justify-center border-2 border-yellow-500">
-                                <span class="text-lg font-bold text-yellow-400">A</span>
-                            </div>
-                            <div class="text-[9px] text-gray-500 mt-1">价值等级</div>
-                        </div>
-                        <div class="flex-1 grid grid-cols-4 gap-3">
-                            <div>
-                                <div class="text-[9px] text-gray-500">销售额排名</div>
-                                <div class="text-sm font-bold text-white">#128</div>
-                                <div class="text-[8px] text-green-400">TOP 8%</div>
-                            </div>
-                            <div>
-                                <div class="text-[9px] text-gray-500">利润贡献</div>
-                                <div class="text-sm font-bold text-white">¥48.6K</div>
-                                <div class="text-[8px] text-gray-500">类目占比 2.3%</div>
-                            </div>
-                            <div>
-                                <div class="text-[9px] text-gray-500">资源倾斜</div>
-                                <div class="text-sm font-bold text-green-400">优先</div>
-                                <div class="text-[8px] text-gray-500">库存/营销</div>
-                            </div>
-                            <div>
-                                <div class="text-[9px] text-gray-500">生命周期</div>
-                                <div class="text-sm font-bold text-white">成长期</div>
-                                <div class="text-[8px] text-green-400">↑ 持续增长</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 视角7: 库龄健康视角 -->
-            <div class="mb-4">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="w-5 h-5 rounded bg-teal-500/20 flex items-center justify-center text-[10px] font-bold text-teal-400">7</span>
-                    <h3 class="text-sm font-medium text-white">库龄健康视角</h3>
-                    <span class="text-[10px] text-gray-500">核心：库龄管控 + 损耗防控</span>
-                </div>
-                <div class="glass p-3">
-                    <div class="flex items-center gap-4">
-                        <div class="flex-1">
-                            <div class="h-6 bg-white/5 rounded-full overflow-hidden flex">
-                                <div class="h-full" style="width:58%;background:linear-gradient(90deg,#c8f560,#a8d040)"></div>
-                                <div class="h-full" style="width:22%;background:linear-gradient(90deg,#60a5fa,#3b82f6)"></div>
-                                <div class="h-full" style="width:14%;background:linear-gradient(90deg,#f5c842,#d4a72c)"></div>
-                                <div class="h-full" style="width:6%;background:linear-gradient(90deg,#f56060,#d94040)"></div>
-                            </div>
-                            <div class="grid grid-cols-4 gap-1 mt-2">
-                                <div class="text-center">
-                                    <div class="w-2 h-2 rounded mx-auto" style="background:#c8f560"></div>
-                                    <div class="text-[8px] text-gray-500">0-90天</div>
-                                    <div class="text-[9px] text-white font-medium">355件</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="w-2 h-2 rounded mx-auto" style="background:#60a5fa"></div>
-                                    <div class="text-[8px] text-gray-500">90-180天</div>
-                                    <div class="text-[9px] text-white font-medium">135件</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="w-2 h-2 rounded mx-auto" style="background:#f5c842"></div>
-                                    <div class="text-[8px] text-gray-500">180-360天</div>
-                                    <div class="text-[9px] text-white font-medium">86件</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="w-2 h-2 rounded mx-auto" style="background:#f56060"></div>
-                                    <div class="text-[8px] text-gray-500">360天+</div>
-                                    <div class="text-[9px] text-white font-medium">36件</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-24 text-center">
-                            <div class="text-[9px] text-gray-500">库龄健康度</div>
-                            <div class="text-2xl font-bold" style="color:var(--warning)">72</div>
-                            <div class="text-[8px] text-yellow-400">需关注</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 视角8: 端到端全链路视角 -->
-            <div class="mb-2">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="w-5 h-5 rounded bg-indigo-500/20 flex items-center justify-center text-[10px] font-bold text-indigo-400">8</span>
-                    <h3 class="text-sm font-medium text-white">端到端全链路视角</h3>
-                    <span class="text-[10px] text-gray-500">核心：全环节协同 + 问题定位</span>
-                </div>
-                <div class="glass p-3">
-                    <div class="flex items-center justify-between">
-                        <!-- 采购 -->
-                        <div class="text-center">
-                            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mx-auto">
-                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                            </div>
-                            <div class="text-[9px] text-white mt-1">采购</div>
-                            <div class="tag tag-green text-[7px]">正常</div>
-                        </div>
-                        <div class="flex-1 h-0.5 bg-green-500/30 mx-2"></div>
-                        <!-- 仓储 -->
-                        <div class="text-center">
-                            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mx-auto">
-                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                            </div>
-                            <div class="text-[9px] text-white mt-1">仓储</div>
-                            <div class="tag tag-green text-[7px]">正常</div>
-                        </div>
-                        <div class="flex-1 h-0.5 bg-green-500/30 mx-2"></div>
-                        <!-- 销售 -->
-                        <div class="text-center">
-                            <div class="w-12 h-12 rounded-lg bg-yellow-500/20 flex items-center justify-center mx-auto">
-                                <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                            </div>
-                            <div class="text-[9px] text-white mt-1">销售</div>
-                            <div class="tag tag-yellow text-[7px]">增速放缓</div>
-                        </div>
-                        <div class="flex-1 h-0.5 bg-green-500/30 mx-2"></div>
-                        <!-- 物流 -->
-                        <div class="text-center">
-                            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mx-auto">
-                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                            </div>
-                            <div class="text-[9px] text-white mt-1">物流</div>
-                            <div class="tag tag-green text-[7px]">正常</div>
-                        </div>
-                        <div class="flex-1 h-0.5 bg-green-500/30 mx-2"></div>
-                        <!-- 售后 -->
-                        <div class="text-center">
-                            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mx-auto">
-                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
-                            </div>
-                            <div class="text-[9px] text-white mt-1">售后</div>
-                            <div class="tag tag-green text-[7px]">退货率 2.1%</div>
-                        </div>
-                    </div>
-                    <div class="mt-3 p-2 bg-yellow-500/10 rounded border border-yellow-500/20">
-                        <div class="text-[10px] text-yellow-400 font-medium">⚠ 问题定位：销售环节增速放缓，建议优化营销策略或调整定价</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- ========== JAVASCRIPT ========== -->
 <script>
-const detailData = {
-    turnover: {
-        label: '库存周转大盘', score: '85', max: '/100', trend: '↗ +2.1', trendColor: 'var(--optimal)',
-        weight: '25%', color: 'var(--optimal)',
-        breadcrumb: 'DEEP DIVE · INVENTORY TURNOVER EFFICIENCY',
-        formula: 'Score = 50 × min(2, 周转率/年基准) + 50 × (1 - 周转天数/180)',
-        kpis: [
-            { name: '库存周转率', value: '2.1', unit: '次/年', change: '+0.18', status: 'green' },
-            { name: '平均周转天数', value: '63', unit: 'd', change: '-5d', status: 'green' },
-            { name: '周转资金占用', value: '¥48.6M', unit: '', change: '-3.2%', status: 'green' },
-            { name: '动销 SKU 占比', value: '82', unit: '%', change: '+1.6pp', status: 'green' },
-            { name: '慢周转 SKU', value: '1,247', unit: '', change: '-126', status: 'yellow' },
-            { name: 'GMROI', value: '3.42', unit: '', change: '+0.21', status: 'green' }
-        ],
-        rightTitle: '分品牌 · 周转效率得分',
-        rightItems: [
-            { name: 'Nortiv8', detail: '2.6 次/年 · 56d', score: 91, status: 'green' },
-            { name: 'Bruno Marc', detail: '2.3 次/年 · 60d', score: 87, status: 'green' },
-            { name: 'Dream Pairs Comfort', detail: '2.1 次/年 · 64d', score: 83, status: 'green' },
-            { name: 'Sneakers', detail: '1.9 次/年 · 71d', score: 79, status: 'yellow' },
-            { name: 'Dream Pairs Kids', detail: '1.7 次/年 · 78d', score: 74, status: 'yellow' },
-            { name: 'Dream Pairs Fashion', detail: '1.4 次/年 · 92d', score: 68, status: 'red' }
-        ],
-        thead: ['SKU', '品牌', '仓库', '关键指标', '库存', '货值', '建议'],
-        rows: [
-            ['SDFN2379W-BLK-09', 'DP Fashion', '海外自有仓', '周转 198d', '612', '¥48,960', '清仓'],
-            ['BMSL4821W-TAN-10', 'Bruno Marc', '海外平台仓', '周转 176d', '380', '¥30,400', '清仓'],
-            ['SDKB2487W-CAMO-08', 'DP Fashion', '国内自有仓', '周转 162d', '1,840', '¥147,200', '促销']
-        ],
-        actions: [],
-                ai: [
-            { id: 'TR-01', priority: '高关注', title: '周转效率深度分析', desc: '户外靴品类周转天数 63 天，优于行业均值 78 天，主要得益于 Nortiv8 品牌爆款带动', benefit: '预计 Q3 可压缩至 58 天，释放资金 ¥860k' }
-        ]
-    },
-    shortage: {
-        label: '缺货风控大盘', score: '78', max: '/100', trend: '↘ -1.4', trendColor: 'var(--critical)',
-        weight: '30%', color: 'var(--critical)',
-        breadcrumb: 'DEEP DIVE · STOCK-OUT RISK',
-        formula: 'Score = 60 × 订单满足率 + 40 × min(1, WOS/4)',
-        kpis: [
-            { name: '可售周数 WOS', value: '4.2', unit: '周', change: '-0.3', status: 'yellow' },
-            { name: '缺货率', value: '2.1', unit: '%', change: '+0.4pp', status: 'yellow' },
-            { name: '订单满足率', value: '97.9', unit: '%', change: '-0.4pp', status: 'yellow' },
-            { name: 'WOS<1 高危 SKU', value: '37', unit: '', change: '+8', status: 'red' },
-            { name: '在途订单', value: '186', unit: '', change: '+24', status: 'green' },
-            { name: '潜在断货损失', value: '¥1.24M', unit: '', change: '+18%', status: 'red' }
-        ],
-        rightTitle: '分仓库 · 缺货风险得分',
-        rightItems: [
-            { name: '海外平台仓', detail: 'WOS 2.4 · 缺货率 4.2%', score: 68, status: 'red' },
-            { name: '海外自有仓', detail: 'WOS 3.6 · 缺货率 2.8%', score: 76, status: 'yellow' },
-            { name: '海外三方仓', detail: 'WOS 4.1 · 缺货率 1.9%', score: 80, status: 'yellow' },
-            { name: '海外三方仓', detail: 'WOS 4.8 · 缺货率 1.2%', score: 84, status: 'green' },
-            { name: '国内自有仓', detail: 'WOS 5.4 · 缺货率 0.6%', score: 88, status: 'green' }
-        ],
-        thead: ['SKU', '品牌', '仓库', 'WOS', '库存', '预估损失', '建议'],
-        rows: [
-            ['39044-MNX-7A-BRN-06', 'Bruno Marc', '海外平台仓', 'WOS 0.6', '38', '¥3,040', '紧急空运'],
-            ['38551-BLVD-11P-KHK-06', 'Nortiv8', '海外平台仓', 'WOS 0.8', '56', '¥4,480', '紧急空运'],
-            ['SNKS248W-WHT-08', 'Sneakers', '海外自有仓', 'WOS 1.0', '72', '¥5,760', '调拨']
-        ],
-        actions: [],
-                ai: [
-            { id: 'SO-01', priority: '高风险', title: '缺货风险预警分析', desc: '海外平台仓 6 个 SKU 可售周数 <1.0，主要因海运延误导致补货不及时，建议切换至空运', benefit: '若 48h 内补货到位，可避免断货损失 ¥420k' }
-        ]
-    },
-    overstock: {
-        label: '积压风控大盘', score: '76', max: '/100', trend: '↗ +0.8', trendColor: 'var(--warning)',
-        weight: '30%', color: 'var(--warning)',
-        breadcrumb: 'DEEP DIVE · OVERSTOCK & AGING RISK',
-        formula: 'Score = 60 × (1 - 滞销占比) + 40 × max(0, 1 - 存销比/6)',
-        kpis: [
-            { name: '滞销占比', value: '8.3', unit: '%', change: '-0.6pp', status: 'green' },
-            { name: '存销比', value: '3.8', unit: '', change: '+0.2', status: 'yellow' },
-            { name: '>360D 库龄 SKU', value: '8,157', unit: '', change: '+96', status: 'red' },
-            { name: '占用资金', value: '¥18.4M', unit: '', change: '-2.1%', status: 'green' },
-            { name: '跌价计提', value: '¥2.86M', unit: '', change: '+8%', status: 'red' },
-            { name: '本月清仓 SKU', value: '412', unit: '', change: '+78', status: 'green' }
-        ],
-        rightTitle: '库龄段 · 积压风险分布',
-        rightItems: [
-            { name: '0-90天', detail: '78,851 SKU · ¥42.6M', score: 95, status: 'green' },
-            { name: '90-180天', detail: '32,628 SKU · ¥18.2M', score: 78, status: 'yellow' },
-            { name: '180-360天', detail: '16,314 SKU · ¥9.4M', score: 62, status: 'yellow' },
-            { name: '>360天', detail: '8,157 SKU · ¥4.8M', score: 38, status: 'red' }
-        ],
-        thead: ['SKU', '品牌', '仓库', '库龄', '库存', '货值', '建议'],
-        rows: [
-            ['121717-K-ALLBLACK-005', 'DP Kids', '海外自有仓', '402d', '720', '¥86,400', '立即核销'],
-            ['43590-160472-K-RED-06', 'DP Kids', '国内自有仓', '365d', '380', '¥45,600', '清仓'],
-            ['SDKB2487W-CAMO-08', 'DP Fashion', '海外平台仓', '312d', '1,840', '¥147,200', '降价促销']
-        ],
-        actions: [],
-                ai: [
-            { id: 'OS-01', priority: '高关注', title: '积压库存结构分析', desc: '>360 天库龄 SKU 共 412 个，主要集中在 DP Fashion 高跟鞋品类，残值率已降至 35%', benefit: '建议立即核销，可释放资金 ¥1.86M + 空出 2,840 货位' },
-            { id: 'OS-02', priority: '中关注', title: '滞销品类趋势解读', desc: '180-360 天库龄占比 8.3%，环比上升 0.4pp，主要因夏季凉鞋换季延迟', benefit: '通过 TikTok 闪购可回笼现金 ¥2.4M，滞销占比预计 -1.2pp' }
-        ]
-    },
-    structure: {
-        label: '库存结构大盘', score: '88', max: '/100', trend: '↗ +1.2', trendColor: 'var(--optimal)',
-        weight: '15%', color: 'var(--optimal)',
-        breadcrumb: 'DEEP DIVE · PORTFOLIO STRUCTURE HEALTH',
-        formula: 'Score = 50 × 动销率 + 30 × 安全库存覆盖率 + 20 × (1 - ABC 偏移度)',
-        kpis: [
-            { name: '动销率', value: '82', unit: '%', change: '+1.6pp', status: 'green' },
-            { name: '安全库存覆盖', value: '96', unit: '%', change: '+0.4pp', status: 'green' },
-            { name: 'ABC 结构偏移', value: '8', unit: '%', change: '-1pp', status: 'green' },
-            { name: '新品占比', value: '12.4', unit: '%', change: '+0.8pp', status: 'green' },
-            { name: '长尾 SKU 占比', value: '23', unit: '%', change: '-1.2pp', status: 'yellow' },
-            { name: '断码率', value: '4.6', unit: '%', change: '-0.3pp', status: 'green' }
-        ],
-        rightTitle: 'ABC 分级 · 结构占比',
-        rightItems: [
-            { name: 'A类 · 核心', detail: '1,820 SKU · 70% 销售', score: 94, status: 'green' },
-            { name: 'B类 · 主力', detail: '12,540 SKU · 22% 销售', score: 88, status: 'green' },
-            { name: 'C类 · 长尾', detail: '34,610 SKU · 7% 销售', score: 76, status: 'yellow' },
-            { name: 'D类 · 沉睡', detail: '101,043 SKU · 1% 销售', score: 52, status: 'red' }
-        ],
-        thead: ['SKU', '品牌', '仓库', '关键指标', '库存', '货值', '建议'],
-        rows: [
-            ['SDFG-L-45W-NEW-06', 'DP Fashion', '海外平台仓', '结构偏移 12%', '280', '¥22,400', '重定ABC'],
-            ['BM-CLASSIC-LOAFER-09', 'Bruno Marc', '海外三方仓', '断码率 14%', '156', '¥12,480', '紧急补码'],
-            ['SNK-ATR-LITE-WHT-08', 'Sneakers', '海外自有仓', '新品未达预期', '420', '¥33,600', '调价测款']
-        ],
-        actions: [],
-                ai: [
-            { id: 'ST-01', priority: '常规', title: 'SKU 结构健康度评估', desc: 'D 类沉睡 SKU 占比 12.4%，连续 90 天零动销，占用仓储资源但无产出', benefit: '批量下架可释放 4,200 货位，减少管理成本 ¥8k/月' },
-            { id: 'ST-02', priority: '中关注', title: '品类结构优化建议', desc: 'C 类 SKU 动销率 68%，低于 B 类 15pp，存在向 B 类转化潜力', benefit: '提升备货优先级后，预计整体动销率 +0.8pp' }
-        ]
-    }
-};
-
-function openDetail(dim) {
-    const d = detailData[dim];
-    
-    // Header
-    document.getElementById('detailBreadcrumb').textContent = d.breadcrumb;
-    document.getElementById('detailTitle').textContent = d.label;
-    document.getElementById('detailWeightTag').textContent = '权重 ' + d.weight;
-    document.getElementById('detailWeightTag').className = 'tag tag-' + d.status + ' font-mono';
-    document.getElementById('detailScore').textContent = d.score;
-    document.getElementById('detailScore').style.color = d.color;
-    document.getElementById('detailTrend').textContent = d.trend + ' 较上月';
-    document.getElementById('detailTrend').style.color = d.trendColor;
-    document.getElementById('detailFormula').textContent = d.formula;
-    
-    // KPI Cards
-    const statusColors = { green: 'var(--optimal)', yellow: 'var(--warning)', red: 'var(--critical)' };
-    document.getElementById('kpiRow').innerHTML = d.kpis.map(k => `
-        <div class="glass p-3">
-            <div class="text-xs text-gray-500 mb-1">${k.name}</div>
-            <div class="flex items-baseline gap-1 mb-1">
-                <span class="text-xl font-bold mono" style="color:${statusColors[k.status]}">${k.value}</span>
-                <span class="text-xs text-gray-500">${k.unit}</span>
-            </div>
-            <div class="text-xs" style="color:${statusColors[k.status]}">${k.change}</div>
-        </div>
-    `).join('');
-    
-    // Right Chart
-    document.getElementById('rightChartTitle').textContent = d.rightTitle;
-    document.getElementById('rightChartContent').innerHTML = d.rightItems.map(item => `
-        <div class="flex items-center gap-3">
-            <div class="w-32 text-xs text-gray-300">${item.name}</div>
-            <div class="flex-1">
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs text-gray-500">${item.detail}</span>
-                    <span class="text-sm font-bold mono" style="color:${statusColors[item.status]}">${item.score}</span>
-                </div>
-                <div class="h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div class="h-full rounded-full" style="width:${item.score}%;background:${statusColors[item.status]};box-shadow:0 0 6px ${statusColors[item.status]}"></div>
-                </div>
-            </div>
-        </div>
-    `).join('');
-    
-    // Table
-    document.getElementById('skuCount').textContent = d.rows.length + ' ITEMS';
-    document.getElementById('detailThead').innerHTML = '<tr>' + d.thead.map(h => `<th>${h}</th>`).join('') + '</tr>';
-    document.getElementById('detailTbody').innerHTML = d.rows.map(r => `
-        <tr>
-            ${r.map((c, i) => {
-                if (i === 0) return `<td class="mono text-white text-xs cursor-pointer hover:text-green-400 transition-colors" onclick="openSkuDetail('${c}')">${c}</td>`;
-                if (i === 3) {
-                    const status = c.includes('WOS 0') || c.includes('周转 1') || c.includes('库龄 4') || c.includes('偏移 1') ? 'red' : 
-                                   c.includes('WOS 1') || c.includes('周转 1') || c.includes('库龄 3') || c.includes('断码') ? 'yellow' : 'green';
-                    return `<td><span class="tag tag-${status} text-[10px]">${c}</span></td>`;
-                }
-                if (i === r.length - 1) {
-                    const btnClass = c.includes('空运') || c.includes('核销') ? 'btn-red' : 
-                                     c.includes('清仓') || c.includes('促销') || c.includes('调拨') ? 'btn-yellow' : 'btn-ghost';
-                    return `<td><button class="btn ${btnClass} text-[10px]">${c}</button></td>`;
-                }
-                return `<td class="text-xs text-gray-300">${c}</td>`;
-            }).join('')}
-        </tr>
-    `).join('');
-    
-    // AI Decisions
-    document.getElementById('aiDecisions').innerHTML = d.ai.map(a => `
-        <div class="p-3 rounded-lg ${a.status === 'red' ? 'bg-red-500/10 border border-red-500/20' : a.status === 'yellow' ? 'bg-yellow-500/10 border border-yellow-500/20' : 'bg-white/5 border border-white/5'}">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-xs font-mono text-gray-400">${a.id}</span>
-                <span class="tag ${a.status === 'red' ? 'tag-red' : a.status === 'yellow' ? 'tag-yellow' : 'tag-blue'} text-[10px]">${a.priority}</span>
-            </div>
-            <div class="text-sm font-medium text-white mb-1">${a.title}</div>
-            <div class="text-xs text-gray-400 mb-2">${a.desc}</div>
-            <div class="text-xs" style="color:${a.status === 'red' ? 'var(--critical)' : a.status === 'yellow' ? 'var(--warning)' : 'var(--optimal)'}">${a.benefit}</div>
-        </div>
-    `).join('');
-    
-    document.getElementById('detailOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
+// 动态加载弹窗模块
+function loadOverlayScripts() {
+    const scripts = ['overlay-detail.js', 'overlay-brand.js', 'overlay-sku.js'];
+    scripts.forEach(src => {
+        const s = document.createElement('script');
+        s.src = src;
+        document.body.appendChild(s);
+    });
 }
-
-function closeDetail() {
-    document.getElementById('detailOverlay').classList.remove('active');
-    document.body.style.overflow = '';
-}
+loadOverlayScripts();
 
 document.addEventListener('keydown', e => { 
     if (e.key === 'Escape') {
@@ -1892,485 +1131,6 @@ document.addEventListener('keydown', e => {
     }
 });
 
-// ========== BRAND DETAIL DATA ==========
-const brandData = {
-    nortiv8: {
-        name: 'Nortiv8', score: 87, status: 'green', trend: '+4.1',
-        breadcrumb: 'BRAND DEEP DIVE · NORTIV8',
-        kpis: [
-            { name: 'SKU 总数', value: '28,640', unit: '', change: '+126', status: 'green' },
-            { name: 'IHI 评分', value: '87', unit: '/100', change: '+4.1', status: 'green' },
-            { name: 'WOS', value: '4.8', unit: '周', change: '+0.6', status: 'green' },
-            { name: '动销率', value: '86', unit: '%', change: '+2.1pp', status: 'green' },
-            { name: '滞销占比', value: '4.2', unit: '%', change: '-0.8pp', status: 'green' }
-        ],
-        trendData: [78, 80, 82, 81, 84, 85, 87],
-        warehouses: [
-            { name: '海外平台仓', stock: '12,400', wos: '5.2', status: 'green' },
-            { name: '海外自有仓', stock: '8,200', wos: '4.6', status: 'green' },
-            { name: '海外三方仓', stock: '5,400', wos: '4.8', status: 'green' },
-            { name: '国内自有仓', stock: '2,640', wos: '4.2', status: 'yellow' }
-        ],
-        categories: [
-            { name: '0-90天', pct: 68, status: 'green' },
-            { name: '90-180天', pct: 18, status: 'green' },
-            { name: '180-360天', pct: 10, status: 'yellow' },
-            { name: '360天+', pct: 4, status: 'yellow' }
-        ],
-        thead: ['SKU', '仓库', 'WOS', '库龄', '库存', '风险等级', '建议'],
-        rows: [
-            ['N8-OUTDOOR-BLK-10', '海外平台仓', 'WOS 1.2', '48d', '640', 'red', '紧急补货'],
-            ['N8-WORK-BRN-9', '海外自有仓', 'WOS 2.8', '86d', '1,240', 'yellow', '调拨'],
-            ['N8-CASUAL-TAN-11', '海外三方仓', 'WOS 3.4', '62d', '860', 'green', '保持'],
-            ['N8-OUTDOOR-WHT-8', '国内自有仓', 'WOS 4.8', '52d', '420', 'green', '保持']
-        ],
-        ai: [
-            { type: '异常检测', sku: 'N8-OUTDOOR-BLK-10', trigger: 'WOS 1.2 · 低于安全线 2.0', desc: '户外靴 BLK-10 近 7 日销量环比增长 45%，但补货在途延迟 5 天', benefit: '数据洞察：爆款 SKU 需求激增，建议调整补货周期至 21 天', action: '分析', status: 'red' },
-            { type: '库存平衡', sku: 'N8-WORK-BRN-9', trigger: '仓库分布不均 · 海外自有仓偏高', desc: '工装鞋 BRN-9 海外自有仓库存占比 62%，而海外平台仓仅 18%', benefit: '数据洞察：区域需求错配，调拨后可提升订单满足率 8%', action: '分析', status: 'yellow' },
-            { type: '趋势预警', sku: 'N8-CASUAL-TAN-11', trigger: '库龄 86d · 周转放缓', desc: '休闲鞋 TAN-11 近 30 天动销率下降 12%，竞品同期降价 20%', benefit: '数据洞察：价格竞争力下降，建议监控竞品动态', action: '分析', status: 'yellow' },
-            { type: '健康监控', sku: 'N8-HIKING-GRY-8', trigger: 'WOS 5.2 · 库存健康', desc: '登山鞋 GRY-8 各项指标处于最优区间，周转率品类 TOP3', benefit: '数据洞察：可作为同品类补货策略标杆', action: '分析', status: 'green' },
-            { type: '滞销预警', sku: 'N8-SANDAL-WHT-9', trigger: '库龄 142d · 接近警戒线', desc: '凉鞋 WHT-9 季节性品类过季，Q2 动销率仅 8%', benefit: '数据洞察：季节性 SKU 需提前 60 天规划清仓', action: '分析', status: 'red' }
-        ],
-        categoryIhi: [
-            { name: '户外靴', score: 91, trend: '↗+3.2', status: 'green', trendDir: 'up' },
-            { name: '工装鞋', score: 88, trend: '↗+2.8', status: 'green', trendDir: 'up' },
-            { name: '休闲鞋', score: 82, trend: '↗+1.4', status: 'green', trendDir: 'up' },
-            { name: '凉鞋', score: 76, trend: '↘-0.8', status: 'yellow', trendDir: 'down' },
-            { name: '靴子', score: 84, trend: '↗+2.0', status: 'green', trendDir: 'up' },
-            { name: '配件', score: 79, trend: '↗+0.6', status: 'yellow', trendDir: 'up' },
-            { name: '登山鞋', score: 86, trend: '↗+1.8', status: 'green', trendDir: 'up' },
-            { name: '溯溪鞋', score: 74, trend: '↘-1.2', status: 'yellow', trendDir: 'down' },
-            { name: '雪地靴', score: 81, trend: '↗+0.9', status: 'green', trendDir: 'up' },
-            { name: '拖鞋', score: 77, trend: '↗+0.4', status: 'yellow', trendDir: 'up' },
-            { name: '运动凉鞋', score: 72, trend: '↘-1.6', status: 'yellow', trendDir: 'down' },
-            { name: '童鞋', score: 83, trend: '↗+1.2', status: 'green', trendDir: 'up' },
-            { name: '军靴', score: 89, trend: '↗+2.5', status: 'green', trendDir: 'up' },
-            { name: '钓鱼鞋', score: 78, trend: '↗+0.3', status: 'yellow', trendDir: 'up' },
-            { name: '狩猎靴', score: 85, trend: '↗+1.5', status: 'green', trendDir: 'up' },
-            { name: '工装配饰', score: 73, trend: '↘-0.5', status: 'yellow', trendDir: 'down' }
-        ]
-    },
-    brunomarc: {
-        name: 'Bruno Marc', score: 84, status: 'green', trend: '+2.6',
-        breadcrumb: 'BRAND DEEP DIVE · BRUNO MARC',
-        kpis: [
-            { name: 'SKU 总数', value: '41,280', unit: '', change: '+89', status: 'green' },
-            { name: 'IHI 评分', value: '84', unit: '/100', change: '+2.6', status: 'green' },
-            { name: 'WOS', value: '4.4', unit: '周', change: '+0.4', status: 'green' },
-            { name: '动销率', value: '84', unit: '%', change: '+1.8pp', status: 'green' },
-            { name: '滞销占比', value: '5.1', unit: '%', change: '-0.4pp', status: 'yellow' }
-        ],
-        trendData: [76, 78, 79, 80, 81, 82, 84],
-        warehouses: [
-            { name: '海外平台仓', stock: '18,600', wos: '4.2', status: 'green' },
-            { name: '海外三方仓', stock: '12,400', wos: '4.6', status: 'green' },
-            { name: '海外自有仓', stock: '6,800', wos: '4.0', status: 'yellow' },
-            { name: '国内自有仓', stock: '3,480', wos: '5.2', status: 'green' }
-        ],
-        categories: [
-            { name: '0-90天', pct: 62, status: 'green' },
-            { name: '90-180天', pct: 20, status: 'green' },
-            { name: '180-360天', pct: 12, status: 'yellow' },
-            { name: '360天+', pct: 6, status: 'yellow' }
-        ],
-        thead: ['SKU', '仓库', 'WOS', '库龄', '库存', '风险等级', '建议'],
-        rows: [
-            ['BM-OLLO-POLO-BLK-9', '海外平台仓', 'WOS 0.8', '24d', '120', 'red', '紧急空派'],
-            ['BM-CLASSIC-LOAFER-10', '海外三方仓', 'WOS 2.4', '68d', '980', 'yellow', '促销'],
-            ['BM-CASUAL-SNV-8', '海外自有仓', 'WOS 4.0', '54d', '1,640', 'green', '保持'],
-            ['BM-OXFORD-BRN-11', '国内自有仓', 'WOS 5.2', '42d', '860', 'green', '保持']
-        ],
-        ai: [
-            { type: '需求激增', sku: 'BM-OLLO-POLO-BLK-9', trigger: 'WOS 0.8 · 缺货风险高', desc: '正装皮鞋 BLK-9 近 3 日订单量环比增长 180%，库存告急', benefit: '数据洞察：职场复工季需求爆发，建议增加安全库存至 30 天', action: '分析', status: 'red' },
-            { type: '价格分析', sku: 'BM-CLASSIC-LOAFER-10', trigger: '库龄 68d · 价格敏感度上升', desc: '休闲鞋 LOAFER-10 近 14 天转化率下降 15%，价格高于竞品均值 18%', benefit: '数据洞察：价格弹性区间 10-20%，建议测试降价', action: '分析', status: 'yellow' },
-            { type: '库存优化', sku: 'BM-OXFORD-BRN-11', trigger: 'WOS 1.8 · 区域失衡', desc: '牛津鞋 BRN-11 海外自有仓库存占比过高，而需求集中在海外平台仓', benefit: '数据洞察：调拨可缩短履约时效 2.3 天', action: '分析', status: 'yellow' },
-            { type: '标杆案例', sku: 'BM-LOAFER-TAN-8', trigger: 'WOS 4.6 · 库存健康', desc: '乐福鞋 TAN-8 周转天数 52 天，缺货率 0%，为品类最优', benefit: '数据洞察：补货模型可作为其他 SKU 参考', action: '分析', status: 'green' }
-        ],
-        categoryIhi: [
-            { name: '正装皮鞋', score: 86, trend: '↗+1.6', status: 'green', trendDir: 'up' },
-            { name: '休闲鞋', score: 79, trend: '↗+0.8', status: 'yellow', trendDir: 'up' },
-            { name: '运动鞋', score: 74, trend: '↘-1.2', status: 'yellow', trendDir: 'down' },
-            { name: '童鞋', score: 81, trend: '↗+2.4', status: 'green', trendDir: 'up' },
-            { name: '靴子', score: 77, trend: '↗+0.4', status: 'yellow', trendDir: 'up' },
-            { name: '凉鞋', score: 72, trend: '↘-2.0', status: 'yellow', trendDir: 'down' },
-            { name: '乐福鞋', score: 84, trend: '↗+1.0', status: 'green', trendDir: 'up' },
-            { name: '德比鞋', score: 82, trend: '↗+0.6', status: 'green', trendDir: 'up' },
-            { name: '牛津鞋', score: 78, trend: '↘-0.4', status: 'yellow', trendDir: 'down' },
-            { name: '帆布鞋', score: 75, trend: '↘-0.8', status: 'yellow', trendDir: 'down' },
-            { name: '豆豆鞋', score: 80, trend: '↗+0.5', status: 'green', trendDir: 'up' },
-            { name: '驾车鞋', score: 76, trend: '↗+0.2', status: 'yellow', trendDir: 'up' },
-            { name: '孟克鞋', score: 83, trend: '↗+0.9', status: 'green', trendDir: 'up' },
-            { name: '布洛克', score: 85, trend: '↗+1.2', status: 'green', trendDir: 'up' },
-            { name: '切尔西', score: 79, trend: '↗+0.3', status: 'yellow', trendDir: 'up' },
-            { name: '马丁靴', score: 77, trend: '↘-0.6', status: 'yellow', trendDir: 'down' }
-        ]
-    },
-    sneakers: {
-        name: 'Sneakers', score: 79, status: 'yellow', trend: '+1.4',
-        breadcrumb: 'BRAND DEEP DIVE · SNEAKERS',
-        kpis: [
-            { name: 'SKU 总数', value: '18,950', unit: '', change: '-42', status: 'yellow' },
-            { name: 'IHI 评分', value: '79', unit: '/100', change: '+1.4', status: 'yellow' },
-            { name: 'WOS', value: '3.8', unit: '周', change: '-0.2', status: 'yellow' },
-            { name: '动销率', value: '76', unit: '%', change: '+0.8pp', status: 'yellow' },
-            { name: '滞销占比', value: '9.2', unit: '%', change: '-1.2pp', status: 'yellow' }
-        ],
-        trendData: [74, 75, 76, 77, 76, 78, 79],
-        warehouses: [
-            { name: '海外平台仓', stock: '8,400', wos: '3.2', status: 'red' },
-            { name: '海外三方仓', stock: '5,200', wos: '4.2', status: 'yellow' },
-            { name: '海外自有仓', stock: '3,800', wos: '4.0', status: 'yellow' },
-            { name: '国内自有仓', stock: '1,550', wos: '4.8', status: 'green' }
-        ],
-        categories: [
-            { name: '0-90天', pct: 58, status: 'yellow' },
-            { name: '90-180天', pct: 22, status: 'yellow' },
-            { name: '180-360天', pct: 14, status: 'red' },
-            { name: '360天+', pct: 6, status: 'red' }
-        ],
-        thead: ['SKU', '仓库', 'WOS', '库龄', '库存', '风险等级', '建议'],
-        rows: [
-            ['SNK-RUNNER-BLK-10', '海外平台仓', 'WOS 0.6', '18d', '80', 'red', '紧急补货'],
-            ['SNK-BASKET-RED-9', '海外三方仓', 'WOS 2.2', '94d', '1,820', 'yellow', '促销'],
-            ['SNK-CANVAS-WHT-8', '海外自有仓', 'WOS 4.0', '62d', '640', 'green', '保持'],
-            ['SNK-TRAIN-BLU-11', '国内自有仓', 'WOS 4.8', '48d', '420', 'green', '保持']
-        ],
-        ai: [
-            { type: '爆款预警', sku: 'SNK-RUNNER-BLK-10', trigger: 'WOS 0.6 · 爆款断货风险', desc: '运动跑鞋 BLK-10 连续 7 天销量 TOP1，库存仅够 4 天销售', benefit: '数据洞察：爆款生命周期预计还有 45 天，需紧急补货', action: '分析', status: 'red' },
-            { type: '库存积压', sku: 'SNK-BASKET-RED-9', trigger: '库龄 94d · 滞销风险', desc: '篮球鞋 RED-9 近 30 天销量仅 12 件，库存周转天数 312 天', benefit: '数据洞察：品类热度下降，建议转向下沉市场', action: '分析', status: 'red' },
-            { type: '竞争分析', sku: 'SNK-SKATE-WHT-8', trigger: '库龄 72d · 竞品冲击', desc: '滑板鞋 WHT-8 主要竞品近 30 天降价 25%，本品转化率下降 22%', benefit: '数据洞察：价格竞争力减弱，需评估跟进策略', action: '分析', status: 'yellow' },
-            { type: '需求波动', sku: 'SNK-TRAIN-GRY-11', trigger: 'WOS 0.9 · 健身季需求', desc: '训练鞋 GRY-11 近 7 日销量增长 65%，健身季需求爆发', benefit: '数据洞察：季节性需求窗口期还有 30 天', action: '分析', status: 'red' },
-            { type: '稳定品类', sku: 'SNK-CANVAS-NVY-9', trigger: 'WOS 4.2 · 需求稳定', desc: '帆布鞋 NVY-9 近 90 天销量波动 <5%，预测准确率高', benefit: '数据洞察：可作为安全库存模型校准基准', action: '分析', status: 'green' }
-        ],
-        categoryIhi: [
-            { name: '运动跑鞋', score: 76, trend: '↗+1.2', status: 'yellow', trendDir: 'up' },
-            { name: '篮球鞋', score: 68, trend: '↘-2.8', status: 'critical', trendDir: 'down' },
-            { name: '板鞋', score: 71, trend: '↘-1.4', status: 'yellow', trendDir: 'down' },
-            { name: '训练鞋', score: 82, trend: '↗+2.2', status: 'green', trendDir: 'up' },
-            { name: '休闲鞋', score: 74, trend: '↗+0.6', status: 'yellow', trendDir: 'up' },
-            { name: '凉鞋', score: 65, trend: '↘-3.6', status: 'critical', trendDir: 'down' },
-            { name: '足球鞋', score: 73, trend: '↘-0.9', status: 'yellow', trendDir: 'down' },
-            { name: '网球鞋', score: 77, trend: '↗+0.3', status: 'yellow', trendDir: 'up' },
-            { name: '滑板鞋', score: 69, trend: '↘-2.1', status: 'critical', trendDir: 'down' },
-            { name: '登山鞋', score: 80, trend: '↗+1.5', status: 'green', trendDir: 'up' },
-            { name: '健步鞋', score: 78, trend: '↗+0.8', status: 'yellow', trendDir: 'up' },
-            { name: '童鞋', score: 72, trend: '↘-1.0', status: 'yellow', trendDir: 'down' },
-            { name: '越野跑鞋', score: 75, trend: '↗+0.2', status: 'yellow', trendDir: 'up' },
-            { name: '复古跑鞋', score: 70, trend: '↘-1.8', status: 'yellow', trendDir: 'down' },
-            { name: '马拉松鞋', score: 79, trend: '↗+1.0', status: 'yellow', trendDir: 'up' },
-            { name: '老爹鞋', score: 67, trend: '↘-2.5', status: 'critical', trendDir: 'down' }
-        ]
-    },
-    dpkids: {
-        name: 'DP Kids', score: 76, status: 'yellow', trend: '-1.8',
-        breadcrumb: 'BRAND DEEP DIVE · DREAM PAIRS KIDS',
-        kpis: [
-            { name: 'SKU 总数', value: '22,310', unit: '', change: '+68', status: 'green' },
-            { name: 'IHI 评分', value: '76', unit: '/100', change: '-1.8', status: 'yellow' },
-            { name: 'WOS', value: '3.6', unit: '周', change: '-0.4', status: 'yellow' },
-            { name: '动销率', value: '72', unit: '%', change: '-0.6pp', status: 'yellow' },
-            { name: '滞销占比', value: '10.4', unit: '%', change: '+0.8pp', status: 'red' }
-        ],
-        trendData: [80, 79, 78, 77, 76, 77, 76],
-        warehouses: [
-            { name: '海外平台仓', stock: '9,800', wos: '3.0', status: 'red' },
-            { name: '海外自有仓', stock: '6,400', wos: '4.2', status: 'yellow' },
-            { name: '海外三方仓', stock: '4,200', wos: '3.8', status: 'yellow' },
-            { name: '国内自有仓', stock: '1,910', wos: '5.0', status: 'green' }
-        ],
-        categories: [
-            { name: '0-90天', pct: 52, status: 'yellow' },
-            { name: '90-180天', pct: 24, status: 'yellow' },
-            { name: '180-360天', pct: 16, status: 'red' },
-            { name: '360天+', pct: 8, status: 'red' }
-        ],
-        thead: ['SKU', '仓库', 'WOS', '库龄', '库存', '风险等级', '建议'],
-        rows: [
-            ['DPK-SPORT-PNK-8', '海外平台仓', 'WOS 0.6', '22d', '60', 'red', '紧急空派'],
-            ['DPK-SANDAL-BLU-10', '海外自有仓', 'WOS 1.8', '126d', '2,840', 'red', '清仓促销'],
-            ['DPK-BOOT-BRN-9', '海外三方仓', 'WOS 3.8', '72d', '980', 'green', '保持'],
-            ['DPK-FIRST-WHT-6', '国内自有仓', 'WOS 5.0', '38d', '420', 'green', '保持']
-        ],
-        ai: [
-            { type: '开学季需求', sku: 'DPK-SPORT-PNK-8', trigger: 'WOS 0.6 · 开学季爆发', desc: '运动鞋 PNK-8 近 3 日销量增长 220%，开学季需求集中释放', benefit: '数据洞察：每年 8 月需求峰值，需提前 45 天备货', action: '分析', status: 'red' },
-            { type: '过季预警', sku: 'DPK-SANDAL-BLU-10', trigger: '库龄 126d · 夏季过季', desc: '凉鞋 BLU-10 9 月后销量下降 85%，库存积压风险高', benefit: '数据洞察：季节性 SKU 需在 8 月底前完成清仓', action: '分析', status: 'red' },
-            { type: '区域调拨', sku: 'DPK-BOOT-BRN-9', trigger: 'WOS 2.1 · 南北差异', desc: '靴子 BRN-9 北方仓库库存紧张，南方仓库库存充裕', benefit: '数据洞察：南北气候差异导致需求错配，建议调拨', action: '分析', status: 'yellow' },
-            { type: '竞品冲击', sku: 'DPK-CANVAS-RED-7', trigger: '库龄 98d · 竞品低价', desc: '帆布鞋 RED-7 竞品同类 SKU 价格低于本品 30%', benefit: '数据洞察：价格敏感度品类，需评估价值定位', action: '分析', status: 'yellow' },
-            { type: '稳定增长', sku: 'DPK-FIRST-WHT-6', trigger: 'WOS 5.0 · 刚需品类', desc: '学步鞋 WHT-6 近 90 天销量稳定增长 8%，复购率 35%', benefit: '数据洞察：刚需品类，可适度提升安全库存', action: '分析', status: 'green' }
-        ],
-        categoryIhi: [
-            { name: '运动鞋', score: 78, trend: '↗+0.6', status: 'yellow', trendDir: 'up' },
-            { name: '凉鞋', score: 64, trend: '↘-3.4', status: 'critical', trendDir: 'down' },
-            { name: '靴子', score: 72, trend: '↘-1.0', status: 'yellow', trendDir: 'down' },
-            { name: '学步鞋', score: 86, trend: '↗+3.2', status: 'green', trendDir: 'up' },
-            { name: '休闲鞋', score: 75, trend: '↗+0.2', status: 'yellow', trendDir: 'up' },
-            { name: '配件', score: 81, trend: '↗+1.8', status: 'green', trendDir: 'up' },
-            { name: '帆布鞋', score: 74, trend: '↘-0.5', status: 'yellow', trendDir: 'down' },
-            { name: '拖鞋', score: 70, trend: '↘-1.8', status: 'yellow', trendDir: 'down' },
-            { name: '雨靴', score: 68, trend: '↘-2.2', status: 'critical', trendDir: 'down' },
-            { name: '舞蹈鞋', score: 82, trend: '↗+1.4', status: 'green', trendDir: 'up' },
-            { name: '沙滩鞋', score: 66, trend: '↘-2.8', status: 'critical', trendDir: 'down' },
-            { name: '雪地靴', score: 73, trend: '↘-0.7', status: 'yellow', trendDir: 'down' },
-            { name: '公主鞋', score: 79, trend: '↗+0.8', status: 'yellow', trendDir: 'up' },
-            { name: '机能鞋', score: 84, trend: '↗+2.0', status: 'green', trendDir: 'up' },
-            { name: '礼仪鞋', score: 71, trend: '↘-1.2', status: 'yellow', trendDir: 'down' },
-            { name: '室内鞋', score: 77, trend: '↗+0.4', status: 'yellow', trendDir: 'up' }
-        ]
-    },
-    dpfashion: {
-        name: 'DP Fashion', score: 71, status: 'yellow', trend: '-2.4',
-        breadcrumb: 'BRAND DEEP DIVE · DREAM PAIRS FASHION',
-        kpis: [
-            { name: 'SKU 总数', value: '38,833', unit: '', change: '+124', status: 'green' },
-            { name: 'IHI 评分', value: '71', unit: '/100', change: '-2.4', status: 'yellow' },
-            { name: 'WOS', value: '3.2', unit: '周', change: '-0.6', status: 'red' },
-            { name: '动销率', value: '68', unit: '%', change: '-1.2pp', status: 'yellow' },
-            { name: '滞销占比', value: '14.6', unit: '%', change: '+1.4pp', status: 'red' }
-        ],
-        trendData: [78, 76, 74, 73, 72, 71, 71],
-        warehouses: [
-            { name: '海外平台仓', stock: '16,800', wos: '2.6', status: 'red' },
-            { name: '海外自有仓', stock: '10,400', wos: '3.8', status: 'yellow' },
-            { name: '海外三方仓', stock: '7,200', wos: '3.4', status: 'red' },
-            { name: '国内自有仓', stock: '4,433', wos: '5.6', status: 'green' }
-        ],
-        categories: [
-            { name: '0-90天', pct: 48, status: 'yellow' },
-            { name: '90-180天', pct: 22, status: 'yellow' },
-            { name: '180-360天', pct: 18, status: 'red' },
-            { name: '360天+', pct: 12, status: 'red' }
-        ],
-        thead: ['SKU', '仓库', 'WOS', '库龄', '库存', '风险等级', '建议'],
-        rows: [
-            ['DPF-HEEL-BLK-7', '海外平台仓', 'WOS 0.4', '16d', '40', 'red', '紧急空派'],
-            ['DPF-BOOT-Camel-8', '海外三方仓', 'WOS 1.4', '168d', '3,240', 'red', '清仓'],
-            ['DPF-CASUAL-TAN-9', '海外自有仓', 'WOS 3.8', '86d', '1,680', 'green', '促销'],
-            ['DPF-LOAFER-BRN-10', '国内自有仓', 'WOS 5.6', '52d', '640', 'green', '保持']
-        ],
-        ai: [
-            { type: '断货危机', sku: 'DPF-HEEL-BLK-7', trigger: 'WOS 0.4 · 派对季需求', desc: '高跟鞋 BLK-7 近 7 日销量增长 150%，派对季需求爆发', benefit: '数据洞察：社交场景恢复带动需求，需紧急补货', action: '分析', status: 'red' },
-            { type: '深度滞销', sku: 'DPF-BOOT-Camel-8', trigger: '库龄 168d · 深度滞销', desc: '靴子 Camel-8 近 90 天销量仅 8 件，库存价值 ¥259k', benefit: '数据洞察：过季+款式老化，建议立即核销止损', action: '分析', status: 'red' },
-            { type: '价格测试', sku: 'DPF-FLAT-PNK-9', trigger: '库龄 112d · 价格弹性', desc: '平底鞋 PNK-9 近 30 天转化率 2.1%，低于品类均值 4.5%', benefit: '数据洞察：价格敏感度测试显示 20% 降价可提升转化 80%', action: '分析', status: 'yellow' },
-            { type: '款式老化', sku: 'DPF-SANDAL-Gld-10', trigger: '库龄 186d · 款式过时', desc: '凉鞋 Gld-10 为去年爆款，今年竞品已更新 3 代', benefit: '数据洞察：时尚品类生命周期短，需快速清仓', action: '分析', status: 'red' },
-            { type: '库存平衡', sku: 'DPF-LOAFER-BRN-10', trigger: 'WOS 1.6 · 区域不均', desc: '穆勒鞋 BRN-10 海外平台仓库存紧张，国内仓充裕', benefit: '数据洞察：跨境调拨可缓解缺货，时效 7 天', action: '分析', status: 'yellow' }
-        ],
-        categoryIhi: [
-            { name: '高跟鞋', score: 62, trend: '↘-4.2', status: 'critical', trendDir: 'down' },
-            { name: '靴子', score: 74, trend: '↘-1.0', status: 'yellow', trendDir: 'down' },
-            { name: '休闲鞋', score: 68, trend: '↘-2.6', status: 'critical', trendDir: 'down' },
-            { name: '拖鞋', score: 71, trend: '↘-1.8', status: 'yellow', trendDir: 'down' },
-            { name: '凉鞋', score: 66, trend: '↘-3.0', status: 'critical', trendDir: 'down' },
-            { name: '配件', score: 78, trend: '↗+0.4', status: 'yellow', trendDir: 'up' },
-            { name: '平底鞋', score: 72, trend: '↘-1.2', status: 'yellow', trendDir: 'down' },
-            { name: '坡跟鞋', score: 65, trend: '↘-3.4', status: 'critical', trendDir: 'down' },
-            { name: '鱼嘴鞋', score: 69, trend: '↘-2.0', status: 'critical', trendDir: 'down' },
-            { name: '尖头鞋', score: 70, trend: '↘-1.5', status: 'yellow', trendDir: 'down' },
-            { name: '玛丽珍', score: 75, trend: '↘-0.6', status: 'yellow', trendDir: 'down' },
-            { name: '穆勒鞋', score: 67, trend: '↘-2.8', status: 'critical', trendDir: 'down' },
-            { name: '乐福鞋', score: 73, trend: '↘-0.9', status: 'yellow', trendDir: 'down' },
-            { name: '芭蕾鞋', score: 76, trend: '↗+0.2', status: 'yellow', trendDir: 'up' },
-            { name: '绑带鞋', score: 64, trend: '↘-3.2', status: 'critical', trendDir: 'down' },
-            { name: '松糕鞋', score: 68, trend: '↘-2.4', status: 'critical', trendDir: 'down' }
-        ]
-    },
-    dpcomfort: {
-        name: 'DP Comfort', score: 80, status: 'green', trend: '+1.9',
-        breadcrumb: 'BRAND DEEP DIVE · DREAM PAIRS COMFORT',
-        kpis: [
-            { name: 'SKU 总数', value: '18,000', unit: '', change: '+52', status: 'green' },
-            { name: 'IHI 评分', value: '80', unit: '/100', change: '+1.9', status: 'green' },
-            { name: 'WOS', value: '4.0', unit: '周', change: '+0.2', status: 'green' },
-            { name: '动销率', value: '80', unit: '%', change: '+1.4pp', status: 'green' },
-            { name: '滞销占比', value: '6.2', unit: '%', change: '-0.6pp', status: 'yellow' }
-        ],
-        trendData: [74, 75, 77, 78, 79, 79, 80],
-        warehouses: [
-            { name: '海外平台仓', stock: '7,800', wos: '3.8', status: 'yellow' },
-            { name: '海外三方仓', stock: '4,800', wos: '4.4', status: 'green' },
-            { name: '海外自有仓', stock: '3,600', wos: '3.8', status: 'yellow' },
-            { name: '国内自有仓', stock: '1,800', wos: '4.6', status: 'green' }
-        ],
-        categories: [
-            { name: '0-90天', pct: 64, status: 'green' },
-            { name: '90-180天', pct: 20, status: 'green' },
-            { name: '180-360天', pct: 12, status: 'yellow' },
-            { name: '360天+', pct: 4, status: 'yellow' }
-        ],
-        thead: ['SKU', '仓库', 'WOS', '库龄', '库存', '风险等级', '建议'],
-        rows: [
-            ['DPC-FLAT-BLK-8', '海外平台仓', 'WOS 1.4', '38d', '320', 'yellow', '调拨'],
-            ['DPC-LOAFER-TAN-9', '海外三方仓', 'WOS 4.4', '56d', '840', 'green', '保持'],
-            ['DPC-SLIPPER-WHT-7', '海外自有仓', 'WOS 3.8', '68d', '640', 'green', '保持'],
-            ['DPC-SANDAL-BLU-10', '国内自有仓', 'WOS 4.6', '44d', '420', 'green', '保持']
-        ],
-        ai: [
-            { type: '库存优化', sku: 'DPC-FLAT-BLK-8', trigger: 'WOS 1.4 · 仓库分布', desc: '平底鞋 BLK-8 海外平台仓库存占比 28%，需求占比 45%', benefit: '数据洞察：仓库布局与需求不匹配，调拨可提升满足率', action: '分析', status: 'yellow' },
-            { type: '稳定需求', sku: 'DPC-LOAFER-TAN-9', trigger: 'WOS 4.4 · 复购率高', desc: '休闲鞋 TAN-9 近 90 天复购率 42%，客户忠诚度高', benefit: '数据洞察：核心 SKU，可作为引流款维持库存深度', action: '分析', status: 'green' },
-            { type: '促销评估', sku: 'DPC-SLIPPER-WHT-7', trigger: '库龄 78d · 促销窗口', desc: '拖鞋 WHT-7 近 30 天销量下降 18%，临近促销季', benefit: '数据洞察：双 11 前降价 10% 可提前锁定销量', action: '分析', status: 'yellow' },
-            { type: '需求激增', sku: 'DPC-WALK-GRY-10', trigger: 'WOS 0.8 · 健康趋势', desc: '健步鞋 GRY-10 近 7 日销量增长 90%，健康生活方式带动', benefit: '数据洞察：健康品类增长趋势，建议增加备货', action: '分析', status: 'red' },
-            { type: '标杆 SKU', sku: 'DPC-DRIVE-BRN-11', trigger: 'WOS 4.8 · 品类标杆', desc: '驾车鞋 BRN-11 周转天数 48 天，缺货率 0%，评价 4.8 星', benefit: '数据洞察：可作为品类供应链优化标杆', action: '分析', status: 'green' }
-        ],
-        categoryIhi: [
-            { name: '平底鞋', score: 84, trend: '↗+2.4', status: 'green', trendDir: 'up' },
-            { name: '凉鞋', score: 76, trend: '↗+1.0', status: 'yellow', trendDir: 'up' },
-            { name: '拖鞋', score: 82, trend: '↗+1.8', status: 'green', trendDir: 'up' },
-            { name: '护理鞋', score: 88, trend: '↗+3.0', status: 'green', trendDir: 'up' },
-            { name: '休闲鞋', score: 79, trend: '↗+0.8', status: 'yellow', trendDir: 'up' },
-            { name: '靴子', score: 73, trend: '↘-0.6', status: 'yellow', trendDir: 'down' },
-            { name: '健步鞋', score: 85, trend: '↗+2.0', status: 'green', trendDir: 'up' },
-            { name: '豆豆鞋', score: 81, trend: '↗+1.2', status: 'green', trendDir: 'up' },
-            { name: '乐福鞋', score: 77, trend: '↗+0.5', status: 'yellow', trendDir: 'up' },
-            { name: '帆布鞋', score: 74, trend: '↘-0.3', status: 'yellow', trendDir: 'down' },
-            { name: '驾车鞋', score: 80, trend: '↗+0.9', status: 'green', trendDir: 'up' },
-            { name: '穆勒鞋', score: 75, trend: '↗+0.2', status: 'yellow', trendDir: 'up' },
-            { name: '奶奶鞋', score: 83, trend: '↗+1.6', status: 'green', trendDir: 'up' },
-            { name: '护士鞋', score: 87, trend: '↗+2.8', status: 'green', trendDir: 'up' },
-            { name: '孕妇鞋', score: 86, trend: '↗+2.2', status: 'green', trendDir: 'up' },
-            { name: '足弓鞋', score: 84, trend: '↗+1.8', status: 'green', trendDir: 'up' }
-        ]
-    }
-};
-
-// ========== BRAND DETAIL FUNCTIONS ==========
-function openBrandDetail(brand) {
-    const d = brandData[brand];
-    const statusColors = { green: 'var(--optimal)', yellow: 'var(--warning)', red: 'var(--critical)' };
-    const statusClass = { green: 'green', yellow: 'yellow', red: 'red' };
-    
-    // Header
-    document.getElementById('brandBreadcrumb').textContent = d.breadcrumb;
-    document.getElementById('brandTitle').textContent = d.name;
-    document.getElementById('brandStatusTag').textContent = d.status === 'green' ? 'OPTIMAL' : d.status === 'yellow' ? 'WARNING' : 'CRITICAL';
-    document.getElementById('brandStatusTag').className = 'tag tag-' + d.status;
-    document.getElementById('brandScore').textContent = d.score;
-    document.getElementById('brandScore').style.color = statusColors[d.status];
-    document.getElementById('brandTrend').textContent = (d.trend.startsWith('+') ? '↗ ' : '↘ ') + d.trend + ' 较上周';
-    document.getElementById('brandTrend').style.color = statusColors[d.status];
-    
-    // KPI Cards
-    document.getElementById('brandKpiRow').innerHTML = d.kpis.map(k => `
-        <div class="glass p-2">
-            <div class="text-[9px] text-gray-500 mb-0.5">${k.name}</div>
-            <div class="flex items-baseline gap-0.5">
-                <span class="text-lg font-bold mono" style="color:${statusColors[k.status]}">${k.value}</span>
-                <span class="text-[8px] text-gray-500">${k.unit}</span>
-            </div>
-            <div class="text-[8px]" style="color:${statusColors[k.status]}">${k.change}</div>
-        </div>
-    `).join('');
-    
-    // Trend Chart
-    const minVal = Math.min(...d.trendData);
-    const maxVal = Math.max(...d.trendData);
-    const range = maxVal - minVal || 1;
-    const svgHeight = 120;
-    const points = d.trendData.map((v, i) => {
-        const x = (i / (d.trendData.length - 1)) * 280;
-        const y = svgHeight - ((v - minVal) / range) * 100 - 10;
-        return `${x},${y}`;
-    }).join(' ');
-    const areaPoints = `0,${svgHeight} ${points} 280,${svgHeight}`;
-    
-    document.getElementById('brandTrendChart').innerHTML = `
-        <svg viewBox="0 0 280 ${svgHeight + 20}" class="w-full h-full">
-            <defs>
-                <linearGradient id="brandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style="stop-color:${statusColors[d.status]};stop-opacity:0.3"/>
-                    <stop offset="100%" style="stop-color:${statusColors[d.status]};stop-opacity:0"/>
-                </linearGradient>
-            </defs>
-            <polygon fill="url(#brandGrad)" points="${areaPoints}"/>
-            <polyline fill="none" stroke="${statusColors[d.status]}" stroke-width="2" points="${points}"/>
-            <circle cx="280" cy="${svgHeight - ((d.trendData[6] - minVal) / range) * 100 - 10}" r="4" fill="${statusColors[d.status]}"/>
-            ${d.trendData.map((v, i) => `<text x="${(i / (d.trendData.length - 1)) * 280}" y="${svgHeight + 16}" text-anchor="middle" fill="#52525b" font-size="8" font-family="JetBrains Mono">${['5/15','5/16','5/17','5/18','5/19','5/20','5/21'][i]}</text>`).join('')}
-            <text x="265" y="${svgHeight - ((d.trendData[6] - minVal) / range) * 100 - 14}" fill="${statusColors[d.status]}" font-size="10" font-weight="bold" font-family="JetBrains Mono">${d.score}</text>
-        </svg>
-    `;
-    
-    // Warehouse Distribution
-    document.getElementById('brandWarehouseContent').innerHTML = d.warehouses.map(w => `
-        <div class="flex items-center gap-2">
-            <div class="w-14 text-[10px] text-gray-300">${w.name}</div>
-            <div class="flex-1">
-                <div class="flex items-center gap-2 mb-0.5">
-                    <span class="text-[9px] text-gray-500">${w.stock} 件</span>
-                    <span class="text-[9px]" style="color:${statusColors[w.status]}">WOS ${w.wos}</span>
-                </div>
-                <div class="h-1.5 bg-white/5 rounded-full overflow-hidden">
-                    <div class="h-full rounded-full" style="width:${parseFloat(w.wos) / 6 * 100}%;background:${statusColors[w.status]}"></div>
-                </div>
-            </div>
-        </div>
-    `).join('');
-    
-    // Category Breakdown
-    document.getElementById('brandCategoryContent').innerHTML = d.categories.map(c => `
-        <div class="flex items-center gap-2">
-            <div class="w-16 text-[10px] text-gray-300">${c.name}</div>
-            <div class="flex items-center gap-2 flex-1">
-                <div class="h-2 bg-white/5 rounded-full overflow-hidden flex-1">
-                    <div class="h-full rounded-full" style="width:${c.pct}%;background:${statusColors[c.status]}"></div>
-                </div>
-                <span class="text-[10px] mono" style="color:${statusColors[c.status]}">${c.pct}%</span>
-            </div>
-        </div>
-    `).join('');
-    
-    // Category IHI Grid
-    document.getElementById('brandCategoryIhiGrid').innerHTML = d.categoryIhi.map(c => {
-        const color = c.status === 'green' ? 'var(--optimal)' : c.status === 'yellow' ? 'var(--warning)' : 'var(--critical)';
-        const fillColor = c.status === 'green' ? 'rgba(200,245,96,0.2)' : c.status === 'yellow' ? 'rgba(245,200,66,0.2)' : 'rgba(245,96,96,0.2)';
-        const strokeColor = c.status === 'green' ? '#c8f560' : c.status === 'yellow' ? '#f5c842' : '#f56060';
-        return `
-        <div class="p-2 rounded-lg bg-white/5 border border-white/5 hover:border-white/10 transition-all cursor-pointer">
-            <div class="text-[9px] text-gray-400 mb-0.5">${c.name}</div>
-            <div class="flex items-baseline gap-0.5 mb-0.5">
-                <span class="text-base font-bold mono" style="color:${color}">${c.score}</span>
-                <span class="text-[7px] text-gray-500 mono">/100</span>
-            </div>
-            <div class="flex items-center justify-between">
-                <span class="text-[7px]" style="color:${color}">${c.trend}</span>
-                <div class="h-2 w-8"><svg viewBox="0 0 32 8" class="w-full h-full"><path fill="${fillColor}" d="M0,6 L0,${c.trendDir === 'up' ? 6 : 2} Q8,${c.trendDir === 'up' ? 4 : 4} 16,${c.trendDir === 'up' ? 3 : 5} T32,${c.trendDir === 'up' ? 1 : 7} L32,8 L0,8 Z"/><path fill="none" stroke="${strokeColor}" stroke-width="0.8" d="M0,${c.trendDir === 'up' ? 6 : 2} Q8,${c.trendDir === 'up' ? 4 : 4} 16,${c.trendDir === 'up' ? 3 : 5} T32,${c.trendDir === 'up' ? 1 : 7}"/></svg></div>
-            </div>
-        </div>
-    `;}).join('');
-    
-    // AI Decisions
-    document.getElementById('brandAiCount').textContent = d.ai.length + ' 条建议';
-    document.getElementById('brandAiDecisions').innerHTML = d.ai.map(a => `
-        <div class="p-2 rounded-lg ${a.status === 'red' ? 'bg-red-500/10 border border-red-500/20' : a.status === 'yellow' ? 'bg-yellow-500/10 border border-yellow-500/20' : 'bg-white/5 border border-white/5'}">
-            <div class="flex items-center gap-2 mb-1">
-                <span class="tag ${a.status === 'red' ? 'tag-red' : a.status === 'yellow' ? 'tag-yellow' : 'tag-green'} text-[8px]">${a.type}</span>
-                <span class="text-[9px] text-gray-400 mono">${a.sku}</span>
-                <span class="text-[9px] text-gray-500 ml-auto">${a.trigger}</span>
-            </div>
-            <div class="text-[10px] text-white mb-0.5">${a.desc}</div>
-            <div class="flex items-center justify-between">
-                <span class="text-[9px]" style="color:${a.status === 'red' ? 'var(--critical)' : a.status === 'yellow' ? 'var(--warning)' : 'var(--optimal)'}">${a.benefit}</span>
-                <button class="btn ${a.status === 'red' ? 'btn-red' : a.status === 'yellow' ? 'btn-yellow' : 'btn-ghost'} text-[8px] py-0.5 px-1.5">${a.action}</button>
-            </div>
-        </div>
-    `).join('');
-    
-    document.getElementById('brandOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeBrandDetail() {
-    document.getElementById('brandOverlay').classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-function openSkuDetail(sku) {
-    document.getElementById('skuTitle').textContent = sku;
-    document.getElementById('skuOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeSkuDetail() {
-    document.getElementById('skuOverlay').classList.remove('active');
-    document.body.style.overflow = '';
-}
 </script>
 
 <!-- Footer -->
