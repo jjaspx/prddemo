@@ -906,6 +906,24 @@
             font-size: 9px;
             font-weight: 760;
         }
+        .warehouse-transfer-btn {
+            width: 100%;
+            margin-top: 10px;
+            height: 32px;
+            border: 0;
+            border-radius: 12px;
+            color: #FFFFFF;
+            background: linear-gradient(135deg, #409EFF, #30D158);
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 22px rgba(64, 158, 255, 0.22);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .warehouse-transfer-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(64, 158, 255, 0.3);
+        }
         .ct-card-sub {
             margin-top: 3px;
             display: flex;
@@ -1405,6 +1423,9 @@
         body.light-theme .warehouse-metric,
         body.light-theme .warehouse-action p {
             color: #64748B;
+        }
+        body.light-theme .warehouse-transfer-btn {
+            box-shadow: 0 12px 22px rgba(64, 158, 255, 0.18);
         }
         body.light-theme .sku-pill {
             background: rgba(255, 255, 255, 0.85);
@@ -2138,13 +2159,8 @@
             ['平台销售', inventoryType.issue === 'stale' ? 'danger' : 'ok', inventoryType.issue === 'healthy' ? '保持推广' : '调整策略'],
             ['消费者退货', 'ok', '退货率稳定']
         ];
-        const warehousePairs = [
-            ['美东仓', '德国仓'],
-            ['美西仓', '英国3PL仓'],
-            ['加拿大FBA仓', '美东仓'],
-            ['德国仓', '美西仓']
-        ];
-        const [shortageWarehouse, overstockWarehouse] = warehousePairs[seed % warehousePairs.length];
+        const shortageWarehouse = 'NJ仓';
+        const overstockWarehouse = '国内仓';
         const shortageGap = inventoryType.issue === 'healthy'
             ? clamp(36 + seed % 72, 32, 118)
             : inventoryType.issue === 'stale'
@@ -2166,11 +2182,12 @@
             overstockDays: clamp(staleDays + 18 + (seed % 36), 32, 220),
             transferQty,
             mismatchLevel,
+            route: '国内仓 → NJ仓',
             action: inventoryType.issue === 'shortage'
-                ? '优先从积压仓调拨至缺货仓，同时复核在途到岗时间，避免重复补货。'
+                ? '优先从国内仓调往NJ仓，同时复核在途到岗时间，避免重复补货。'
                 : inventoryType.issue === 'stale'
-                    ? '优先清理积压仓长库龄库存，仅保留缺货仓安全水位所需调拨量。'
-                    : '维持仓间水位监控，出现可售天数低于安全线时自动触发调拨。'
+                    ? '优先从国内仓调往NJ仓补足安全水位，剩余长库龄库存进入清仓治理。'
+                    : '维持国内仓与NJ仓水位监控，NJ仓可售天数低于安全线时自动触发调拨。'
         };
         return {
             ctName,
@@ -2205,25 +2222,26 @@
     function renderWarehouseMismatch(advisor) {
         const w = advisor.warehouseMismatch;
         return `
-            <div class="warehouse-box shortage">
-                <div class="warehouse-label">缺货仓</div>
-                <div class="warehouse-name">${escapeHtml(w.shortageWarehouse)}</div>
-                <div class="warehouse-metric"><span>可售天数</span><strong>${w.shortageDays}天</strong></div>
-                <div class="warehouse-metric"><span>预测缺口</span><strong>${w.shortageGap}双</strong></div>
-            </div>
-            <div class="warehouse-transfer">
-                <div class="warehouse-transfer-arrow">→</div>
-                <div>建议调拨<br>${w.transferQty}双</div>
-            </div>
             <div class="warehouse-box overstock">
-                <div class="warehouse-label">积压仓</div>
+                <div class="warehouse-label">调出仓（积压仓）</div>
                 <div class="warehouse-name">${escapeHtml(w.overstockWarehouse)}</div>
                 <div class="warehouse-metric"><span>积压库存</span><strong>${w.overstockQty}双</strong></div>
                 <div class="warehouse-metric"><span>最长库龄</span><strong>${w.overstockDays}天</strong></div>
             </div>
+            <div class="warehouse-transfer">
+                <div class="warehouse-transfer-arrow">→</div>
+                <div>${escapeHtml(w.route)}<br>${w.transferQty}双</div>
+            </div>
+            <div class="warehouse-box shortage">
+                <div class="warehouse-label">调入仓（缺货仓）</div>
+                <div class="warehouse-name">${escapeHtml(w.shortageWarehouse)}</div>
+                <div class="warehouse-metric"><span>可售天数</span><strong>${w.shortageDays}天</strong></div>
+                <div class="warehouse-metric"><span>预测缺口</span><strong>${w.shortageGap}双</strong></div>
+            </div>
             <div class="warehouse-action">
                 <strong>${escapeHtml(w.mismatchLevel)}</strong>
                 <p>${escapeHtml(w.action)}</p>
+                <button class="warehouse-transfer-btn" onclick="event.stopPropagation(); triggerWarehouseTransfer()">立刻调拨</button>
                 <span class="warehouse-status-pill">一边积压，一边缺货</span>
             </div>
         `;
@@ -2281,6 +2299,13 @@
         const advisor = currentSkuAdvisor;
         const w = advisor.warehouseMismatch;
         showAIReport(`${advisor.styleName} 单品库存参谋`, `#### ${advisor.inventoryType.label}\n* 当前健康指数 ${advisor.score}，关键短板：${advisor.weakest}。\n* 缺货仓 ${w.shortageWarehouse} 预计缺口 ${w.shortageGap}双，积压仓 ${w.overstockWarehouse} 可调拨 ${w.transferQty}双。\n* AI建议：${advisor.actions[0][1]}`);
+    }
+
+    function triggerWarehouseTransfer() {
+        if (!currentSkuAdvisor) return;
+        const advisor = currentSkuAdvisor;
+        const w = advisor.warehouseMismatch;
+        showAIReport(`${advisor.styleName} 调拨执行单`, `#### 立刻调拨\n* 调拨路径：${w.route}。\n* 建议调拨数量：${w.transferQty}双。\n* 调出仓：${w.overstockWarehouse}，当前积压库存 ${w.overstockQty}双，最长库龄 ${w.overstockDays}天。\n* 调入仓：${w.shortageWarehouse}，当前可售 ${w.shortageDays}天，预测缺口 ${w.shortageGap}双。\n* 下一步：推送供应链负责人确认出库，并预约NJ仓入库排期。`);
     }
 
     function showCurrentCtAI() {
