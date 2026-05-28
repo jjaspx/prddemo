@@ -545,8 +545,57 @@
             font-size: 12px;
             cursor: pointer;
         }
+        .ct-dashboard-title {
+            flex: 1;
+            min-width: 0;
+            text-align: center;
+        }
         .ct-dashboard-title h2 { font-size: 18px; font-weight: 680; letter-spacing: 0; }
         .ct-dashboard-title span { display: block; margin-top: 4px; color: #8E8E93; font-size: 11px; }
+        .dashboard-breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 6px;
+            color: #6C7A96;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+        .dashboard-breadcrumb button,
+        .dashboard-breadcrumb .crumb-node {
+            min-width: 0;
+            max-width: 190px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.045);
+            color: #A7B3CA;
+            font: inherit;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .dashboard-breadcrumb button {
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+        .dashboard-breadcrumb button:hover {
+            color: #FFFFFF;
+            border-color: rgba(64, 158, 255, 0.55);
+            background: rgba(64, 158, 255, 0.13);
+        }
+        .dashboard-breadcrumb .crumb-node.active {
+            color: #D9ECFF;
+            border-color: rgba(64, 158, 255, 0.48);
+            background: rgba(64, 158, 255, 0.14);
+        }
+        .dashboard-breadcrumb .crumb-sep {
+            color: #48546A;
+            font-weight: 800;
+        }
         .ct-dashboard-grid {
             display: flex;
             flex-direction: column;
@@ -599,6 +648,7 @@
         .sku-actions-panel { grid-column: span 8; min-height: 286px; }
         .sku-chain-panel { grid-column: span 14; min-height: 210px; }
         .sku-age-panel { grid-column: span 10; min-height: 210px; }
+        .sku-warehouse-panel { grid-column: span 24; min-height: 150px; }
         .sku-hero-layout {
             display: grid;
             grid-template-columns: 132px 1fr;
@@ -765,6 +815,97 @@
         .sku-age-row { display: grid; grid-template-columns: 74px 1fr 42px; gap: 9px; align-items: center; color: #A1A1AA; font-size: 10px; }
         .sku-age-track { height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
         .sku-age-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(48, 209, 88, 0.85), rgba(255, 159, 10, 0.75)); }
+        .warehouse-mismatch-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 92px minmax(0, 1fr) minmax(0, 1.15fr);
+            gap: 10px;
+            align-items: stretch;
+        }
+        .warehouse-box {
+            min-width: 0;
+            padding: 12px 13px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .warehouse-box.shortage { border-color: rgba(255, 69, 58, 0.28); background: rgba(255, 69, 58, 0.055); }
+        .warehouse-box.overstock { border-color: rgba(255, 159, 10, 0.26); background: rgba(255, 159, 10, 0.055); }
+        .warehouse-label {
+            color: #8E8E93;
+            font-size: 10px;
+            font-weight: 760;
+            letter-spacing: 0.2px;
+            margin-bottom: 8px;
+        }
+        .warehouse-name {
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: 760;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+        }
+        .warehouse-metric {
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            color: #A1A1AA;
+            font-size: 10px;
+        }
+        .warehouse-metric strong {
+            color: #F5F5F7;
+            font-size: 12px;
+        }
+        .warehouse-transfer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            color: #BFE2FF;
+            font-size: 10px;
+            font-weight: 760;
+            text-align: center;
+        }
+        .warehouse-transfer-arrow {
+            width: 54px;
+            height: 24px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            color: #FFFFFF;
+            background: linear-gradient(90deg, rgba(255, 159, 10, 0.72), rgba(64, 158, 255, 0.72));
+            box-shadow: 0 0 18px rgba(64, 158, 255, 0.22);
+        }
+        .warehouse-action {
+            min-width: 0;
+            padding: 12px 13px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(64, 158, 255, 0.12), rgba(48, 209, 88, 0.07));
+            border: 1px solid rgba(64, 158, 255, 0.18);
+        }
+        .warehouse-action strong {
+            display: block;
+            color: #D9ECFF;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+        .warehouse-action p {
+            color: #9CA3AF;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+        .warehouse-status-pill {
+            display: inline-flex;
+            margin-top: 9px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            color: #FFD7A0;
+            background: rgba(255, 159, 10, 0.1);
+            border: 1px solid rgba(255, 159, 10, 0.24);
+            font-size: 9px;
+            font-weight: 760;
+        }
         .ct-card-sub {
             margin-top: 3px;
             display: flex;
@@ -1176,6 +1317,28 @@
         }
         body.light-theme .ct-dashboard-title h2 { color: #111827; }
         body.light-theme .ct-dashboard-title span { color: #64748B; }
+        body.light-theme .dashboard-breadcrumb {
+            color: #64748B;
+        }
+        body.light-theme .dashboard-breadcrumb button,
+        body.light-theme .dashboard-breadcrumb .crumb-node {
+            background: rgba(255, 255, 255, 0.82);
+            border-color: rgba(15, 23, 42, 0.1);
+            color: #475569;
+        }
+        body.light-theme .dashboard-breadcrumb button:hover {
+            color: #0F172A;
+            border-color: rgba(64, 158, 255, 0.45);
+            background: rgba(64, 158, 255, 0.1);
+        }
+        body.light-theme .dashboard-breadcrumb .crumb-node.active {
+            color: #0F5CA8;
+            border-color: rgba(64, 158, 255, 0.38);
+            background: rgba(64, 158, 255, 0.12);
+        }
+        body.light-theme .dashboard-breadcrumb .crumb-sep {
+            color: #94A3B8;
+        }
         body.light-theme .ct-back-btn {
             background: rgba(255, 255, 255, 0.9);
             border-color: rgba(15, 23, 42, 0.1);
@@ -1215,10 +1378,33 @@
         body.light-theme .sku-viewpoint,
         body.light-theme .sku-action,
         body.light-theme .sku-chain-node,
+        body.light-theme .warehouse-box,
         body.light-theme .sku-bar-track,
         body.light-theme .sku-age-track {
             background: rgba(248, 250, 252, 0.92);
             border-color: rgba(15, 23, 42, 0.09);
+        }
+        body.light-theme .warehouse-box.shortage {
+            background: rgba(255, 69, 58, 0.065);
+            border-color: rgba(255, 69, 58, 0.18);
+        }
+        body.light-theme .warehouse-box.overstock {
+            background: rgba(255, 159, 10, 0.08);
+            border-color: rgba(255, 159, 10, 0.2);
+        }
+        body.light-theme .warehouse-action {
+            background: linear-gradient(135deg, rgba(64, 158, 255, 0.1), rgba(255, 255, 255, 0.92));
+            border-color: rgba(64, 158, 255, 0.16);
+        }
+        body.light-theme .warehouse-name,
+        body.light-theme .warehouse-metric strong,
+        body.light-theme .warehouse-action strong {
+            color: #111827;
+        }
+        body.light-theme .warehouse-label,
+        body.light-theme .warehouse-metric,
+        body.light-theme .warehouse-action p {
+            color: #64748B;
         }
         body.light-theme .sku-pill {
             background: rgba(255, 255, 255, 0.85);
@@ -1324,8 +1510,11 @@
             .sku-viewpoints-panel,
             .sku-actions-panel,
             .sku-chain-panel,
-            .sku-age-panel { grid-column: span 24; }
+            .sku-age-panel,
+            .sku-warehouse-panel { grid-column: span 24; }
             .sku-chain { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            .warehouse-mismatch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .warehouse-transfer { display: none; }
         }
         @media (max-width: 800px) {
             body { padding: 12px; gap: 10px; }
@@ -1333,12 +1522,16 @@
             .ihi-hero { width: 180px; }
             .ihi-hero-score { font-size: 48px; }
             .sku-advisor-view { padding: 12px; }
+            .ct-dashboard-header,
             .sku-advisor-header { align-items: flex-start; }
+            .ct-dashboard-title,
             .sku-advisor-title { text-align: left; }
+            .dashboard-breadcrumb { justify-content: flex-start; }
             .sku-hero-layout,
             .sku-kpi-grid,
             .sku-viewpoint-grid,
-            .sku-series { grid-template-columns: 1fr; }
+            .sku-series,
+            .warehouse-mismatch-grid { grid-template-columns: 1fr; }
             .sku-series { height: auto; }
             .sku-bar-track { height: 86px; }
             .sku-chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1432,6 +1625,7 @@
     <div class="ct-dashboard-header">
         <button class="ct-back-btn" onclick="closeCtDashboard()">返回总览</button>
         <div class="ct-dashboard-title">
+            <div class="dashboard-breadcrumb" id="ctBreadcrumb"></div>
             <h2 id="ctDashTitle">By 品类库存健康指数看板</h2>
             <span id="ctDashSubTitle">按品类穿透库存健康、缺货、积压与结构风险</span>
         </div>
@@ -1472,6 +1666,7 @@
     <div class="sku-advisor-header">
         <button class="ct-back-btn" onclick="closeSkuAdvisor()">返回品类看板</button>
         <div class="sku-advisor-title">
+            <div class="dashboard-breadcrumb" id="skuBreadcrumb"></div>
             <h2 id="skuAdvisorTitle">单品库存参谋</h2>
             <span id="skuAdvisorSubTitle">SKU 级健康档案 · 风险预警 · 策略落地</span>
         </div>
@@ -1514,6 +1709,10 @@
             <div class="sku-panel-title">库龄健康与四类库存识别 <span>30天内 / 360天+</span></div>
             <div class="sku-age-list" id="skuAgeBuckets"></div>
         </section>
+        <section class="apple-card sku-warehouse-panel">
+            <div class="sku-panel-title">缺货仓 vs 积压仓 <span>多仓错配 · 调拨机会</span></div>
+            <div class="warehouse-mismatch-grid" id="skuWarehouseMismatch"></div>
+        </section>
     </div>
 </div>
 
@@ -1531,9 +1730,9 @@
         <div class="ai-bot-icon">▣</div>
         <div class="ai-drawer-title">
             <strong>AI 大麦助手 <em class="ai-beta">PRO</em></strong>
-            <span>智能决策驾驶舱 · 集成实时数据</span>
+            <span id="aiDrawerSubtitle">智能决策驾驶舱 · 集成实时数据</span>
         </div>
-        <button class="drawer-action" onclick="showCurrentCtAI()">↻</button>
+        <button class="drawer-action" onclick="openFloatingAI()">↻</button>
         <button class="drawer-close" onclick="closeDrawer()">×</button>
     </div>
     <div class="ai-drawer-body">
@@ -1543,7 +1742,7 @@
             <div id="drawerContent" class="ai-message-bubble">您好，我是AI大麦助手，已为您连接库存健康、仓库库容与供需风险数据。</div>
         </div>
         <div class="ai-discover-title">快速探索建议（DISCOVER）</div>
-        <div class="ai-suggestion-list">
+        <div class="ai-suggestion-list" id="aiSuggestionList">
             <a class="ai-suggestion-card featured" href="全球库存健康诊断报告.html" target="_blank" rel="noopener noreferrer">
                 <div class="ai-suggestion-top">
                     <div class="ai-suggestion-text">全球库存健康诊断报告</div>
@@ -1719,6 +1918,45 @@
         return `<div class="factor-compact"><div class="factor-header"><span>${label}</span><span>${weight}</span></div><div class="factor-main"><span class="factor-score" style="color: ${color};">${value}</span></div><div class="progress-micro"><div class="progress-fill" style="width:${value}%; background: ${color};"></div></div></div>`;
     }
 
+    function renderBreadcrumb(items) {
+        return items.map((item, index) => {
+            const sep = index === 0 ? '' : '<span class="crumb-sep">/</span>';
+            const label = escapeHtml(item.label);
+            const node = item.action
+                ? `<button type="button" onclick="${item.action}">${label}</button>`
+                : `<span class="crumb-node${item.active ? ' active' : ''}">${label}</span>`;
+            return `${sep}${node}`;
+        }).join('');
+    }
+
+    function updateCtBreadcrumb() {
+        const target = document.getElementById('ctBreadcrumb');
+        if (!target) return;
+        const items = [
+            { label: '美迈库存健康指数总看板', action: 'closeCtDashboard()' },
+            { label: currentCtName || 'CT', active: !currentCategoryName },
+            { label: currentCategoryName || '全部品类', active: true }
+        ];
+        target.innerHTML = renderBreadcrumb(items);
+    }
+
+    function updateSkuBreadcrumb(advisor) {
+        const target = document.getElementById('skuBreadcrumb');
+        if (!target || !advisor) return;
+        const items = [
+            { label: '总看板', action: 'closeCtDashboard()' },
+            { label: advisor.ctName, action: 'closeSkuAdvisor()' },
+            { label: advisor.category, action: 'closeSkuAdvisor()' },
+            { label: advisor.styleName, active: true },
+            { label: '单品参谋', active: true }
+        ];
+        target.innerHTML = renderBreadcrumb(items);
+    }
+
+    function getWeakestMetric(indexes) {
+        return Object.entries(indexes).sort((a, b) => a[1] - b[1])[0] || ['综合健康', 0];
+    }
+
     function renderCategoryCard(category) {
         const color = scoreColor(category.score);
         const riskClass = category.score < 50 ? ' ct-fire-card' : category.score < 70 ? ' ct-warn-card' : '';
@@ -1764,6 +2002,8 @@
         const categories = buildCategoryCards(ctName, data);
         document.getElementById('ctCategoryCards').innerHTML = categories.map(renderCategoryCard).join('');
         renderStyleSection(ctName, categoryName);
+        updateCtBreadcrumb();
+        if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
         closeSkuAdvisor();
     }
 
@@ -1797,12 +2037,15 @@
         document.getElementById('ctCategoryTitle').innerHTML = `${ctName} 各品类库存健康透视 <span>按风险优先级倒序排查</span>`;
         document.getElementById('ctCategoryCards').innerHTML = categories.map(renderCategoryCard).join('');
         renderStyleSection(ctName, currentCategoryName);
+        updateCtBreadcrumb();
         document.getElementById('ctDashboard').classList.add('open');
+        if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
     }
 
     function closeCtDashboard() {
         document.getElementById('ctDashboard').classList.remove('open');
         closeSkuAdvisor();
+        if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
     }
 
     function clamp(value, min, max) {
@@ -1895,6 +2138,40 @@
             ['平台销售', inventoryType.issue === 'stale' ? 'danger' : 'ok', inventoryType.issue === 'healthy' ? '保持推广' : '调整策略'],
             ['消费者退货', 'ok', '退货率稳定']
         ];
+        const warehousePairs = [
+            ['美东仓', '德国仓'],
+            ['美西仓', '英国3PL仓'],
+            ['加拿大FBA仓', '美东仓'],
+            ['德国仓', '美西仓']
+        ];
+        const [shortageWarehouse, overstockWarehouse] = warehousePairs[seed % warehousePairs.length];
+        const shortageGap = inventoryType.issue === 'healthy'
+            ? clamp(36 + seed % 72, 32, 118)
+            : inventoryType.issue === 'stale'
+                ? clamp(88 + seed % 160, 80, 260)
+                : clamp(260 + seed % 520, 240, 780);
+        const overstockQty = inventoryType.issue === 'healthy'
+            ? clamp(180 + seed % 190, 160, 420)
+            : inventoryType.issue === 'shortage'
+                ? clamp(420 + seed % 620, 360, 1120)
+                : clamp(720 + seed % 860, 640, 1680);
+        const transferQty = clamp(Math.round(Math.min(shortageGap * 0.86, overstockQty * 0.58)), 32, 680);
+        const mismatchLevel = transferQty >= 420 ? '高优先级调拨' : transferQty >= 180 ? '建议调拨' : '观察调拨窗口';
+        const warehouseMismatch = {
+            shortageWarehouse,
+            overstockWarehouse,
+            shortageDays: clamp(Math.round(sellableDays * 0.42), 2, 18),
+            shortageGap,
+            overstockQty,
+            overstockDays: clamp(staleDays + 18 + (seed % 36), 32, 220),
+            transferQty,
+            mismatchLevel,
+            action: inventoryType.issue === 'shortage'
+                ? '优先从积压仓调拨至缺货仓，同时复核在途到岗时间，避免重复补货。'
+                : inventoryType.issue === 'stale'
+                    ? '优先清理积压仓长库龄库存，仅保留缺货仓安全水位所需调拨量。'
+                    : '维持仓间水位监控，出现可售天数低于安全线时自动触发调拨。'
+        };
         return {
             ctName,
             styleName: style.name,
@@ -1920,8 +2197,36 @@
             viewpoints,
             ageBuckets,
             actions: actionLibrary[inventoryType.issue],
-            chain
+            chain,
+            warehouseMismatch
         };
+    }
+
+    function renderWarehouseMismatch(advisor) {
+        const w = advisor.warehouseMismatch;
+        return `
+            <div class="warehouse-box shortage">
+                <div class="warehouse-label">缺货仓</div>
+                <div class="warehouse-name">${escapeHtml(w.shortageWarehouse)}</div>
+                <div class="warehouse-metric"><span>可售天数</span><strong>${w.shortageDays}天</strong></div>
+                <div class="warehouse-metric"><span>预测缺口</span><strong>${w.shortageGap}双</strong></div>
+            </div>
+            <div class="warehouse-transfer">
+                <div class="warehouse-transfer-arrow">→</div>
+                <div>建议调拨<br>${w.transferQty}双</div>
+            </div>
+            <div class="warehouse-box overstock">
+                <div class="warehouse-label">积压仓</div>
+                <div class="warehouse-name">${escapeHtml(w.overstockWarehouse)}</div>
+                <div class="warehouse-metric"><span>积压库存</span><strong>${w.overstockQty}双</strong></div>
+                <div class="warehouse-metric"><span>最长库龄</span><strong>${w.overstockDays}天</strong></div>
+            </div>
+            <div class="warehouse-action">
+                <strong>${escapeHtml(w.mismatchLevel)}</strong>
+                <p>${escapeHtml(w.action)}</p>
+                <span class="warehouse-status-pill">一边积压，一边缺货</span>
+            </div>
+        `;
     }
 
     function openSkuAdvisor(ctName, styleName) {
@@ -1958,42 +2263,220 @@
         document.getElementById('skuAdvisorActions').innerHTML = advisor.actions.map(([title, desc]) => `<div class="sku-action"><strong>${title}</strong><p>${desc}</p></div>`).join('');
         document.getElementById('skuChain').innerHTML = advisor.chain.map(([title, state, desc]) => `<div class="sku-chain-node"><div class="sku-chain-status ${state === 'danger' ? 'danger' : state === 'warn' ? 'warn' : ''}"></div><div class="sku-chain-title">${title}</div><div class="sku-chain-desc">${desc}</div></div>`).join('');
         document.getElementById('skuAgeBuckets').innerHTML = advisor.ageBuckets.map(item => `<div class="sku-age-row"><span>${item.label}</span><div class="sku-age-track"><div class="sku-age-fill" style="width:${item.pct}%;"></div></div><strong>${item.pct}%</strong></div>`).join('');
+        document.getElementById('skuWarehouseMismatch').innerHTML = renderWarehouseMismatch(advisor);
+        updateSkuBreadcrumb(advisor);
         document.getElementById('skuAdvisor').classList.add('open');
+        if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
     }
 
     function closeSkuAdvisor() {
         const view = document.getElementById('skuAdvisor');
         if (view) view.classList.remove('open');
+        updateCtBreadcrumb();
+        if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
     }
 
     function showCurrentSkuAI() {
         if (!currentSkuAdvisor) return;
         const advisor = currentSkuAdvisor;
-        showAIReport(`${advisor.styleName} 单品库存参谋`, `#### ${advisor.inventoryType.label}\n* 当前健康指数 ${advisor.score}，关键短板：${advisor.weakest}。\n* 可售天数 ${advisor.sellableDays}天，周转天数 ${advisor.turnoverDays}天，库存占用 $${advisor.stockValue}M。\n* AI建议：${advisor.actions[0][1]}`);
+        const w = advisor.warehouseMismatch;
+        showAIReport(`${advisor.styleName} 单品库存参谋`, `#### ${advisor.inventoryType.label}\n* 当前健康指数 ${advisor.score}，关键短板：${advisor.weakest}。\n* 缺货仓 ${w.shortageWarehouse} 预计缺口 ${w.shortageGap}双，积压仓 ${w.overstockWarehouse} 可调拨 ${w.transferQty}双。\n* AI建议：${advisor.actions[0][1]}`);
     }
 
     function showCurrentCtAI() {
         const data = ctDashboardData[currentCtName];
         if (!data) return;
-        showAIReport(`${currentCtName} By 品类诊断`, `#### <span class=\\'ai-spark-icon\\'></span> ${data.status}\\n* 当前健康指数 ${data.score}。\\n* 关键短板：${Object.entries(data.indexes).sort((a, b) => a[1] - b[1])[0][0]}。\\n* AI 建议：${data.actions[0]}`);
+        const [weakName, weakValue] = getWeakestMetric(data.indexes);
+        showAIReport(`${currentCtName} By 品类诊断`, `#### ${data.status}\n* 当前健康指数 ${data.score}，关键短板：${weakName} ${weakValue}。\n* 当前选中品类：${currentCategoryName || '全部品类'}。\n* AI 建议：${data.actions[0]}`);
     }
 
-    function openFloatingAI() {
+    function getAIContext() {
         const isSkuOpen = document.getElementById('skuAdvisor').classList.contains('open');
         if (isSkuOpen && currentSkuAdvisor) {
-            showCurrentSkuAI();
-            return;
+            return {
+                level: 'sku',
+                subtitle: `${currentSkuAdvisor.ctName} / ${currentSkuAdvisor.category} / ${currentSkuAdvisor.styleName}`,
+                advisor: currentSkuAdvisor
+            };
         }
         const isCtOpen = document.getElementById('ctDashboard').classList.contains('open');
         if (isCtOpen && currentCtName) {
-            showCurrentCtAI();
-            return;
+            const data = ctDashboardData[currentCtName];
+            const categories = data ? buildCategoryCards(currentCtName, data) : [];
+            const category = categories.find(item => item.name === currentCategoryName) || categories[0];
+            const styles = data ? buildStyleCards(currentCtName, data, category?.name || currentCategoryName) : [];
+            return {
+                level: 'ct',
+                subtitle: `${currentCtName} / ${category?.name || '全部品类'} / 款式指数`,
+                ctName: currentCtName,
+                data,
+                category,
+                styles
+            };
         }
-        showAIReport('AI 战略异动简报 · 全局深度研判', `#### <span class='ai-spark-icon'></span> 全球库存智能诊断\n* 综合健康指数71.4分，积压风险继续恶化（48分）导致整体承压。\n* 德国仓与美东仓库容率飙升超过92%，长库龄资金沉淀达$4.21M。\n* Bruno Marc陷入呆滞与断货双重旋涡，建议立即启动清仓调拨计划。`);
+        return {
+            level: 'global',
+            subtitle: '全局库存健康 / CT风险排行 / 诊断报告'
+        };
+    }
+
+    function buildAIReportForContext(context) {
+        if (context.level === 'sku') {
+            const advisor = context.advisor;
+            const w = advisor.warehouseMismatch;
+            return {
+                title: `${advisor.styleName} 单品库存参谋`,
+                body: `#### ${advisor.inventoryType.label}\n* 当前健康指数 ${advisor.score}，关键短板：${advisor.weakest}。\n* 缺货仓 ${w.shortageWarehouse} 预计缺口 ${w.shortageGap}双，积压仓 ${w.overstockWarehouse} 可调拨 ${w.transferQty}双。\n* 建议优先执行：${advisor.actions[0][1]}`
+            };
+        }
+        if (context.level === 'ct' && context.data) {
+            const [weakName, weakValue] = getWeakestMetric(context.data.indexes);
+            const styleNames = context.styles.slice(0, 3).map(item => item.name).join(' / ') || '暂无款式';
+            return {
+                title: `${context.ctName} · 当前页面智能诊断`,
+                body: `#### ${context.ctName} 库存健康诊断\n* CT健康指数 ${context.data.score}，关键短板：${weakName} ${weakValue}。\n* 当前选中品类 ${context.category?.name || '全部品类'}，下方款式已按风险优先级动态刷新。\n* 优先穿透款式：${styleNames}。\n* AI建议：${context.data.actions[0]}`
+            };
+        }
+        return {
+            title: 'AI 战略异动简报 · 全局深度研判',
+            body: `#### 全球库存智能诊断\n* 综合健康指数71.4分，积压风险继续恶化（48分）导致整体承压。\n* 德国仓与美东仓库容率飙升超过92%，长库龄资金沉淀达$4.21M。\n* Bruno Marc陷入呆滞与断货双重旋涡，建议立即启动清仓调拨计划。`
+        };
+    }
+
+    function getAISuggestions(context) {
+        if (context.level === 'sku') {
+            const advisor = context.advisor;
+            const w = advisor.warehouseMismatch;
+            return [
+                {
+                    featured: true,
+                    title: `${advisor.styleName} 单品治理方案`,
+                    pill: 'SKU ACTION',
+                    desc: `围绕${advisor.inventoryType.label}输出补货、清仓、调拨与复盘动作。`,
+                    reportTitle: `${advisor.styleName} 单品治理方案`,
+                    reportBody: `#### ${advisor.inventoryType.label}\n* 关键短板：${advisor.weakest}。\n* 第一建议：${advisor.actions[0][1]}\n* 第二建议：${advisor.actions[1][1]}\n* 建议同步创建治理任务，跟踪执行与复盘。`
+                },
+                {
+                    icon: '□',
+                    title: '补货/清仓动作：当前单品该优先补还是清？',
+                    reportTitle: `${advisor.styleName} 补货/清仓判断`,
+                    reportBody: `#### 动作判断\n* 库存类型：${advisor.inventoryType.label}。\n* 可售天数 ${advisor.sellableDays}天，库存占用 $${advisor.stockValue}M。\n* 推荐动作：${advisor.actions[0][0]}。`
+                },
+                {
+                    icon: '⌘',
+                    title: '多仓调拨建议：哪里积压，哪里缺货？',
+                    reportTitle: `${advisor.styleName} 多仓调拨建议`,
+                    reportBody: `#### 多仓协同\n* 缺货仓：${w.shortageWarehouse}，可售 ${w.shortageDays}天，预测缺口 ${w.shortageGap}双。\n* 积压仓：${w.overstockWarehouse}，积压库存 ${w.overstockQty}双，最长库龄 ${w.overstockDays}天。\n* 建议调拨 ${w.transferQty}双，优先用调拨替代盲目补货。`
+                },
+                {
+                    icon: '△',
+                    title: '预测偏差校验：未来90天是否会放大风险？',
+                    reportTitle: `${advisor.styleName} 预测偏差校验`,
+                    reportBody: `#### 未来供需缺口\n* 当前预测缺口 ${advisor.forecastGap}。\n* 建议把历史-当前-未来库存水位与销售预测一起复核，避免牛鞭效应继续放大。`
+                }
+            ];
+        }
+        if (context.level === 'ct' && context.data) {
+            const [weakName, weakValue] = getWeakestMetric(context.data.indexes);
+            const categoryName = context.category?.name || '当前品类';
+            const styleNames = context.styles.slice(0, 2).map(item => item.name).join(' / ') || '暂无款式';
+            return [
+                {
+                    featured: true,
+                    title: `${context.ctName} 库存健康诊断`,
+                    pill: 'CT REPORT',
+                    desc: `当前短板为${weakName} ${weakValue}，建议优先穿透 ${categoryName}。`,
+                    reportTitle: `${context.ctName} 库存健康诊断`,
+                    reportBody: `#### ${context.ctName} 风险聚焦\n* 健康指数 ${context.data.score}，短板：${weakName} ${weakValue}。\n* 当前选中品类：${categoryName}。\n* 建议优先查看款式：${styleNames}。`
+                },
+                {
+                    icon: '□',
+                    title: `${categoryName} 款式结构失衡诊断`,
+                    reportTitle: `${categoryName} 款式结构失衡诊断`,
+                    reportBody: `#### 款式结构\n* 当前款式已按风险优先级排序。\n* 优先检查 ${styleNames} 的周转、缺货、积压与结构健康。`
+                },
+                {
+                    icon: '⌘',
+                    title: '补货/清仓建议：按品类生成治理动作',
+                    reportTitle: `${context.ctName} 品类治理动作`,
+                    reportBody: `#### 治理动作\n* ${context.data.actions[0]}\n* ${context.data.actions[1]}\n* ${context.data.actions[2]}`
+                },
+                {
+                    icon: '△',
+                    title: '牛鞭风险校验：预测偏差是否传导到库存？',
+                    reportTitle: `${context.ctName} 牛鞭风险校验`,
+                    reportBody: `#### 预测-库存联动\n* 当前短板 ${weakName} 偏低，建议复核销售预测、备货节奏与在途到岗。\n* 先处理风险最高款式，再回看 CT 级补货模型。`
+                }
+            ];
+        }
+        return [
+            {
+                featured: true,
+                href: '全球库存健康诊断报告.html',
+                title: '全球库存健康诊断报告',
+                pill: 'LIVE REPORT ↗',
+                desc: '总结建议：综合健康指数71.4，积压风险偏高，建议优先穿透高库龄与低动销 CT。'
+            },
+            {
+                icon: '□',
+                title: '库存积压诊断：哪些 CT / 品类最需要清退？',
+                reportTitle: '库存积压诊断',
+                reportBody: '#### 积压风险聚焦\n* Bruno Marc 与 DP Kids 的滞销金额较高。\n* 建议优先穿透360天+库存、低动销款式和高资金占用仓。'
+            },
+            {
+                icon: '⌘',
+                title: '缺货风险诊断：哪些爆款尺码需要紧急补货？',
+                reportTitle: '缺货风险诊断',
+                reportBody: '#### 缺货风险聚焦\n* 优先识别A类核心款、低可售天数款式和在途延迟节点。\n* 建议联动补货、调拨和销售预测修正。'
+            },
+            {
+                icon: '✣',
+                title: '库龄劣化诊断：360天+ 僵死库存集中在哪里？',
+                reportTitle: '库龄劣化诊断',
+                reportBody: '#### 库龄劣化聚焦\n* 重点查看360天+库存占比和长期无动销SKU。\n* 建议生成清仓、捆绑、渠道分流策略。'
+            },
+            {
+                icon: '△',
+                title: '仓库库容预警：德国仓与美东仓如何释放库容？',
+                reportTitle: '仓库库容预警',
+                reportBody: '#### 库容释放建议\n* 优先释放高库龄、低动销、高资金占用库存。\n* 对缺货仓和积压仓做调拨机会匹配。'
+            }
+        ];
+    }
+
+    function renderAISuggestionCard(item) {
+        const title = escapeHtml(item.title);
+        const desc = escapeHtml(item.desc || '');
+        const pill = item.pill ? `<div class="ai-live-pill">${escapeHtml(item.pill)}</div>` : '';
+        if (item.featured) {
+            const top = `<div class="ai-suggestion-top"><div class="ai-suggestion-text">${title}</div>${pill}</div><div class="ai-suggestion-desc">${desc}</div>`;
+            if (item.href) {
+                return `<a class="ai-suggestion-card featured" href="${escapeHtml(item.href)}" target="_blank" rel="noopener noreferrer">${top}</a>`;
+            }
+            const reportTitle = escapeHtml(JSON.stringify(item.reportTitle || item.title));
+            const reportBody = escapeHtml(JSON.stringify(item.reportBody || item.desc || item.title));
+            return `<div class="ai-suggestion-card featured" onclick="showAIReport(${reportTitle}, ${reportBody})">${top}</div>`;
+        }
+        const reportTitle = escapeHtml(JSON.stringify(item.reportTitle || item.title));
+        const reportBody = escapeHtml(JSON.stringify(item.reportBody || item.desc || item.title));
+        return `<div class="ai-suggestion-card" onclick="showAIReport(${reportTitle}, ${reportBody})"><div class="ai-suggestion-icon">${escapeHtml(item.icon || '□')}</div><div class="ai-suggestion-text">${title}</div></div>`;
+    }
+
+    function renderAIContextSuggestions() {
+        const context = getAIContext();
+        const subtitle = document.getElementById('aiDrawerSubtitle');
+        const list = document.getElementById('aiSuggestionList');
+        if (subtitle) subtitle.textContent = context.subtitle;
+        if (list) list.innerHTML = getAISuggestions(context).map(renderAISuggestionCard).join('');
+    }
+
+    function openFloatingAI() {
+        const report = buildAIReportForContext(getAIContext());
+        showAIReport(report.title, report.body);
     }
 
     function escapeHtml(text) {
-        return text.replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+        return String(text).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
     }
 
     function formatAIContent(markdownContent) {
@@ -2024,6 +2507,7 @@
     }
 
     function showAIReport(title, markdownContent) {
+        renderAIContextSuggestions();
         document.getElementById('drawerContent').innerHTML = `<h4>${escapeHtml(title)}</h4>${formatAIContent(markdownContent)}`;
         document.getElementById('aiDrawer').classList.add('open');
     }
@@ -2051,6 +2535,7 @@
     } catch (e) {
         applyTheme('dark');
     }
+    renderAIContextSuggestions();
 </script>
 </body>
 </html>
