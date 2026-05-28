@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球库存健康诊断报告</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #090A0D;
+            --panel: rgba(22, 22, 26, 0.78);
+            --panel-strong: rgba(28, 28, 34, 0.9);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #F5F5F7;
+            --muted: #8E8E93;
+            --success: #30D158;
+            --warning: #FF9F0A;
+            --danger: #FF453A;
+            --purple: #BF5AF2;
+        }
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 10% 0%, rgba(255, 159, 10, 0.16), transparent 30%),
+                radial-gradient(circle at 92% 12%, rgba(48, 209, 88, 0.1), transparent 28%),
+                var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+            padding: 26px;
+        }
+        .report-shell { max-width: 1180px; margin: 0 auto; }
+        .report-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid var(--border);
+        }
+        .eyebrow { color: var(--warning); font-size: 12px; font-weight: 760; letter-spacing: 1.8px; }
+        h1 { margin-top: 10px; font-size: 34px; line-height: 1.15; letter-spacing: 0; }
+        .subtitle { margin-top: 10px; color: #B8BCC8; font-size: 14px; line-height: 1.7; max-width: 680px; }
+        .stamp {
+            min-width: 190px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid var(--border);
+            color: #C7CBD6;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+        .score-band {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .hero-score {
+            padding: 22px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #E68A00 0%, #B86B00 100%);
+            border: 1px solid rgba(255, 159, 10, 0.55);
+            box-shadow: 0 18px 46px rgba(255, 159, 10, 0.24);
+        }
+        .hero-score span { color: rgba(255,255,255,0.82); font-size: 13px; }
+        .hero-score strong { display: block; margin: 18px 0 8px; font-size: 76px; line-height: 1; }
+        .trend { display: inline-block; padding: 5px 12px; border-radius: 999px; background: rgba(0,0,0,0.22); color: #FFC0B8; font-weight: 700; }
+        .grid { display: grid; gap: 14px; }
+        .factor-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 16px;
+        }
+        .factor-label { color: var(--muted); font-size: 12px; display: flex; justify-content: space-between; }
+        .factor-value { margin-top: 14px; font-size: 34px; font-weight: 780; }
+        .bar { height: 7px; margin-top: 12px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+        .bar i { display: block; height: 100%; border-radius: inherit; }
+        .section { margin-top: 18px; }
+        .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .section-title h2 { font-size: 18px; letter-spacing: 0; }
+        .section-title span { color: var(--muted); font-size: 12px; }
+        .risk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .metric-name { color: var(--muted); font-size: 12px; }
+        .metric-value { margin-top: 10px; font-size: 26px; font-weight: 780; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 14px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+        }
+        th, td { padding: 13px 14px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; }
+        th { color: #B8BCC8; background: rgba(255,255,255,0.035); font-weight: 680; }
+        td { color: #E5E7EF; }
+        tr:last-child td { border-bottom: 0; }
+        .status { font-weight: 760; }
+        .two-col { grid-template-columns: 1fr 1fr; }
+        .action-list { display: grid; gap: 10px; }
+        .action {
+            padding: 13px 14px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.065);
+            color: #D6DAE5;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        @media (max-width: 900px) {
+            body { padding: 16px; }
+            .report-header, .score-band, .two-col { grid-template-columns: 1fr; display: grid; }
+            .factor-grid, .risk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <main class="report-shell">
+        <header class="report-header">
+            <div>
+                <div class="eyebrow">LIVE REPORT · INVENTORY HEALTH</div>
+                <h1>全球库存健康诊断报告</h1>
+                <p class="subtitle">基于集团库存健康驾驶舱数据，对全球库存周转、缺货、积压、结构健康与仓库库容进行综合诊断，输出高风险业务线与优先处置建议。</p>
+            </div>
+            <div class="stamp">
+                报告口径：集团库存中台<br>
+                刷新周期：实时快照<br>
+                诊断对象：CT / 品类 / 款式
+            </div>
+        </header>
+
+        <section class="score-band">
+            <div class="hero-score">
+                <span>全球库存健康总指数</span>
+                <strong>71.4</strong>
+                <div class="trend">同比 -2.1%</div>
+            </div>
+            <div class="grid factor-grid">
+                <div class="card"><div class="factor-label"><span>周转天数</span><span>30%</span></div><div class="factor-value" style="color:var(--success)">82</div><div class="bar"><i style="width:82%;background:var(--success)"></i></div></div>
+                <div class="card"><div class="factor-label"><span>缺货风险</span><span>25%</span></div><div class="factor-value" style="color:var(--warning)">68</div><div class="bar"><i style="width:68%;background:var(--warning)"></i></div></div>
+                <div class="card"><div class="factor-label"><span>积压风险</span><span>20%</span></div><div class="factor-value" style="color:var(--danger)">48</div><div class="bar"><i style="width:48%;background:var(--danger)"></i></div></div>
+                <div class="card"><div class="factor-label"><span>结构健康</span><span>25%</span></div><div class="factor-value" style="color:var(--success)">85</div><div class="bar"><i style="width:85%;background:var(--success)"></i></div></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title"><h2>核心风险摘要</h2><span>按影响程度排序</span></div>
+            <div class="grid risk-grid">
+                <div class="card"><div class="metric-name">总 SKU 数量</div><div class="metric-value">14,852</div></div>
+                <div class="card"><div class="metric-name">全渠道动销率</div><div class="metric-value" style="color:var(--success)">74.2%</div></div>
+                <div class="card"><div class="metric-name">异常滞销占比</div><div class="metric-value" style="color:var(--danger)">28.4%</div></div>
+                <div class="card"><div class="metric-name">平均可售周数</div><div class="metric-value">11.4 Wks</div></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title"><h2>CT 风险排行</h2><span>风险优先级倒序</span></div>
+            <table>
+                <thead><tr><th>业务线 CT</th><th>健康指数</th><th>风险状态</th><th>周转 / 缺货</th><th>滞销金额</th><th>诊断结论</th></tr></thead>
+                <tbody>
+                    <tr><td>Bruno Marc</td><td style="color:var(--danger);font-weight:800">42.5</td><td class="status" style="color:var(--danger)">严重</td><td>51 / 38</td><td>$1.42M</td><td>积压与断货双重旋涡，需立即清退长库龄库存并补齐爆款尺码。</td></tr>
+                    <tr><td>DP Kids</td><td style="color:var(--warning);font-weight:800">58.0</td><td class="status" style="color:var(--warning)">高危预警</td><td>60 / 52</td><td>$0.85M</td><td>季节错配导致局部积压，需快速促销清库与仓位调拨。</td></tr>
+                    <tr><td>Nortiv 8</td><td style="color:var(--warning);font-weight:800">69.4</td><td class="status" style="color:var(--warning)">亚健康</td><td>72 / 65</td><td>$0.54M</td><td>整体稳健但局部缺货，需精准追发户外高频码。</td></tr>
+                    <tr><td>DP Comfort</td><td style="color:var(--success);font-weight:800">76.1</td><td class="status" style="color:var(--success)">良性平稳</td><td>81 / 74</td><td>$0.31M</td><td>维持补货模型，关注局部慢动销 SKU。</td></tr>
+                    <tr><td>Sneakers</td><td style="color:var(--success);font-weight:800">81.2</td><td class="status" style="color:var(--success)">卓越表现</td><td>85 / 80</td><td>$0.22M</td><td>动销健康，可复制模型到相近品类。</td></tr>
+                    <tr><td>DP Fashion</td><td style="color:var(--success);font-weight:800">88.5</td><td class="status" style="color:var(--success)">标杆卓越</td><td>92 / 89</td><td>$0.09M</td><td>柔性供应链标杆，建议沉淀为集团知识库模型。</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section grid two-col">
+            <div>
+                <div class="section-title"><h2>库存积压诊断</h2><span>高库龄与资金占用</span></div>
+                <div class="action-list">
+                    <div class="action">360天+ 僵死库存资金占用达 $4.21M，较上月继续上升，需要优先清退。</div>
+                    <div class="action">Bruno Marc 贡献集团主要积压风险，建议冻结低动销 SKU 新采买。</div>
+                    <div class="action">德国仓与美东仓库容率超过 92%，清库动作应优先投放这两个仓。</div>
+                </div>
+            </div>
+            <div>
+                <div class="section-title"><h2>缺货风险诊断</h2><span>爆款与高频码</span></div>
+                <div class="action-list">
+                    <div class="action">缺货风险指数 68，属于关注区间，核心爆款尺码存在断码扩散趋势。</div>
+                    <div class="action">Bruno Marc 与 DP Kids 需优先补齐高频尺码，避免促销期转化损失。</div>
+                    <div class="action">建议建立 CT / 品类 / 款式三级缺货预警阈值，联动自动补货建议。</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title"><h2>AI 行动建议</h2><span>未来 7-14 天</span></div>
+            <div class="action-list">
+                <div class="action">1. 立即启动 Bruno Marc 高库龄清退专项，组合折扣、跨渠道调拨和采购冻结三类动作。</div>
+                <div class="action">2. 对德国仓、美东仓设置库容红线任务，优先释放 360天+ 与低动销款式仓位。</div>
+                <div class="action">3. 对缺货风险高的爆款尺码执行快速补货，优先保障周转健康但缺货上升的品类。</div>
+                <div class="action">4. 将 DP Fashion 与 Sneakers 的补货和动销模型沉淀为健康 CT 标杆，反向校准高风险 CT。</div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

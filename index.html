@@ -2,1145 +2,2055 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全渠道库存决策驾驶舱 · CT Monitor V3.5</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>集团库存健康智能驾驶舱 · 极智决策中心</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
         :root {
-            --bg-dark: #111118;
-            --bg-card: #1a1a24;
-            --border-card: rgba(255,255,255,0.08);
-            --optimal: #c8f560;
-            --warning: #f5c842;
-            --critical: #f56060;
+            --grid-gap: 12px;
+            --card-padding: 14px 18px;
+            --bg-card: rgba(22, 22, 26, 0.72);
+            --border-glass: rgba(255, 255, 255, 0.06);
+            --text-main: #F5F5F7;
+            
+            /* 统一 UI 色值规范 */
+            --color-success: #30D158;      /* 健康/安全绿 */
+            --color-warning: #FF9F0A;      /* 警告/关注橙 */
+            --color-danger: #FF453A;        /* 高危/严重红 */
+            --color-stale: #BF5AF2;         /* 僵死紫 */
+            --color-bg-warning-soft: rgba(255, 159, 10, 0.12);
+            --color-bg-danger-soft: rgba(255, 69, 58, 0.08);
         }
-        * { font-family: 'Inter', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        body { background: var(--bg-dark); min-height: 100vh; color: #e5e5e5; padding: 16px; }
 
-        /* Glass Card */
-        .glass {
+        body {
+            background-color: #0A0A0C;
+            color: var(--text-main);
+            height: 100vh;
+            width: 100vw;
+            padding: 16px 20px 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: var(--grid-gap);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 44px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 8px;
+            flex-shrink: 0;
+            margin-bottom: 2px;
+        }
+
+        .logo-zone h1 {
+            font-size: 16px;
+            font-weight: 590;
+            letter-spacing: -0.2px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #A1A1AA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ticker-wrap {
+            width: auto;
+            max-width: 52%;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker-move 40s linear infinite;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-warning);
+            letter-spacing: 0.2px;
+        }
+
+        @keyframes ticker-move {
+            0% { transform: translate3d(100%, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        .grid-24 {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: var(--grid-gap);
+            width: 100%;
+        }
+
+        .row-top { 
+            height: auto;
+            min-height: 170px;
+            flex: 0 0 auto;
+        }
+        .row-middle { 
+            height: auto;
+            min-height: 218px;
+            flex: 0 0 auto;
+        }
+        .row-bottom { 
+            flex: 1;
+            min-height: 0;
+            height: 100%;
+        }
+
+        .col-8 { grid-column: span 8; }
+        .col-10 { grid-column: span 10; }
+        .col-14 { grid-column: span 14; }
+        .col-16 { grid-column: span 16; }
+        .col-24 { grid-column: span 24; }
+
+        .apple-card {
             background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-card);
-            border-radius: 14px;
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: var(--card-padding);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
-        /* Progress */
-        .prog { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
-        .prog-fill { height: 100%; border-radius: 2px; }
-        .prog-fill.green { background: var(--optimal); }
-        .prog-fill.yellow { background: var(--warning); }
-        .prog-fill.red { background: var(--critical); }
-
-        /* Tags */
-        .tag { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-        .tag-green { background: rgba(200,245,96,0.15); color: var(--optimal); }
-        .tag-yellow { background: rgba(245,200,66,0.15); color: var(--warning); }
-        .tag-red { background: rgba(245,96,96,0.15); color: var(--critical); }
-        .tag-blue { background: rgba(96,165,250,0.15); color: #60a5fa; }
-        .tag-purple { background: rgba(167,139,250,0.15); color: #a78bfa; }
-
-        /* CT Cards */
-        .ct-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 16px;
-            transition: all 0.2s;
-            cursor: pointer;
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-shrink: 0;
         }
-        .ct-card:hover { background: rgba(255,255,255,0.06); }
 
-        /* Dim Cards */
-        .dim-card {
-            background: linear-gradient(180deg, rgba(25,25,35,0.9) 0%, rgba(18,18,25,0.7) 100%);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-        }
-        .dim-card:hover { border-color: rgba(255,255,255,0.1); }
-        .dim-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 14px 0 0 14px; }
-        .dim-card.green::before { background: var(--optimal); }
-        .dim-card.yellow::before { background: var(--warning); }
-        .dim-card.red::before { background: var(--critical); }
-
-        /* Buttons */
-        .btn { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
-        .btn-red { background: var(--critical); color: white; }
-        .btn-red:hover { filter: brightness(1.1); }
-        .btn-yellow { background: var(--warning); color: #1a1a1a; }
-        .btn-yellow:hover { filter: brightness(1.1); }
-        .btn-purple { background: #8b5cf6; color: white; }
-        .btn-ghost { background: rgba(255,255,255,0.06); color: #a1a1aa; border: 1px solid rgba(255,255,255,0.08); }
-
-        /* Overlay */
-        .detail-overlay {
-            position: fixed; inset: 0; z-index: 100;
-            background: rgba(7,7,12,0.97);
-            backdrop-filter: blur(20px);
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-y: auto;
-        }
-        .detail-overlay.active { transform: translateX(0); }
-
-        /* Table */
-        .data-table { width: 100%; border-collapse: collapse; }
-        .data-table th { padding: 10px 12px; font-size: 11px; color: #71717a; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); text-transform: uppercase; }
-        .data-table td { padding: 12px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-        .data-table tr:hover td { background: rgba(255,255,255,0.02); }
-
-        /* Back Button */
-        .back-btn {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 10px;
-            padding: 8px 20px;
-            color: white;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
+        .card-title {
+            font-size: 12px;
+            font-weight: 510;
+            color: #AEAEB2;
+            letter-spacing: 0.3px;
+            display: flex;
             align-items: center;
             gap: 6px;
         }
-        .back-btn:hover { background: rgba(255,255,255,0.12); }
 
-        /* Live Dot */
-        .live-dot { width: 6px; height: 6px; background: var(--optimal); border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-        /* Marquee Animation */
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        .ai-spark-icon {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            position: relative;
         }
-        .animate-marquee {
-            animation: marquee 30s linear infinite;
+        .ai-spark-icon::before, .ai-spark-icon::after {
+            content: '';
+            position: absolute;
+            background: currentColor;
+            border-radius: 50%;
         }
-        .animate-marquee:hover {
-            animation-play-state: paused;
+        .ai-spark-icon::before { top: 0; left: 3px; width: 4px; height: 10px; box-shadow: 0 0 4px currentColor; }
+        .ai-spark-icon::after { top: 3px; left: 0; width: 10px; height: 4px; box-shadow: 0 0 4px currentColor; }
+
+        .ai-capsule {
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.12) 0%, rgba(59, 130, 246, 0.12) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            color: #D8B4FE;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+        .ct-mini-card .ai-capsule {
+            align-self: flex-end;
+            padding: 3px 9px;
+            min-width: 42px;
+            justify-content: center;
+            font-size: 10px;
+            gap: 4px;
+        }
+        .ct-mini-card .ai-capsule .ai-spark-icon {
+            width: 10px;
+            height: 10px;
+        }
+        .ct-mini-card .ai-capsule .ai-spark-icon::before { left: 3px; width: 3px; height: 9px; }
+        .ct-mini-card .ai-capsule .ai-spark-icon::after { top: 3px; width: 9px; height: 3px; }
+        .ct-mini-card .ai-capsule,
+        .ct-dashboard-header .ai-capsule {
+            display: none;
+        }
+        .ai-capsule:hover {
+            border-color: rgba(168, 85, 247, 0.9);
+            background: rgba(168, 85, 247, 0.2);
+            color: #F0E6FF;
+            transform: scale(0.98);
         }
 
-        /* Grid line */
-        .grid-line { stroke: rgba(255,255,255,0.04); stroke-width: 1; }
+        /* ========= IHI 设计：更强烈的呼吸闪烁动效 ========= */
+        .ihi-dashboard {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            height: 100%;
+            width: 100%;
+        }
 
-        /* Scrollbar */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* 左侧总指数区域 — 增强明暗闪烁效果，但保持视觉舒适 */
+        .ihi-hero {
+            flex-shrink: 0;
+            width: 260px;
+            text-align: center;
+            background: linear-gradient(135deg, #E68A00 0%, #B86B00 100%);
+            border-radius: 28px;
+            padding: 18px 16px;
+            border: 1px solid rgba(255, 159, 10, 0.5);
+            transition: all 0.2s ease;
+            animation: strongPulse 1.6s ease-in-out infinite;
+        }
+        /* 增强型呼吸动效：明暗对比更强烈，光圈扩散更明显 */
+        @keyframes strongPulse {
+            0% {
+                box-shadow: 0 8px 28px -6px rgba(255, 159, 10, 0.25);
+                border-color: rgba(255, 159, 10, 0.4);
+                background: linear-gradient(135deg, #E68A00 0%, #B86B00 100%);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 32px 12px rgba(255, 159, 10, 0.7), inset 0 0 8px 2px rgba(255, 200, 100, 0.3);
+                border-color: rgba(255, 200, 80, 0.95);
+                background: linear-gradient(135deg, #FFA01E 0%, #D97D00 100%);
+                transform: scale(1.012);
+            }
+            100% {
+                box-shadow: 0 8px 28px -6px rgba(255, 159, 10, 0.25);
+                border-color: rgba(255, 159, 10, 0.4);
+                background: linear-gradient(135deg, #E68A00 0%, #B86B00 100%);
+                transform: scale(1);
+            }
+        }
+        .ihi-hero:hover {
+            animation: none;  /* 悬停时暂停闪烁，避免过度干扰 */
+            transform: translateY(-2px);
+            box-shadow: 0 20px 36px -12px rgba(255, 159, 10, 0.55);
+            background: linear-gradient(135deg, #FFA01E 0%, #D97D00 100%);
+        }
+        .ihi-hero.health-success {
+            background: linear-gradient(135deg, #30D158 0%, #168A3A 100%);
+            border-color: rgba(48, 209, 88, 0.55);
+            box-shadow: 0 8px 28px -6px rgba(48, 209, 88, 0.34);
+            animation: none;
+        }
+        .ihi-hero.health-success:hover {
+            background: linear-gradient(135deg, #3BEA68 0%, #1D9A45 100%);
+            box-shadow: 0 20px 36px -12px rgba(48, 209, 88, 0.55);
+        }
+        .ihi-hero.health-danger {
+            background: linear-gradient(135deg, #FF453A 0%, #9F1F18 100%);
+            border-color: rgba(255, 69, 58, 0.55);
+            box-shadow: 0 8px 28px -6px rgba(255, 69, 58, 0.35);
+            animation: dangerPulse 1.45s ease-in-out infinite;
+        }
+        @keyframes dangerPulse {
+            0% {
+                box-shadow: 0 8px 28px -6px rgba(255, 69, 58, 0.32);
+                border-color: rgba(255, 69, 58, 0.45);
+                background: linear-gradient(135deg, #FF453A 0%, #9F1F18 100%);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 34px 12px rgba(255, 69, 58, 0.68), inset 0 0 10px 2px rgba(255, 180, 170, 0.22);
+                border-color: rgba(255, 138, 128, 0.96);
+                background: linear-gradient(135deg, #FF6A5F 0%, #B92A22 100%);
+                transform: scale(1.012);
+            }
+            100% {
+                box-shadow: 0 8px 28px -6px rgba(255, 69, 58, 0.32);
+                border-color: rgba(255, 69, 58, 0.45);
+                background: linear-gradient(135deg, #FF453A 0%, #9F1F18 100%);
+                transform: scale(1);
+            }
+        }
+        .ihi-hero.health-danger:hover {
+            background: linear-gradient(135deg, #FF6259 0%, #B92A22 100%);
+            box-shadow: 0 20px 36px -12px rgba(255, 69, 58, 0.55);
+        }
+        .ihi-hero-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 0.8px;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+        .ihi-hero-score {
+            font-size: 78px;
+            font-weight: 760;
+            color: #FFFFFF;
+            line-height: 1;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+            letter-spacing: -2px;
+            margin-bottom: 10px;
+        }
+        .ihi-hero-trend {
+            font-size: 12px;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.3);
+            display: inline-block;
+            padding: 3px 14px;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            color: rgba(255, 255, 255, 0.95);
+        }
+        .trend-down { color: #FF8A7A; font-weight: 600; }
+        .trend-up { color: #B0FFB0; }
 
-        /* Glow progress */
-        .glow-prog { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: visible; }
-        .glow-fill { height: 100%; border-radius: 3px; position: relative; }
-        .glow-fill.green { background: var(--optimal); box-shadow: 0 0 8px rgba(200,245,96,0.4); }
-        .glow-fill.yellow { background: var(--warning); box-shadow: 0 0 8px rgba(245,200,66,0.4); }
-        .glow-fill.red { background: var(--critical); box-shadow: 0 0 8px rgba(245,96,96,0.4); }
+        /* 右侧四维紧凑模块 */
+        .compact-factors {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+            justify-content: space-between;
+        }
+        .factor-compact {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.045);
+            border-radius: 20px;
+            padding: 8px 10px;
+            transition: all 0.2s;
+            min-width: 0;
+        }
+        .factor-compact:hover {
+            background: rgba(255, 255, 255, 0.045);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        .factor-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #8E8E93;
+            font-weight: 470;
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+        .factor-main {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .factor-score {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+        .factor-weight {
+            font-size: 8px;
+            color: #6C6C70;
+            font-weight: 450;
+        }
+        .progress-micro {
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
 
-        /* Audit item */
-        .audit-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.04);
-            border-radius: 10px;
-            padding: 14px;
+        /* KPI 卡片 */
+        .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; height: 100%; }
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.045);
+            border-radius: 20px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .kpi-card .label { font-size: 10px; color: #8E8E93; margin-bottom: 6px; font-weight: 470; letter-spacing: 0.2px; }
+        .kpi-card .value { font-size: 24px; font-weight: 680; letter-spacing: -0.3px; }
+        .kpi-danger-alert { background: var(--color-bg-danger-soft) !important; border: 1px solid rgba(255, 69, 58, 0.25) !important; }
+        .kpi-danger-alert .value { color: var(--color-danger); text-shadow: 0 0 8px rgba(255, 69, 58, 0.2); }
+
+        /* 业务线卡片 */
+        .ct-section-title { 
+            font-size: 13px; 
+            font-weight: 590; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-bottom: 14px; 
+            color: #D1D1D6; 
+        }
+        .ct-section-title span { 
+            font-size: 10px; 
+            color: var(--color-warning); 
+            background: var(--color-bg-warning-soft); 
+            padding: 2px 10px; 
+            border-radius: 30px; 
+            border: 1px solid rgba(255, 159, 10, 0.2);
+        }
+        .ct-cards-container { 
+            display: grid; 
+            grid-template-columns: repeat(6, 1fr); 
+            gap: 16px; 
+            flex: 1;
+            align-items: stretch;
+        }
+        .ct-mini-card {
+            position: relative;
+            padding: 14px 12px;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.045);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+        .ct-mini-card:hover { background: rgba(255, 255, 255, 0.045); border-color: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+        .ct-mini-card.category-active {
+            border-color: rgba(64, 158, 255, 0.92) !important;
+            box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.22), 0 14px 30px rgba(64, 158, 255, 0.16);
+            transform: translateY(-3px);
+        }
+        .ct-mini-card.category-active::before {
+            content: '↓';
+            position: absolute;
+            left: 50%;
+            bottom: -17px;
+            transform: translateX(-50%);
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            color: #FFFFFF;
+            background: #409EFF;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 18px rgba(64, 158, 255, 0.35);
+            font-size: 15px;
+            font-weight: 800;
+            z-index: 2;
+        }
+        .ct-mini-card.category-active::after {
+            content: '当前选中';
+            position: absolute;
+            right: -10px;
+            top: -13px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            color: #BFE2FF;
+            background: rgba(64, 158, 255, 0.16);
+            border: 1px solid rgba(64, 158, 255, 0.42);
+            font-size: 9px;
+            font-weight: 760;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+            z-index: 3;
+        }
+        .ct-fire-card { border: 1px solid rgba(255, 69, 58, 0.45) !important; background: linear-gradient(145deg, rgba(255, 69, 58, 0.08) 0%, rgba(22, 22, 26, 0.7) 100%) !important; }
+        .ct-warn-card { border: 1px solid rgba(255, 159, 10, 0.4) !important; background: linear-gradient(145deg, rgba(255, 159, 10, 0.05) 0%, rgba(22, 22, 26, 0.7) 100%) !important; }
+        .ct-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .ct-card-top > div:first-child { min-width: 0; }
+        .ct-name { font-size: 15px; font-weight: 620; color: #FFFFFF; letter-spacing: 0; line-height: 1.15; overflow-wrap: anywhere; }
+        .ct-score { font-size: 22px; font-weight: 720; }
+        .ct-metrics-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0 12px 0; }
+        .ct-metric-item { display: flex; justify-content: space-between; font-size: 11px; color: #98989E; font-weight: 470; }
+        .ct-index-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px;
+            margin: 8px 0 10px 0;
+        }
+        .ct-index-item {
+            min-width: 0;
+            padding: 6px 7px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.055);
+        }
+        .ct-index-label {
+            display: block;
+            margin-bottom: 4px;
+            color: #8E8E93;
+            font-size: 9px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        .ct-index-value {
+            color: #E5E5EA;
+            font-size: 13px;
+            font-weight: 680;
+            line-height: 1;
+        }
+
+        .ct-dashboard-view {
+            position: fixed;
+            inset: 0;
+            z-index: 700;
+            display: none;
+            padding: 18px 22px;
+            background:
+                radial-gradient(circle at 20% 14%, rgba(255, 159, 10, 0.16), transparent 30%),
+                linear-gradient(180deg, rgba(10, 10, 12, 0.98), rgba(10, 10, 12, 0.94));
+            backdrop-filter: blur(28px);
+            overflow-y: auto;
+        }
+        .ct-dashboard-view.open { display: flex; flex-direction: column; gap: 14px; }
+        .ct-dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .ct-back-btn {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: #E5E5EA;
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .ct-dashboard-title h2 { font-size: 18px; font-weight: 680; letter-spacing: 0; }
+        .ct-dashboard-title span { display: block; margin-top: 4px; color: #8E8E93; font-size: 11px; }
+        .ct-dashboard-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--grid-gap);
+            min-height: 0;
+            flex: 1;
+        }
+        .ct-dashboard-grid .row-top,
+        .ct-dashboard-grid .row-middle,
+        .ct-dashboard-grid .row-bottom {
+            flex: 0 0 auto;
+            height: auto;
+            min-height: 0;
+        }
+
+        .sku-advisor-view {
+            position: fixed;
+            inset: 0;
+            z-index: 760;
+            display: none;
+            padding: 18px 22px 22px 22px;
+            background:
+                radial-gradient(circle at 78% 10%, rgba(0, 199, 255, 0.13), transparent 26%),
+                radial-gradient(circle at 18% 16%, rgba(48, 209, 88, 0.12), transparent 28%),
+                linear-gradient(180deg, rgba(10, 10, 12, 0.99), rgba(10, 10, 12, 0.95));
+            backdrop-filter: blur(30px);
+            overflow-y: auto;
+        }
+        .sku-advisor-view.open { display: flex; flex-direction: column; gap: 14px; }
+        .sku-advisor-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 14px;
+        }
+        .sku-advisor-title { flex: 1; min-width: 0; text-align: center; }
+        .sku-advisor-title h2 { font-size: 18px; font-weight: 720; letter-spacing: 0; color: #FFFFFF; }
+        .sku-advisor-title span { display: block; margin-top: 4px; color: #8E8E93; font-size: 11px; }
+        .sku-advisor-grid {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: var(--grid-gap);
+        }
+        .sku-hero-card { grid-column: span 10; min-height: 188px; }
+        .sku-kpi-card { grid-column: span 14; min-height: 188px; }
+        .sku-timeline-panel,
+        .sku-viewpoints-panel,
+        .sku-actions-panel { grid-column: span 8; min-height: 286px; }
+        .sku-chain-panel { grid-column: span 14; min-height: 210px; }
+        .sku-age-panel { grid-column: span 10; min-height: 210px; }
+        .sku-hero-layout {
+            display: grid;
+            grid-template-columns: 132px 1fr;
+            gap: 18px;
+            align-items: center;
+            height: 100%;
+        }
+        .sku-score-orb {
+            width: 132px;
+            height: 132px;
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(48, 209, 88, 0.9), rgba(0, 122, 255, 0.55));
+            border: 1px solid rgba(48, 209, 88, 0.5);
+            box-shadow: 0 18px 42px rgba(48, 209, 88, 0.16);
+        }
+        .sku-score-orb.danger {
+            background: linear-gradient(135deg, rgba(255, 69, 58, 0.86), rgba(191, 90, 242, 0.5));
+            border-color: rgba(255, 69, 58, 0.55);
+            box-shadow: 0 18px 42px rgba(255, 69, 58, 0.18);
+        }
+        .sku-score-orb.warning {
+            background: linear-gradient(135deg, rgba(255, 159, 10, 0.9), rgba(255, 69, 58, 0.42));
+            border-color: rgba(255, 159, 10, 0.56);
+            box-shadow: 0 18px 42px rgba(255, 159, 10, 0.18);
+        }
+        .sku-score-label { color: rgba(255, 255, 255, 0.8); font-size: 10px; letter-spacing: 0.8px; }
+        .sku-score-value { color: #FFFFFF; font-size: 46px; font-weight: 780; line-height: 1.05; margin-top: 4px; }
+        .sku-profile h3 { font-size: 24px; color: #FFFFFF; letter-spacing: -0.5px; line-height: 1.1; overflow-wrap: anywhere; }
+        .sku-profile-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 14px 0;
+        }
+        .sku-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            color: #D1D5DB;
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 10px;
+            font-weight: 650;
+        }
+        .sku-pill.good { color: #B8F7C7; border-color: rgba(48, 209, 88, 0.35); background: rgba(48, 209, 88, 0.1); }
+        .sku-pill.warn { color: #FFD7A0; border-color: rgba(255, 159, 10, 0.35); background: rgba(255, 159, 10, 0.1); }
+        .sku-pill.danger { color: #FFB3AE; border-color: rgba(255, 69, 58, 0.35); background: rgba(255, 69, 58, 0.1); }
+        .sku-summary {
+            color: #A1A1AA;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .sku-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            height: 100%;
+        }
+        .sku-kpi {
+            min-width: 0;
+            padding: 12px 13px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.032);
+            border: 1px solid rgba(255, 255, 255, 0.055);
+        }
+        .sku-kpi .label { color: #8E8E93; font-size: 10px; margin-bottom: 8px; }
+        .sku-kpi .value { color: #FFFFFF; font-size: 22px; font-weight: 740; letter-spacing: -0.2px; }
+        .sku-kpi .note { color: #6C6C70; font-size: 9px; margin-top: 6px; line-height: 1.35; }
+        .sku-panel-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 14px;
+            color: #D1D1D6;
+            font-size: 12px;
+            font-weight: 680;
+        }
+        .sku-panel-title span {
+            color: #8E8E93;
+            font-size: 10px;
+            font-weight: 520;
+        }
+        .sku-series {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 8px;
+            align-items: end;
+            height: 184px;
+            padding-top: 8px;
+        }
+        .sku-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; }
+        .sku-bar-track {
+            height: 128px;
+            width: 100%;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.055);
+            display: flex;
+            align-items: end;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .sku-bar-fill {
+            width: 100%;
+            border-radius: 999px 999px 0 0;
+            background: linear-gradient(180deg, rgba(48, 209, 88, 0.92), rgba(0, 199, 255, 0.45));
+        }
+        .sku-bar-label { color: #8E8E93; font-size: 9px; text-align: center; white-space: nowrap; }
+        .sku-viewpoint-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 9px;
+        }
+        .sku-viewpoint {
+            padding: 10px 11px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.032);
+            border: 1px solid rgba(255, 255, 255, 0.055);
+        }
+        .sku-viewpoint-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
+        .sku-viewpoint-name { color: #D7DAE0; font-size: 11px; font-weight: 650; }
+        .sku-viewpoint-score { font-size: 14px; font-weight: 760; }
+        .sku-viewpoint-desc { color: #7A7F8B; font-size: 9px; line-height: 1.35; }
+        .sku-actions-list { display: flex; flex-direction: column; gap: 9px; }
+        .sku-action {
+            padding: 11px 12px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .sku-action strong { display: block; color: #FFFFFF; font-size: 12px; margin-bottom: 5px; }
+        .sku-action p { color: #9CA3AF; font-size: 10px; line-height: 1.5; }
+        .sku-chain {
+            display: grid;
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            gap: 8px;
+        }
+        .sku-chain-node {
+            position: relative;
+            min-height: 106px;
+            padding: 10px 8px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .sku-chain-node:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 34px;
+            right: -9px;
+            width: 10px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.16);
+        }
+        .sku-chain-status { width: 8px; height: 8px; border-radius: 50%; margin-bottom: 8px; background: var(--color-success); box-shadow: 0 0 12px currentColor; }
+        .sku-chain-status.warn { background: var(--color-warning); }
+        .sku-chain-status.danger { background: var(--color-danger); }
+        .sku-chain-title { color: #E5E7EB; font-size: 10px; font-weight: 700; line-height: 1.25; }
+        .sku-chain-desc { margin-top: 6px; color: #8E8E93; font-size: 9px; line-height: 1.35; }
+        .sku-age-list { display: flex; flex-direction: column; gap: 9px; }
+        .sku-age-row { display: grid; grid-template-columns: 74px 1fr 42px; gap: 9px; align-items: center; color: #A1A1AA; font-size: 10px; }
+        .sku-age-track { height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+        .sku-age-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(48, 209, 88, 0.85), rgba(255, 159, 10, 0.75)); }
+        .ct-card-sub {
+            margin-top: 3px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            color: #8E8E93;
+            font-size: 9px;
+            line-height: 1.25;
+        }
+
+        /* 图表 & 地图 */
+        .chart-render-viewport {
+            flex: 1;
+            width: 100%;
+            min-height: 0;
+            position: relative;
+        }
+        .map-aspect-ratio-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .map-container-dotmatrix {
+            width: 100%;
+            height: 100%;
+            background-color: #0A0A0C;
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+        }
+        .dotmatrix-overlay-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+            background-size: 8px 8px;
+            -webkit-mask-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1000 520' xmlns='http://www.w3.org/2000/svg'><g fill='%23fff'><path d='M50,140 L70,120 L95,115 L110,92 L130,100 L142,85 L165,88 L180,65 L220,58 L240,78 L255,62 L290,92 L320,75 L345,102 L352,135 L320,180 L275,205 L260,240 L278,265 L248,312 L225,318 L230,278 L198,272 L178,250 L150,258 L160,212 L120,190 L112,155 L85,142 Z'/><path d='M320,52 L380,42 L402,72 L360,110 L325,90 Z'/><path d='M230,322 L252,322 L272,348 L308,382 L342,420 L360,460 L325,550 L305,558 L288,530 L255,450 L220,380 L215,348 Z'/><path d='M445,152 L468,130 L508,105 L570,100 L640,92 L730,96 L850,100 L935,112 L990,135 L1010,170 L982,218 L940,208 L922,262 L950,295 L900,342 L865,298 L815,325 L790,350 L695,335 L610,362 L575,315 L525,308 L498,235 L460,222 L438,172 Z'/><path d='M440,132 L455,138 L448,155 Z'/><path d='M960,182 L980,198 L972,225 Z'/><path d='M455,235 L525,222 L570,255 L605,298 L585,350 L550,418 L520,458 L500,438 L482,380 L448,308 L440,262 Z'/><path d='M572,392 L590,410 L578,435 L565,410 Z'/><path d='M855,412 L920,408 L948,452 L900,498 L845,458 Z M958,500 L978,525 L955,538 Z'/></g></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1000 520' xmlns='http://www.w3.org/2000/svg'><g fill='%23fff'><path d='M50,140 L70,120 L95,115 L110,92 L130,100 L142,85 L165,88 L180,65 L220,58 L240,78 L255,62 L290,92 L320,75 L345,102 L352,135 L320,180 L275,205 L260,240 L278,265 L248,312 L225,318 L230,278 L198,272 L178,250 L150,258 L160,212 L120,190 L112,155 L85,142 Z'/><path d='M320,52 L380,42 L402,72 L360,110 L325,90 Z'/><path d='M230,322 L252,322 L272,348 L308,382 L342,420 L360,460 L325,550 L305,558 L288,530 L255,450 L220,380 L215,348 Z'/><path d='M445,152 L468,130 L508,105 L570,100 L640,92 L730,96 L850,100 L935,112 L990,135 L1010,170 L982,218 L940,208 L922,262 L950,295 L900,342 L865,298 L815,325 L790,350 L695,335 L610,362 L575,315 L525,308 L498,235 L460,222 L438,172 Z'/><path d='M440,132 L455,138 L448,155 Z'/><path d='M960,182 L980,198 L972,225 Z'/><path d='M455,235 L525,222 L570,255 L605,298 L585,350 L550,418 L520,458 L500,438 L482,380 L448,308 L440,262 Z'/><path d='M572,392 L590,410 L578,435 L565,410 Z'/><path d='M855,412 L920,408 L948,452 L900,498 L845,458 Z M958,500 L978,525 L955,538 Z'/></g></svg>");
+            -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+            pointer-events: none;
+        }
+        .map-marker {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            z-index: 12;
+            display: flex;
+            align-items: center;
+        }
+        .marker-core-circle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            position: relative;
+            box-shadow: 0 0 10px currentColor;
+        }
+        .marker-outer-halo {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border: 1.5px solid currentColor;
+            border-radius: 50%;
+            left: -8px;
+            top: -8px;
+            animation: ringPulse 2.2s infinite ease-out;
+        }
+        @keyframes ringPulse {
+            0% { transform: scale(0.6); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        .marker-label {
+            position: absolute;
+            white-space: nowrap;
+            font-size: 9px;
+            font-weight: 530;
+            color: #FFFFFF;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(2px);
+            padding: 2px 6px;
+            border-radius: 18px;
+            letter-spacing: 0.2px;
+        }
+        .pos-left { right: 16px; top: -8px; }
+        .pos-right { left: 18px; top: -8px; }
+        .pos-bottom { left: 12px; top: 14px; }
+        .pos-top { left: 12px; bottom: 12px; }
+        .color-success { color: var(--color-success); }
+        .color-warning { color: var(--color-warning); }
+        .color-danger { color: var(--color-danger); }
+
+        /* AI 抽屉 */
+        .ai-drawer {
+            position: fixed;
+            --dw: min(390px, 36vw);
+            top: 0; right: calc(-1 * var(--dw));
+            width: var(--dw); height: 100%;
+            background: rgba(14, 15, 18, 0.98);
+            backdrop-filter: blur(30px);
+            box-shadow: -12px 0 48px rgba(0,0,0,0.7);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 999;
+            transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .ai-drawer.open { transform: translateX(calc(-1 * var(--dw))); }
+        .ai-drawer-header {
+            height: 68px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .ai-bot-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            color: #00C7FF;
+            background: rgba(0, 199, 255, 0.13);
+            border: 1px solid rgba(0, 199, 255, 0.42);
+            font-size: 17px;
+        }
+        .ai-drawer-title { flex: 1; min-width: 0; }
+        .ai-drawer-title strong { display: flex; align-items: center; gap: 8px; color: #FFFFFF; font-size: 14px; font-weight: 720; }
+        .ai-drawer-title span { display: block; margin-top: 3px; color: #60708A; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ai-beta {
+            padding: 1px 5px;
+            border-radius: 999px;
+            color: #00C7FF;
+            border: 1px solid rgba(0, 199, 255, 0.55);
+            font-size: 8px;
+            font-weight: 700;
+        }
+        .drawer-action,
+        .drawer-close {
+            width: 28px;
+            height: 28px;
+            border: 0;
+            background: transparent;
+            color: #6F82A3;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .drawer-action:hover,
+        .drawer-close:hover { color: #DDE7F8; }
+        .ai-drawer-body {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 22px 24px 14px 24px;
+        }
+        .ai-assistant-kicker {
+            margin-left: 48px;
+            margin-bottom: 8px;
+            color: #7D8BA6;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-style: italic;
+        }
+        .ai-message-row {
+            display: grid;
+            grid-template-columns: 34px 1fr;
+            gap: 14px;
+            align-items: flex-start;
+        }
+        .ai-message-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            color: #00C7FF;
+            background: rgba(0, 199, 255, 0.1);
+            border: 1px solid rgba(0, 199, 255, 0.28);
+            font-size: 14px;
+        }
+        .ai-message-bubble {
+            padding: 14px 16px;
+            border-radius: 16px 16px 16px 4px;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #E7EAF0;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+        .ai-message-bubble h4 { color: #FFFFFF; font-size: 14px; margin-bottom: 6px; }
+        .ai-message-bubble p { margin: 0 0 8px 0; color: #AEB7C8; }
+        .ai-message-bubble ul { margin: 4px 0 0 0; padding: 0; }
+        .ai-message-bubble li { margin-left: 16px; margin-bottom: 5px; color: #AEB7C8; }
+        .ai-discover-title {
+            margin: 24px 0 12px 0;
+            color: #6C7A96;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+        }
+        .ai-suggestion-list { display: flex; flex-direction: column; gap: 8px; }
+        .ai-suggestion-card {
+            min-height: 54px;
+            padding: 13px 14px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: inherit;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .ai-suggestion-card.featured {
+            min-height: 98px;
+            display: block;
+            border-color: rgba(255, 116, 0, 0.45);
+            background: linear-gradient(135deg, rgba(255, 116, 0, 0.12), rgba(255, 116, 0, 0.035));
+        }
+        .ai-suggestion-icon { width: 20px; flex-shrink: 0; color: #00D7FF; font-size: 14px; }
+        .ai-suggestion-text { color: #D9DEE8; font-size: 12px; font-weight: 680; }
+        .ai-suggestion-desc { margin-top: 14px; color: #8A94AA; font-size: 10px; line-height: 1.6; font-style: italic; }
+        .ai-suggestion-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .ai-live-pill {
+            color: #FF8A00;
+            background: rgba(255, 138, 0, 0.12);
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            white-space: nowrap;
+        }
+        .ai-input-zone {
+            padding: 12px 22px 10px 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            flex-shrink: 0;
+        }
+        .ai-input-shell {
+            height: 50px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            padding: 0 8px 0 16px;
+            gap: 8px;
+        }
+        .ai-input-shell span {
+            flex: 1;
+            color: #617089;
+            font-size: 13px;
+            line-height: 1.35;
+        }
+        .ai-send-btn {
+            width: 38px;
+            height: 38px;
+            border: 0;
+            border-radius: 12px;
+            background: rgba(80, 92, 112, 0.7);
+            color: #8799BE;
+            font-size: 18px;
+        }
+        .ai-powered {
+            margin-top: 8px;
+            color: #46546B;
+            font-size: 9px;
+            text-align: center;
+            font-style: italic;
+        }
+        .floating-ai-button {
+            position: fixed;
+            right: 18px;
+            top: calc(50% + 42px);
+            transform: translateY(-50%);
+            z-index: 850;
+            width: 54px;
+            height: 54px;
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.28), rgba(0, 199, 255, 0.18));
+            color: #E9D5FF;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), 0 0 24px rgba(168, 85, 247, 0.22);
+            backdrop-filter: blur(18px);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            transition: all 0.18s ease;
+        }
+        .floating-ai-button:hover {
+            transform: translateY(-50%) scale(1.04);
+            border-color: rgba(0, 199, 255, 0.72);
+            color: #FFFFFF;
+        }
+        .floating-ai-button span {
+            font-size: 11px;
+            font-weight: 760;
+            line-height: 1;
+        }
+        .theme-toggle-button {
+            position: fixed;
+            right: 18px;
+            top: calc(50% - 42px);
+            z-index: 850;
+            width: 54px;
+            height: 54px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 18px;
+            background: rgba(22, 22, 26, 0.82);
+            color: #F5F5F7;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38);
+            backdrop-filter: blur(18px);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            transition: all 0.18s ease;
+        }
+        .theme-toggle-button:hover {
+            border-color: rgba(255, 159, 10, 0.58);
+            transform: translateY(-1px);
+        }
+        .theme-toggle-icon { font-size: 17px; line-height: 1; }
+        .theme-toggle-text { font-size: 10px; font-weight: 760; line-height: 1; }
+
+        body.light-theme {
+            --bg-card: rgba(255, 255, 255, 0.88);
+            --border-glass: rgba(15, 23, 42, 0.09);
+            --text-main: #111827;
+            background:
+                radial-gradient(circle at 12% 0%, rgba(255, 159, 10, 0.12), transparent 30%),
+                linear-gradient(180deg, #F8FAFC 0%, #EEF2F7 100%);
+            color: var(--text-main);
+        }
+        body.light-theme header { border-bottom-color: rgba(15, 23, 42, 0.1); }
+        body.light-theme .logo-zone h1 {
+            background: linear-gradient(135deg, #111827 0%, #64748B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.light-theme .ticker-wrap {
+            background: rgba(255, 255, 255, 0.86);
+            border-color: rgba(15, 23, 42, 0.08);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+        }
+        body.light-theme .apple-card {
+            background: var(--bg-card);
+            border-color: var(--border-glass);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+        body.light-theme .factor-compact,
+        body.light-theme .kpi-card,
+        body.light-theme .ct-mini-card,
+        body.light-theme .ct-index-item {
+            background: rgba(248, 250, 252, 0.92);
+            border-color: rgba(15, 23, 42, 0.09);
+        }
+        body.light-theme .ct-mini-card:hover {
+            background: #FFFFFF;
+            border-color: rgba(15, 23, 42, 0.16);
+        }
+        body.light-theme .ct-mini-card.category-active {
+            border-color: rgba(64, 158, 255, 0.86) !important;
+            box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.16), 0 14px 28px rgba(64, 158, 255, 0.14);
+        }
+        body.light-theme .ct-mini-card.category-active::after {
+            color: #0F5CA8;
+            background: rgba(64, 158, 255, 0.13);
+            border-color: rgba(64, 158, 255, 0.32);
+        }
+        body.light-theme .ct-fire-card {
+            background: linear-gradient(145deg, rgba(255, 69, 58, 0.09) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+        }
+        body.light-theme .ct-warn-card {
+            background: linear-gradient(145deg, rgba(255, 159, 10, 0.12) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+        }
+        body.light-theme .ct-name,
+        body.light-theme .ct-section-title,
+        body.light-theme .kpi-card .value {
+            color: #111827;
+        }
+        body.light-theme .factor-header,
+        body.light-theme .ct-index-label,
+        body.light-theme .ct-metric-item,
+        body.light-theme .kpi-card .label,
+        body.light-theme .card-title {
+            color: #64748B;
+        }
+        body.light-theme .ct-dashboard-view {
+            background:
+                radial-gradient(circle at 18% 8%, rgba(255, 159, 10, 0.12), transparent 28%),
+                linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(238, 242, 247, 0.96));
+            color: #111827;
+        }
+        body.light-theme .ct-dashboard-header {
+            border-bottom-color: rgba(15, 23, 42, 0.1);
+        }
+        body.light-theme .ct-dashboard-title h2 { color: #111827; }
+        body.light-theme .ct-dashboard-title span { color: #64748B; }
+        body.light-theme .ct-back-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(15, 23, 42, 0.1);
+            color: #334155;
+        }
+        body.light-theme .sku-advisor-view {
+            background:
+                radial-gradient(circle at 78% 10%, rgba(64, 158, 255, 0.12), transparent 26%),
+                radial-gradient(circle at 18% 16%, rgba(48, 209, 88, 0.12), transparent 28%),
+                linear-gradient(180deg, rgba(248, 250, 252, 0.99), rgba(238, 242, 247, 0.96));
+            color: #111827;
+        }
+        body.light-theme .sku-advisor-header { border-bottom-color: rgba(15, 23, 42, 0.1); }
+        body.light-theme .sku-advisor-title h2,
+        body.light-theme .sku-profile h3,
+        body.light-theme .sku-kpi .value,
+        body.light-theme .sku-panel-title,
+        body.light-theme .sku-viewpoint-name,
+        body.light-theme .sku-action strong,
+        body.light-theme .sku-chain-title {
+            color: #111827;
+        }
+        body.light-theme .sku-advisor-title span,
+        body.light-theme .sku-summary,
+        body.light-theme .sku-kpi .label,
+        body.light-theme .sku-kpi .note,
+        body.light-theme .sku-panel-title span,
+        body.light-theme .sku-bar-label,
+        body.light-theme .sku-viewpoint-desc,
+        body.light-theme .sku-action p,
+        body.light-theme .sku-chain-desc,
+        body.light-theme .sku-age-row,
+        body.light-theme .ct-card-sub {
+            color: #64748B;
+        }
+        body.light-theme .sku-kpi,
+        body.light-theme .sku-viewpoint,
+        body.light-theme .sku-action,
+        body.light-theme .sku-chain-node,
+        body.light-theme .sku-bar-track,
+        body.light-theme .sku-age-track {
+            background: rgba(248, 250, 252, 0.92);
+            border-color: rgba(15, 23, 42, 0.09);
+        }
+        body.light-theme .sku-pill {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(15, 23, 42, 0.09);
+            color: #334155;
+        }
+        body.light-theme .theme-toggle-button {
+            background: #FFFFFF;
+            color: #111827;
+            border-color: rgba(15, 23, 42, 0.1);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+        }
+        body.light-theme .floating-ai-button {
+            background: linear-gradient(135deg, rgba(64, 158, 255, 0.92), rgba(48, 209, 88, 0.72));
+            border-color: rgba(64, 158, 255, 0.36);
+            color: #FFFFFF;
+            box-shadow: 0 14px 30px rgba(64, 158, 255, 0.24);
+        }
+        body.light-theme .ai-drawer {
+            background: rgba(248, 250, 252, 0.98);
+            border-left-color: rgba(15, 23, 42, 0.1);
+            box-shadow: -14px 0 40px rgba(15, 23, 42, 0.18);
+            color: #111827;
+        }
+        body.light-theme .ai-drawer-header,
+        body.light-theme .ai-input-zone {
+            border-color: rgba(15, 23, 42, 0.09);
+        }
+        body.light-theme .ai-drawer-title strong,
+        body.light-theme .ai-message-bubble h4,
+        body.light-theme .ai-suggestion-text {
+            color: #111827;
+        }
+        body.light-theme .ai-drawer-title span,
+        body.light-theme .ai-message-bubble p,
+        body.light-theme .ai-message-bubble li,
+        body.light-theme .ai-suggestion-desc,
+        body.light-theme .ai-input-shell span,
+        body.light-theme .ai-powered {
+            color: #64748B;
+        }
+        body.light-theme .ai-assistant-kicker,
+        body.light-theme .ai-discover-title {
+            color: #475569;
+        }
+        body.light-theme .ai-message-bubble,
+        body.light-theme .ai-suggestion-card,
+        body.light-theme .ai-input-shell {
+            background: #FFFFFF;
+            border-color: rgba(15, 23, 42, 0.1);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+        }
+        body.light-theme .ai-suggestion-card.featured {
+            background: linear-gradient(135deg, rgba(255, 159, 10, 0.12), rgba(255, 255, 255, 0.96));
+            border-color: rgba(255, 159, 10, 0.35);
+        }
+        body.light-theme .drawer-action,
+        body.light-theme .drawer-close {
+            color: #64748B;
+        }
+        body.light-theme .drawer-action:hover,
+        body.light-theme .drawer-close:hover {
+            color: #111827;
+        }
+        body.light-theme .ai-send-btn {
+            background: #E2E8F0;
+            color: #409EFF;
+        }
+        body.light-theme .progress-micro,
+        body.light-theme .bar {
+            background: rgba(15, 23, 42, 0.1);
+        }
+
+        .stale-highlight-badge {
+            background: rgba(191, 90, 242, 0.08);
+            border-left: 2px solid var(--color-stale);
+            padding: 6px 10px;
+            border-radius: 14px;
+            margin-top: 6px;
+            backdrop-filter: blur(4px);
+        }
+        .stale-highlight-text {
+            font-size: 11px;
+            color: #C8B3E6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .critical-value {
+            font-size: 17px;
+            font-weight: 800;
+            color: #FF7A5C;
+        }
+
+        @media (max-width: 1000px) {
+            .ct-cards-container { gap: 10px; }
+            .ihi-hero-score { font-size: 58px; }
+            .ihi-hero { width: 210px; padding: 14px 12px; }
+            .factor-score { font-size: 20px; }
+            .sku-hero-card,
+            .sku-kpi-card,
+            .sku-timeline-panel,
+            .sku-viewpoints-panel,
+            .sku-actions-panel,
+            .sku-chain-panel,
+            .sku-age-panel { grid-column: span 24; }
+            .sku-chain { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+        @media (max-width: 800px) {
+            body { padding: 12px; gap: 10px; }
+            .apple-card { padding: 12px; }
+            .ihi-hero { width: 180px; }
+            .ihi-hero-score { font-size: 48px; }
+            .sku-advisor-view { padding: 12px; }
+            .sku-advisor-header { align-items: flex-start; }
+            .sku-advisor-title { text-align: left; }
+            .sku-hero-layout,
+            .sku-kpi-grid,
+            .sku-viewpoint-grid,
+            .sku-series { grid-template-columns: 1fr; }
+            .sku-series { height: auto; }
+            .sku-bar-track { height: 86px; }
+            .sku-chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
     </style>
 </head>
 <body>
 
-<!-- ========== HEADER ========== -->
-<header class="flex items-center justify-between mb-3">
-    <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#c8f560] to-[#a8d040] flex items-center justify-center text-black font-bold text-sm">M+</div>
-        <div>
-            <h1 class="text-base font-bold text-white">库存健康指数</h1>
-            <p class="text-[9px] text-gray-500 tracking-wider">INVENTORY DECISION COCKPIT · MEIMAI V1.3.0</p>
-        </div>
+<header>
+    <div class="logo-zone">
+        <h1>美迈库存健康指数总看板</h1>
     </div>
-    <div class="flex items-center gap-3">
-        <div class="flex items-center gap-1.5 text-[10px]">
-            <span class="live-dot"></span>
-            <span class="text-gray-400">IHI ENGINE LIVE</span>
-            <span style="color:var(--optimal)" class="font-medium">RECALC 00:42</span>
-        </div>
-        <div class="text-right">
-            <div class="text-lg font-bold text-white mono">11:06:44</div>
-            <div class="text-[9px] text-gray-500">2026年05月21日星期四</div>
+    <div class="ticker-wrap" onclick="showAIReport('AI 战略异动简报 · 全局深度研判', '#### <span class=\\'ai-spark-icon\\'></span> 全球库存智能诊断\\n* 综合健康指数71.4分，积压风险继续恶化（48分）导致整体承压。\\n* 德国仓与美东仓库容率飙升超过92%，长库龄资金沉淀达$4.21M。\\n* Bruno Marc陷入呆滞与断货双重旋涡，建议立即启动清仓调拨计划。')">
+        <div class="ticker">
+            ✨ [AI 实时异动] 德国仓积压率飙升｜Bruno Marc 危险交叉预警｜点此获取解耦策略与智能决策
         </div>
     </div>
 </header>
 
-<!-- ========== ALERT MARQUEE ========== -->
-<div class="glass px-3 py-1.5 mb-3 overflow-hidden">
-    <div class="flex items-center gap-4 text-[10px] whitespace-nowrap animate-marquee">
-        <!-- 内容复制一份实现无缝循环 -->
-        <div class="flex items-center gap-2">
-            <span class="tag tag-green">IHI</span>
-            <span class="text-gray-400">综合健康指数 <span class="mono" style="color:var(--optimal)">82</span> 分 (健康) · 较昨日 +0.3</span>
+<!-- 第一行：IHI 橙色背景块（使用统一警告色）+ 增强呼吸闪烁动画 + 同比红色 -->
+<div class="grid-24 row-top">
+    <div class="apple-card col-16" style="min-height: 170px; padding: 12px 18px;">
+        <div class="ihi-dashboard">
+            <!-- 左侧总指数：增强动态呼吸效果，明暗对比更强烈 -->
+            <div class="ihi-hero">
+                <div class="ihi-hero-label">全球库存健康总指数</div>
+                <div class="ihi-hero-score">71.4</div>
+                <div class="ihi-hero-trend"><span>同比 </span><span class="trend-down">-2.1%</span></div>
+            </div>
+            <!-- 右侧四维紧凑子指标 -->
+            <div class="compact-factors">
+                <div class="factor-compact">
+                    <div class="factor-header"><span>周转天数</span><span>30%</span></div>
+                    <div class="factor-main"><span class="factor-score" style="color: var(--color-success);">82</span></div>
+                    <div class="progress-micro"><div class="progress-fill" style="width:82%; background: var(--color-success);"></div></div>
+                </div>
+                <div class="factor-compact">
+                    <div class="factor-header"><span>缺货风险</span><span>25%</span></div>
+                    <div class="factor-main"><span class="factor-score" style="color: var(--color-warning);">68</span></div>
+                    <div class="progress-micro"><div class="progress-fill" style="width:68%; background: var(--color-warning);"></div></div>
+                </div>
+                <div class="factor-compact">
+                    <div class="factor-header"><span>积压风险</span><span>20%</span></div>
+                    <div class="factor-main"><span class="factor-score" style="color: var(--color-danger);">48</span></div>
+                    <div class="progress-micro"><div class="progress-fill" style="width:48%; background: var(--color-danger);"></div></div>
+                </div>
+                <div class="factor-compact">
+                    <div class="factor-header"><span>结构健康</span><span>25%</span></div>
+                    <div class="factor-main"><span class="factor-score" style="color: var(--color-success);">85</span></div>
+                    <div class="progress-micro"><div class="progress-fill" style="width:85%; background: var(--color-success);"></div></div>
+                </div>
+            </div>
         </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-red">预警</span>
-            <span class="text-gray-400">风险 SKU 共 <span class="mono" style="color:var(--critical)">107</span> 个, 其中 <span class="mono">42</span> 个库龄 >360 天</span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-purple">AI</span>
-            <span class="text-gray-400">决策流今日生成 <span class="mono" style="color:var(--optimal)">18</span> 条建议, 已执行 <span class="mono" style="color:var(--warning)">11</span> 条</span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-yellow">成本</span>
-            <span class="text-gray-400">持有成本率 <span class="mono">12.5%</span>, 较行业基线低 <span class="mono" style="color:var(--optimal)">1.8pp</span></span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-red">紧急</span>
-            <span class="text-gray-400">39044-MNX-7A-BROWN PU-SZ-6: WOS 跌至 <span class="mono" style="color:var(--critical)">0.8</span> 周, AI 已生成【紧急空派】</span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-yellow">滞销</span>
-            <span class="text-gray-400">滞销占比 <span class="mono" style="color:var(--warning)">8.3%</span> (目标 &lt;5%)</span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <!-- 复制内容 -->
-        <div class="flex items-center gap-2">
-            <span class="tag tag-green">IHI</span>
-            <span class="text-gray-400">综合健康指数 <span class="mono" style="color:var(--optimal)">82</span> 分 (健康) · 较昨日 +0.3</span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-red">预警</span>
-            <span class="text-gray-400">风险 SKU 共 <span class="mono" style="color:var(--critical)">107</span> 个, 其中 <span class="mono">42</span> 个库龄 >360 天</span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-purple">AI</span>
-            <span class="text-gray-400">决策流今日生成 <span class="mono" style="color:var(--optimal)">18</span> 条建议, 已执行 <span class="mono" style="color:var(--warning)">11</span> 条</span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-yellow">成本</span>
-            <span class="text-gray-400">持有成本率 <span class="mono">12.5%</span>, 较行业基线低 <span class="mono" style="color:var(--optimal)">1.8pp</span></span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-red">紧急</span>
-            <span class="text-gray-400">39044-MNX-7A-BROWN PU-SZ-6: WOS 跌至 <span class="mono" style="color:var(--critical)">0.8</span> 周, AI 已生成【紧急空派】</span>
-        </div>
-        <span class="text-gray-600">|</span>
-        <div class="flex items-center gap-2">
-            <span class="tag tag-yellow">滞销</span>
-            <span class="text-gray-400">滞销占比 <span class="mono" style="color:var(--warning)">8.3%</span> (目标 &lt;5%)</span>
+    </div>
+    <div class="apple-card col-8" style="min-height: 170px; padding: 12px 14px;">
+        <div class="kpi-grid">
+            <div class="kpi-card"><div class="label">总 SKU 数量</div><div class="value">14,852</div></div>
+            <div class="kpi-card"><div class="label">全渠道动销率</div><div class="value" style="color: var(--color-success);">74.2%</div></div>
+            <div class="kpi-card kpi-danger-alert"><div class="label">异常滞销占比</div><div class="value">28.4%</div></div>
+            <div class="kpi-card"><div class="label">平均可售周数</div><div class="value">11.4 Wks</div></div>
         </div>
     </div>
 </div>
 
-<!-- ========== ROW 1: KPI CARDS ========== -->
-<div class="grid grid-cols-4 gap-3 mb-3">
-    <!-- SKU Total -->
-    <div class="glass p-3 flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-        </div>
-        <div>
-            <div class="text-[9px] text-gray-500 mb-0.5">总 SKU 数 · TOTAL SKU</div>
-            <div class="flex items-baseline gap-1">
-                <span class="text-lg font-bold text-white mono">150,013</span>
-                <span class="text-[9px] text-gray-500">活跃</span>
+<!-- 第二行：各业务线 CT 卡片 -->
+<div class="grid-24 row-middle">
+    <div class="apple-card col-24" style="min-height: 318px;">
+        <div class="ct-section-title">各CT库存健康指数 <span>按风险优先级倒序排查</span></div>
+        <div class="ct-cards-container">
+            <div class="ct-mini-card ct-fire-card" onclick="openCtDashboard('Bruno Marc')">
+                <div class="ct-card-top"><div><div class="ct-name">Bruno Marc</div></div><div class="ct-score" style="color: var(--color-danger);">42.5</div></div>
+                <div class="ct-index-grid"><div class="ct-index-item"><span class="ct-index-label">周转天数</span><span class="ct-index-value" style="color: var(--color-warning);">51</span></div><div class="ct-index-item"><span class="ct-index-label">缺货风险</span><span class="ct-index-value" style="color: var(--color-danger);">38</span></div><div class="ct-index-item"><span class="ct-index-label">积压风险</span><span class="ct-index-value" style="color: var(--color-danger);">32</span></div><div class="ct-index-item"><span class="ct-index-label">结构健康</span><span class="ct-index-value" style="color: var(--color-warning);">49</span></div></div>
+                <div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>51 / 38</span></div><div class="ct-metric-item"><span>滞销金额</span><span style="color: var(--color-danger);">$1.42M</span></div></div>
+                <button class="ai-capsule" onclick="event.stopPropagation(); showAIReport('Bruno Marc 深度诊断', '#### <span class=\\'ai-spark-icon\\'></span> 呆滞危机 & 断码交叉高危\\n* 资产劣化：360天+僵死库存占集团总积压30%，资金严重占用。\\n* 核心爆款断码预警频发。\\n* AI 决策：立即联合促销&紧急空运追发高频码。')"><span class="ai-spark-icon"></span>AI</button>
             </div>
+            <div class="ct-mini-card ct-warn-card" onclick="openCtDashboard('DP Kids')">
+                <div class="ct-card-top"><div><div class="ct-name">DP Kids</div></div><div class="ct-score" style="color: var(--color-warning);">58.0</div></div>
+                <div class="ct-index-grid"><div class="ct-index-item"><span class="ct-index-label">周转天数</span><span class="ct-index-value" style="color: var(--color-warning);">60</span></div><div class="ct-index-item"><span class="ct-index-label">缺货风险</span><span class="ct-index-value" style="color: var(--color-warning);">52</span></div><div class="ct-index-item"><span class="ct-index-label">积压风险</span><span class="ct-index-value" style="color: var(--color-danger);">45</span></div><div class="ct-index-item"><span class="ct-index-label">结构健康</span><span class="ct-index-value" style="color: var(--color-warning);">67</span></div></div>
+                <div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>60 / 52</span></div><div class="ct-metric-item"><span>滞销金额</span><span style="color: var(--color-warning);">$0.85M</span></div></div>
+                <button class="ai-capsule" onclick="event.stopPropagation(); showAIReport('DP Kids 风险诊断', '#### <span class=\\'ai-spark-icon\\'></span> 局部供应链失调\\n* 诊断：季节性鞋款滞销且换季周期错配。\\n* AI建议：启动南美渠道降价清库 + 调拨主力仓位。')"><span class="ai-spark-icon"></span>AI</button>
+            </div>
+            <div class="ct-mini-card" onclick="openCtDashboard('Nortiv 8')"><div class="ct-card-top"><div><div class="ct-name">Nortiv 8</div></div><div class="ct-score" style="color: var(--color-warning);">69.4</div></div><div class="ct-index-grid"><div class="ct-index-item"><span class="ct-index-label">周转天数</span><span class="ct-index-value" style="color: var(--color-success);">72</span></div><div class="ct-index-item"><span class="ct-index-label">缺货风险</span><span class="ct-index-value" style="color: var(--color-warning);">65</span></div><div class="ct-index-item"><span class="ct-index-label">积压风险</span><span class="ct-index-value" style="color: var(--color-warning);">58</span></div><div class="ct-index-item"><span class="ct-index-label">结构健康</span><span class="ct-index-value" style="color: var(--color-success);">78</span></div></div><div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>72 / 65</span></div><div class="ct-metric-item"><span>滞销金额</span><span>$0.54M</span></div></div><button class="ai-capsule" onclick="event.stopPropagation(); showAIReport('Nortiv 8 诊断内参', '#### <span class=\\'ai-spark-icon\\'></span> 整体稳健 局部缺货\\n* AI 建议：精准追发户外高频码。')"><span class="ai-spark-icon"></span>AI</button></div>
+            <div class="ct-mini-card" onclick="openCtDashboard('DP Comfort')"><div class="ct-card-top"><div><div class="ct-name">DP Comfort</div></div><div class="ct-score" style="color: var(--color-success);">76.1</div></div><div class="ct-index-grid"><div class="ct-index-item"><span class="ct-index-label">周转天数</span><span class="ct-index-value" style="color: var(--color-success);">81</span></div><div class="ct-index-item"><span class="ct-index-label">缺货风险</span><span class="ct-index-value" style="color: var(--color-success);">74</span></div><div class="ct-index-item"><span class="ct-index-label">积压风险</span><span class="ct-index-value" style="color: var(--color-warning);">63</span></div><div class="ct-index-item"><span class="ct-index-label">结构健康</span><span class="ct-index-value" style="color: var(--color-success);">84</span></div></div><div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>81 / 74</span></div><div class="ct-metric-item"><span>滞销金额</span><span>$0.31M</span></div></div><button class="ai-capsule" onclick="event.stopPropagation(); showAIReport('DP Comfort', '#### <span class=\\'ai-spark-icon\\'></span> 健康平稳\\n* 维持现有备货模型。')"><span class="ai-spark-icon"></span>AI</button></div>
+            <div class="ct-mini-card" onclick="openCtDashboard('Sneakers')"><div class="ct-card-top"><div><div class="ct-name">Sneakers</div></div><div class="ct-score" style="color: var(--color-success);">81.2</div></div><div class="ct-index-grid"><div class="ct-index-item"><span class="ct-index-label">周转天数</span><span class="ct-index-value" style="color: var(--color-success);">85</span></div><div class="ct-index-item"><span class="ct-index-label">缺货风险</span><span class="ct-index-value" style="color: var(--color-success);">80</span></div><div class="ct-index-item"><span class="ct-index-label">积压风险</span><span class="ct-index-value" style="color: var(--color-success);">76</span></div><div class="ct-index-item"><span class="ct-index-label">结构健康</span><span class="ct-index-value" style="color: var(--color-success);">87</span></div></div><div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>85 / 80</span></div><div class="ct-metric-item"><span>滞销金额</span><span>$0.22M</span></div></div><button class="ai-capsule" onclick="event.stopPropagation(); showAIReport('Sneakers 指标', '#### 优秀梯队\\n* 动销卓越，系统自适应补货。')"><span class="ai-spark-icon"></span>AI</button></div>
+            <div class="ct-mini-card" onclick="openCtDashboard('DP Fashion')"><div class="ct-card-top"><div><div class="ct-name">DP Fashion</div></div><div class="ct-score" style="color: var(--color-success);">88.5</div></div><div class="ct-index-grid"><div class="ct-index-item"><span class="ct-index-label">周转天数</span><span class="ct-index-value" style="color: var(--color-success);">92</span></div><div class="ct-index-item"><span class="ct-index-label">缺货风险</span><span class="ct-index-value" style="color: var(--color-success);">89</span></div><div class="ct-index-item"><span class="ct-index-label">积压风险</span><span class="ct-index-value" style="color: var(--color-success);">84</span></div><div class="ct-index-item"><span class="ct-index-label">结构健康</span><span class="ct-index-value" style="color: var(--color-success);">91</span></div></div><div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>92 / 89</span></div><div class="ct-metric-item"><span>滞销金额</span><span>$0.09M</span></div></div><button class="ai-capsule" onclick="event.stopPropagation(); showAIReport('DP Fashion 卓越模型', '#### 柔性供应链标杆\\n* 方法复制至集团知识库。')"><span class="ai-spark-icon"></span>AI</button></div>
         </div>
     </div>
-    <!-- STR -->
-    <div class="glass p-3 flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(200,245,96,0.1)">
-            <svg class="w-4 h-4" style="color:var(--optimal)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+</div>
+
+<div id="ctDashboard" class="ct-dashboard-view">
+    <div class="ct-dashboard-header">
+        <button class="ct-back-btn" onclick="closeCtDashboard()">返回总览</button>
+        <div class="ct-dashboard-title">
+            <h2 id="ctDashTitle">By 品类库存健康指数看板</h2>
+            <span id="ctDashSubTitle">按品类穿透库存健康、缺货、积压与结构风险</span>
         </div>
-        <div class="flex-1">
-            <div class="text-[9px] text-gray-500 mb-0.5">全渠道动销率 · STR</div>
-            <div class="flex items-baseline gap-1">
-                <span class="text-lg font-bold mono" style="color:var(--optimal)">78.4</span>
-                <span class="text-sm text-gray-400">%</span>
-                <span class="text-[9px] ml-auto" style="color:var(--optimal)">↑ 1.6pp</span>
+        <button class="ai-capsule" onclick="showCurrentCtAI()"><span class="ai-spark-icon"></span>AI</button>
+    </div>
+    <div class="ct-dashboard-grid">
+        <div class="grid-24 row-top">
+            <div class="apple-card col-16" style="min-height: 170px; padding: 12px 18px;">
+                <div class="ihi-dashboard">
+                    <div class="ihi-hero">
+                        <div class="ihi-hero-label" id="ctHeroLabel">品类库存健康总指数</div>
+                        <div class="ihi-hero-score" id="ctDashScore">--</div>
+                        <div class="ihi-hero-trend"><span>环比 </span><span id="ctDashTrend" class="trend-down">--</span></div>
+                    </div>
+                    <div class="compact-factors" id="ctDashIndexes"></div>
+                </div>
+            </div>
+            <div class="apple-card col-8" style="min-height: 170px; padding: 12px 14px;">
+                <div class="kpi-grid" id="ctDashKpis"></div>
             </div>
         </div>
-    </div>
-    <!-- Slow Ratio -->
-    <div class="glass p-3 flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(245,96,96,0.12)">
-            <svg class="w-4 h-4" style="color:var(--critical)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-        </div>
-        <div class="flex-1">
-            <div class="text-[9px] text-gray-500 mb-0.5">异常滞销占比 · SLOW RATIO</div>
-            <div class="flex items-baseline gap-1">
-                <span class="text-lg font-bold mono" style="color:var(--critical)">8.3</span>
-                <span class="text-sm text-gray-400">%</span>
-                <span class="text-[9px] text-gray-500 ml-auto">↓ 0.6pp</span>
+        <div class="grid-24 row-middle">
+            <div class="apple-card col-24" style="min-height: 318px;">
+                <div class="ct-section-title" id="ctCategoryTitle">各品类库存健康透视 <span>按风险优先级倒序排查</span></div>
+                <div class="ct-cards-container" id="ctCategoryCards"></div>
             </div>
         </div>
-    </div>
-    <!-- WOS -->
-    <div class="glass p-3 flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(245,200,66,0.1)">
-            <svg class="w-4 h-4" style="color:var(--warning)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        </div>
-        <div class="flex-1">
-            <div class="text-[9px] text-gray-500 mb-0.5">平均可售周数 · WOS</div>
-            <div class="flex items-baseline gap-1">
-                <span class="text-lg font-bold mono" style="color:var(--warning)">4.2</span>
-                <span class="text-sm text-gray-400">周</span>
-                <span class="text-[9px] ml-auto" style="color:var(--critical)">↓ 0.3w</span>
+        <div class="grid-24 row-bottom">
+            <div class="apple-card col-24" style="min-height: 318px;">
+                <div class="ct-section-title" id="ctStyleTitle">款式指数 <span>按风险优先级倒序排查</span></div>
+                <div class="ct-cards-container" id="ctStyleCards"></div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ========== ROW 2: MAIN CONTENT ========== -->
-<div class="grid grid-cols-12 gap-3 mb-3">
-    <!-- IHI Card - Score Focused -->
-    <div class="col-span-3 glass p-3">
-        <div class="flex items-center justify-between mb-2">
-            <h3 class="text-xs font-medium text-white">库存健康指数</h3>
-            <span class="tag tag-green text-[6px]">OPTIMAL</span>
+<div id="skuAdvisor" class="sku-advisor-view">
+    <div class="sku-advisor-header">
+        <button class="ct-back-btn" onclick="closeSkuAdvisor()">返回品类看板</button>
+        <div class="sku-advisor-title">
+            <h2 id="skuAdvisorTitle">单品库存参谋</h2>
+            <span id="skuAdvisorSubTitle">SKU 级健康档案 · 风险预警 · 策略落地</span>
         </div>
-        <div class="flex items-center gap-4">
-            <!-- Left: Big Score -->
-            <div class="flex flex-col items-center justify-center w-28 h-28 rounded-xl flex-shrink-0" style="background:linear-gradient(135deg,rgba(200,245,96,0.25) 0%,rgba(200,245,96,0.08) 100%)">
-                <span class="text-5xl font-bold mono" style="color:#c8f560">82</span>
-                <span class="text-[10px] text-gray-500 mono">/100</span>
-            </div>
-            <!-- Right: Trend Info -->
-            <div class="flex-1 flex flex-col justify-center">
-                <div class="flex items-baseline gap-1 mb-2">
-                    <span class="ml-auto text-[10px] font-bold" style="color:#c8f560">+3.2</span>
-                    <span class="text-[7px] text-gray-500">/7日</span>
-                </div>
-                <!-- Trend Chart -->
-                <div class="h-9">
-                    <svg viewBox="0 0 140 36" class="w-full h-full">
-                        <defs>
-                            <linearGradient id="ihiGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#c8f560;stop-opacity:0.3"/>
-                                <stop offset="100%" style="stop-color:#c8f560;stop-opacity:0"/>
-                            </linearGradient>
-                        </defs>
-                        <path fill="url(#ihiGrad)" d="M0,32 L0,26 Q22,22 44,18 T88,10 T140,4 L140,36 L0,36 Z"/>
-                        <path fill="none" stroke="#c8f560" stroke-width="2" d="M0,26 Q22,22 44,18 T88,10 T140,4"/>
-                        <circle cx="140" cy="4" r="3" fill="#c8f560"/>
-                        <circle cx="105" cy="6" r="2" fill="#c8f560" opacity="0.7"/>
-                        <circle cx="70" cy="10" r="2" fill="#c8f560" opacity="0.5"/>
-                        <circle cx="35" cy="16" r="2" fill="#c8f560" opacity="0.3"/>
-                        <circle cx="0" cy="26" r="2" fill="#c8f560" opacity="0.2"/>
-                    </svg>
-                </div>
-                <div class="flex justify-between text-[6px] text-gray-500 mono mt-0.5">
-                    <span>5/15</span><span>5/18</span><span>5/21</span>
-                </div>
-            </div>
-        </div>
+        <button class="ai-capsule" onclick="showCurrentSkuAI()"><span class="ai-spark-icon"></span>AI 诊断</button>
     </div>
-
-    <!-- Brand Grid (9/12) -->
-    <div class="col-span-9 glass p-2">
-        <div class="flex items-center justify-between mb-1">
-            <h3 class="text-[10px] font-medium text-white">CT IHI</h3>
-            <span class="text-[8px] text-gray-500">BRAND IHI · 点击联动</span>
-        </div>
-        <div class="grid grid-cols-3 gap-1.5">
-            <!-- Nortiv8 -->
-            <div class="ct-card p-2" onclick="openBrandDetail('nortiv8')">
-                <div class="flex items-center gap-2">
-                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg flex-shrink-0" style="background:linear-gradient(135deg,rgba(200,245,96,0.25) 0%,rgba(200,245,96,0.08) 100%)">
-                        <span class="text-base font-bold mono" style="color:var(--optimal)">87</span>
-                        <span class="text-[5px] text-gray-500">/100</span>
-                    </div>
-                    <div class="flex-1 flex flex-col justify-center min-w-0">
-                        <div class="flex items-center gap-1.5 mb-0.5">
-                            <span class="text-[9px] text-white font-medium">Nortiv8</span>
-                            <span class="tag tag-green text-[4px]">OPTIMAL</span>
-                            <span class="ml-auto text-[7px] text-gray-500">28,640 SKU</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <div class="flex-1 h-5">
-                                <svg viewBox="0 0 100 20" class="w-full h-full">
-                                    <path fill="rgba(200,245,96,0.2)" d="M0,18 L0,14 Q20,11 40,8 T80,3 T100,1 L100,20 L0,20 Z"/>
-                                    <path fill="none" stroke="#c8f560" stroke-width="2" d="M0,14 Q20,11 40,8 T80,3 T100,1"/>
-                                    <circle cx="100" cy="1" r="2.5" fill="#c8f560"/>
-                                    <circle cx="80" cy="3" r="2" fill="#c8f560" opacity="0.7"/>
-                                    <circle cx="60" cy="5" r="1.5" fill="#c8f560" opacity="0.5"/>
-                                    <circle cx="40" cy="8" r="1.5" fill="#c8f560" opacity="0.4"/>
-                                    <circle cx="20" cy="11" r="1.5" fill="#c8f560" opacity="0.3"/>
-                                    <circle cx="0" cy="14" r="1.5" fill="#c8f560" opacity="0.2"/>
-                                </svg>
-                            </div>
-                            <span class="text-[9px] font-bold mono w-10 text-right" style="color:var(--optimal)">+4.1</span>
-                        </div>
-                    </div>
+    <div class="sku-advisor-grid">
+        <section class="apple-card sku-hero-card">
+            <div class="sku-hero-layout">
+                <div id="skuScoreOrb" class="sku-score-orb">
+                    <div class="sku-score-label">IHI SCORE</div>
+                    <div id="skuAdvisorScore" class="sku-score-value">--</div>
+                </div>
+                <div class="sku-profile">
+                    <h3 id="skuAdvisorName">--</h3>
+                    <div class="sku-profile-meta" id="skuAdvisorMeta"></div>
+                    <div class="sku-summary" id="skuAdvisorSummary">从单品维度整合历史销售、未来预测、现有库存、在途、库龄、周转、利润等因子。</div>
                 </div>
             </div>
-            <!-- Bruno Marc -->
-            <div class="ct-card p-2" onclick="openBrandDetail('brunomarc')">
-                <div class="flex items-center gap-2">
-                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg flex-shrink-0" style="background:linear-gradient(135deg,rgba(200,245,96,0.25) 0%,rgba(200,245,96,0.08) 100%)">
-                        <span class="text-base font-bold mono" style="color:var(--optimal)">84</span>
-                        <span class="text-[5px] text-gray-500">/100</span>
-                    </div>
-                    <div class="flex-1 flex flex-col justify-center min-w-0">
-                        <div class="flex items-center gap-1.5 mb-0.5">
-                            <span class="text-[9px] text-white font-medium">Bruno Marc</span>
-                            <span class="tag tag-green text-[4px]">OPTIMAL</span>
-                            <span class="ml-auto text-[7px] text-gray-500">41,280 SKU</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <div class="flex-1 h-5">
-                                <svg viewBox="0 0 100 20" class="w-full h-full">
-                                    <path fill="rgba(200,245,96,0.2)" d="M0,18 L0,14 Q25,11 50,7 T100,2 L100,20 L0,20 Z"/>
-                                    <path fill="none" stroke="#c8f560" stroke-width="2" d="M0,14 Q25,11 50,7 T100,2"/>
-                                    <circle cx="100" cy="2" r="2.5" fill="#c8f560"/>
-                                    <circle cx="75" cy="4" r="2" fill="#c8f560" opacity="0.7"/>
-                                    <circle cx="50" cy="7" r="1.5" fill="#c8f560" opacity="0.5"/>
-                                    <circle cx="25" cy="10" r="1.5" fill="#c8f560" opacity="0.4"/>
-                                    <circle cx="0" cy="14" r="1.5" fill="#c8f560" opacity="0.2"/>
-                                </svg>
-                            </div>
-                            <span class="text-[9px] font-bold mono w-10 text-right" style="color:var(--optimal)">+2.6</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Sneakers -->
-            <div class="ct-card p-2" onclick="openBrandDetail('sneakers')">
-                <div class="flex items-center gap-2">
-                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg flex-shrink-0" style="background:linear-gradient(135deg,rgba(245,200,66,0.25) 0%,rgba(245,200,66,0.08) 100%)">
-                        <span class="text-base font-bold mono" style="color:var(--warning)">79</span>
-                        <span class="text-[5px] text-gray-500">/100</span>
-                    </div>
-                    <div class="flex-1 flex flex-col justify-center min-w-0">
-                        <div class="flex items-center gap-1.5 mb-0.5">
-                            <span class="text-[9px] text-white font-medium">Sneakers</span>
-                            <span class="tag tag-yellow text-[4px]">WARNING</span>
-                            <span class="ml-auto text-[7px] text-gray-500">18,950 SKU</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <div class="flex-1 h-5">
-                                <svg viewBox="0 0 100 20" class="w-full h-full">
-                                    <path fill="rgba(245,200,66,0.2)" d="M0,18 L0,14 Q25,12 50,9 T100,4 L100,20 L0,20 Z"/>
-                                    <path fill="none" stroke="#f5c842" stroke-width="2" d="M0,14 Q25,12 50,9 T100,4"/>
-                                    <circle cx="100" cy="4" r="2.5" fill="#f5c842"/>
-                                    <circle cx="75" cy="6" r="2" fill="#f5c842" opacity="0.7"/>
-                                    <circle cx="50" cy="9" r="1.5" fill="#f5c842" opacity="0.5"/>
-                                    <circle cx="25" cy="11" r="1.5" fill="#f5c842" opacity="0.4"/>
-                                    <circle cx="0" cy="14" r="1.5" fill="#f5c842" opacity="0.2"/>
-                                </svg>
-                            </div>
-                            <span class="text-[9px] font-bold mono w-10 text-right" style="color:var(--warning)">+1.4</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- DP Kids -->
-            <div class="ct-card p-2" onclick="openBrandDetail('dpkids')">
-                <div class="flex items-center gap-2">
-                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg flex-shrink-0" style="background:linear-gradient(135deg,rgba(245,200,66,0.25) 0%,rgba(245,200,66,0.08) 100%)">
-                        <span class="text-base font-bold mono" style="color:var(--warning)">76</span>
-                        <span class="text-[5px] text-gray-500">/100</span>
-                    </div>
-                    <div class="flex-1 flex flex-col justify-center min-w-0">
-                        <div class="flex items-center gap-1.5 mb-0.5">
-                            <span class="text-[9px] text-white font-medium">DP Kids</span>
-                            <span class="tag tag-yellow text-[4px]">WARNING</span>
-                            <span class="ml-auto text-[7px] text-gray-500">22,310 SKU</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <div class="flex-1 h-5">
-                                <svg viewBox="0 0 100 20" class="w-full h-full">
-                                    <path fill="rgba(245,200,66,0.2)" d="M0,2 L0,5 Q25,8 50,11 T100,18 L100,20 L0,20 Z"/>
-                                    <path fill="none" stroke="#f5c842" stroke-width="2" d="M0,5 Q25,8 50,11 T100,18"/>
-                                    <circle cx="100" cy="18" r="2.5" fill="#f5c842"/>
-                                    <circle cx="75" cy="14" r="2" fill="#f5c842" opacity="0.7"/>
-                                    <circle cx="50" cy="11" r="1.5" fill="#f5c842" opacity="0.5"/>
-                                    <circle cx="25" cy="8" r="1.5" fill="#f5c842" opacity="0.4"/>
-                                    <circle cx="0" cy="5" r="1.5" fill="#f5c842" opacity="0.2"/>
-                                </svg>
-                            </div>
-                            <span class="text-[9px] font-bold mono w-10 text-right" style="color:var(--critical)">-1.8</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- DP Fashion -->
-            <div class="ct-card p-2" onclick="openBrandDetail('dpfashion')">
-                <div class="flex items-center gap-2">
-                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg flex-shrink-0" style="background:linear-gradient(135deg,rgba(245,96,96,0.25) 0%,rgba(245,96,96,0.08) 100%)">
-                        <span class="text-base font-bold mono" style="color:var(--critical)">71</span>
-                        <span class="text-[5px] text-gray-500">/100</span>
-                    </div>
-                    <div class="flex-1 flex flex-col justify-center min-w-0">
-                        <div class="flex items-center gap-1.5 mb-0.5">
-                            <span class="text-[9px] text-white font-medium">DP Fashion</span>
-                            <span class="tag tag-red text-[4px]">RISK</span>
-                            <span class="ml-auto text-[7px] text-gray-500">38,833 SKU</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <div class="flex-1 h-5">
-                                <svg viewBox="0 0 100 20" class="w-full h-full">
-                                    <path fill="rgba(245,96,96,0.2)" d="M0,2 L0,5 Q25,9 50,12 T100,18 L100,20 L0,20 Z"/>
-                                    <path fill="none" stroke="#f56060" stroke-width="2" d="M0,5 Q25,9 50,12 T100,18"/>
-                                    <circle cx="100" cy="18" r="2.5" fill="#f56060"/>
-                                    <circle cx="75" cy="15" r="2" fill="#f56060" opacity="0.7"/>
-                                    <circle cx="50" cy="12" r="1.5" fill="#f56060" opacity="0.5"/>
-                                    <circle cx="25" cy="8" r="1.5" fill="#f56060" opacity="0.4"/>
-                                    <circle cx="0" cy="5" r="1.5" fill="#f56060" opacity="0.2"/>
-                                </svg>
-                            </div>
-                            <span class="text-[9px] font-bold mono w-10 text-right" style="color:var(--critical)">-2.4</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- DP Comfort -->
-            <div class="ct-card p-2" onclick="openBrandDetail('dpcomfort')">
-                <div class="flex items-center gap-2">
-                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg flex-shrink-0" style="background:linear-gradient(135deg,rgba(200,245,96,0.25) 0%,rgba(200,245,96,0.08) 100%)">
-                        <span class="text-base font-bold mono" style="color:var(--optimal)">80</span>
-                        <span class="text-[5px] text-gray-500">/100</span>
-                    </div>
-                    <div class="flex-1 flex flex-col justify-center min-w-0">
-                        <div class="flex items-center gap-1.5 mb-0.5">
-                            <span class="text-[9px] text-white font-medium">DP Comfort</span>
-                            <span class="tag tag-green text-[4px]">OPTIMAL</span>
-                            <span class="ml-auto text-[7px] text-gray-500">18,000 SKU</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <div class="flex-1 h-5">
-                                <svg viewBox="0 0 100 20" class="w-full h-full">
-                                    <path fill="rgba(200,245,96,0.2)" d="M0,18 L0,14 Q20,11 40,8 T80,3 T100,1 L100,20 L0,20 Z"/>
-                                    <path fill="none" stroke="#c8f560" stroke-width="2" d="M0,14 Q20,11 40,8 T80,3 T100,1"/>
-                                    <circle cx="100" cy="1" r="2.5" fill="#c8f560"/>
-                                    <circle cx="80" cy="3" r="2" fill="#c8f560" opacity="0.7"/>
-                                    <circle cx="60" cy="5" r="1.5" fill="#c8f560" opacity="0.5"/>
-                                    <circle cx="40" cy="8" r="1.5" fill="#c8f560" opacity="0.4"/>
-                                    <circle cx="20" cy="11" r="1.5" fill="#c8f560" opacity="0.3"/>
-                                    <circle cx="0" cy="14" r="1.5" fill="#c8f560" opacity="0.2"/>
-                                </svg>
-                            </div>
-                            <span class="text-[9px] font-bold mono w-10 text-right" style="color:var(--optimal)">+1.9</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </section>
+        <section class="apple-card sku-kpi-card">
+            <div class="sku-kpi-grid" id="skuAdvisorKpis"></div>
+        </section>
+        <section class="apple-card sku-timeline-panel">
+            <div class="sku-panel-title">历史-当前-未来库存水位 <span>销售预测为起点</span></div>
+            <div class="sku-series" id="skuInventorySeries"></div>
+        </section>
+        <section class="apple-card sku-viewpoints-panel">
+            <div class="sku-panel-title">八大核心透视视角 <span>单品级可决策信号</span></div>
+            <div class="sku-viewpoint-grid" id="skuViewpoints"></div>
+        </section>
+        <section class="apple-card sku-actions-panel">
+            <div class="sku-panel-title">AI 成因诊断与策略建议 <span>预警-诊断-执行</span></div>
+            <div class="sku-actions-list" id="skuAdvisorActions"></div>
+        </section>
+        <section class="apple-card sku-chain-panel">
+            <div class="sku-panel-title">端到端全链路状态 <span>销售预测 → 消费者退货</span></div>
+            <div class="sku-chain" id="skuChain"></div>
+        </section>
+        <section class="apple-card sku-age-panel">
+            <div class="sku-panel-title">库龄健康与四类库存识别 <span>30天内 / 360天+</span></div>
+            <div class="sku-age-list" id="skuAgeBuckets"></div>
+        </section>
     </div>
 </div>
 
-<!-- ========== ROW 3: DIMENSION CARDS ========== -->
-<div class="grid grid-cols-12 gap-3 mb-3">
-    <!-- 周转效率 -->
-    <div class="col-span-3 dim-card green p-2" onclick="openDetail('turnover')">
-        <div class="flex items-start justify-between mb-1">
-            <div>
-                <div class="text-xs font-medium text-white">周转效率</div>
-                <div class="text-[9px] text-gray-500">权重 25% · 满分 25</div>
-            </div>
-            <div class="text-right">
-                <span class="text-xl font-bold mono" style="color:var(--optimal)">21.3</span>
-                <span class="text-xs text-gray-500 mono">/25</span>
-            </div>
+<button class="floating-ai-button" onclick="openFloatingAI()" aria-label="打开 AI 助手">
+    <span class="ai-spark-icon"></span>
+    <span>AI</span>
+</button>
+<button id="themeToggle" class="theme-toggle-button" onclick="toggleTheme()" aria-label="切换白色主题">
+    <span id="themeToggleIcon" class="theme-toggle-icon">白</span>
+    <span id="themeToggleText" class="theme-toggle-text">主题</span>
+</button>
+
+<div id="aiDrawer" class="ai-drawer">
+    <div class="ai-drawer-header">
+        <div class="ai-bot-icon">▣</div>
+        <div class="ai-drawer-title">
+            <strong>AI 大麦助手 <em class="ai-beta">PRO</em></strong>
+            <span>智能决策驾驶舱 · 集成实时数据</span>
         </div>
-        <div class="glow-prog mb-2"><div class="glow-fill green" style="width:85%"></div></div>
-        <div class="space-y-0.5 text-[9px] text-gray-400">
-            <div class="flex justify-between"><span>库存周转率 2.1 次/年</span></div>
-            <div class="flex justify-between"><span>周转天数 63 天</span></div>
-        </div>
-        <div class="mt-2 pt-2 border-t border-gray-700/50">
-            <div class="text-[9px] text-gray-500">TOP 风险: <span class="text-white">SDFN2379W</span> <span style="color:var(--warning)">周转 198d</span></div>
-        </div>
+        <button class="drawer-action" onclick="showCurrentCtAI()">↻</button>
+        <button class="drawer-close" onclick="closeDrawer()">×</button>
     </div>
-    <!-- 缺货风险 -->
-    <div class="col-span-3 dim-card red p-2" onclick="openDetail('shortage')">
-        <div class="flex items-start justify-between mb-1">
-            <div>
-                <div class="flex items-center gap-1 mb-0.5">
-                    <span class="text-xs font-medium text-white">缺货风险</span>
-                    <span class="tag tag-red text-[8px]">核心风险</span>
+    <div class="ai-drawer-body">
+        <div class="ai-assistant-kicker">AI ASSISTANT</div>
+        <div class="ai-message-row">
+            <div class="ai-message-avatar">▣</div>
+            <div id="drawerContent" class="ai-message-bubble">您好，我是AI大麦助手，已为您连接库存健康、仓库库容与供需风险数据。</div>
+        </div>
+        <div class="ai-discover-title">快速探索建议（DISCOVER）</div>
+        <div class="ai-suggestion-list">
+            <a class="ai-suggestion-card featured" href="全球库存健康诊断报告.html" target="_blank" rel="noopener noreferrer">
+                <div class="ai-suggestion-top">
+                    <div class="ai-suggestion-text">全球库存健康诊断报告</div>
+                    <div class="ai-live-pill">LIVE REPORT ↗</div>
                 </div>
-                <div class="text-[9px] text-gray-500">权重 30% · 满分 30</div>
-            </div>
-            <div class="text-right">
-                <span class="text-xl font-bold mono" style="color:var(--critical)">23.4</span>
-                <span class="text-xs text-gray-500 mono">/30</span>
-            </div>
-        </div>
-        <div class="glow-prog mb-2"><div class="glow-fill red" style="width:78%"></div></div>
-        <div class="space-y-0.5 text-[9px] text-gray-400">
-            <div class="flex justify-between"><span>WOS 4.2 周</span><span style="color:var(--warning)">缺货率 2.1%</span></div>
-        </div>
-        <div class="mt-2 pt-2 border-t border-gray-700/50">
-            <div class="text-[9px] text-gray-500">TOP 风险: <span class="text-white">SNW5248W</span> <span style="color:var(--critical)">WOS 0.8</span></div>
+                <div class="ai-suggestion-desc">总结建议：综合健康指数71.4，积压风险偏高，建议优先穿透高库龄与低动销 CT。</div>
+            </a>
+            <div class="ai-suggestion-card"><div class="ai-suggestion-icon">□</div><div class="ai-suggestion-text">库存积压诊断：哪些 CT / 品类最需要清退？</div></div>
+            <div class="ai-suggestion-card"><div class="ai-suggestion-icon">⌘</div><div class="ai-suggestion-text">缺货风险诊断：哪些爆款尺码需要紧急补货？</div></div>
+            <div class="ai-suggestion-card"><div class="ai-suggestion-icon">✣</div><div class="ai-suggestion-text">库龄劣化诊断：360天+ 僵死库存集中在哪里？</div></div>
+            <div class="ai-suggestion-card"><div class="ai-suggestion-icon">△</div><div class="ai-suggestion-text">仓库库容预警：德国仓与美东仓如何释放库容？</div></div>
         </div>
     </div>
-    <!-- 积压风险 -->
-    <div class="col-span-3 dim-card yellow p-2" onclick="openDetail('overstock')">
-        <div class="flex items-start justify-between mb-1">
-            <div>
-                <div class="flex items-center gap-1 mb-0.5">
-                    <span class="text-xs font-medium text-white">积压风险</span>
-                    <span class="tag tag-yellow text-[8px]">核心风险</span>
-                </div>
-                <div class="text-[9px] text-gray-500">权重 30% · 满分 30</div>
-            </div>
-            <div class="text-right">
-                <span class="text-xl font-bold mono" style="color:var(--warning)">22.8</span>
-                <span class="text-xs text-gray-500 mono">/30</span>
-            </div>
+    <div class="ai-input-zone">
+        <div class="ai-input-shell">
+            <span>询问有关库存健康、积压、缺货或库容的深入洞见...</span>
+            <button class="ai-send-btn">➤</button>
         </div>
-        <div class="glow-prog mb-2"><div class="glow-fill yellow" style="width:76%"></div></div>
-        <div class="space-y-0.5 text-[9px] text-gray-400">
-            <div class="flex justify-between"><span>滞销占比 8.3%</span><span>存销比 3.8</span></div>
-        </div>
-        <div class="mt-2 pt-2 border-t border-gray-700/50">
-            <div class="text-[9px] text-gray-500">TOP 风险: <span class="text-white">SDKB2487W</span> <span style="color:var(--warning)">库龄 312d</span></div>
-        </div>
-    </div>
-    <!-- 结构健康 -->
-    <div class="col-span-3 dim-card green p-2" onclick="openDetail('structure')">
-        <div class="flex items-start justify-between mb-1">
-            <div>
-                <div class="text-xs font-medium text-white">结构健康</div>
-                <div class="text-[9px] text-gray-500">权重 15% · 满分 15</div>
-            </div>
-            <div class="text-right">
-                <span class="text-xl font-bold mono" style="color:var(--optimal)">13.2</span>
-                <span class="text-xs text-gray-500 mono">/15</span>
-            </div>
-        </div>
-        <div class="glow-prog mb-2"><div class="glow-fill green" style="width:88%"></div></div>
-        <div class="space-y-0.5 text-[9px] text-gray-400">
-            <div class="flex justify-between"><span>动销率 82%</span><span>安全库存覆盖 96%</span></div>
-        </div>
-        <div class="mt-2 pt-2 border-t border-gray-700/50">
-            <div class="text-[9px] text-gray-500">TOP 风险: <span class="text-white">SDPU2346W</span> <span style="color:var(--warning)">结构偏移 12%</span></div>
-        </div>
+        <div class="ai-powered">基于库存驾驶舱数据同步 Powered By MM Cowork</div>
     </div>
 </div>
 
-<!-- ========== ROW 4: BOTTOM ========== -->
-<div class="grid grid-cols-12 gap-3">
-    <!-- Warehouse Distribution - World Map -->
-    <div class="col-span-4 glass p-4">
-        <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2">
-                <svg class="w-4 h-4" style="color:#c8f560" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <h3 class="text-sm font-medium text-white">仓库分布</h3>
-            </div>
-            <span class="text-xs text-gray-500">150,013 件 · 6 仓库</span>
-        </div>
-        <!-- World Map -->
-        <div class="relative h-44">
-            <svg viewBox="0 0 380 180" class="w-full h-full">
-                <defs>
-                    <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                        <feMerge>
-                            <feMergeNode in="blur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                    <filter id="glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="3.5" result="blur"/>
-                        <feMerge>
-                            <feMergeNode in="blur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                    <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="3.5" result="blur"/>
-                        <feMerge>
-                            <feMergeNode in="blur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                    <radialGradient id="chinaGlow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" style="stop-color:#c8f560;stop-opacity:0.5"/>
-                        <stop offset="100%" style="stop-color:#c8f560;stop-opacity:0"/>
-                    </radialGradient>
-                    <radialGradient id="usaGlow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.4"/>
-                        <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:0"/>
-                    </radialGradient>
-                    <radialGradient id="ukGlow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" style="stop-color:#f5c842;stop-opacity:0.4"/>
-                        <stop offset="100%" style="stop-color:#f5c842;stop-opacity:0"/>
-                    </radialGradient>
-                </defs>
-                
-                <!-- Background grid -->
-                <pattern id="mapGrid" width="12" height="12" patternUnits="userSpaceOnUse">
-                    <path d="M 12 0 L 0 0 0 12" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
-                </pattern>
-                <rect width="100%" height="100%" fill="url(#mapGrid)"/>
-                
-                <!-- === CHINA (Detailed) === -->
-                <ellipse cx="268" cy="72" rx="55" ry="45" fill="url(#chinaGlow)"/>
-                <!-- China mainland detailed shape -->
-                <path d="M218,38 
-                    C228,35 238,36 245,38 
-                    L252,34 C262,31 272,32 280,35 
-                    L290,32 C300,30 312,33 318,38 
-                    L328,45 C335,50 340,58 342,68 
-                    C344,78 342,90 338,100 
-                    L332,108 C326,116 318,120 308,118 
-                    L300,122 C292,126 282,128 272,126 
-                    L265,132 C258,136 248,138 238,135 
-                    L232,130 C224,128 218,124 215,118 
-                    L210,110 C206,102 208,94 212,88 
-                    L208,80 C204,72 206,62 210,54 
-                    C214,46 216,40 218,38 Z" 
-                    fill="#1a3a1a" stroke="#c8f560" stroke-width="2" filter="url(#glow-green)"/>
-                <!-- Southern region detail -->
-                <path d="M225,105 C230,100 238,98 245,100 L250,108 C248,116 242,122 235,124 L228,120 C222,116 222,110 225,105 Z" 
-                    fill="#1a3a1a" stroke="#c8f560" stroke-width="1.5" filter="url(#glow-green)"/>
-                <!-- Taiwan -->
-                <path d="M302,85 C305,80 310,80 312,85 L314,95 C312,102 308,105 304,103 L302,95 C300,90 300,88 302,85 Z" 
-                    fill="#1a3a1a" stroke="#c8f560" stroke-width="1.5" filter="url(#glow-green)"/>
-                <!-- Hainan -->
-                <ellipse cx="288" cy="112" rx="5" ry="8" fill="#1a3a1a" stroke="#c8f560" stroke-width="1" filter="url(#glow-green)"/>
-                <text x="268" y="22" fill="#c8f560" font-size="11" text-anchor="middle" font-weight="700">中国</text>
-                
-                <!-- China warehouse -->
-                <g filter="url(#glow-green)">
-                    <circle cx="258" cy="75" r="13" fill="rgba(200,245,96,0.35)" stroke="#c8f560" stroke-width="2.5">
-                        <animate attributeName="r" values="13;16;13" dur="2.5s" repeatCount="indefinite"/>
-                    </circle>
-                    <circle cx="258" cy="75" r="5" fill="#c8f560"/>
-                </g>
-                <text x="274" y="70" fill="#c8f560" font-size="9" font-weight="600">国内自有仓</text>
-                <text x="274" y="86" fill="#9ca3af" font-size="8">20,600 件 · WOS 5.8</text>
-                
-                <!-- === USA (Detailed) === -->
-                <ellipse cx="75" cy="82" rx="70" ry="52" fill="url(#usaGlow)"/>
-                <!-- USA mainland detailed shape -->
-                <path d="M20,48 
-                    C30,42 45,40 60,42 
-                    L75,40 C90,38 108,40 122,45 
-                    L135,48 C142,52 145,60 143,72 
-                    C141,84 136,95 128,105 
-                    L118,112 C108,120 95,125 82,123 
-                    L70,126 C58,128 45,125 35,118 
-                    L25,125 C15,122 10,115 12,105 
-                    C14,95 12,85 15,75 
-                    C18,65 18,55 20,48 Z" 
-                    fill="#1a2a3a" stroke="#60a5fa" stroke-width="2" filter="url(#glow-blue)"/>
-                <!-- Florida peninsula -->
-                <path d="M130,95 C135,92 140,94 142,98 L144,108 C142,115 138,118 134,116 L130,110 C128,105 128,100 130,95 Z" 
-                    fill="#1a2a3a" stroke="#60a5fa" stroke-width="1.5" filter="url(#glow-blue)"/>
-                <!-- Great Lakes hint -->
-                <ellipse cx="95" cy="60" rx="12" ry="8" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1"/>
-                <!-- Alaska -->
-                <path d="M18,52 C14,48 12,52 14,58 C16,64 22,68 28,66 C32,64 34,58 32,54 C28,52 22,52 18,52 Z" 
-                    fill="#1a2a3a" stroke="#60a5fa" stroke-width="1.5" filter="url(#glow-blue)"/>
-                <!-- Hawaii islands -->
-                <circle cx="138" cy="108" r="4" fill="#1a2a3a" stroke="#60a5fa" stroke-width="1.2" filter="url(#glow-blue)"/>
-                <circle cx="145" cy="112" r="3" fill="#1a2a3a" stroke="#60a5fa" stroke-width="1" filter="url(#glow-blue)"/>
-                <text x="75" y="26" fill="#60a5fa" font-size="11" text-anchor="middle" font-weight="700">美洲</text>
-                
-                <!-- USA warehouses -->
-                <g filter="url(#glow-green)">
-                    <circle cx="58" cy="70" r="10" fill="rgba(200,245,96,0.3)" stroke="#c8f560" stroke-width="2"/>
-                    <circle cx="58" cy="70" r="4" fill="#c8f560"/>
-                </g>
-                <text x="28" y="66" fill="#c8f560" font-size="8" font-weight="600">海外自有仓</text>
-                <text x="28" y="80" fill="#9ca3af" font-size="7">35,400件</text>
-                
-                <g filter="url(#glow-blue)">
-                    <circle cx="85" cy="88" r="10" fill="rgba(96,165,250,0.3)" stroke="#60a5fa" stroke-width="2"/>
-                    <circle cx="85" cy="88" r="4" fill="#60a5fa"/>
-                </g>
-                <text x="100" y="84" fill="#60a5fa" font-size="8" font-weight="600">海外三方仓</text>
-                <text x="100" y="98" fill="#9ca3af" font-size="7">28,813件</text>
-                
-                <g filter="url(#glow-yellow)">
-                    <circle cx="55" cy="102" r="9" fill="rgba(245,200,66,0.3)" stroke="#f5c842" stroke-width="2"/>
-                    <circle cx="55" cy="102" r="4" fill="#f5c842"/>
-                </g>
-                <text x="68" y="98" fill="#f5c842" font-size="8" font-weight="600">海外平台仓</text>
-                <text x="68" y="112" fill="#9ca3af" font-size="7">65,200件</text>
-                
-                <!-- === UK (Detailed) === -->
-                <ellipse cx="182" cy="68" rx="40" ry="32" fill="url(#ukGlow)"/>
-                <!-- Great Britain detailed shape -->
-                <path d="M158,42 
-                    C168,38 178,40 188,44 
-                    C198,48 206,54 212,62 
-                    C218,70 220,80 216,88 
-                    C212,96 204,102 194,105 
-                    L186,110 C176,114 165,112 156,106 
-                    L150,100 C144,92 144,82 148,74 
-                    C152,66 154,55 158,42 Z" 
-                    fill="#2a2a1a" stroke="#f5c842" stroke-width="2" filter="url(#glow-yellow)"/>
-                <!-- Scotland northern tip -->
-                <path d="M168,46 C172,42 178,44 180,50 C182,56 178,62 172,62 C166,60 164,54 168,46 Z" 
-                    fill="#2a2a1a" stroke="#f5c842" stroke-width="1.5" filter="url(#glow-yellow)"/>
-                <!-- Wales bump -->
-                <path d="M162,72 C166,68 172,70 174,76 C176,82 172,88 166,86 C160,84 158,78 162,72 Z" 
-                    fill="#2a2a1a" stroke="#f5c842" stroke-width="1" filter="url(#glow-yellow)"/>
-                <!-- Ireland -->
-                <path d="M150,75 C154,70 162,70 166,76 C170,82 168,92 162,96 C156,100 148,98 146,90 C144,82 146,78 150,75 Z" 
-                    fill="#2a2a1a" stroke="#f5c842" stroke-width="1.5" filter="url(#glow-yellow)" opacity="0.85"/>
-                <text x="182" y="28" fill="#f5c842" font-size="10" text-anchor="middle" font-weight="700">欧洲</text>
-                
-                <!-- UK warehouses -->
-                <g filter="url(#glow-yellow)">
-                    <circle cx="190" cy="60" r="8" fill="rgba(245,200,66,0.3)" stroke="#f5c842" stroke-width="1.5"/>
-                    <circle cx="190" cy="60" r="3.5" fill="#f5c842"/>
-                </g>
-                <text x="202" y="57" fill="#f5c842" font-size="7" font-weight="600">平台仓 12k</text>
-                
-                <g filter="url(#glow-blue)">
-                    <circle cx="188" cy="78" r="8" fill="rgba(96,165,250,0.3)" stroke="#60a5fa" stroke-width="1.5"/>
-                    <circle cx="188" cy="78" r="3.5" fill="#60a5fa"/>
-                </g>
-                <text x="200" y="75" fill="#60a5fa" font-size="7" font-weight="600">三方仓 8k</text>
-                
-                <!-- Connection lines: From China to Americas and Europe -->
-                <!-- China to Americas -->
-                <path d="M245,72 Q180,90 120,75" fill="none" stroke="#c8f560" stroke-width="2" stroke-dasharray="6,4" opacity="0.6">
-                    <animate attributeName="stroke-dashoffset" from="24" to="0" dur="1.5s" repeatCount="indefinite"/>
-                </path>
-                <!-- China to Europe -->
-                <path d="M220,65 Q200,58 165,65" fill="none" stroke="#c8f560" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.5">
-                    <animate attributeName="stroke-dashoffset" from="16" to="0" dur="1s" repeatCount="indefinite"/>
-                </path>
-                <!-- Flow arrows -->
-                <polygon points="120,75 128,72 128,78" fill="#c8f560" opacity="0.8">
-                    <animate attributeName="opacity" values="0.4;0.9;0.4" dur="1.5s" repeatCount="indefinite"/>
-                </polygon>
-                <polygon points="165,65 172,62 172,68" fill="#c8f560" opacity="0.8">
-                    <animate attributeName="opacity" values="0.4;0.9;0.4" dur="1s" repeatCount="indefinite"/>
-                </polygon>
-            </svg>
-        </div>
-        <!-- Stats Row -->
-        <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full" style="background:#c8f560;box-shadow:0 0 8px #c8f560"></span>
-                <span class="text-xs text-gray-400">自有仓</span>
-                <span class="text-sm mono font-medium" style="color:#c8f560">55,600</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full" style="background:#60a5fa;box-shadow:0 0 8px #60a5fa"></span>
-                <span class="text-xs text-gray-400">三方仓</span>
-                <span class="text-sm mono font-medium" style="color:#60a5fa">36,813</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full" style="background:#f5c842;box-shadow:0 0 8px #f5c842"></span>
-                <span class="text-xs text-gray-400">平台仓</span>
-                <span class="text-sm mono font-medium" style="color:#f5c842">77,200</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Inventory Age Distribution - Horizontal Stacked Bar -->
-    <div class="col-span-4 glass p-4">
-        <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2">
-                <svg class="w-4 h-4" style="color:#60a5fa" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <h3 class="text-sm font-medium text-white">库龄分布</h3>
-            </div>
-            <span class="text-xs text-gray-500">总计: 150,013件</span>
-        </div>
-        <!-- Two Column Layout -->
-        <div class="grid grid-cols-2 gap-4">
-            <!-- Left: 库存占比 -->
-            <div>
-                <div class="flex items-center gap-2 mb-3">
-                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    <span class="text-xs text-gray-300">库存占比 <span class="text-gray-500">(真实数据)</span></span>
-                </div>
-                <!-- 0-90天 -->
-                <div class="mb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#22c55e"></span>
-                        <span class="text-xs text-gray-400 flex-1">0-90天 · 健康</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:58.6%;background:linear-gradient(90deg,#22c55e,#16a34a)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">58.6%</div>
-                            <div class="text-xs text-gray-500 mono">87,908件</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 90-180天 -->
-                <div class="mb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#3b82f6"></span>
-                        <span class="text-xs text-gray-400 flex-1">90-180天 · 关注</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:21.2%;background:linear-gradient(90deg,#3b82f6,#2563eb)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">21.2%</div>
-                            <div class="text-xs text-gray-500 mono">31,803件</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 180-270天 -->
-                <div class="mb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#f59e0b"></span>
-                        <span class="text-xs text-gray-400 flex-1">180-270天 · 滞销</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:7.9%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">7.9%</div>
-                            <div class="text-xs text-gray-500 mono">11,860件</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 270-360天 -->
-                <div class="mb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#f97316"></span>
-                        <span class="text-xs text-gray-400 flex-1">270-360天 · 高危</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:4.0%;background:linear-gradient(90deg,#f97316,#ea580c)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">4.0%</div>
-                            <div class="text-xs text-gray-500 mono">5,992件</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 360天+ -->
-                <div>
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#ef4444"></span>
-                        <span class="text-xs text-gray-400 flex-1">360天+ · 呆滞</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:8.3%;background:linear-gradient(90deg,#ef4444,#dc2626)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">8.3%</div>
-                            <div class="text-xs text-gray-500 mono">12,450件</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Right: 风险权重 -->
-            <div>
-                <div class="flex items-center gap-2 mb-3">
-                    <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    <span class="text-xs text-gray-300">风险权重 <span class="text-gray-500">(加权影响)</span></span>
-                </div>
-                <!-- 低风险 -->
-                <div class="mb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#22c55e"></span>
-                        <span class="text-xs text-gray-400 flex-1">低风险</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:22%;background:linear-gradient(90deg,#22c55e,#16a34a)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">22</div>
-                            <div class="text-xs text-gray-500">经营影响: 低</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 可控 -->
-                <div class="mb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#3b82f6"></span>
-                        <span class="text-xs text-gray-400 flex-1">可控</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:42%;background:linear-gradient(90deg,#3b82f6,#2563eb)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">42</div>
-                            <div class="text-xs text-gray-500">经营影响: 可控</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- W3=1 -->
-                <div class="mb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#f59e0b"></span>
-                        <span class="text-xs text-gray-400 flex-1">W3=1</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:7.9%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">7.9%</div>
-                            <div class="text-xs text-gray-500">¥71.2万 可回转</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- W2=2 -->
-                <div class="mb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#f97316"></span>
-                        <span class="text-xs text-gray-400 flex-1">W2=2</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:8.0%;background:linear-gradient(90deg,#f97316,#ea580c)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">8.0%</div>
-                            <div class="text-xs text-gray-500">¥42.6万 仓储费</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- W3=4 -->
-                <div>
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full" style="background:#ef4444"></span>
-                        <span class="text-xs text-gray-400 flex-1">W3=4</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full" style="width:33.2%;background:linear-gradient(90deg,#ef4444,#dc2626)"></div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-bold text-white mono">33.2%</div>
-                            <div class="text-xs text-gray-500">¥186万 侵蚀利润</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Bottom Alert -->
-        <div class="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-            <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                <span class="text-xs text-red-400">360天+库存仅占8.3%，但风险权重高达33.2%，是利润最大侵蚀源</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI Decision Stream 2x2 -->
-    <div class="col-span-4 glass p-4">
-        <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2">
-                <svg class="w-4 h-4" style="color:#c8f560" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                <span class="text-sm font-medium text-white">AI 决策流</span>
-            </div>
-            <span class="text-xs text-gray-500">今日 <span style="color:#c8f560">18</span> 条 · 待执行 <span style="color:#f5c842">7</span></span>
-        </div>
-        <div class="grid grid-cols-1 gap-2">
-            <!-- Decision 1 -->
-            <div class="p-2 rounded-lg" style="background:rgba(245,96,96,0.08);border:1px solid rgba(245,96,96,0.15)">
-                <div class="flex items-center gap-1.5 mb-1">
-                    <span class="tag tag-red text-[7px]">清仓</span>
-                    <span class="text-[9px] text-gray-400 mono">AI-2407</span>
-                </div>
-                <div class="text-[10px] text-white font-medium mb-0.5 mono truncate">151014-K-ALLBLACK-SZ-886</div>
-                <div class="text-[9px] text-gray-400 mb-1">库龄 402d · 库存 720 件</div>
-                <div class="flex items-center justify-between">
-                    <span class="text-[9px]" style="color:var(--warning)">释放 ¥186k</span>
-                    <button class="btn btn-red text-[9px] py-0.5 px-2">核销</button>
-                </div>
-            </div>
-            <!-- Decision 2 -->
-            <div class="p-2 rounded-lg" style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.15)">
-                <div class="flex items-center gap-1.5 mb-1">
-                    <span class="tag tag-purple text-[7px]">紧急空派</span>
-                    <span class="text-[9px] text-gray-400 mono">AI-2406</span>
-                </div>
-                <div class="text-[10px] text-white font-medium mb-0.5 mono truncate">39044-MINX-7A-BROWN-SZ-6</div>
-                <div class="text-[9px] text-gray-400 mb-1">可售 6 天 · 周销 56 件</div>
-                <div class="flex items-center justify-between">
-                    <span class="text-[9px]" style="color:var(--warning)">避免损失 ¥92k</span>
-                    <button class="btn btn-purple text-[9px] py-0.5 px-2">空派</button>
-                </div>
-            </div>
-            <!-- Decision 3 -->
-            <div class="p-2 rounded-lg" style="background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.15)">
-                <div class="flex items-center gap-1.5 mb-1">
-                    <span class="tag tag-yellow text-[7px]">降价促销</span>
-                    <span class="text-[9px] text-gray-400 mono">AI-2405</span>
-                </div>
-                <div class="text-[10px] text-white font-medium mb-0.5 mono truncate">SDKB2487W-CAMO-SZ-8</div>
-                <div class="text-[9px] text-gray-400 mb-1">库龄 312d · 库存 1,580 件</div>
-                <div class="flex items-center justify-between">
-                    <span class="text-[9px]" style="color:var(--warning)">预计清仓 ¥94k</span>
-                    <button class="btn btn-yellow text-[9px] py-0.5 px-2">促销</button>
-                </div>
-            </div>
-            <!-- Decision 4 -->
-            <div class="p-2 rounded-lg" style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.15)">
-                <div class="flex items-center gap-1.5 mb-1">
-                    <span class="tag tag-blue text-[7px]">区域调拨</span>
-                    <span class="text-[9px] text-gray-400 mono">AI-2404</span>
-                </div>
-                <div class="text-[10px] text-white font-medium mb-0.5 mono truncate">SNW5248W-BLK-SZ-9</div>
-                <div class="text-[9px] text-gray-400 mb-1">海外自有仓 0 件 · 海外三方仓 380 件</div>
-                <div class="flex items-center justify-between">
-                    <span class="text-[9px]" style="color:var(--optimal)">平衡区域库存</span>
-                    <button class="btn btn-ghost text-[9px] py-0.5 px-2">调拨</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ========== JAVASCRIPT ========== -->
 <script>
-// 动态加载弹窗模块
-function loadOverlayScripts() {
-    const scripts = ['overlay-detail.js', 'overlay-brand.js', 'overlay-sku.js'];
-    scripts.forEach(src => {
-        const s = document.createElement('script');
-        s.src = src;
-        document.body.appendChild(s);
-    });
-}
-loadOverlayScripts();
+    let currentCtName = '';
+    let currentCategoryName = '';
+    let currentSkuAdvisor = null;
+    const ctDashboardData = {
+        'Bruno Marc': {
+            score: 42.5, status: '严重', color: 'var(--color-danger)',
+            indexes: { '周转天数': 51, '缺货风险': 38, '积压风险': 32, '结构健康': 49 },
+            risks: { '滞销金额': '$1.42M', '断货 SKU': '186', '360天+ 库存': '31.8%', '可售周数': '18.6 Wks' },
+            actions: ['冻结低动销 SKU 新采买，优先清退 360天+ 库存。', '对核心爆款高频尺码做紧急补货，避免断码继续放大。', '联动渠道促销与仓间调拨，先释放德国仓与美东仓库容。']
+        },
+        'DP Kids': {
+            score: 58.0, status: '高危预警', color: 'var(--color-warning)',
+            indexes: { '周转天数': 60, '缺货风险': 52, '积压风险': 45, '结构健康': 67 },
+            risks: { '滞销金额': '$0.85M', '断货 SKU': '121', '360天+ 库存': '22.4%', '可售周数': '15.2 Wks' },
+            actions: ['对季节错配鞋款启动折扣清仓。', '把主力码库存向高动销渠道倾斜。', '下调下一轮备货预测中的长尾 SKU 权重。']
+        },
+        'Nortiv 8': {
+            score: 69.4, status: '亚健康', color: 'var(--color-warning)',
+            indexes: { '周转天数': 72, '缺货风险': 65, '积压风险': 58, '结构健康': 78 },
+            risks: { '滞销金额': '$0.54M', '断货 SKU': '78', '360天+ 库存': '14.2%', '可售周数': '11.8 Wks' },
+            actions: ['补齐户外核心款高频尺码。', '把慢周转库存转入更适合的区域仓。', '维持主力款备货节奏，谨慎扩充长尾色码。']
+        },
+        'DP Comfort': {
+            score: 76.1, status: '良性平稳', color: 'var(--color-success)',
+            indexes: { '周转天数': 81, '缺货风险': 74, '积压风险': 63, '结构健康': 84 },
+            risks: { '滞销金额': '$0.31M', '断货 SKU': '46', '360天+ 库存': '8.7%', '可售周数': '9.4 Wks' },
+            actions: ['维持现有补货模型。', '对局部慢动销 SKU 做小批量促销。', '保持安全库存水位，避免过度压仓。']
+        },
+        'Sneakers': {
+            score: 81.2, status: '卓越表现', color: 'var(--color-success)',
+            indexes: { '周转天数': 85, '缺货风险': 80, '积压风险': 76, '结构健康': 87 },
+            risks: { '滞销金额': '$0.22M', '断货 SKU': '32', '360天+ 库存': '5.9%', '可售周数': '8.1 Wks' },
+            actions: ['复制当前动销模型到相近品类。', '对高转化款保持快速补货。', '继续监控新品生命周期，避免后段积压。']
+        },
+        'DP Fashion': {
+            score: 88.5, status: '标杆卓越', color: 'var(--color-success)',
+            indexes: { '周转天数': 92, '缺货风险': 89, '积压风险': 84, '结构健康': 91 },
+            risks: { '滞销金额': '$0.09M', '断货 SKU': '18', '360天+ 库存': '3.1%', '可售周数': '6.8 Wks' },
+            actions: ['沉淀为集团柔性供应链标杆模型。', '保持小批量快反策略。', '扩大数据样本，用于训练其他 CT 的补货阈值。']
+        }
+    };
 
-document.addEventListener('keydown', e => { 
-    if (e.key === 'Escape') {
-        if (document.getElementById('skuOverlay').classList.contains('active')) {
-            closeSkuDetail();
-        } else if (document.getElementById('brandOverlay').classList.contains('active')) {
-            closeBrandDetail();
-        } else {
-            closeDetail();
+    function scoreColor(value) {
+        if (value >= 72) return 'var(--color-success)';
+        if (value >= 50) return 'var(--color-warning)';
+        return 'var(--color-danger)';
+    }
+
+    const ctRelationSource = {
+        'Bruno Marc': { sourceCt: 'BM', rows: 991, categories: [{ name: 'OXFORDS', rows: 315 }, { name: 'LOAFERS & SLIP-ONS', rows: 288 }, { name: 'FASHION SNEAKERS', rows: 151 }, { name: 'CHUKKA BOOTS', rows: 34 }, { name: 'CHELSEA-BOOTS', rows: 25 }, { name: 'SNOW BOOTS', rows: 25 }], styles: [{ name: 'RALPH-02', category: 'LOAFERS & SLIP-ONS', rows: 1 }, { name: 'CEREMONY-06', category: 'OXFORDS', rows: 1 }, { name: '150908-M', category: 'FASHION SNEAKERS', rows: 1 }, { name: 'CEREMONY-03', category: 'LOAFERS & SLIP-ONS', rows: 1 }, { name: 'CEREMONY-02', category: 'LOAFERS & SLIP-ONS', rows: 1 }, { name: 'HUGH-05', category: 'LOAFERS & SLIP-ONS', rows: 1 }] },
+        'DP Kids': { sourceCt: 'DPK', rows: 503, categories: [{ name: 'FASHION SNEAKERS', rows: 74 }, { name: 'FLATS', rows: 73 }, { name: 'RUNNING SHOES', rows: 63 }, { name: 'FASHION SANDALS', rows: 53 }, { name: 'BOOTS', rows: 52 }, { name: 'SNOW BOOTS', rows: 48 }], styles: [{ name: '170813-K', category: 'SPORT SANDALS & SLIDES', rows: 1 }, { name: 'SOLE-FINA-K', category: 'FLATS', rows: 1 }, { name: '160481-K', category: 'RUNNING SHOES', rows: 1 }, { name: 'DUCKO', category: 'SNOW BOOTS', rows: 1 }, { name: 'KOREL', category: 'BOOTS', rows: 1 }, { name: 'KLOUCH', category: 'BOOTS', rows: 1 }] },
+        'Nortiv 8': { sourceCt: 'N8AS', rows: 620, categories: [{ name: 'HIKING BOOTS', rows: 92 }, { name: 'SOCCER SHOES', rows: 90 }, { name: 'SNOW BOOTS', rows: 84 }, { name: 'INDUSTRIAL BOOTS', rows: 73 }, { name: 'HIKING SHOES', rows: 57 }, { name: 'MILITARY BOOTS', rows: 55 }], styles: [{ name: 'MAD', category: 'RAIN BOOTS', rows: 1 }, { name: 'EARTH-M', category: 'INDUSTRIAL BOOTS', rows: 1 }, { name: 'CONCRETE', category: 'INDUSTRIAL BOOTS', rows: 1 }, { name: 'DELTA-M', category: 'INDUSTRIAL BOOTS', rows: 1 }, { name: 'COLORADO', category: 'SNOW BOOTS', rows: 1 }, { name: 'GLACIER', category: 'SNOW BOOTS', rows: 1 }] },
+        'DP Comfort': { sourceCt: 'DPC', rows: 658, categories: [{ name: 'SNOW BOOTS', rows: 87 }, { name: 'FLATS', rows: 80 }, { name: 'WEDGES SANDALS', rows: 64 }, { name: 'FASHION SNEAKERS', rows: 56 }, { name: 'SLIPPERS', rows: 46 }, { name: 'PUMPS', rows: 45 }], styles: [{ name: 'M170889', category: 'WALKING SHOES', rows: 1 }, { name: '160912-M-NEW', category: 'SPORT SANDALS & SLIDES', rows: 1 }, { name: '160912-W-NEW', category: 'SPORT SANDALS & SLIDES', rows: 1 }, { name: 'GOOSE', category: 'SNOW BOOTS', rows: 1 }, { name: 'BLIZ', category: 'SLIPPERS', rows: 1 }, { name: 'SHORTY', category: 'SNOW BOOTS', rows: 1 }] },
+        'Sneakers': { sourceCt: 'SN', rows: 57, categories: [{ name: 'WALKING SHOES', rows: 43 }, { name: 'RUNNING SHOES', rows: 10 }, { name: 'TENNIS SHOES', rows: 2 }, { name: 'TRAIL RUNNING', rows: 1 }, { name: 'FITNESS & CROSS-TRAINING', rows: 1 }], styles: [{ name: 'SARR034W', category: 'WALKING SHOES', rows: 1 }, { name: 'SARR034M', category: 'WALKING SHOES', rows: 1 }, { name: 'SNWS245W', category: 'WALKING SHOES', rows: 1 }, { name: 'SNWS245M', category: 'WALKING SHOES', rows: 1 }, { name: 'SNWS246M', category: 'WALKING SHOES', rows: 1 }, { name: 'SNWS248W', category: 'WALKING SHOES', rows: 1 }] },
+        'DP Fashion': { sourceCt: 'DPF', rows: 1463, categories: [{ name: 'HEELED SANDALS', rows: 332 }, { name: 'PUMPS', rows: 257 }, { name: 'KNEE-HIGH BOOTS', rows: 192 }, { name: 'ANKLE & BOOTIE', rows: 177 }, { name: 'FLATS', rows: 122 }, { name: 'MID-CALF BOOTS', rows: 101 }], styles: [{ name: 'FLAPOINTED-SHINE', category: 'FLATS', rows: 1 }, { name: 'CHRISTIAN-NEW', category: 'PUMPS', rows: 1 }, { name: 'OPPOINTED', category: 'PUMPS', rows: 1 }, { name: 'OPPOINTED_MARY', category: 'PUMPS', rows: 1 }, { name: 'SHOO', category: 'OVER-THE-KNEE BOOTS', rows: 1 }, { name: 'SIBERIAN-W', category: 'KNEE-HIGH BOOTS', rows: 1 }] }
+    };
+
+    const ctCategoryStyleSource = {
+        'Bruno Marc': {
+            'OXFORDS': ['CEREMONY-06', 'GORDON-01', 'HALSTED-02', 'HALSTED-01', 'URBAN-05', 'URBAN-08'],
+            'LOAFERS & SLIP-ONS': ['RALPH-02', 'CEREMONY-03', 'CEREMONY-02', 'HUGH-05', 'HUGH-03', 'PITTS_10'],
+            'FASHION SNEAKERS': ['150908-M', 'PITTS_12', 'PITTS', 'RIVERA-01', '170845M', '170844M'],
+            'CHUKKA BOOTS': ['FRANCISCO-HIGH', 'CHUKKA', 'MARLON-H', 'BERGEN-02', 'PHILLY-1', 'URBAN-02'],
+            'CHELSEA-BOOTS': ['URBAN-06', 'ENGLE-03', 'PHILLY-2', 'STONE-02', 'BERGEN_12', 'PHILLY_18'],
+            'SNOW BOOTS': ['SBSB211M', 'SBSB212W', 'SBBO2213M', 'SBSB226M', 'SBSB221K', 'SBSB226M-E']
+        },
+        'DP Kids': {
+            'FASHION SNEAKERS': ['170803K', '170804K', '170307-K', '170379-K', '151014-K', '160479-K'],
+            'FLATS': ['SOLE-FINA-K', 'SOPHIA-22', 'NEW-MUY', 'MUY-SHINE', 'MUY', 'STARLET'],
+            'RUNNING SHOES': ['160481-K', '160450-K', '160507-K', '151003-K', '160863-K', 'KD18001K'],
+            'FASHION SANDALS': ['SWEETY-2', 'SWEETY-1', 'SPARK-INF', 'KSD213', 'KSD214', 'SDSD2210K'],
+            'BOOTS': ['KOREL', 'KLOUCH', 'ARMY-K', 'KLOVE', 'AMAZON-K', 'KNICE'],
+            'SNOW BOOTS': ['DUCKO', 'MAPLE', 'NORDIC', 'KAMICK', 'FORESTER', 'KSNOW']
+        },
+        'Nortiv 8': {
+            'HIKING BOOTS': ['160489-M', '170411', '170412', 'MOUNTAINA', 'MACK_01', 'MACK_02'],
+            'SOCCER SHOES': ['160470-M', '160471-M', '160858-M', '160861-M', '160859-M', '160860-M'],
+            'SNOW BOOTS': ['COLORADO', 'GLACIER', 'MUSK', 'GLAM', '170390-M', '160448-M'],
+            'INDUSTRIAL BOOTS': ['EARTH-M', 'CONCRETE', 'DELTA-M', 'JOB', 'HAWK', 'ENGINE'],
+            'HIKING SHOES': ['160448_LOW', 'JS19007M', 'QUEST-1', 'QUEST-2', 'SNHS226M', 'SNHS223W'],
+            'MILITARY BOOTS': ['TROOPER', 'ALLOY', 'DESERT', 'RESPONSE', 'SPEEDMAN', 'DELTA-HIGH']
+        },
+        'DP Comfort': {
+            'SNOW BOOTS': ['GOOSE', 'SHORTY', 'DP-CANADA', 'DP-AVALANCHE', 'CANADA', 'SWISS-LOW'],
+            'FLATS': ['DFA213', 'DFA214', 'SDFA224W', 'SDFA223W', 'SDFA2216W', 'SDFA2224W'],
+            'WEDGES SANDALS': ['ANDREA-5', 'REED-2', 'NINI-3', 'REED-1', 'NINI-5', 'NINI-8'],
+            'FASHION SNEAKERS': ['149002', 'BREATHE-1', 'DNS211', 'SDFN2210W', 'SDFN2220W', 'SDFN2225W'],
+            'SLIPPERS': ['BLIZ', 'AUZY-02', 'AUZY-01', 'SHOZIE-02', 'SHOZIE-01', 'COZY-01'],
+            'PUMPS': ['DPU214', 'DPU212-1', 'SDPU2230W', 'SDPU2231W', 'SBDPU2301W', 'SBDPU2302W']
+        },
+        'Sneakers': {
+            'WALKING SHOES': ['SARR034W', 'SARR034M', 'SNWS245W', 'SNWS245M', 'SNWS246M', 'SNWS248W'],
+            'RUNNING SHOES': ['AWUMRS2516', 'AMUMRS2516', 'AMUMRS2514', 'AMUMRS2503', 'AWUMRS2503', 'SARS26007W'],
+            'TENNIS SHOES': ['SATS26004W', 'SATS26002W'],
+            'TRAIL RUNNING': ['SNRS26006W'],
+            'FITNESS & CROSS-TRAINING': ['SATR27001W']
+        },
+        'DP Fashion': {
+            'HEELED SANDALS': ['SWAN_16', 'KARRIE', 'NINA-166', 'NINA-150', 'SHOW', 'GIGI'],
+            'PUMPS': ['CHRISTIAN-NEW', 'OPPOINTED', 'OPPOINTED_MARY', 'SWAN_30', 'OPPOINTED_LACEY', 'OPPOINTED-ANKLE'],
+            'KNEE-HIGH BOOTS': ['SIBERIAN-W', 'AKRIS', 'UTAH-W', 'TURTLE-W', 'TURTLE', 'URA-W'],
+            'ANKLE & BOOTIE': ['MONTREAL', 'CECILE', 'BOSTON-03', 'BOSTON-01', 'CHICAGO-03', 'CHICAGO-01'],
+            'FLATS': ['FLAPOINTED-SHINE', 'FLAPOINTED-ANKLE', 'SOLE-CLASSIC', 'REVONA', 'SOLE-STRAPPY', 'JILIAN'],
+            'MID-CALF BOOTS': ['MISSION', 'POCONO', 'AMAZON', 'TERRAN-SNOW', 'TERRAN', 'OUSSIE']
+        }
+    };
+
+    function buildCategoryCards(ctName, data) {
+        const items = ctRelationSource[ctName]?.categories || ['核心品类', '成长品类', '长尾品类', '季节品类', '清仓品类', '配件'].map(name => ({ name, rows: 0 }));
+        const offsets = [-9, -4, 0, 4, 8, 11];
+        return items.map((item, index) => {
+            const name = item.name;
+            const score = Math.max(28, Math.min(96, Math.round((data.score + offsets[index]) * 10) / 10));
+            const indexes = {
+                '周转天数': Math.max(25, Math.min(96, data.indexes['周转天数'] + offsets[index])),
+                '缺货风险': Math.max(25, Math.min(96, data.indexes['缺货风险'] + offsets[index] - 1)),
+                '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offsets[index] - 2)),
+                '结构健康': Math.max(25, Math.min(96, data.indexes['结构健康'] + offsets[index] + 1))
+            };
+            const status = score < 50 ? '严重' : score < 70 ? '高危预警' : score < 80 ? '良性平稳' : '卓越表现';
+            const amount = (Math.max(0.04, (100 - score) / 70)).toFixed(2);
+            return { name, category: item.category || '', sourceRows: item.rows, score, status, indexes, amount };
+        }).sort((a, b) => a.score - b.score);
+    }
+
+    function buildStyleCards(ctName, data, categoryName = '') {
+        const categoryStyles = categoryName ? ctCategoryStyleSource[ctName]?.[categoryName] : null;
+        const items = categoryStyles
+            ? categoryStyles.map(name => ({ name, category: categoryName, rows: 1 }))
+            : (ctRelationSource[ctName]?.styles || ['核心款', '成长款', '新品款', '季节款', '清仓款', '平台款'].map(name => ({ name, rows: 0 })));
+        const offsets = [-12, -6, -1, 3, 7, 10];
+        return items.map((item, index) => {
+            const name = item.name;
+            const offset = offsets[index % offsets.length];
+            const score = Math.max(24, Math.min(96, Math.round((data.score + offset) * 10) / 10));
+            const indexes = {
+                '周转天数': Math.max(25, Math.min(96, data.indexes['周转天数'] + offset)),
+                '缺货风险': Math.max(25, Math.min(96, data.indexes['缺货风险'] + offset - 2)),
+                '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offset - 3)),
+                '结构健康': Math.max(25, Math.min(96, data.indexes['结构健康'] + offset + 2))
+            };
+            const status = score < 50 ? '严重' : score < 70 ? '高危预警' : score < 80 ? '良性平稳' : '卓越表现';
+            const amount = (Math.max(0.03, (100 - score) / 85)).toFixed(2);
+            return { name, category: item.category || '', sourceRows: item.rows, score, status, indexes, amount };
+        }).sort((a, b) => a.score - b.score);
+    }
+
+    function renderFactor(label, value, weight) {
+        const color = scoreColor(value);
+        return `<div class="factor-compact"><div class="factor-header"><span>${label}</span><span>${weight}</span></div><div class="factor-main"><span class="factor-score" style="color: ${color};">${value}</span></div><div class="progress-micro"><div class="progress-fill" style="width:${value}%; background: ${color};"></div></div></div>`;
+    }
+
+    function renderCategoryCard(category) {
+        const color = scoreColor(category.score);
+        const riskClass = category.score < 50 ? ' ct-fire-card' : category.score < 70 ? ' ct-warn-card' : '';
+        const activeClass = category.name === currentCategoryName ? ' category-active' : '';
+        const indexHtml = Object.entries(category.indexes).map(([label, value]) => `<div class="ct-index-item"><span class="ct-index-label">${label}</span><span class="ct-index-value" style="color: ${scoreColor(value)};">${value}</span></div>`).join('');
+        const safeName = escapeHtml(category.name);
+        const metaHtml = category.category ? `<div class="ct-card-sub">${escapeHtml(category.category)}</div>` : '';
+        const reportTitleArg = escapeHtml(JSON.stringify(`${category.name} 品类诊断`));
+        const reportBodyArg = escapeHtml(JSON.stringify(`#### ${category.status}\n* 当前品类健康指数 ${category.score}。\n* 建议结合周转、缺货与积压风险做单品级穿透。`));
+        const ctArg = escapeHtml(JSON.stringify(currentCtName));
+        const categoryArg = escapeHtml(JSON.stringify(category.name));
+        return `<div class="ct-mini-card${riskClass}${activeClass}" onclick="selectCategory(${ctArg}, ${categoryArg})"><div class="ct-card-top"><div><div class="ct-name">${safeName}</div>${metaHtml}</div><div class="ct-score" style="color:${color};">${category.score}</div></div><div class="ct-index-grid">${indexHtml}</div><div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>${category.indexes['周转天数']} / ${category.indexes['缺货风险']}</span></div><div class="ct-metric-item"><span>滞销金额</span><span>$${category.amount}M</span></div></div><button class="ai-capsule" onclick="event.stopPropagation(); showAIReport(${reportTitleArg}, ${reportBodyArg})"><span class="ai-spark-icon"></span>AI</button></div>`;
+    }
+
+    function renderStyleCard(style) {
+        const color = scoreColor(style.score);
+        const riskClass = style.score < 50 ? ' ct-fire-card' : style.score < 70 ? ' ct-warn-card' : '';
+        const indexHtml = Object.entries(style.indexes).map(([label, value]) => `<div class="ct-index-item"><span class="ct-index-label">${label}</span><span class="ct-index-value" style="color: ${scoreColor(value)};">${value}</span></div>`).join('');
+        const safeName = escapeHtml(style.name);
+        const safeCategory = escapeHtml(style.category || 'UNMAPPED');
+        const ctArg = escapeHtml(JSON.stringify(currentCtName));
+        const styleArg = escapeHtml(JSON.stringify(style.name));
+        const reportTitleArg = escapeHtml(JSON.stringify(`${style.name} 款式诊断`));
+        const reportBodyArg = escapeHtml(JSON.stringify('点击卡片进入单品参谋，查看 SKU 级健康档案。'));
+        return `<div class="ct-mini-card${riskClass}" onclick="openSkuAdvisor(${ctArg}, ${styleArg})"><div class="ct-card-top"><div><div class="ct-name">${safeName}</div><div class="ct-card-sub">${safeCategory}</div></div><div class="ct-score" style="color:${color};">${style.score}</div></div><div class="ct-index-grid">${indexHtml}</div><div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>${style.indexes['周转天数']} / ${style.indexes['缺货风险']}</span></div><div class="ct-metric-item"><span>滞销金额</span><span>$${style.amount}M</span></div></div><button class="ai-capsule" onclick="event.stopPropagation(); showAIReport(${reportTitleArg}, ${reportBodyArg})"><span class="ai-spark-icon"></span>AI</button></div>`;
+    }
+
+    function renderStyleSection(ctName, categoryName) {
+        const data = ctDashboardData[ctName];
+        if (!data) return;
+        const styles = buildStyleCards(ctName, data, categoryName);
+        const title = categoryName ? `${ctName} · ${categoryName} 款式指数` : `${ctName} 款式指数`;
+        const badge = categoryName ? `当前品类：${categoryName} · 点击款式进入单品参谋` : '点击款式进入单品参谋';
+        document.getElementById('ctStyleTitle').innerHTML = `${escapeHtml(title)} <span>${escapeHtml(badge)}</span>`;
+        document.getElementById('ctStyleCards').innerHTML = styles.map(renderStyleCard).join('');
+    }
+
+    function selectCategory(ctName, categoryName) {
+        currentCtName = ctName;
+        currentCategoryName = categoryName;
+        const data = ctDashboardData[ctName];
+        if (!data) return;
+        const categories = buildCategoryCards(ctName, data);
+        document.getElementById('ctCategoryCards').innerHTML = categories.map(renderCategoryCard).join('');
+        renderStyleSection(ctName, categoryName);
+        closeSkuAdvisor();
+    }
+
+    function openCtDashboard(ctName) {
+        const data = ctDashboardData[ctName];
+        if (!data) return;
+        currentCtName = ctName;
+        const categories = buildCategoryCards(ctName, data);
+        currentCategoryName = categories[0]?.name || '';
+        document.getElementById('ctDashTitle').textContent = `${ctName} · By 品类库存健康指数看板`;
+        document.getElementById('ctDashSubTitle').textContent = `${data.status} · 与主看板一致，按品类穿透库存健康`;
+        document.getElementById('ctHeroLabel').textContent = `${ctName} 品类库存健康总指数`;
+        const scoreEl = document.getElementById('ctDashScore');
+        scoreEl.textContent = data.score;
+        const heroEl = scoreEl.closest('.ihi-hero');
+        heroEl.classList.remove('health-success', 'health-danger');
+        if (data.score >= 72) heroEl.classList.add('health-success');
+        if (data.score < 50) heroEl.classList.add('health-danger');
+        const trendEl = document.getElementById('ctDashTrend');
+        trendEl.textContent = data.score >= 72 ? '+1.4%' : '-2.1%';
+        trendEl.className = data.score >= 72 ? 'trend-up' : 'trend-down';
+        document.getElementById('ctDashIndexes').innerHTML = [
+            renderFactor('周转天数', data.indexes['周转天数'], '30%'),
+            renderFactor('缺货风险', data.indexes['缺货风险'], '25%'),
+            renderFactor('积压风险', data.indexes['积压风险'], '20%'),
+            renderFactor('结构健康', data.indexes['结构健康'], '25%')
+        ].join('');
+        const sellThrough = `${Math.round(data.score * 0.72 + 20)}%`;
+        const staleRate = data.risks['360天+ 库存'];
+        document.getElementById('ctDashKpis').innerHTML = `<div class="kpi-card"><div class="label">品类数量</div><div class="value">${categories.length}</div></div><div class="kpi-card"><div class="label">品类动销率</div><div class="value" style="color: var(--color-success);">${sellThrough}</div></div><div class="kpi-card kpi-danger-alert"><div class="label">异常滞销占比</div><div class="value">${staleRate}</div></div><div class="kpi-card"><div class="label">平均可售周数</div><div class="value">${data.risks['可售周数']}</div></div>`;
+        document.getElementById('ctCategoryTitle').innerHTML = `${ctName} 各品类库存健康透视 <span>按风险优先级倒序排查</span>`;
+        document.getElementById('ctCategoryCards').innerHTML = categories.map(renderCategoryCard).join('');
+        renderStyleSection(ctName, currentCategoryName);
+        document.getElementById('ctDashboard').classList.add('open');
+    }
+
+    function closeCtDashboard() {
+        document.getElementById('ctDashboard').classList.remove('open');
+        closeSkuAdvisor();
+    }
+
+    function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    function hashText(text) {
+        return Array.from(text).reduce((hash, char) => ((hash << 5) - hash + char.charCodeAt(0)) | 0, 0);
+    }
+
+    function getInventoryType(style) {
+        const weakest = Object.entries(style.indexes).sort((a, b) => a[1] - b[1])[0][0];
+        if (style.indexes['积压风险'] < 50) return { label: '根本不该存在的库存', className: 'danger', issue: 'stale', weak: weakest };
+        if (style.indexes['缺货风险'] < 58) return { label: '会缺货的库存', className: 'warn', issue: 'shortage', weak: weakest };
+        if (style.indexes['周转天数'] < 68) return { label: '卖得慢的库存', className: 'warn', issue: 'slow', weak: weakest };
+        return { label: '会卖掉的库存', className: 'good', issue: 'healthy', weak: weakest };
+    }
+
+    function buildSkuAdvisorData(ctName, style) {
+        const ctData = ctDashboardData[ctName];
+        const seed = Math.abs(hashText(`${ctName}:${style.name}:${style.category}`));
+        const base = style.score;
+        const inventoryType = getInventoryType(style);
+        const grossMargin = clamp(Math.round(18 + base * 0.28 + (seed % 9)), 12, 52);
+        const netMargin = clamp(Math.round(grossMargin * 0.62 - ((100 - base) / 18)), 3, 34);
+        const sellableDays = clamp(Math.round(style.indexes['缺货风险'] * 0.72 + (seed % 14) - 16), 8, 88);
+        const turnoverDays = clamp(Math.round(124 - style.indexes['周转天数'] * 0.92 + (seed % 18)), 18, 112);
+        const shortageRate = clamp(((100 - style.indexes['缺货风险']) / 5 + (seed % 4) * 0.4), 0.8, 15.8).toFixed(1);
+        const staleDays = clamp(Math.round((100 - style.indexes['积压风险']) * 1.65 + (seed % 24)), 8, 180);
+        const stockValue = (clamp((100 - base) / 38 + 0.16 + (seed % 4) * 0.05, 0.18, 2.6)).toFixed(2);
+        const inTransitDays = clamp(6 + (seed % 18) + (inventoryType.issue === 'shortage' ? 5 : 0), 6, 32);
+        const tier = base >= 80 ? 'A 类 畅销高盈利' : base >= 65 ? 'B 类 平销常规' : 'C 类 滞销低盈利';
+        const forecastGap = inventoryType.issue === 'shortage' ? `-${clamp(8 + seed % 18, 8, 26)}%` : inventoryType.issue === 'stale' ? `+${clamp(12 + seed % 20, 12, 32)}%` : `+${clamp(seed % 8, 1, 8)}%`;
+        const seriesStart = clamp(Math.round(base * 0.72 + 20 + (seed % 8)), 38, 92);
+        const inventorySeries = [
+            { label: '近6月', value: clamp(seriesStart + 6, 28, 96) },
+            { label: '近3月', value: clamp(seriesStart + (inventoryType.issue === 'stale' ? 11 : -2), 28, 96) },
+            { label: '当前', value: clamp(seriesStart + (inventoryType.issue === 'shortage' ? -10 : 3), 22, 96) },
+            { label: '未来30天', value: clamp(seriesStart + (inventoryType.issue === 'shortage' ? -18 : inventoryType.issue === 'stale' ? 13 : -4), 18, 96) },
+            { label: '未来60天', value: clamp(seriesStart + (inventoryType.issue === 'shortage' ? -22 : inventoryType.issue === 'stale' ? 18 : -6), 16, 96) },
+            { label: '未来90天', value: clamp(seriesStart + (inventoryType.issue === 'shortage' ? -26 : inventoryType.issue === 'stale' ? 22 : -8), 14, 96) }
+        ];
+        const viewpoints = [
+            { name: '盈利健康', score: clamp(Math.round(base + grossMargin / 5 - 8), 24, 96), desc: '毛利率、净利率、库存占用资金成本' },
+            { name: '历史-当前-未来', score: clamp(Math.round(base + (forecastGap.startsWith('-') ? -6 : 3)), 24, 96), desc: '历史走势、当前库存、未来预测缺口' },
+            { name: '周转效率', score: style.indexes['周转天数'], desc: '周转天数、平均库存金额、趋势排名' },
+            { name: '缺货风险', score: style.indexes['缺货风险'], desc: '可售天数、安全库存覆盖率、在途到岗' },
+            { name: '积压风险', score: style.indexes['积压风险'], desc: '滞销天数、去化周期、清仓进度' },
+            { name: 'SKU分层', score: clamp(Math.round(base + (tier.startsWith('A') ? 6 : tier.startsWith('B') ? 0 : -7)), 24, 96), desc: 'A/B/C 分层、资源倾斜与备货优先级' },
+            { name: '库龄健康', score: clamp(Math.round(100 - staleDays / 2.2), 24, 96), desc: '30天内、30-90天、180天+ 库龄结构' },
+            { name: '端到端链路', score: clamp(Math.round(base - (inTransitDays > 20 ? 8 : 1)), 24, 96), desc: '销售预测、供应、在途、海外仓、退货' }
+        ];
+        const ageOld = clamp(Math.round((100 - style.indexes['积压风险']) * 0.45 + (seed % 8)), 4, 42);
+        const ageBuckets = [
+            { label: '30天内', pct: clamp(48 - Math.round(ageOld * 0.45), 18, 52) },
+            { label: '30-90天', pct: clamp(26 - Math.round(ageOld * 0.12), 12, 34) },
+            { label: '90-180天', pct: clamp(16 + Math.round(ageOld * 0.16), 8, 28) },
+            { label: '180-360天', pct: clamp(8 + Math.round(ageOld * 0.22), 5, 24) },
+            { label: '360天+', pct: ageOld }
+        ];
+        const actionLibrary = {
+            healthy: [
+                ['聚焦高盈利核心单品', '加大备货优先级，倾斜销售推广资源，保持小单快补，避免 A 类单品缺货。'],
+                ['SKU 分层资源重配', '将采购、仓储与销售资源向该单品倾斜，沉淀为同品类补货基线。'],
+                ['端到端协同优化', '继续以销售预测为起点校验供应节奏，削弱需求波动向后端放大。']
+            ],
+            shortage: [
+                ['精准预警与补货', '基于可售天数、安全库存覆盖率和未来预测库存，提前触发补货与跨仓调拨。'],
+                ['优化预测与备货', '修正销售预测偏差，从源头优化核心单品备货计划，降低缺货预警漏报。'],
+                ['缺货应急联动', '查看多仓库存和在途到岗时间，优先从积压仓调拨至缺货仓。']
+            ],
+            stale: [
+                ['精准清理呆滞库存', '基于滞销天数、库龄分布和未来预测销量，制定折价、捆绑、渠道分流策略。'],
+                ['优化入库与库存管控', '严控后续备货量，执行先进先出，避免新旧库存叠加扩大长库龄。'],
+                ['滞销单品复盘优化', '联动销售预测、选品、定价与推广复盘成因，避免同类问题重复发生。']
+            ],
+            slow: [
+                ['单品周转分层管控', '减少备货量并提升去化优先级，拉高同品类周转效率。'],
+                ['打通端到端周转卡点', '排查在途天数、海外仓入库延迟和销售动销不及预期等阻塞环节。'],
+                ['多仓周转协同', '将积压仓库存调拨至高动销仓，降低地域错配与资金占用。']
+            ]
+        };
+        const chain = [
+            ['销售预测', inventoryType.issue === 'shortage' ? 'warn' : 'ok', `未来供需缺口 ${forecastGap}`],
+            ['供应链计划', inventoryType.issue === 'stale' ? 'warn' : 'ok', tier],
+            ['供应采购', inventoryType.issue === 'stale' ? 'danger' : 'ok', inventoryType.issue === 'stale' ? '建议停采控量' : '按节奏补货'],
+            ['国内仓', 'ok', '可支持调拨'],
+            ['海运在途', inTransitDays > 20 ? 'warn' : 'ok', `${inTransitDays}天到岗`],
+            ['海外仓', inventoryType.issue === 'slow' || inventoryType.issue === 'stale' ? 'warn' : 'ok', inventoryType.issue === 'shortage' ? '优先入库' : '分仓复核'],
+            ['平台销售', inventoryType.issue === 'stale' ? 'danger' : 'ok', inventoryType.issue === 'healthy' ? '保持推广' : '调整策略'],
+            ['消费者退货', 'ok', '退货率稳定']
+        ];
+        return {
+            ctName,
+            styleName: style.name,
+            category: style.category || 'UNMAPPED',
+            score: base,
+            status: style.status,
+            color: scoreColor(base),
+            inventoryType,
+            grossMargin,
+            netMargin,
+            sellableDays,
+            turnoverDays,
+            shortageRate,
+            staleDays,
+            stockValue,
+            inTransitDays,
+            tier,
+            forecastGap,
+            sourceCt: ctRelationSource[ctName]?.sourceCt || ctName,
+            ctStatus: ctData.status,
+            weakest: inventoryType.weak,
+            inventorySeries,
+            viewpoints,
+            ageBuckets,
+            actions: actionLibrary[inventoryType.issue],
+            chain
+        };
+    }
+
+    function openSkuAdvisor(ctName, styleName) {
+        const data = ctDashboardData[ctName];
+        if (!data) return;
+        const style = buildStyleCards(ctName, data, currentCategoryName).find(item => item.name === styleName)
+            || buildStyleCards(ctName, data).find(item => item.name === styleName);
+        if (!style) return;
+        const advisor = buildSkuAdvisorData(ctName, style);
+        currentSkuAdvisor = advisor;
+        document.getElementById('skuAdvisorTitle').textContent = `${styleName} · 单品库存参谋`;
+        document.getElementById('skuAdvisorSubTitle').textContent = `${ctName} / ${advisor.category} / ${advisor.sourceCt} · SKU 级健康档案`;
+        document.getElementById('skuAdvisorScore').textContent = advisor.score;
+        const orb = document.getElementById('skuScoreOrb');
+        orb.className = `sku-score-orb${advisor.score < 50 ? ' danger' : advisor.score < 70 ? ' warning' : ''}`;
+        document.getElementById('skuAdvisorName').textContent = styleName;
+        document.getElementById('skuAdvisorMeta').innerHTML = [
+            `<span class="sku-pill">${escapeHtml(ctName)}</span>`,
+            `<span class="sku-pill">${escapeHtml(advisor.category)}</span>`,
+            `<span class="sku-pill ${advisor.inventoryType.className}">${escapeHtml(advisor.inventoryType.label)}</span>`,
+            `<span class="sku-pill">${escapeHtml(advisor.tier)}</span>`
+        ].join('');
+        document.getElementById('skuAdvisorSummary').textContent = `当前单品健康指数 ${advisor.score}，关键短板为${advisor.weakest}。参谋已联动盈利、周转、缺货、积压、SKU分层、库龄与端到端链路，输出可执行治理建议。`;
+        document.getElementById('skuAdvisorKpis').innerHTML = [
+            ['毛利率', `${advisor.grossMargin}%`, `净利率 ${advisor.netMargin}%`],
+            ['可售天数', `${advisor.sellableDays}天`, '低于安全线自动预警'],
+            ['周转天数', `${advisor.turnoverDays}天`, '同品类排名联动'],
+            ['缺货率', `${advisor.shortageRate}%`, '订单满足率反向校验'],
+            ['库存占用', `$${advisor.stockValue}M`, '资金成本与仓租联动'],
+            ['在途到岗', `${advisor.inTransitDays}天`, '海运/海外仓节点追踪']
+        ].map(([label, value, note]) => `<div class="sku-kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="note">${note}</div></div>`).join('');
+        document.getElementById('skuInventorySeries').innerHTML = advisor.inventorySeries.map(item => `<div class="sku-bar-wrap"><div class="sku-bar-track"><div class="sku-bar-fill" style="height:${item.value}%;"></div></div><div class="sku-bar-label">${item.label}<br>${item.value}</div></div>`).join('');
+        document.getElementById('skuViewpoints').innerHTML = advisor.viewpoints.map(item => `<div class="sku-viewpoint"><div class="sku-viewpoint-top"><div class="sku-viewpoint-name">${item.name}</div><div class="sku-viewpoint-score" style="color:${scoreColor(item.score)};">${item.score}</div></div><div class="progress-micro"><div class="progress-fill" style="width:${item.score}%; background:${scoreColor(item.score)};"></div></div><div class="sku-viewpoint-desc">${item.desc}</div></div>`).join('');
+        document.getElementById('skuAdvisorActions').innerHTML = advisor.actions.map(([title, desc]) => `<div class="sku-action"><strong>${title}</strong><p>${desc}</p></div>`).join('');
+        document.getElementById('skuChain').innerHTML = advisor.chain.map(([title, state, desc]) => `<div class="sku-chain-node"><div class="sku-chain-status ${state === 'danger' ? 'danger' : state === 'warn' ? 'warn' : ''}"></div><div class="sku-chain-title">${title}</div><div class="sku-chain-desc">${desc}</div></div>`).join('');
+        document.getElementById('skuAgeBuckets').innerHTML = advisor.ageBuckets.map(item => `<div class="sku-age-row"><span>${item.label}</span><div class="sku-age-track"><div class="sku-age-fill" style="width:${item.pct}%;"></div></div><strong>${item.pct}%</strong></div>`).join('');
+        document.getElementById('skuAdvisor').classList.add('open');
+    }
+
+    function closeSkuAdvisor() {
+        const view = document.getElementById('skuAdvisor');
+        if (view) view.classList.remove('open');
+    }
+
+    function showCurrentSkuAI() {
+        if (!currentSkuAdvisor) return;
+        const advisor = currentSkuAdvisor;
+        showAIReport(`${advisor.styleName} 单品库存参谋`, `#### ${advisor.inventoryType.label}\n* 当前健康指数 ${advisor.score}，关键短板：${advisor.weakest}。\n* 可售天数 ${advisor.sellableDays}天，周转天数 ${advisor.turnoverDays}天，库存占用 $${advisor.stockValue}M。\n* AI建议：${advisor.actions[0][1]}`);
+    }
+
+    function showCurrentCtAI() {
+        const data = ctDashboardData[currentCtName];
+        if (!data) return;
+        showAIReport(`${currentCtName} By 品类诊断`, `#### <span class=\\'ai-spark-icon\\'></span> ${data.status}\\n* 当前健康指数 ${data.score}。\\n* 关键短板：${Object.entries(data.indexes).sort((a, b) => a[1] - b[1])[0][0]}。\\n* AI 建议：${data.actions[0]}`);
+    }
+
+    function openFloatingAI() {
+        const isSkuOpen = document.getElementById('skuAdvisor').classList.contains('open');
+        if (isSkuOpen && currentSkuAdvisor) {
+            showCurrentSkuAI();
+            return;
+        }
+        const isCtOpen = document.getElementById('ctDashboard').classList.contains('open');
+        if (isCtOpen && currentCtName) {
+            showCurrentCtAI();
+            return;
+        }
+        showAIReport('AI 战略异动简报 · 全局深度研判', `#### <span class='ai-spark-icon'></span> 全球库存智能诊断\n* 综合健康指数71.4分，积压风险继续恶化（48分）导致整体承压。\n* 德国仓与美东仓库容率飙升超过92%，长库龄资金沉淀达$4.21M。\n* Bruno Marc陷入呆滞与断货双重旋涡，建议立即启动清仓调拨计划。`);
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    }
+
+    function formatAIContent(markdownContent) {
+        const normalized = markdownContent
+            .replace(/\\'/g, "'")
+            .replace(/<span[^>]*ai-spark-icon[^>]*><\/span>/g, '')
+            .replace(/\\n/g, '\n')
+            .replace(/<br\s*\/?>/g, '\n');
+        const lines = normalized.split(/\n+/).map(line => line.trim()).filter(Boolean);
+        let html = '';
+        let inList = false;
+        lines.forEach(line => {
+            if (/^#{1,6}\s+/.test(line)) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h4>${escapeHtml(line.replace(/^#{1,6}\s+/, ''))}</h4>`;
+                return;
+            }
+            if (/^[*-]\s+/.test(line)) {
+                if (!inList) { html += '<ul>'; inList = true; }
+                html += `<li>${escapeHtml(line.replace(/^[*-]\s+/, ''))}</li>`;
+                return;
+            }
+            if (inList) { html += '</ul>'; inList = false; }
+            html += `<p>${escapeHtml(line)}</p>`;
+        });
+        if (inList) html += '</ul>';
+        return html;
+    }
+
+    function showAIReport(title, markdownContent) {
+        document.getElementById('drawerContent').innerHTML = `<h4>${escapeHtml(title)}</h4>${formatAIContent(markdownContent)}`;
+        document.getElementById('aiDrawer').classList.add('open');
+    }
+    function closeDrawer() { document.getElementById('aiDrawer').classList.remove('open'); }
+
+    function applyTheme(theme) {
+        const isLight = theme === 'light';
+        document.body.classList.toggle('light-theme', isLight);
+        const icon = document.getElementById('themeToggleIcon');
+        const text = document.getElementById('themeToggleText');
+        if (icon && text) {
+            icon.textContent = isLight ? '深' : '白';
+            text.textContent = isLight ? '深色' : '主题';
         }
     }
-});
 
+    function toggleTheme() {
+        const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
+        try { localStorage.setItem('inventory-dashboard-theme', nextTheme); } catch (e) {}
+        applyTheme(nextTheme);
+    }
+
+    try {
+        applyTheme(localStorage.getItem('inventory-dashboard-theme') || 'dark');
+    } catch (e) {
+        applyTheme('dark');
+    }
 </script>
-
-<!-- Footer -->
-<footer class="mt-4 flex items-center justify-between text-xs text-gray-600">
-    <div>© MEIMAI DS V1.3.0 · Inventory Decision Cockpit · 4K Edition</div>
-    <div class="flex items-center gap-4">
-        <span>PRD:V1.3.0 · Prototype:V1.3.0</span>
-        <span>ERP · WMS · Sales API</span>
-    </div>
-</footer>
-
 </body>
 </html>
