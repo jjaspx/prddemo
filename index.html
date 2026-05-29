@@ -451,8 +451,58 @@
         }
         .kpi-card .label { font-size: 10px; color: #8E8E93; margin-bottom: 6px; font-weight: 470; letter-spacing: 0.2px; }
         .kpi-card .value { font-size: 24px; font-weight: 680; letter-spacing: -0.3px; }
+        .kpi-card .note { margin-top: 5px; color: #8E8E93; font-size: 9px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
         .kpi-danger-alert { background: var(--color-bg-danger-soft) !important; border: 1px solid rgba(255, 69, 58, 0.25) !important; }
         .kpi-danger-alert .value { color: var(--color-danger); text-shadow: 0 0 8px rgba(255, 69, 58, 0.2); }
+        .ct-diagnostic-summary-card .kpi-danger-alert {
+            background: rgba(255, 255, 255, 0.025) !important;
+            border-color: rgba(255, 255, 255, 0.045) !important;
+        }
+        .ct-diagnostic-summary-card .kpi-danger-alert .value {
+            color: var(--color-danger);
+            text-shadow: none;
+        }
+        .ct-diagnostic-summary-card {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+        .ct-diagnostic-summary-card .kpi-grid {
+            flex: 1;
+            height: auto;
+            min-height: 0;
+        }
+        .ct-diagnostic-summary-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 0 2px;
+        }
+        .ct-diagnostic-summary-title {
+            color: #F5F5F7;
+            font-size: 12px;
+            font-weight: 680;
+            letter-spacing: 0.1px;
+        }
+        .ct-diagnostic-summary-sub {
+            margin-top: 3px;
+            color: #8E8E93;
+            font-size: 9px;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        .ct-diagnostic-summary-tag {
+            flex: 0 0 auto;
+            color: var(--color-warning);
+            background: rgba(255, 159, 10, 0.1);
+            border: 1px solid rgba(255, 159, 10, 0.18);
+            border-radius: 999px;
+            padding: 3px 7px;
+            font-size: 8px;
+            font-weight: 680;
+            letter-spacing: 0.5px;
+        }
 
         /* 业务线卡片 */
         .ct-section-title { 
@@ -532,12 +582,81 @@
             white-space: nowrap;
             z-index: 3;
         }
-        .ct-fire-card { border: 1px solid rgba(255, 69, 58, 0.45) !important; background: linear-gradient(145deg, rgba(255, 69, 58, 0.08) 0%, rgba(22, 22, 26, 0.7) 100%) !important; }
-        .ct-warn-card { border: 1px solid rgba(255, 159, 10, 0.4) !important; background: linear-gradient(145deg, rgba(255, 159, 10, 0.05) 0%, rgba(22, 22, 26, 0.7) 100%) !important; }
+        .ct-fire-card {
+            border: 1px solid rgba(255, 255, 255, 0.075) !important;
+            background: linear-gradient(145deg, rgba(255, 69, 58, 0.035) 0%, rgba(22, 22, 26, 0.7) 100%) !important;
+            box-shadow: inset 3px 0 0 rgba(255, 69, 58, 0.62);
+        }
+        .ct-warn-card {
+            border: 1px solid rgba(255, 255, 255, 0.075) !important;
+            background: linear-gradient(145deg, rgba(255, 159, 10, 0.035) 0%, rgba(22, 22, 26, 0.7) 100%) !important;
+            box-shadow: inset 3px 0 0 rgba(255, 159, 10, 0.58);
+        }
         .ct-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
         .ct-card-top > div:first-child { min-width: 0; }
         .ct-name { font-size: 15px; font-weight: 620; color: #FFFFFF; letter-spacing: 0; line-height: 1.15; overflow-wrap: anywhere; }
         .ct-score { font-size: 22px; font-weight: 720; }
+        .ct-score-cluster {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 7px;
+            flex-shrink: 0;
+        }
+        .ct-score-cluster .ct-trend-badge {
+            margin-top: 0;
+        }
+        .ct-trend-badge {
+            display: inline-flex;
+            margin-top: 7px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            color: #A7F3D0;
+            background: rgba(48, 209, 88, 0.1);
+            border: 1px solid rgba(48, 209, 88, 0.22);
+            font-size: 9px;
+            font-weight: 760;
+            line-height: 1;
+        }
+        .ct-trend-badge.danger {
+            color: #FFB3AE;
+            background: rgba(255, 69, 58, 0.1);
+            border-color: rgba(255, 69, 58, 0.26);
+        }
+        .ct-decision-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin: 9px 0 8px 0;
+        }
+        .ct-decision-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            color: #98989E;
+            font-size: 10px;
+            line-height: 1.25;
+        }
+        .ct-decision-row strong {
+            color: #F5F5F7;
+            font-weight: 760;
+            text-align: right;
+        }
+        .ct-decision-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 2px;
+        }
+        .ct-action-pill {
+            padding: 4px 8px;
+            border-radius: 999px;
+            color: #FFE8BF;
+            background: rgba(255, 159, 10, 0.18);
+            border: 1px solid rgba(255, 159, 10, 0.36);
+            font-size: 10px;
+            font-weight: 820;
+        }
         .ct-metrics-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0 12px 0; }
         .ct-metric-item { display: flex; justify-content: space-between; font-size: 11px; color: #98989E; font-weight: 470; }
         .ct-index-grid {
@@ -552,6 +671,11 @@
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.035);
             border: 1px solid rgba(255, 255, 255, 0.055);
+        }
+        .ct-index-item.weakest {
+            background: rgba(255, 69, 58, 0.065);
+            border-color: rgba(255, 69, 58, 0.28);
+            box-shadow: inset 0 0 0 1px rgba(255, 69, 58, 0.06);
         }
         .ct-index-label {
             display: block;
@@ -1359,22 +1483,50 @@
             border-color: rgba(64, 158, 255, 0.32);
         }
         body.light-theme .ct-fire-card {
-            background: linear-gradient(145deg, rgba(255, 69, 58, 0.09) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+            background: linear-gradient(145deg, rgba(255, 69, 58, 0.045) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+            border-color: rgba(15, 23, 42, 0.1) !important;
+            box-shadow: inset 3px 0 0 rgba(255, 69, 58, 0.52);
         }
         body.light-theme .ct-warn-card {
-            background: linear-gradient(145deg, rgba(255, 159, 10, 0.12) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+            background: linear-gradient(145deg, rgba(255, 159, 10, 0.055) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+            border-color: rgba(15, 23, 42, 0.1) !important;
+            box-shadow: inset 3px 0 0 rgba(255, 159, 10, 0.5);
         }
         body.light-theme .ct-name,
         body.light-theme .ct-section-title,
         body.light-theme .kpi-card .value {
             color: #111827;
         }
+        body.light-theme .ct-decision-row {
+            color: #64748B;
+        }
+        body.light-theme .ct-decision-row strong {
+            color: #111827;
+        }
+        body.light-theme .ct-index-item.weakest {
+            background: rgba(255, 69, 58, 0.055);
+            border-color: rgba(255, 69, 58, 0.24);
+            box-shadow: inset 0 0 0 1px rgba(255, 69, 58, 0.04);
+        }
+        body.light-theme .ct-diagnostic-summary-card .kpi-danger-alert {
+            background: rgba(248, 250, 252, 0.92) !important;
+            border-color: rgba(15, 23, 42, 0.09) !important;
+        }
         body.light-theme .factor-header,
         body.light-theme .ct-index-label,
         body.light-theme .ct-metric-item,
         body.light-theme .kpi-card .label,
+        body.light-theme .kpi-card .note,
+        body.light-theme .ct-diagnostic-summary-sub,
         body.light-theme .card-title {
             color: #64748B;
+        }
+        body.light-theme .ct-diagnostic-summary-title {
+            color: #111827;
+        }
+        body.light-theme .ct-diagnostic-summary-tag {
+            background: rgba(255, 159, 10, 0.12);
+            border-color: rgba(255, 159, 10, 0.26);
         }
         body.light-theme .ct-dashboard-view {
             background:
@@ -1665,12 +1817,19 @@
             </div>
         </div>
     </div>
-    <div class="apple-card col-8" style="min-height: 170px; padding: 12px 14px;">
+    <div class="apple-card col-8 ct-diagnostic-summary-card global-diagnostic-summary-card" style="min-height: 170px; padding: 12px 14px;">
+        <div class="ct-diagnostic-summary-head">
+            <div>
+                <div class="ct-diagnostic-summary-title">全局诊疗摘要</div>
+                <div class="ct-diagnostic-summary-sub">基于CT / SKU风险自动汇总</div>
+            </div>
+            <div class="ct-diagnostic-summary-tag">AUTO</div>
+        </div>
         <div class="kpi-grid">
-            <div class="kpi-card"><div class="label">总 SKU 数量</div><div class="value">14,852</div></div>
-            <div class="kpi-card"><div class="label">全渠道动销率</div><div class="value" style="color: var(--color-success);">74.2%</div></div>
-            <div class="kpi-card kpi-danger-alert"><div class="label">异常滞销占比</div><div class="value">28.4%</div></div>
-            <div class="kpi-card"><div class="label">平均可售周数</div><div class="value">11.4 Wks</div></div>
+            <div class="kpi-card"><div class="label">高危SKU数</div><div class="value" style="color: var(--color-warning);">426</div><div class="note">较上周 +38</div></div>
+            <div class="kpi-card"><div class="label">未来30天缺货SKU</div><div class="value" style="color: var(--color-danger);">186</div><div class="note">预计缺口 12.4K双</div></div>
+            <div class="kpi-card kpi-danger-alert"><div class="label">呆滞库存金额</div><div class="value">$4.21M</div><div class="note">360天+ 占比 31.8%</div></div>
+            <div class="kpi-card"><div class="label">待治理任务</div><div class="value" style="color: var(--color-success);">29</div><div class="note">预计释放 $0.86M</div></div>
         </div>
     </div>
 </div>
@@ -1680,11 +1839,15 @@
     <div class="apple-card col-24" style="min-height: 318px;">
         <div class="ct-section-title">各CT库存健康指数 <span>按风险优先级倒序排查</span></div>
         <div class="ct-cards-container">
-            <div class="ct-mini-card ct-fire-card" onclick="openCtDashboard('Bruno Marc')">
-                <div class="ct-card-top"><div><div class="ct-name">Bruno Marc</div></div><div class="ct-score" style="color: var(--color-danger);">42.5</div></div>
-                <div class="ct-index-grid"><div class="ct-index-item"><span class="ct-index-label">周转天数</span><span class="ct-index-value" style="color: var(--color-warning);">51</span></div><div class="ct-index-item"><span class="ct-index-label">缺货风险</span><span class="ct-index-value" style="color: var(--color-danger);">38</span></div><div class="ct-index-item"><span class="ct-index-label">积压风险</span><span class="ct-index-value" style="color: var(--color-danger);">32</span></div><div class="ct-index-item"><span class="ct-index-label">结构健康</span><span class="ct-index-value" style="color: var(--color-warning);">49</span></div></div>
-                <div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>51 / 38</span></div><div class="ct-metric-item"><span>滞销金额</span><span style="color: var(--color-danger);">$1.42M</span></div></div>
-                <button class="ai-capsule" onclick="event.stopPropagation(); showAIReport('Bruno Marc 深度诊断', '#### <span class=\\'ai-spark-icon\\'></span> 呆滞危机 & 断码交叉高危\\n* 资产劣化：360天+僵死库存占集团总积压30%，资金严重占用。\\n* 核心爆款断码预警频发。\\n* AI 决策：立即联合促销&紧急空运追发高频码。')"><span class="ai-spark-icon"></span>AI</button>
+            <div class="ct-mini-card ct-fire-card ct-decision-card" onclick="openCtDashboard('Bruno Marc')">
+                <div class="ct-card-top"><div><div class="ct-name">Bruno Marc</div></div><div class="ct-score-cluster"><div class="ct-trend-badge danger">↓ 环比 -2.1%</div><div class="ct-score" style="color: var(--color-danger);">42.5</div></div></div>
+                <div class="ct-index-grid"><div class="ct-index-item"><span class="ct-index-label">缺货风险</span><span class="ct-index-value" style="color: var(--color-danger);">38</span></div><div class="ct-index-item weakest"><span class="ct-index-label">积压风险</span><span class="ct-index-value" style="color: var(--color-danger);">32</span></div><div class="ct-index-item"><span class="ct-index-label">结构健康</span><span class="ct-index-value" style="color: var(--color-warning);">49</span></div><div class="ct-index-item"><span class="ct-index-label">周转天数</span><span class="ct-index-value" style="color: var(--color-warning);">51</span></div></div>
+                <div class="ct-decision-meta">
+                    <div class="ct-decision-row"><span>滞销金额</span><strong style="color: var(--color-danger);">$1.42M</strong></div>
+                    <div class="ct-decision-row"><span>影响SKU</span><strong>186</strong></div>
+                    <div class="ct-decision-row"><span>优先查看</span><strong>OXFORDS</strong></div>
+                    <div class="ct-decision-actions"><span class="ct-action-pill">清仓</span><span class="ct-action-pill">调拨</span><span class="ct-action-pill">冻结采购</span></div>
+                </div>
             </div>
             <div class="ct-mini-card ct-warn-card" onclick="openCtDashboard('DP Kids')">
                 <div class="ct-card-top"><div><div class="ct-name">DP Kids</div></div><div class="ct-score" style="color: var(--color-warning);">58.0</div></div>
@@ -1728,7 +1891,14 @@
                     <div class="compact-factors" id="ctDashIndexes"></div>
                 </div>
             </div>
-            <div class="apple-card col-8" style="min-height: 170px; padding: 12px 14px;">
+            <div class="apple-card col-8 ct-diagnostic-summary-card" style="min-height: 170px; padding: 12px 14px;">
+                <div class="ct-diagnostic-summary-head">
+                    <div>
+                        <div class="ct-diagnostic-summary-title">CT诊疗摘要</div>
+                        <div class="ct-diagnostic-summary-sub">基于品类 / 款式风险自动汇总</div>
+                    </div>
+                    <div class="ct-diagnostic-summary-tag">AUTO</div>
+                </div>
                 <div class="kpi-grid" id="ctDashKpis"></div>
             </div>
         </div>
@@ -1862,19 +2032,19 @@
             actions: ['冻结低动销 SKU 新采买，优先清退 360天+ 库存。', '对核心爆款高频尺码做紧急补货，避免断码继续放大。', '联动渠道促销与仓间调拨，先释放德国仓与美东仓库容。']
         },
         'DP Kids': {
-            score: 58.0, status: '高危预警', color: 'var(--color-warning)',
+            score: 58.0, status: '严重', color: 'var(--color-danger)',
             indexes: { '周转天数': 60, '缺货风险': 52, '积压风险': 45, '结构健康': 67 },
             risks: { '滞销金额': '$0.85M', '断货 SKU': '121', '360天+ 库存': '22.4%', '可售周数': '15.2 Wks' },
             actions: ['对季节错配鞋款启动折扣清仓。', '把主力码库存向高动销渠道倾斜。', '下调下一轮备货预测中的长尾 SKU 权重。']
         },
         'Nortiv 8': {
-            score: 69.4, status: '亚健康', color: 'var(--color-warning)',
+            score: 69.4, status: '关注预警', color: 'var(--color-warning)',
             indexes: { '周转天数': 72, '缺货风险': 65, '积压风险': 58, '结构健康': 78 },
             risks: { '滞销金额': '$0.54M', '断货 SKU': '78', '360天+ 库存': '14.2%', '可售周数': '11.8 Wks' },
             actions: ['补齐户外核心款高频尺码。', '把慢周转库存转入更适合的区域仓。', '维持主力款备货节奏，谨慎扩充长尾色码。']
         },
         'DP Comfort': {
-            score: 76.1, status: '良性平稳', color: 'var(--color-success)',
+            score: 76.1, status: '关注预警', color: 'var(--color-warning)',
             indexes: { '周转天数': 81, '缺货风险': 74, '积压风险': 63, '结构健康': 84 },
             risks: { '滞销金额': '$0.31M', '断货 SKU': '46', '360天+ 库存': '8.7%', '可售周数': '9.4 Wks' },
             actions: ['维持现有补货模型。', '对局部慢动销 SKU 做小批量促销。', '保持安全库存水位，避免过度压仓。']
@@ -1886,17 +2056,41 @@
             actions: ['复制当前动销模型到相近品类。', '对高转化款保持快速补货。', '继续监控新品生命周期，避免后段积压。']
         },
         'DP Fashion': {
-            score: 88.5, status: '标杆卓越', color: 'var(--color-success)',
+            score: 88.5, status: '卓越表现', color: 'var(--color-success)',
             indexes: { '周转天数': 92, '缺货风险': 89, '积压风险': 84, '结构健康': 91 },
             risks: { '滞销金额': '$0.09M', '断货 SKU': '18', '360天+ 库存': '3.1%', '可售周数': '6.8 Wks' },
             actions: ['沉淀为集团柔性供应链标杆模型。', '保持小批量快反策略。', '扩大数据样本，用于训练其他 CT 的补货阈值。']
         }
     };
 
+    const SCORE_THRESHOLDS = { success: 80, warning: 60 };
+
+    function scoreLevel(value) {
+        const numeric = Number(value) || 0;
+        if (numeric >= SCORE_THRESHOLDS.success) return 'success';
+        if (numeric >= SCORE_THRESHOLDS.warning) return 'warning';
+        return 'danger';
+    }
+
     function scoreColor(value) {
-        if (value >= 72) return 'var(--color-success)';
-        if (value >= 50) return 'var(--color-warning)';
+        const level = scoreLevel(value);
+        if (level === 'success') return 'var(--color-success)';
+        if (level === 'warning') return 'var(--color-warning)';
         return 'var(--color-danger)';
+    }
+
+    function scoreStatus(value) {
+        const level = scoreLevel(value);
+        if (level === 'success') return '卓越表现';
+        if (level === 'warning') return '关注预警';
+        return '严重';
+    }
+
+    function riskClassForScore(value) {
+        const level = scoreLevel(value);
+        if (level === 'danger') return ' ct-fire-card';
+        if (level === 'warning') return ' ct-warn-card';
+        return '';
     }
 
     const cardIndexOrder = ['缺货风险', '积压风险', '结构健康', '周转天数'];
@@ -1914,6 +2108,24 @@
             cardIndexOrder.forEach(label => {
                 const target = items.find(item => item.querySelector('.ct-index-label')?.textContent.trim() === label);
                 if (target) grid.appendChild(target);
+            });
+        });
+    }
+
+    function normalizeStaticScoreStates() {
+        document.querySelectorAll('.ct-cards-container > .ct-mini-card').forEach(card => {
+            const scoreEl = card.querySelector('.ct-score');
+            const score = parseFloat(scoreEl?.textContent || '');
+            if (!Number.isNaN(score)) {
+                card.classList.remove('ct-fire-card', 'ct-warn-card');
+                const riskClass = riskClassForScore(score).trim();
+                if (riskClass) card.classList.add(riskClass);
+                scoreEl.style.color = scoreColor(score);
+            }
+            card.querySelectorAll('.ct-index-item').forEach(item => {
+                const valueEl = item.querySelector('.ct-index-value');
+                const value = parseFloat(valueEl?.textContent || '');
+                if (!Number.isNaN(value)) valueEl.style.color = scoreColor(value);
             });
         });
     }
@@ -1989,7 +2201,7 @@
                 '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offsets[index] - 2)),
                 '结构健康': Math.max(25, Math.min(96, data.indexes['结构健康'] + offsets[index] + 1))
             };
-            const status = score < 50 ? '严重' : score < 70 ? '高危预警' : score < 80 ? '良性平稳' : '卓越表现';
+            const status = scoreStatus(score);
             const amount = (Math.max(0.04, (100 - score) / 70)).toFixed(2);
             return { name, category: item.category || '', sourceRows: item.rows, score, status, indexes, amount };
         }).sort((a, b) => a.score - b.score);
@@ -2011,7 +2223,7 @@
                 '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offset - 3)),
                 '结构健康': Math.max(25, Math.min(96, data.indexes['结构健康'] + offset + 2))
             };
-            const status = score < 50 ? '严重' : score < 70 ? '高危预警' : score < 80 ? '良性平稳' : '卓越表现';
+            const status = scoreStatus(score);
             const amount = (Math.max(0.03, (100 - score) / 85)).toFixed(2);
             return { name, category: item.category || '', sourceRows: item.rows, score, status, indexes, amount };
         }).sort((a, b) => a.score - b.score);
@@ -2020,6 +2232,33 @@
     function renderFactor(label, value, weight) {
         const color = scoreColor(value);
         return `<div class="factor-compact"><div class="factor-header"><span>${label}</span><span>${weight}</span></div><div class="factor-main"><span class="factor-score" style="color: ${color};">${value}</span></div><div class="progress-micro"><div class="progress-fill" style="width:${value}%; background: ${color};"></div></div></div>`;
+    }
+
+    function parseMetricNumber(value) {
+        return Number(String(value || '').replace(/[^0-9.]/g, '')) || 0;
+    }
+
+    function renderCtDiagnosticKpis(ctName, data, categories) {
+        const styles = buildStyleCards(ctName, data);
+        const riskCategories = categories.filter(item => item.score < SCORE_THRESHOLDS.success);
+        const lowestCategory = categories[0];
+        const shortageSku = parseMetricNumber(data.risks['断货 SKU']);
+        const shortageStyles = Math.max(1, Math.round(shortageSku * 0.23));
+        const shortageGap = (shortageStyles * 160 / 1000).toFixed(1);
+        const staleRate = data.risks['360天+ 库存'];
+        const weakStyles = styles.filter(item => item.indexes['缺货风险'] < SCORE_THRESHOLDS.warning || item.indexes['积压风险'] < SCORE_THRESHOLDS.warning);
+        const clearActions = riskCategories.length ? Math.max(1, Math.round(riskCategories.length * 0.8)) : 0;
+        const replenishActions = Math.max(1, Math.round(shortageStyles / 12));
+        const transferActions = Math.max(1, Math.ceil(weakStyles.length / 3));
+        const pendingActions = clearActions + replenishActions + transferActions;
+        const riskColor = riskCategories.some(item => scoreLevel(item.score) === 'danger') ? 'var(--color-danger)' : riskCategories.length ? 'var(--color-warning)' : 'var(--color-success)';
+        const riskNote = lowestCategory ? `最低 ${lowestCategory.name} ${lowestCategory.score}` : '全部品类健康';
+        return [
+            `<div class="kpi-card"><div class="label">风险品类数</div><div class="value" style="color: ${riskColor};">${riskCategories.length} / ${categories.length}</div><div class="note">${escapeHtml(riskNote)}</div></div>`,
+            `<div class="kpi-card"><div class="label">未来30天缺货款式</div><div class="value" style="color: var(--color-danger);">${shortageStyles}</div><div class="note">预计缺口 ${shortageGap}K双</div></div>`,
+            `<div class="kpi-card kpi-danger-alert"><div class="label">呆滞库存金额</div><div class="value">${data.risks['滞销金额']}</div><div class="note">360天+ 占比 ${staleRate}</div></div>`,
+            `<div class="kpi-card"><div class="label">待治理动作</div><div class="value" style="color: var(--color-success);">${pendingActions}</div><div class="note">补货${replenishActions} · 清仓${clearActions} · 调拨${transferActions}</div></div>`
+        ].join('');
     }
 
     function renderBreadcrumb(items) {
@@ -2072,7 +2311,7 @@
 
     function renderCategoryCard(category) {
         const color = scoreColor(category.score);
-        const riskClass = category.score < 50 ? ' ct-fire-card' : category.score < 70 ? ' ct-warn-card' : '';
+        const riskClass = riskClassForScore(category.score);
         const activeClass = category.name === currentCategoryName ? ' category-active' : '';
         const indexHtml = renderIndexItems(category.indexes);
         const safeName = escapeHtml(category.name);
@@ -2086,7 +2325,7 @@
 
     function renderStyleCard(style) {
         const color = scoreColor(style.score);
-        const riskClass = style.score < 50 ? ' ct-fire-card' : style.score < 70 ? ' ct-warn-card' : '';
+        const riskClass = riskClassForScore(style.score);
         const indexHtml = renderIndexItems(style.indexes);
         const safeName = escapeHtml(style.name);
         const safeCategory = escapeHtml(style.category || 'UNMAPPED');
@@ -2128,26 +2367,25 @@
         const categories = buildCategoryCards(ctName, data);
         currentCategoryName = categories[0]?.name || '';
         document.getElementById('ctDashTitle').textContent = `${ctName} · By 品类库存健康指数看板`;
-        document.getElementById('ctDashSubTitle').textContent = `${data.status} · 与主看板一致，按品类穿透库存健康`;
+        const ctStatus = scoreStatus(data.score);
+        document.getElementById('ctDashSubTitle').textContent = `${ctStatus} · 与主看板一致，按品类穿透库存健康`;
         document.getElementById('ctHeroLabel').textContent = `${ctName} 品类库存健康总指数`;
         const scoreEl = document.getElementById('ctDashScore');
         scoreEl.textContent = data.score;
         const heroEl = scoreEl.closest('.ihi-hero');
         heroEl.classList.remove('health-success', 'health-danger');
-        if (data.score >= 72) heroEl.classList.add('health-success');
-        if (data.score < 50) heroEl.classList.add('health-danger');
+        if (scoreLevel(data.score) === 'success') heroEl.classList.add('health-success');
+        if (scoreLevel(data.score) === 'danger') heroEl.classList.add('health-danger');
         const trendEl = document.getElementById('ctDashTrend');
-        trendEl.textContent = data.score >= 72 ? '+1.4%' : '-2.1%';
-        trendEl.className = data.score >= 72 ? 'trend-up' : 'trend-down';
+        trendEl.textContent = scoreLevel(data.score) === 'success' ? '+1.4%' : '-2.1%';
+        trendEl.className = scoreLevel(data.score) === 'success' ? 'trend-up' : 'trend-down';
         document.getElementById('ctDashIndexes').innerHTML = [
             renderFactor('缺货风险', data.indexes['缺货风险'], '25%'),
             renderFactor('积压风险', data.indexes['积压风险'], '20%'),
             renderFactor('结构健康', data.indexes['结构健康'], '25%'),
             renderFactor('周转天数', data.indexes['周转天数'], '30%')
         ].join('');
-        const sellThrough = `${Math.round(data.score * 0.72 + 20)}%`;
-        const staleRate = data.risks['360天+ 库存'];
-        document.getElementById('ctDashKpis').innerHTML = `<div class="kpi-card"><div class="label">品类数量</div><div class="value">${categories.length}</div></div><div class="kpi-card"><div class="label">品类动销率</div><div class="value" style="color: var(--color-success);">${sellThrough}</div></div><div class="kpi-card kpi-danger-alert"><div class="label">异常滞销占比</div><div class="value">${staleRate}</div></div><div class="kpi-card"><div class="label">平均可售周数</div><div class="value">${data.risks['可售周数']}</div></div>`;
+        document.getElementById('ctDashKpis').innerHTML = renderCtDiagnosticKpis(ctName, data, categories);
         document.getElementById('ctCategoryTitle').innerHTML = `${ctName} 各品类库存健康透视 <span>按风险优先级倒序排查</span>`;
         document.getElementById('ctCategoryCards').innerHTML = categories.map(renderCategoryCard).join('');
         renderStyleSection(ctName, currentCategoryName);
@@ -2173,9 +2411,12 @@
 
     function getInventoryType(style) {
         const weakest = Object.entries(style.indexes).sort((a, b) => a[1] - b[1])[0][0];
-        if (style.indexes['积压风险'] < 50) return { label: '根本不该存在的库存', className: 'danger', issue: 'stale', weak: weakest };
-        if (style.indexes['缺货风险'] < 58) return { label: '会缺货的库存', className: 'warn', issue: 'shortage', weak: weakest };
-        if (style.indexes['周转天数'] < 68) return { label: '卖得慢的库存', className: 'warn', issue: 'slow', weak: weakest };
+        if (style.indexes['积压风险'] < SCORE_THRESHOLDS.warning) return { label: '根本不该存在的库存', className: 'danger', issue: 'stale', weak: weakest };
+        if (style.indexes['缺货风险'] < SCORE_THRESHOLDS.warning) return { label: '会缺货的库存', className: 'danger', issue: 'shortage', weak: weakest };
+        if (style.indexes['周转天数'] < SCORE_THRESHOLDS.warning) return { label: '卖得慢的库存', className: 'danger', issue: 'slow', weak: weakest };
+        if (style.indexes['积压风险'] < SCORE_THRESHOLDS.success) return { label: '卖得慢的库存', className: 'warn', issue: 'stale', weak: weakest };
+        if (style.indexes['缺货风险'] < SCORE_THRESHOLDS.success) return { label: '会缺货的库存', className: 'warn', issue: 'shortage', weak: weakest };
+        if (style.indexes['周转天数'] < SCORE_THRESHOLDS.success) return { label: '卖得慢的库存', className: 'warn', issue: 'slow', weak: weakest };
         return { label: '会卖掉的库存', className: 'good', issue: 'healthy', weak: weakest };
     }
 
@@ -2353,7 +2594,7 @@
         document.getElementById('skuAdvisorSubTitle').textContent = `${ctName} / ${advisor.category} / ${advisor.sourceCt} · SKU 级健康档案`;
         document.getElementById('skuAdvisorScore').textContent = advisor.score;
         const orb = document.getElementById('skuScoreOrb');
-        orb.className = `sku-score-orb${advisor.score < 50 ? ' danger' : advisor.score < 70 ? ' warning' : ''}`;
+        orb.className = `sku-score-orb${scoreLevel(advisor.score) === 'danger' ? ' danger' : scoreLevel(advisor.score) === 'warning' ? ' warning' : ''}`;
         document.getElementById('skuAdvisorName').textContent = styleName;
         document.getElementById('skuAdvisorMeta').innerHTML = [
             `<span class="sku-pill">${escapeHtml(ctName)}</span>`,
@@ -2415,14 +2656,14 @@
         const categoryLine = activeCategory
             ? `当前聚焦品类 ${activeCategory.name}，品类健康指数 ${activeCategory.score}。`
             : '当前未选中具体品类，建议先从风险最低分品类开始穿透。';
-        showAIReport(`${currentCtName} 品类健康总指数 · 关键解读`, `#### By 品类指数解读\n* ${currentCtName} 品类健康总指数为 ${data.score}，当前状态：${data.status}。\n* 指数短板为 ${weakName} ${weakValue}，建议优先判断是缺货、积压还是结构失衡造成。\n* ${categoryLine}\n* AI建议：${data.actions[0]}`);
+        showAIReport(`${currentCtName} 品类健康总指数 · 关键解读`, `#### By 品类指数解读\n* ${currentCtName} 品类健康总指数为 ${data.score}，当前状态：${scoreStatus(data.score)}。\n* 指数短板为 ${weakName} ${weakValue}，建议优先判断是缺货、积压还是结构失衡造成。\n* ${categoryLine}\n* AI建议：${data.actions[0]}`);
     }
 
     function showCurrentCtAI() {
         const data = ctDashboardData[currentCtName];
         if (!data) return;
         const [weakName, weakValue] = getWeakestMetric(data.indexes);
-        showAIReport(`${currentCtName} By 品类诊断`, `#### ${data.status}\n* 当前健康指数 ${data.score}，关键短板：${weakName} ${weakValue}。\n* 当前选中品类：${currentCategoryName || '全部品类'}。\n* AI 建议：${data.actions[0]}`);
+        showAIReport(`${currentCtName} By 品类诊断`, `#### ${scoreStatus(data.score)}\n* 当前健康指数 ${data.score}，关键短板：${weakName} ${weakValue}。\n* 当前选中品类：${currentCategoryName || '全部品类'}。\n* AI 建议：${data.actions[0]}`);
     }
 
     function getAIContext() {
@@ -2671,6 +2912,7 @@
         applyTheme('dark');
     }
     normalizeStaticIndexGrids();
+    normalizeStaticScoreStates();
     renderAIContextSuggestions();
 </script>
 </body>
