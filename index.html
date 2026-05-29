@@ -328,6 +328,58 @@
         }
         .trend-down { color: #FF8A7A; font-weight: 600; }
         .trend-up { color: #B0FFB0; }
+        .ihi-hero-broadcast {
+            height: 30px;
+            margin-top: 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            background: linear-gradient(90deg, rgba(5, 12, 24, 0.46), rgba(5, 12, 24, 0.18));
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 8px 0 6px;
+            backdrop-filter: blur(6px);
+            box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.08), 0 6px 16px rgba(0, 0, 0, 0.16);
+        }
+        .ihi-hero-broadcast:hover {
+            border-color: rgba(255, 255, 255, 0.56);
+            background: linear-gradient(90deg, rgba(5, 12, 24, 0.58), rgba(5, 12, 24, 0.24));
+        }
+        .ihi-hero-broadcast-label {
+            flex-shrink: 0;
+            padding: 3px 7px;
+            border-radius: 999px;
+            color: #FFFFFF;
+            background: linear-gradient(135deg, #409EFF, #00C7FF);
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            box-shadow: 0 0 12px rgba(64, 158, 255, 0.45);
+        }
+        .ihi-hero-broadcast-viewport {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+        .ihi-hero-broadcast-track {
+            display: inline-block;
+            white-space: nowrap;
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 780;
+            letter-spacing: 0.2px;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+            animation: ihiBroadcastMove 20s linear infinite;
+        }
+        .ihi-hero-broadcast:hover .ihi-hero-broadcast-track {
+            animation-play-state: paused;
+        }
+        @keyframes ihiBroadcastMove {
+            0% { transform: translate3d(16%, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
 
         /* 右侧四维紧凑模块 */
         .compact-factors {
@@ -1581,14 +1633,15 @@
                 <div class="ihi-hero-label">全球库存健康总指数</div>
                 <div class="ihi-hero-score">71.4</div>
                 <div class="ihi-hero-trend"><span>同比 </span><span class="trend-down">-2.1%</span></div>
+                <div class="ihi-hero-broadcast" onclick="event.stopPropagation(); showGlobalIndexInsight()" title="点击打开 AI 详细解读">
+                    <span class="ihi-hero-broadcast-label">AI解读</span>
+                    <div class="ihi-hero-broadcast-viewport">
+                        <div class="ihi-hero-broadcast-track">总指数 71.4 处于临界健康区 · 积压风险 48 分是主要拖累 · 优先穿透 Bruno Marc 与 360天+ 长库龄库存</div>
+                    </div>
+                </div>
             </div>
             <!-- 右侧四维紧凑子指标 -->
             <div class="compact-factors">
-                <div class="factor-compact">
-                    <div class="factor-header"><span>周转天数</span><span>30%</span></div>
-                    <div class="factor-main"><span class="factor-score" style="color: var(--color-success);">82</span></div>
-                    <div class="progress-micro"><div class="progress-fill" style="width:82%; background: var(--color-success);"></div></div>
-                </div>
                 <div class="factor-compact">
                     <div class="factor-header"><span>缺货风险</span><span>25%</span></div>
                     <div class="factor-main"><span class="factor-score" style="color: var(--color-warning);">68</span></div>
@@ -1603,6 +1656,11 @@
                     <div class="factor-header"><span>结构健康</span><span>25%</span></div>
                     <div class="factor-main"><span class="factor-score" style="color: var(--color-success);">85</span></div>
                     <div class="progress-micro"><div class="progress-fill" style="width:85%; background: var(--color-success);"></div></div>
+                </div>
+                <div class="factor-compact">
+                    <div class="factor-header"><span>周转天数</span><span>30%</span></div>
+                    <div class="factor-main"><span class="factor-score" style="color: var(--color-success);">82</span></div>
+                    <div class="progress-micro"><div class="progress-fill" style="width:82%; background: var(--color-success);"></div></div>
                 </div>
             </div>
         </div>
@@ -1660,6 +1718,12 @@
                         <div class="ihi-hero-label" id="ctHeroLabel">品类库存健康总指数</div>
                         <div class="ihi-hero-score" id="ctDashScore">--</div>
                         <div class="ihi-hero-trend"><span>环比 </span><span id="ctDashTrend" class="trend-down">--</span></div>
+                        <div class="ihi-hero-broadcast" onclick="event.stopPropagation(); showCtIndexInsight()" title="点击打开 AI 详细解读">
+                            <span class="ihi-hero-broadcast-label">AI解读</span>
+                            <div class="ihi-hero-broadcast-viewport">
+                                <div class="ihi-hero-broadcast-track" id="ctIndexBroadcastText">品类健康总指数加载中 · 点击查看 AI 解读</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="compact-factors" id="ctDashIndexes"></div>
                 </div>
@@ -1835,6 +1899,25 @@
         return 'var(--color-danger)';
     }
 
+    const cardIndexOrder = ['缺货风险', '积压风险', '结构健康', '周转天数'];
+
+    function renderIndexItems(indexes) {
+        return cardIndexOrder.map(label => {
+            const value = indexes[label];
+            return `<div class="ct-index-item"><span class="ct-index-label">${label}</span><span class="ct-index-value" style="color: ${scoreColor(value)};">${value}</span></div>`;
+        }).join('');
+    }
+
+    function normalizeStaticIndexGrids() {
+        document.querySelectorAll('.ct-index-grid').forEach(grid => {
+            const items = Array.from(grid.children);
+            cardIndexOrder.forEach(label => {
+                const target = items.find(item => item.querySelector('.ct-index-label')?.textContent.trim() === label);
+                if (target) grid.appendChild(target);
+            });
+        });
+    }
+
     const ctRelationSource = {
         'Bruno Marc': { sourceCt: 'BM', rows: 991, categories: [{ name: 'OXFORDS', rows: 315 }, { name: 'LOAFERS & SLIP-ONS', rows: 288 }, { name: 'FASHION SNEAKERS', rows: 151 }, { name: 'CHUKKA BOOTS', rows: 34 }, { name: 'CHELSEA-BOOTS', rows: 25 }, { name: 'SNOW BOOTS', rows: 25 }], styles: [{ name: 'RALPH-02', category: 'LOAFERS & SLIP-ONS', rows: 1 }, { name: 'CEREMONY-06', category: 'OXFORDS', rows: 1 }, { name: '150908-M', category: 'FASHION SNEAKERS', rows: 1 }, { name: 'CEREMONY-03', category: 'LOAFERS & SLIP-ONS', rows: 1 }, { name: 'CEREMONY-02', category: 'LOAFERS & SLIP-ONS', rows: 1 }, { name: 'HUGH-05', category: 'LOAFERS & SLIP-ONS', rows: 1 }] },
         'DP Kids': { sourceCt: 'DPK', rows: 503, categories: [{ name: 'FASHION SNEAKERS', rows: 74 }, { name: 'FLATS', rows: 73 }, { name: 'RUNNING SHOES', rows: 63 }, { name: 'FASHION SANDALS', rows: 53 }, { name: 'BOOTS', rows: 52 }, { name: 'SNOW BOOTS', rows: 48 }], styles: [{ name: '170813-K', category: 'SPORT SANDALS & SLIDES', rows: 1 }, { name: 'SOLE-FINA-K', category: 'FLATS', rows: 1 }, { name: '160481-K', category: 'RUNNING SHOES', rows: 1 }, { name: 'DUCKO', category: 'SNOW BOOTS', rows: 1 }, { name: 'KOREL', category: 'BOOTS', rows: 1 }, { name: 'KLOUCH', category: 'BOOTS', rows: 1 }] },
@@ -1978,11 +2061,20 @@
         return Object.entries(indexes).sort((a, b) => a[1] - b[1])[0] || ['综合健康', 0];
     }
 
+    function updateCtIndexBroadcast() {
+        const data = ctDashboardData[currentCtName];
+        const target = document.getElementById('ctIndexBroadcastText');
+        if (!data || !target) return;
+        const [weakName, weakValue] = getWeakestMetric(data.indexes);
+        const categoryText = currentCategoryName ? `当前聚焦 ${currentCategoryName}` : '当前聚焦全部品类';
+        target.textContent = `${currentCtName} 品类总指数 ${data.score} · 短板 ${weakName} ${weakValue} · ${categoryText} · 点击查看 AI 解读`;
+    }
+
     function renderCategoryCard(category) {
         const color = scoreColor(category.score);
         const riskClass = category.score < 50 ? ' ct-fire-card' : category.score < 70 ? ' ct-warn-card' : '';
         const activeClass = category.name === currentCategoryName ? ' category-active' : '';
-        const indexHtml = Object.entries(category.indexes).map(([label, value]) => `<div class="ct-index-item"><span class="ct-index-label">${label}</span><span class="ct-index-value" style="color: ${scoreColor(value)};">${value}</span></div>`).join('');
+        const indexHtml = renderIndexItems(category.indexes);
         const safeName = escapeHtml(category.name);
         const metaHtml = category.category ? `<div class="ct-card-sub">${escapeHtml(category.category)}</div>` : '';
         const reportTitleArg = escapeHtml(JSON.stringify(`${category.name} 品类诊断`));
@@ -1995,7 +2087,7 @@
     function renderStyleCard(style) {
         const color = scoreColor(style.score);
         const riskClass = style.score < 50 ? ' ct-fire-card' : style.score < 70 ? ' ct-warn-card' : '';
-        const indexHtml = Object.entries(style.indexes).map(([label, value]) => `<div class="ct-index-item"><span class="ct-index-label">${label}</span><span class="ct-index-value" style="color: ${scoreColor(value)};">${value}</span></div>`).join('');
+        const indexHtml = renderIndexItems(style.indexes);
         const safeName = escapeHtml(style.name);
         const safeCategory = escapeHtml(style.category || 'UNMAPPED');
         const ctArg = escapeHtml(JSON.stringify(currentCtName));
@@ -2024,6 +2116,7 @@
         document.getElementById('ctCategoryCards').innerHTML = categories.map(renderCategoryCard).join('');
         renderStyleSection(ctName, categoryName);
         updateCtBreadcrumb();
+        updateCtIndexBroadcast();
         if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
         closeSkuAdvisor();
     }
@@ -2047,10 +2140,10 @@
         trendEl.textContent = data.score >= 72 ? '+1.4%' : '-2.1%';
         trendEl.className = data.score >= 72 ? 'trend-up' : 'trend-down';
         document.getElementById('ctDashIndexes').innerHTML = [
-            renderFactor('周转天数', data.indexes['周转天数'], '30%'),
             renderFactor('缺货风险', data.indexes['缺货风险'], '25%'),
             renderFactor('积压风险', data.indexes['积压风险'], '20%'),
-            renderFactor('结构健康', data.indexes['结构健康'], '25%')
+            renderFactor('结构健康', data.indexes['结构健康'], '25%'),
+            renderFactor('周转天数', data.indexes['周转天数'], '30%')
         ].join('');
         const sellThrough = `${Math.round(data.score * 0.72 + 20)}%`;
         const staleRate = data.risks['360天+ 库存'];
@@ -2059,6 +2152,7 @@
         document.getElementById('ctCategoryCards').innerHTML = categories.map(renderCategoryCard).join('');
         renderStyleSection(ctName, currentCategoryName);
         updateCtBreadcrumb();
+        updateCtIndexBroadcast();
         document.getElementById('ctDashboard').classList.add('open');
         if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
     }
@@ -2306,6 +2400,22 @@
         const advisor = currentSkuAdvisor;
         const w = advisor.warehouseMismatch;
         showAIReport(`${advisor.styleName} 调拨执行单`, `#### 立刻调拨\n* 调拨路径：${w.route}。\n* 建议调拨数量：${w.transferQty}双。\n* 调出仓：${w.overstockWarehouse}，当前积压库存 ${w.overstockQty}双，最长库龄 ${w.overstockDays}天。\n* 调入仓：${w.shortageWarehouse}，当前可售 ${w.shortageDays}天，预测缺口 ${w.shortageGap}双。\n* 下一步：推送供应链负责人确认出库，并预约NJ仓入库排期。`);
+    }
+
+    function showGlobalIndexInsight() {
+        showAIReport('全球库存健康总指数 · 关键解读', `#### 指数解读\n* 当前全球库存健康总指数为71.4，同比下降2.1%，处在健康与预警之间的临界区。\n* 四项因子中，积压风险仅48分，是拉低总指数的首要短板；缺货风险68分，说明局部爆款仍有断货压力。\n* 结构健康85分、周转天数82分表现较好，说明问题不是全局失控，而是高库龄与低动销库存集中拖累。\n* 建议优先穿透Bruno Marc、DP Kids及360天+长库龄库存，并联动AI生成清仓、调拨与补货治理任务。`);
+    }
+
+    function showCtIndexInsight() {
+        const data = ctDashboardData[currentCtName];
+        if (!data) return;
+        const categories = buildCategoryCards(currentCtName, data);
+        const activeCategory = categories.find(item => item.name === currentCategoryName) || categories[0];
+        const [weakName, weakValue] = getWeakestMetric(data.indexes);
+        const categoryLine = activeCategory
+            ? `当前聚焦品类 ${activeCategory.name}，品类健康指数 ${activeCategory.score}。`
+            : '当前未选中具体品类，建议先从风险最低分品类开始穿透。';
+        showAIReport(`${currentCtName} 品类健康总指数 · 关键解读`, `#### By 品类指数解读\n* ${currentCtName} 品类健康总指数为 ${data.score}，当前状态：${data.status}。\n* 指数短板为 ${weakName} ${weakValue}，建议优先判断是缺货、积压还是结构失衡造成。\n* ${categoryLine}\n* AI建议：${data.actions[0]}`);
     }
 
     function showCurrentCtAI() {
@@ -2560,6 +2670,7 @@
     } catch (e) {
         applyTheme('dark');
     }
+    normalizeStaticIndexGrids();
     renderAIContextSuggestions();
 </script>
 </body>
