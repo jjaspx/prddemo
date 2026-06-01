@@ -73,9 +73,16 @@
         .pill-green { color: #2AA660; background: var(--green-soft); }
         .pill-red { color: var(--red); background: var(--red-soft); }
         .pill-orange { color: #C87800; background: var(--orange-soft); }
-        .expert-panel { display: flex; align-items: flex-start; gap: 18px; padding: 20px 26px; border-radius: 10px; background: var(--soft-blue); border: 1px solid #DCEEFF; color: #314158; }
-        .expert-icon { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; color: #FFFFFF; background: linear-gradient(135deg, #13B3FF, #118AE8); box-shadow: 0 8px 18px rgba(18, 150, 219, 0.22); font-size: 14px; font-weight: 900; flex: 0 0 auto; letter-spacing: 0.4px; }
-        .expert-copy { font-size: 15px; line-height: 1.85; letter-spacing: 0.05px; }
+        .expert-panel { display: flex; align-items: stretch; gap: 16px; padding: 18px 20px; border-radius: 18px; background: linear-gradient(135deg, #EAF4FF, #F7FBFF); border: 1px solid #DCEEFF; color: #314158; box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.65), 0 10px 22px rgba(15, 23, 42, 0.04); }
+        .expert-visual { flex: 0 0 126px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 9px; }
+        .expert-icon { display: inline-flex; align-items: center; justify-content: center; min-height: 22px; padding: 4px 9px; border-radius: 999px; color: #FFFFFF; background: linear-gradient(135deg, #00C7FF, #409EFF); box-shadow: 0 8px 18px rgba(18, 150, 219, 0.22); font-size: 10px; font-weight: 900; flex: 0 0 auto; letter-spacing: 0.4px; white-space: nowrap; }
+        .expert-avatar { position: relative; width: 108px; height: 108px; border-radius: 24px; overflow: hidden; border: 1px solid rgba(18, 150, 219, 0.26); background: #DFF0FF; box-shadow: 0 12px 24px rgba(15, 23, 42, 0.1), 0 0 0 4px rgba(64, 158, 255, 0.06); }
+        .expert-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
+        .expert-avatar::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(15, 32, 51, 0.18)); pointer-events: none; }
+        .expert-speaking-dot { position: absolute; right: 9px; bottom: 9px; width: 9px; height: 9px; border-radius: 999px; background: #21B573; box-shadow: 0 0 0 4px rgba(33, 181, 115, 0.18), 0 0 14px rgba(33, 181, 115, 0.7); z-index: 1; }
+        .expert-copy { position: relative; flex: 1; min-width: 0; padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(64, 158, 255, 0.14); background: rgba(255, 255, 255, 0.82); font-size: 14px; line-height: 1.78; letter-spacing: 0.05px; display: flex; flex-direction: column; gap: 9px; box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04); }
+        .expert-copy::before { content: ''; position: absolute; left: -8px; top: 28px; width: 15px; height: 15px; transform: rotate(45deg); background: rgba(255, 255, 255, 0.82); border-left: 1px solid rgba(64, 158, 255, 0.14); border-bottom: 1px solid rgba(64, 158, 255, 0.14); }
+        .expert-copy-line { line-height: 1.78; }
         .expert-copy strong { color: #152033; font-weight: 850; }
         .sample-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
         .sample-card { display: block; padding: 13px 14px; text-decoration: none; transition: 180ms ease; }
@@ -138,6 +145,9 @@
             .summary-grid, .two-col, .sample-grid { grid-template-columns: 1fr; }
             .hero-score-card { grid-column: auto; }
             .expert-panel { flex-direction: column; gap: 12px; padding: 18px; }
+            .expert-visual { flex: 0 0 auto; align-items: flex-start; }
+            .expert-avatar { display: none; }
+            .expert-copy::before { display: none; }
             .meta-row { gap: 10px 16px; }
             .chart-card { padding: 12px; }
         }
@@ -1756,6 +1766,7 @@
         const rows = getCtRows();
         const [weakName, weakValue] = getWeakestMetric(globalIndexes);
         const riskCtCount = rows.filter(row => row.data.score < SCORE_THRESHOLDS.success).length;
+        const healthyCtNames = rows.filter(row => row.data.score >= SCORE_THRESHOLDS.success).slice(0, 2).map(row => `${row.ctName} ${row.data.score}`).join('、') || '暂无明显健康样板';
         return {
             level: 'global', levelName: 'GLOBAL REPORT', title: `全球库存健康诊断报告 ${todayText}`,
             scope: '全球库存健康', score: 71.4, indexes: globalIndexes, trend: '同比 -2.1%',
@@ -1763,6 +1774,12 @@
             heroDesc: '集团总指数处于关注区间，风险不是全局失控，而是积压风险和局部缺货同时拖累。',
             weakName, weakValue, primaryAction: '优先穿透 Bruno Marc 与 DP Kids，联动清仓、调拨、补货三类治理动作。',
             expert: `本次分析基于全球库存健康指数看板的实时快照数据，对集团库存健康状况进行了全面诊断。数据显示，全球库存健康总指数为 <strong>71.4</strong>，处于关注区间，核心问题集中在 <strong>${weakName} ${weakValue}分</strong> 与 <strong>缺货风险 68分</strong>。Bruno Marc 和 DP Kids 是主要风险来源，高危 SKU 数达到 <strong>426</strong>，未来 30 天缺货 SKU 约 <strong>186</strong>，360天+ 呆滞库存金额约 <strong>$4.21M</strong>。建议以 CT 为责任单元，优先完成高库龄库存清理、爆款尺码补货与跨仓调拨协同。`,
+            expertLines: [
+                `<strong>诊断结论：</strong>全球库存健康总指数为 <strong>71.4</strong>，处于关注区间。核心短板集中在 <strong>${escapeHtml(weakName)} ${escapeHtml(weakValue)}</strong> 分，同时缺货风险 <strong>68</strong> 分仍有局部爆款承压，说明当前不是全局失控，而是长库龄、低动销与局部断货在同一周期叠加。`,
+                `<strong>风险穿透：</strong>当前风险 CT 为 <strong>${riskCtCount}/${rows.length}</strong> 个，高危 SKU 数约 <strong>426</strong>，未来 30 天缺货 SKU 约 <strong>186</strong>，360天+ 呆滞库存金额约 <strong>$4.21M</strong>。建议优先穿透 Bruno Marc、DP Kids 以及 360天+ 长库龄库存，区分“缺货主导”和“积压主导”。`,
+                `<strong>动作拆解：</strong>治理策略建议拆成三条线：一是高库龄、低动销库存进入清仓与渠道分流；二是 A 类爆款尺码执行追发补货与跨仓调拨；三是结构偏离品类收缩长尾、校准款色码。所有动作建议以 CT 为责任单元，避免全局平均数掩盖具体问题。`,
+                `<strong>复盘节奏：</strong>未来 7 天先完成风险 CT 清单确认，未来 30 天按补货、清仓、调拨三类动作追踪闭环。当前相对健康样板为 <strong>${escapeHtml(healthyCtNames)}</strong>，可沉淀为补货节奏与结构配置参考，再复制到相邻品类和款式。`
+            ],
             cards: [
                 card('风险CT数', `${riskCtCount} / ${rows.length}`, '复查建议', '每日监控低于80分的 CT 变化。', '处理建议', '先治理风险最低的 CT。'),
                 card('关键短板', `${weakName} ${weakValue}`, '复查建议', '核对长库龄占比与低动销金额。', '处理建议', '清仓调拨，冻结低效采购。'),
@@ -1786,6 +1803,8 @@
         const action = getPrimaryAction(data.indexes, data.score);
         const metrics = getCtMetrics(ctName, data, categories);
         const focus = categories[0];
+        const riskCategoryNames = metrics.riskCategories.slice(0, 4).map(item => item.name).join('、') || '暂无明显风险品类';
+        const healthyCategoryNames = categories.filter(item => item.score >= SCORE_THRESHOLDS.success).slice(0, 2).map(item => `${item.name} ${item.score}`).join('、') || '暂无明显健康样板';
         return {
             level: 'ct', levelName: 'CT REPORT', title: `${ctName} CT库存健康诊断报告 ${todayText}`,
             scope: `${ctName} / By 品类`, score: data.score, indexes: data.indexes, trend: scoreLevel(data.score) === 'success' ? '环比 +1.4%' : '环比 -2.1%',
@@ -1793,6 +1812,12 @@
             heroDesc: `${ctName} 当前处于${scoreStatus(data.score)}状态，建议从最低分品类开始穿透到款式。`,
             weakName, weakValue, primaryAction: action.label,
             expert: `本次分析聚焦 <strong>${escapeHtml(ctName)}</strong> 的库存健康状态。该 CT 健康指数为 <strong>${data.score}</strong>，核心短板为 <strong>${escapeHtml(weakName)} ${weakValue}分</strong>。当前风险品类共 <strong>${metrics.riskCategories.length}/${categories.length}</strong> 个，最低分品类为 <strong>${escapeHtml(focus?.name || '-')}</strong>。建议围绕 <strong>${escapeHtml(action.label)}</strong> 形成治理闭环，并将品类下高风险款式继续穿透到单品参谋。`,
+            expertLines: [
+                `<strong>诊断结论：</strong>${escapeHtml(ctName)} 当前健康指数为 <strong>${escapeHtml(data.score)}</strong>，状态为 <strong>${escapeHtml(scoreStatus(data.score))}</strong>。核心短板是 <strong>${escapeHtml(weakName)} ${escapeHtml(weakValue)}</strong>，意味着该 CT 的问题主要来自少数低分品类，而不是全面恶化。`,
+                `<strong>风险穿透：</strong>风险品类共 <strong>${metrics.riskCategories.length}/${categories.length}</strong> 个，最低分品类为 <strong>${escapeHtml(focus?.name || '-')}</strong>，${escapeHtml(riskCategoryNames)} 需要优先下钻。建议判断哪些品类是缺货主导，哪些是积压主导，再把问题继续穿透到款式和单品。`,
+                `<strong>动作拆解：</strong>建议围绕 <strong>${escapeHtml(action.label)}</strong> 形成治理闭环，并拆成补货、清仓、调拨三类动作同步推进。当前可执行动作约为 <strong>补货 ${metrics.replenishActions} / 清仓 ${metrics.clearActions} / 调拨 ${metrics.transferActions}</strong>，先处理最低分品类，再向同类相近品类扩散。`,
+                `<strong>复盘节奏：</strong>当前相对健康样板可参考 <strong>${escapeHtml(healthyCategoryNames)}</strong>。建议未来 7 天确认风险品类责任人，未来 30 天跟踪动作闭环率，避免只看总分不看结构，确保 CT 层治理能反向沉淀到品类和款式模型。`
+            ],
             cards: [
                 card('风险品类数', `${metrics.riskCategories.length} / ${categories.length}`, '复查建议', '按风险优先级复查低于80分品类。', '处理建议', `优先穿透 ${focus?.name || '最低分品类'}。`),
                 card('关键短板', `${weakName} ${weakValue}`, '复查建议', '核对因子是否由缺货、积压或结构拖累。', '处理建议', action.label),
@@ -1814,6 +1839,8 @@
         const [weakName, weakValue] = getWeakestMetric(category.indexes);
         const action = getPrimaryAction(category.indexes, category.score);
         const riskStyles = styles.filter(item => item.score < SCORE_THRESHOLDS.success);
+        const riskStyleNames = riskStyles.slice(0, 4).map(item => item.name).join('、') || '暂无明显风险款式';
+        const sampleStyleNames = styles.slice(0, 3).map(item => `${item.name} ${item.score}`).join('、') || '暂无款式样本';
         return {
             level: 'category', levelName: 'CATEGORY REPORT', title: `${ctName} / ${category.name} 品类诊断报告 ${todayText}`,
             scope: `${ctName} / ${category.name} / By Style`, score: category.score, indexes: category.indexes, trend: scoreLevel(category.score) === 'success' ? '环比 +1.2%' : '环比 -1.8%',
@@ -1821,6 +1848,12 @@
             heroDesc: `${category.name} 品类当前健康指数 ${category.score}，下方已按风险优先级生成款式诊断样例。`,
             weakName, weakValue, primaryAction: action.label,
             expert: `本次分析聚焦 <strong>${escapeHtml(ctName)} / ${escapeHtml(category.name)}</strong>。该品类健康指数为 <strong>${category.score}</strong>，核心短板为 <strong>${escapeHtml(weakName)} ${weakValue}分</strong>。当前款式中低于80分的风险款式共 <strong>${riskStyles.length}/${styles.length}</strong> 个，建议优先打开最低分 Style 诊断报告，结合单品参谋识别“会缺货”与“根本不该存在”的库存。`,
+            expertLines: [
+                `<strong>诊断结论：</strong>${escapeHtml(ctName)} / ${escapeHtml(category.name)} 当前品类健康指数为 <strong>${escapeHtml(category.score)}</strong>，状态为 <strong>${escapeHtml(scoreStatus(category.score))}</strong>。核心短板是 <strong>${escapeHtml(weakName)} ${escapeHtml(weakValue)}</strong>，说明品类层问题需要继续拆到 Style，而不能停留在品类均值。`,
+                `<strong>风险穿透：</strong>当前低于 80 分的风险款式共 <strong>${riskStyles.length}/${styles.length}</strong> 个，优先关注 ${escapeHtml(riskStyleNames)}。建议逐一判断这些款式属于“会缺货”“卖得慢”还是“根本不该存在”，再决定补货、清仓或调拨路径。`,
+                `<strong>动作拆解：</strong>建议优先执行 <strong>${escapeHtml(action.label)}</strong>。如果短板来自缺货风险，需要校验可售天数和在途到岗；如果来自积压风险，需要复核库龄、滞销金额和清仓节奏；如果来自结构健康，则应收缩低效款色码并复盘备货模型。`,
+                `<strong>复盘节奏：</strong>本品类样例款式为 <strong>${escapeHtml(sampleStyleNames)}</strong>。建议先选择最低分 Style 做样板治理，形成“诊断-动作-结果复盘”的闭环，再把同类动作复制到其余风险款式，避免品类层策略过粗导致执行失焦。`
+            ],
             cards: [
                 card('风险款式数', `${riskStyles.length} / ${styles.length}`, '复查建议', '按款式健康指数倒序检查。', '处理建议', '先处理最低分 Style。'),
                 card('关键短板', `${weakName} ${weakValue}`, '复查建议', '复核款色码和库龄结构。', '处理建议', action.label),
@@ -1849,6 +1882,12 @@
             heroDesc: `${style.name} 已进入单品参谋样例报告，重点查看缺货仓与积压仓错配。`,
             weakName, weakValue, primaryAction: action.label,
             expert: `本次分析聚焦 Style <strong>${escapeHtml(style.name)}</strong>。当前健康指数为 <strong>${style.score}</strong>，关键短板为 <strong>${escapeHtml(weakName)} ${weakValue}分</strong>。单品参谋判定该款式属于 <strong>${escapeHtml(advisor.inventoryType)}</strong>，建议优先执行 <strong>${escapeHtml(action.label)}</strong>，并从 <strong>国内仓</strong> 调往 <strong>NJ仓</strong> 处理局部缺货与积压错配。`,
+            expertLines: [
+                `<strong>诊断结论：</strong>Style <strong>${escapeHtml(style.name)}</strong> 当前健康指数为 <strong>${escapeHtml(style.score)}</strong>，关键短板是 <strong>${escapeHtml(weakName)} ${escapeHtml(weakValue)}</strong>。单品参谋判定其属于 <strong>${escapeHtml(advisor.inventoryType)}</strong>，说明这不是单纯的价格问题，而是库存、动销和仓配节奏共同作用的结果。`,
+                `<strong>风险穿透：</strong>当前主要错配来自 <strong>国内仓 → NJ仓</strong> 的调拨链路。调出侧积压库存约 <strong>${escapeHtml(advisor.overstockQty)}双</strong>，最长库龄 <strong>${escapeHtml(advisor.overstockDays)}天</strong>；调入侧可售天数约 <strong>${escapeHtml(advisor.shortageDays)}天</strong>，预测缺口约 <strong>${escapeHtml(advisor.shortageGap)}双</strong>，需要优先判断是否存在重复补货或在途到岗偏慢。`,
+                `<strong>动作拆解：</strong>建议优先执行 <strong>${escapeHtml(action.label)}</strong>，并以 <strong>${escapeHtml(advisor.transferQty)}双</strong> 作为参考调拨量。若缺货仓持续低于安全线，先补 NJ 仓可售水位；若积压仓继续扩大，则暂停新采并同步清仓、捆绑或渠道分流，避免长库龄继续沉淀。`,
+                `<strong>复盘节奏：</strong>建议在未来 3 天内确认调拨执行，7 天内复核库存水位变化，30 天内复盘该 Style 的缺货率、周转天数和滞销金额是否同步改善。若同类款式存在相同模式，可直接复制该单品的调拨与补货阈值，形成 Style 级治理模板。`
+            ],
             cards: [
                 card('库存类型', advisor.inventoryType, '复查建议', '结合动销、库龄、可售天数复核。', '处理建议', action.label),
                 card('可售天数', `${advisor.sellableDays}天`, '复查建议', '低于安全线自动预警。', '处理建议', '优先保障核心仓。'),
@@ -1961,11 +2000,15 @@
     }
 
     function renderExpert(model) {
+        const lines = model.expertLines || (model.expert ? [model.expert] : []);
         return `
             <div class="section-heading">2. 专家（大迈 M-AI）建议与指导</div>
             <div class="expert-panel">
-                <div class="expert-icon">AI</div>
-                <div class="expert-copy">${model.expert}</div>
+                <div class="expert-visual">
+                    <div class="expert-icon">AI建议与指导</div>
+                    <div class="expert-avatar"><img src="assets/mai-ai-advisor.png" alt="大迈 AI 顾问头像"><span class="expert-speaking-dot"></span></div>
+                </div>
+                <div class="expert-copy">${lines.map(line => `<div class="expert-copy-line">${line}</div>`).join('')}</div>
             </div>
         `;
     }
