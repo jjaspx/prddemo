@@ -437,6 +437,65 @@
             height: 100%;
             border-radius: 3px;
         }
+        .factor-stack {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+        }
+        .factor-stack .compact-factors {
+            flex: 0 0 auto;
+        }
+        .factor-ai-strip {
+            height: 30px;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 8px 0 6px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            background: linear-gradient(90deg, rgba(5, 12, 24, 0.46), rgba(5, 12, 24, 0.18));
+            color: #D9DEE8;
+            text-align: left;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            font: inherit;
+            backdrop-filter: blur(6px);
+            box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.08), 0 6px 16px rgba(0, 0, 0, 0.16);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .factor-ai-strip:hover {
+            border-color: rgba(255, 255, 255, 0.56);
+            background: linear-gradient(90deg, rgba(5, 12, 24, 0.58), rgba(5, 12, 24, 0.24));
+        }
+        .factor-ai-tag {
+            flex-shrink: 0;
+            padding: 3px 7px;
+            border-radius: 999px;
+            color: #FFFFFF;
+            background: linear-gradient(135deg, #409EFF, #00C7FF);
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            box-shadow: 0 0 12px rgba(64, 158, 255, 0.45);
+            line-height: 1;
+        }
+        .factor-ai-copy {
+            flex: 1;
+            min-width: 0;
+            font-size: 10px;
+            line-height: 1;
+            color: #D9DEE8;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
         /* KPI 卡片 */
         .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; height: 100%; }
@@ -522,12 +581,31 @@
             border-radius: 30px; 
             border: 1px solid rgba(255, 159, 10, 0.2);
         }
+        .ct-title-action {
+            margin-left: auto;
+            border: 1px solid rgba(64, 158, 255, 0.34);
+            background: rgba(64, 158, 255, 0.1);
+            color: #BFE2FF;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .ct-title-action:hover {
+            background: rgba(64, 158, 255, 0.18);
+            transform: translateY(-1px);
+        }
         .ct-cards-container { 
             display: grid; 
             grid-template-columns: repeat(6, 1fr); 
             gap: 16px; 
             flex: 1;
             align-items: stretch;
+        }
+        .home-ct-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
         .ct-mini-card {
             position: relative;
@@ -642,6 +720,26 @@
             font-weight: 760;
             text-align: right;
         }
+        .ct-home-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin: 10px 0 12px 0;
+            padding-top: 1px;
+        }
+        .ct-home-summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            color: #98989E;
+            font-size: 10px;
+            line-height: 1.25;
+        }
+        .ct-home-summary-row strong {
+            color: #F5F5F7;
+            font-weight: 760;
+            text-align: right;
+        }
         .ct-decision-actions {
             display: flex;
             flex-wrap: wrap;
@@ -658,7 +756,13 @@
             font-weight: 820;
         }
         .ct-metrics-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0 12px 0; }
-        .ct-metric-item { display: flex; justify-content: space-between; font-size: 11px; color: #98989E; font-weight: 470; }
+        .ct-metric-item { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; color: #98989E; font-weight: 470; }
+        .ct-metric-item strong {
+            color: #F5F5F7;
+            font-weight: 760;
+            text-align: right;
+            white-space: nowrap;
+        }
         .ct-index-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -785,6 +889,81 @@
             flex: 0 0 auto;
             height: auto;
             min-height: 0;
+        }
+        .ct-expert-row {
+            flex: 0 0 auto;
+            min-height: 0;
+        }
+        .ct-expert-card {
+            grid-column: span 24;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .ct-expert-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #F5F5F7;
+            font-size: 15px;
+            font-weight: 820;
+            letter-spacing: 0.2px;
+        }
+        .ct-expert-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #00C7FF, #409EFF);
+            box-shadow: 0 0 12px rgba(64, 158, 255, 0.42);
+        }
+        .ct-expert-panel {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(64, 158, 255, 0.22);
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(64, 158, 255, 0.16), rgba(64, 158, 255, 0.06));
+            color: #DCEBFF;
+            box-shadow: inset 0 0 22px rgba(64, 158, 255, 0.08);
+            cursor: pointer;
+            transition: all 0.18s ease;
+            font: inherit;
+            text-align: left;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .ct-expert-panel:hover {
+            border-color: rgba(64, 158, 255, 0.36);
+            background: linear-gradient(135deg, rgba(64, 158, 255, 0.2), rgba(64, 158, 255, 0.08));
+            transform: translateY(-1px);
+        }
+        .ct-expert-icon {
+            flex-shrink: 0;
+            padding: 3px 7px;
+            border-radius: 999px;
+            color: #FFFFFF;
+            background: linear-gradient(135deg, #00C7FF, #409EFF);
+            box-shadow: 0 0 12px rgba(64, 158, 255, 0.45);
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            line-height: 1;
+            margin-top: 2px;
+        }
+        .ct-expert-copy {
+            flex: 1;
+            min-width: 0;
+            color: #DDEBFF;
+            font-size: 13px;
+            line-height: 1.65;
+            font-weight: 520;
+        }
+        .ct-expert-copy strong {
+            color: #FFFFFF;
+            font-weight: 820;
         }
 
         .sku-advisor-view {
@@ -1482,6 +1661,11 @@
             background: rgba(64, 158, 255, 0.13);
             border-color: rgba(64, 158, 255, 0.32);
         }
+        body.light-theme .ct-title-action {
+            color: #0F5CA8;
+            background: rgba(64, 158, 255, 0.1);
+            border-color: rgba(64, 158, 255, 0.24);
+        }
         body.light-theme .ct-fire-card {
             background: linear-gradient(145deg, rgba(255, 69, 58, 0.045) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
             border-color: rgba(15, 23, 42, 0.1) !important;
@@ -1500,6 +1684,11 @@
         body.light-theme .ct-decision-row {
             color: #64748B;
         }
+        body.light-theme .ct-home-summary-row,
+        body.light-theme .ct-decision-row {
+            color: #64748B;
+        }
+        body.light-theme .ct-home-summary-row strong,
         body.light-theme .ct-decision-row strong {
             color: #111827;
         }
@@ -1508,9 +1697,41 @@
             border-color: rgba(255, 69, 58, 0.24);
             box-shadow: inset 0 0 0 1px rgba(255, 69, 58, 0.04);
         }
+        body.light-theme .factor-ai-strip {
+            background: linear-gradient(90deg, rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.035));
+            border-color: rgba(15, 23, 42, 0.14);
+            color: #334155;
+            box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.45), 0 6px 16px rgba(15, 23, 42, 0.06);
+        }
+        body.light-theme .factor-ai-strip:hover {
+            background: linear-gradient(90deg, rgba(15, 23, 42, 0.11), rgba(15, 23, 42, 0.05));
+            border-color: rgba(15, 23, 42, 0.2);
+        }
+        body.light-theme .factor-ai-copy {
+            color: #334155;
+        }
         body.light-theme .ct-diagnostic-summary-card .kpi-danger-alert {
             background: rgba(248, 250, 252, 0.92) !important;
             border-color: rgba(15, 23, 42, 0.09) !important;
+        }
+        body.light-theme .ct-expert-title {
+            color: #111827;
+        }
+        body.light-theme .ct-expert-panel {
+            background: #EAF4FF;
+            border-color: rgba(64, 158, 255, 0.18);
+            color: #334155;
+            box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.56), 0 6px 16px rgba(15, 23, 42, 0.04);
+        }
+        body.light-theme .ct-expert-panel:hover {
+            background: #E3F1FF;
+            border-color: rgba(64, 158, 255, 0.28);
+        }
+        body.light-theme .ct-expert-copy {
+            color: #334155;
+        }
+        body.light-theme .ct-expert-copy strong {
+            color: #0F172A;
         }
         body.light-theme .factor-header,
         body.light-theme .ct-index-label,
@@ -1527,6 +1748,9 @@
         body.light-theme .ct-diagnostic-summary-tag {
             background: rgba(255, 159, 10, 0.12);
             border-color: rgba(255, 159, 10, 0.26);
+        }
+        body.light-theme .ct-metric-item strong {
+            color: #111827;
         }
         body.light-theme .ct-dashboard-view {
             background:
@@ -1726,6 +1950,9 @@
 
         @media (max-width: 1000px) {
             .ct-cards-container { gap: 10px; }
+            .home-ct-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
             .ihi-hero-score { font-size: 58px; }
             .ihi-hero { width: 210px; padding: 14px 12px; }
             .factor-score { font-size: 20px; }
@@ -1744,6 +1971,7 @@
         @media (max-width: 800px) {
             body { padding: 12px; gap: 10px; }
             .apple-card { padding: 12px; }
+            .home-ct-grid { grid-template-columns: 1fr; }
             .ihi-hero { width: 180px; }
             .ihi-hero-score { font-size: 48px; }
             .sku-advisor-view { padding: 12px; }
@@ -1752,6 +1980,14 @@
             .ct-dashboard-title,
             .sku-advisor-title { text-align: left; }
             .dashboard-breadcrumb { justify-content: flex-start; }
+            .ct-expert-panel {
+                padding: 12px;
+                gap: 10px;
+            }
+            .ct-expert-copy {
+                font-size: 12px;
+                line-height: 1.55;
+            }
             .sku-hero-layout,
             .sku-kpi-grid,
             .sku-viewpoint-grid,
@@ -1763,7 +1999,7 @@
         }
     </style>
 </head>
-<body>
+<body class="light-theme">
 
 <header>
     <div class="logo-zone">
@@ -1793,27 +2029,30 @@
                 </div>
             </div>
             <!-- 右侧四维紧凑子指标 -->
-            <div class="compact-factors">
-                <div class="factor-compact">
-                    <div class="factor-header"><span>缺货风险</span><span>25%</span></div>
-                    <div class="factor-main"><span class="factor-score" style="color: var(--color-warning);">68</span></div>
-                    <div class="progress-micro"><div class="progress-fill" style="width:68%; background: var(--color-warning);"></div></div>
+            <div class="factor-stack">
+                <div class="compact-factors">
+                    <div class="factor-compact">
+                        <div class="factor-header"><span>缺货风险</span><span>25%</span></div>
+                        <div class="factor-main"><span class="factor-score" style="color: var(--color-warning);">68</span></div>
+                        <div class="progress-micro"><div class="progress-fill" style="width:68%; background: var(--color-warning);"></div></div>
+                    </div>
+                    <div class="factor-compact">
+                        <div class="factor-header"><span>积压风险</span><span>20%</span></div>
+                        <div class="factor-main"><span class="factor-score" style="color: var(--color-danger);">48</span></div>
+                        <div class="progress-micro"><div class="progress-fill" style="width:48%; background: var(--color-danger);"></div></div>
+                    </div>
+                    <div class="factor-compact">
+                        <div class="factor-header"><span>结构健康</span><span>25%</span></div>
+                        <div class="factor-main"><span class="factor-score" style="color: var(--color-success);">85</span></div>
+                        <div class="progress-micro"><div class="progress-fill" style="width:85%; background: var(--color-success);"></div></div>
+                    </div>
+                    <div class="factor-compact">
+                        <div class="factor-header"><span>周转天数</span><span>30%</span></div>
+                        <div class="factor-main"><span class="factor-score" style="color: var(--color-success);">82</span></div>
+                        <div class="progress-micro"><div class="progress-fill" style="width:82%; background: var(--color-success);"></div></div>
+                    </div>
                 </div>
-                <div class="factor-compact">
-                    <div class="factor-header"><span>积压风险</span><span>20%</span></div>
-                    <div class="factor-main"><span class="factor-score" style="color: var(--color-danger);">48</span></div>
-                    <div class="progress-micro"><div class="progress-fill" style="width:48%; background: var(--color-danger);"></div></div>
-                </div>
-                <div class="factor-compact">
-                    <div class="factor-header"><span>结构健康</span><span>25%</span></div>
-                    <div class="factor-main"><span class="factor-score" style="color: var(--color-success);">85</span></div>
-                    <div class="progress-micro"><div class="progress-fill" style="width:85%; background: var(--color-success);"></div></div>
-                </div>
-                <div class="factor-compact">
-                    <div class="factor-header"><span>周转天数</span><span>30%</span></div>
-                    <div class="factor-main"><span class="factor-score" style="color: var(--color-success);">82</span></div>
-                    <div class="progress-micro"><div class="progress-fill" style="width:82%; background: var(--color-success);"></div></div>
-                </div>
+                <div id="globalFactorInsight"></div>
             </div>
         </div>
     </div>
@@ -1838,7 +2077,7 @@
 <div class="grid-24 row-middle">
     <div class="apple-card col-24" style="min-height: 318px;">
         <div class="ct-section-title">各CT库存健康指数 <span>按风险优先级倒序排查</span></div>
-        <div class="ct-cards-container">
+        <div class="ct-cards-container home-ct-grid" id="homeCtCards">
             <div class="ct-mini-card ct-fire-card ct-decision-card" onclick="openCtDashboard('Bruno Marc')">
                 <div class="ct-card-top"><div><div class="ct-name">Bruno Marc</div></div><div class="ct-score-cluster"><div class="ct-trend-badge danger">↓ 环比 -2.1%</div><div class="ct-score" style="color: var(--color-danger);">42.5</div></div></div>
                 <div class="ct-index-grid"><div class="ct-index-item"><span class="ct-index-label">缺货风险</span><span class="ct-index-value" style="color: var(--color-danger);">38</span></div><div class="ct-index-item weakest"><span class="ct-index-label">积压风险</span><span class="ct-index-value" style="color: var(--color-danger);">32</span></div><div class="ct-index-item"><span class="ct-index-label">结构健康</span><span class="ct-index-value" style="color: var(--color-warning);">49</span></div><div class="ct-index-item"><span class="ct-index-label">周转天数</span><span class="ct-index-value" style="color: var(--color-warning);">51</span></div></div>
@@ -1888,7 +2127,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="compact-factors" id="ctDashIndexes"></div>
+                    <div class="factor-stack">
+                        <div class="compact-factors" id="ctDashIndexes"></div>
+                        <div id="ctFactorInsight"></div>
+                    </div>
                 </div>
             </div>
             <div class="apple-card col-8 ct-diagnostic-summary-card" style="min-height: 170px; padding: 12px 14px;">
@@ -1901,6 +2143,9 @@
                 </div>
                 <div class="kpi-grid" id="ctDashKpis"></div>
             </div>
+        </div>
+        <div class="grid-24 ct-expert-row">
+            <div class="ct-expert-card" id="ctExpertGuidance"></div>
         </div>
         <div class="grid-24 row-middle">
             <div class="apple-card col-24" style="min-height: 318px;">
@@ -2024,6 +2269,8 @@
     let currentCtName = '';
     let currentCategoryName = '';
     let currentSkuAdvisor = null;
+    let currentCategoryExpanded = false;
+    const CATEGORY_PREVIEW_LIMIT = 6;
     const ctDashboardData = {
         'Bruno Marc': {
             score: 42.5, status: '严重', color: 'var(--color-danger)',
@@ -2131,75 +2378,1412 @@
     }
 
     const ctRelationSource = {
-        'Bruno Marc': { sourceCt: 'BM', rows: 991, categories: [{ name: 'OXFORDS', rows: 315 }, { name: 'LOAFERS & SLIP-ONS', rows: 288 }, { name: 'FASHION SNEAKERS', rows: 151 }, { name: 'CHUKKA BOOTS', rows: 34 }, { name: 'CHELSEA-BOOTS', rows: 25 }, { name: 'SNOW BOOTS', rows: 25 }], styles: [{ name: 'RALPH-02', category: 'LOAFERS & SLIP-ONS', rows: 1 }, { name: 'CEREMONY-06', category: 'OXFORDS', rows: 1 }, { name: '150908-M', category: 'FASHION SNEAKERS', rows: 1 }, { name: 'CEREMONY-03', category: 'LOAFERS & SLIP-ONS', rows: 1 }, { name: 'CEREMONY-02', category: 'LOAFERS & SLIP-ONS', rows: 1 }, { name: 'HUGH-05', category: 'LOAFERS & SLIP-ONS', rows: 1 }] },
-        'DP Kids': { sourceCt: 'DPK', rows: 503, categories: [{ name: 'FASHION SNEAKERS', rows: 74 }, { name: 'FLATS', rows: 73 }, { name: 'RUNNING SHOES', rows: 63 }, { name: 'FASHION SANDALS', rows: 53 }, { name: 'BOOTS', rows: 52 }, { name: 'SNOW BOOTS', rows: 48 }], styles: [{ name: '170813-K', category: 'SPORT SANDALS & SLIDES', rows: 1 }, { name: 'SOLE-FINA-K', category: 'FLATS', rows: 1 }, { name: '160481-K', category: 'RUNNING SHOES', rows: 1 }, { name: 'DUCKO', category: 'SNOW BOOTS', rows: 1 }, { name: 'KOREL', category: 'BOOTS', rows: 1 }, { name: 'KLOUCH', category: 'BOOTS', rows: 1 }] },
-        'Nortiv 8': { sourceCt: 'N8AS', rows: 620, categories: [{ name: 'HIKING BOOTS', rows: 92 }, { name: 'SOCCER SHOES', rows: 90 }, { name: 'SNOW BOOTS', rows: 84 }, { name: 'INDUSTRIAL BOOTS', rows: 73 }, { name: 'HIKING SHOES', rows: 57 }, { name: 'MILITARY BOOTS', rows: 55 }], styles: [{ name: 'MAD', category: 'RAIN BOOTS', rows: 1 }, { name: 'EARTH-M', category: 'INDUSTRIAL BOOTS', rows: 1 }, { name: 'CONCRETE', category: 'INDUSTRIAL BOOTS', rows: 1 }, { name: 'DELTA-M', category: 'INDUSTRIAL BOOTS', rows: 1 }, { name: 'COLORADO', category: 'SNOW BOOTS', rows: 1 }, { name: 'GLACIER', category: 'SNOW BOOTS', rows: 1 }] },
-        'DP Comfort': { sourceCt: 'DPC', rows: 658, categories: [{ name: 'SNOW BOOTS', rows: 87 }, { name: 'FLATS', rows: 80 }, { name: 'WEDGES SANDALS', rows: 64 }, { name: 'FASHION SNEAKERS', rows: 56 }, { name: 'SLIPPERS', rows: 46 }, { name: 'PUMPS', rows: 45 }], styles: [{ name: 'M170889', category: 'WALKING SHOES', rows: 1 }, { name: '160912-M-NEW', category: 'SPORT SANDALS & SLIDES', rows: 1 }, { name: '160912-W-NEW', category: 'SPORT SANDALS & SLIDES', rows: 1 }, { name: 'GOOSE', category: 'SNOW BOOTS', rows: 1 }, { name: 'BLIZ', category: 'SLIPPERS', rows: 1 }, { name: 'SHORTY', category: 'SNOW BOOTS', rows: 1 }] },
-        'Sneakers': { sourceCt: 'SN', rows: 57, categories: [{ name: 'WALKING SHOES', rows: 43 }, { name: 'RUNNING SHOES', rows: 10 }, { name: 'TENNIS SHOES', rows: 2 }, { name: 'TRAIL RUNNING', rows: 1 }, { name: 'FITNESS & CROSS-TRAINING', rows: 1 }], styles: [{ name: 'SARR034W', category: 'WALKING SHOES', rows: 1 }, { name: 'SARR034M', category: 'WALKING SHOES', rows: 1 }, { name: 'SNWS245W', category: 'WALKING SHOES', rows: 1 }, { name: 'SNWS245M', category: 'WALKING SHOES', rows: 1 }, { name: 'SNWS246M', category: 'WALKING SHOES', rows: 1 }, { name: 'SNWS248W', category: 'WALKING SHOES', rows: 1 }] },
-        'DP Fashion': { sourceCt: 'DPF', rows: 1463, categories: [{ name: 'HEELED SANDALS', rows: 332 }, { name: 'PUMPS', rows: 257 }, { name: 'KNEE-HIGH BOOTS', rows: 192 }, { name: 'ANKLE & BOOTIE', rows: 177 }, { name: 'FLATS', rows: 122 }, { name: 'MID-CALF BOOTS', rows: 101 }], styles: [{ name: 'FLAPOINTED-SHINE', category: 'FLATS', rows: 1 }, { name: 'CHRISTIAN-NEW', category: 'PUMPS', rows: 1 }, { name: 'OPPOINTED', category: 'PUMPS', rows: 1 }, { name: 'OPPOINTED_MARY', category: 'PUMPS', rows: 1 }, { name: 'SHOO', category: 'OVER-THE-KNEE BOOTS', rows: 1 }, { name: 'SIBERIAN-W', category: 'KNEE-HIGH BOOTS', rows: 1 }] }
-    };
+    "Bruno Marc": {
+        "sourceCt": "BM",
+        "rows": 991,
+        "categories": [
+            {
+                "name": "OXFORDS",
+                "rows": 315
+            },
+            {
+                "name": "LOAFERS & SLIP-ONS",
+                "rows": 288
+            },
+            {
+                "name": "FASHION SNEAKERS",
+                "rows": 151
+            },
+            {
+                "name": "CHUKKA BOOTS",
+                "rows": 34
+            },
+            {
+                "name": "CHELSEA-BOOTS",
+                "rows": 25
+            },
+            {
+                "name": "SNOW BOOTS",
+                "rows": 25
+            },
+            {
+                "name": "MOTORCYCLE & COMBAT BOOTS",
+                "rows": 21
+            },
+            {
+                "name": "WALKING SHOES",
+                "rows": 19
+            },
+            {
+                "name": "OXFORD & DERBY BOOTS",
+                "rows": 17
+            },
+            {
+                "name": "WORKING SHOES",
+                "rows": 17
+            },
+            {
+                "name": "SLIPPERS",
+                "rows": 11
+            },
+            {
+                "name": "LEISURE SANDALS",
+                "rows": 10
+            },
+            {
+                "name": "SPORT SANDALS & SLIDES",
+                "rows": 9
+            },
+            {
+                "name": "WESTERN BOOTS",
+                "rows": 7
+            },
+            {
+                "name": "BELT",
+                "rows": 6
+            },
+            {
+                "name": "HEALTH CARE & FOOD SERVICE",
+                "rows": 5
+            },
+            {
+                "name": "BOYS BOOTS",
+                "rows": 5
+            },
+            {
+                "name": "WALLETS",
+                "rows": 4
+            },
+            {
+                "name": "FUZZY BOOTS",
+                "rows": 4
+            },
+            {
+                "name": "RAIN BOOTS",
+                "rows": 4
+            },
+            {
+                "name": "BOOTS",
+                "rows": 3
+            },
+            {
+                "name": "WATER SHOES",
+                "rows": 2
+            },
+            {
+                "name": "CARD CASES",
+                "rows": 2
+            },
+            {
+                "name": "SLIDES-SANDALS",
+                "rows": 2
+            },
+            {
+                "name": "FLIP-FLOPS",
+                "rows": 2
+            },
+            {
+                "name": "GOLF SHOES",
+                "rows": 2
+            },
+            {
+                "name": "MONEY CLIPS",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "RALPH-02",
+                "category": "LOAFERS & SLIP-ONS",
+                "rows": 1
+            },
+            {
+                "name": "CEREMONY-06",
+                "category": "OXFORDS",
+                "rows": 1
+            },
+            {
+                "name": "150908-M",
+                "category": "FASHION SNEAKERS",
+                "rows": 1
+            },
+            {
+                "name": "CEREMONY-03",
+                "category": "LOAFERS & SLIP-ONS",
+                "rows": 1
+            },
+            {
+                "name": "CEREMONY-02",
+                "category": "LOAFERS & SLIP-ONS",
+                "rows": 1
+            },
+            {
+                "name": "HUGH-05",
+                "category": "LOAFERS & SLIP-ONS",
+                "rows": 1
+            }
+        ]
+    },
+    "DP Kids": {
+        "sourceCt": "DPK",
+        "rows": 503,
+        "categories": [
+            {
+                "name": "FASHION SNEAKERS",
+                "rows": 74
+            },
+            {
+                "name": "FLATS",
+                "rows": 73
+            },
+            {
+                "name": "RUNNING SHOES",
+                "rows": 63
+            },
+            {
+                "name": "FASHION SANDALS",
+                "rows": 53
+            },
+            {
+                "name": "BOOTS",
+                "rows": 52
+            },
+            {
+                "name": "SNOW BOOTS",
+                "rows": 48
+            },
+            {
+                "name": "SPORT SANDALS & SLIDES",
+                "rows": 28
+            },
+            {
+                "name": "WESTERN BOOTS",
+                "rows": 28
+            },
+            {
+                "name": "PUMPS",
+                "rows": 23
+            },
+            {
+                "name": "UNIFORM & SCHOOL SHOES",
+                "rows": 20
+            },
+            {
+                "name": "FUZZY BOOTS",
+                "rows": 16
+            },
+            {
+                "name": "RAIN BOOTS",
+                "rows": 13
+            },
+            {
+                "name": "FUZZY SLIPPERS",
+                "rows": 5
+            },
+            {
+                "name": "SLIDES-SANDALS",
+                "rows": 3
+            },
+            {
+                "name": "LOAFERS & SLIP-ONS",
+                "rows": 2
+            },
+            {
+                "name": "SLIPPERS",
+                "rows": 1
+            },
+            {
+                "name": "DANCE SHOES",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "170813-K",
+                "category": "SPORT SANDALS & SLIDES",
+                "rows": 1
+            },
+            {
+                "name": "SOLE-FINA-K",
+                "category": "FLATS",
+                "rows": 1
+            },
+            {
+                "name": "160481-K",
+                "category": "RUNNING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "DUCKO",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "KOREL",
+                "category": "BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "KLOUCH",
+                "category": "BOOTS",
+                "rows": 1
+            }
+        ]
+    },
+    "Nortiv 8": {
+        "sourceCt": "N8AS",
+        "rows": 620,
+        "categories": [
+            {
+                "name": "HIKING BOOTS",
+                "rows": 92
+            },
+            {
+                "name": "SOCCER SHOES",
+                "rows": 90
+            },
+            {
+                "name": "SNOW BOOTS",
+                "rows": 84
+            },
+            {
+                "name": "INDUSTRIAL BOOTS",
+                "rows": 73
+            },
+            {
+                "name": "HIKING SHOES",
+                "rows": 57
+            },
+            {
+                "name": "MILITARY BOOTS",
+                "rows": 55
+            },
+            {
+                "name": "WATER SHOES",
+                "rows": 50
+            },
+            {
+                "name": "SPORT SANDALS & SLIDES",
+                "rows": 37
+            },
+            {
+                "name": "RUNNING SHOES",
+                "rows": 28
+            },
+            {
+                "name": "WALKING SHOES",
+                "rows": 14
+            },
+            {
+                "name": "INDUSTRIAL SHOES",
+                "rows": 10
+            },
+            {
+                "name": "TRAIL RUNNING",
+                "rows": 9
+            },
+            {
+                "name": "RAIN BOOTS",
+                "rows": 6
+            },
+            {
+                "name": "BASKETBALL SHOES",
+                "rows": 5
+            },
+            {
+                "name": "FLIP-FLOPS",
+                "rows": 3
+            },
+            {
+                "name": "HEALTH CARE & FOOD SERVICE",
+                "rows": 3
+            },
+            {
+                "name": "URBAN OUTDOOR",
+                "rows": 1
+            },
+            {
+                "name": "Inserts & Insoles",
+                "rows": 1
+            },
+            {
+                "name": "FASHION SOCKS",
+                "rows": 1
+            },
+            {
+                "name": "WESTERN BOOTS",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "MAD",
+                "category": "RAIN BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "EARTH-M",
+                "category": "INDUSTRIAL BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "CONCRETE",
+                "category": "INDUSTRIAL BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "DELTA-M",
+                "category": "INDUSTRIAL BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "COLORADO",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "GLACIER",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            }
+        ]
+    },
+    "DP Comfort": {
+        "sourceCt": "DPC",
+        "rows": 658,
+        "categories": [
+            {
+                "name": "SNOW BOOTS",
+                "rows": 87
+            },
+            {
+                "name": "FLATS",
+                "rows": 80
+            },
+            {
+                "name": "WEDGES SANDALS",
+                "rows": 64
+            },
+            {
+                "name": "FASHION SNEAKERS",
+                "rows": 56
+            },
+            {
+                "name": "SLIPPERS",
+                "rows": 46
+            },
+            {
+                "name": "PUMPS",
+                "rows": 45
+            },
+            {
+                "name": "FLAT SANDALS",
+                "rows": 44
+            },
+            {
+                "name": "SPORT SANDALS & SLIDES",
+                "rows": 35
+            },
+            {
+                "name": "FUZZY BOOTS",
+                "rows": 32
+            },
+            {
+                "name": "SLIDES-SANDALS",
+                "rows": 32
+            },
+            {
+                "name": "FLIP-FLOPS",
+                "rows": 31
+            },
+            {
+                "name": "RAIN BOOTS",
+                "rows": 28
+            },
+            {
+                "name": "LOAFERS & SLIP-ONS",
+                "rows": 21
+            },
+            {
+                "name": "MULES & CLOGS",
+                "rows": 18
+            },
+            {
+                "name": "WALKING SHOES",
+                "rows": 15
+            },
+            {
+                "name": "FUZZY SLIPPERS",
+                "rows": 15
+            },
+            {
+                "name": "HEELED SANDALS",
+                "rows": 6
+            },
+            {
+                "name": "HEALTH CARE & FOOD SERVICE",
+                "rows": 1
+            },
+            {
+                "name": "OXFORDS",
+                "rows": 1
+            },
+            {
+                "name": "ANKLE & BOOTIE",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "M170889",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "160912-M-NEW",
+                "category": "SPORT SANDALS & SLIDES",
+                "rows": 1
+            },
+            {
+                "name": "160912-W-NEW",
+                "category": "SPORT SANDALS & SLIDES",
+                "rows": 1
+            },
+            {
+                "name": "GOOSE",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "BLIZ",
+                "category": "SLIPPERS",
+                "rows": 1
+            },
+            {
+                "name": "SHORTY",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            }
+        ]
+    },
+    "Sneakers": {
+        "sourceCt": "SN",
+        "rows": 57,
+        "categories": [
+            {
+                "name": "WALKING SHOES",
+                "rows": 43
+            },
+            {
+                "name": "RUNNING SHOES",
+                "rows": 10
+            },
+            {
+                "name": "TENNIS SHOES",
+                "rows": 2
+            },
+            {
+                "name": "TRAIL RUNNING",
+                "rows": 1
+            },
+            {
+                "name": "FITNESS & CROSS-TRAINING",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "SARR034W",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SARR034M",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SNWS245W",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SNWS245M",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SNWS246M",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SNWS248W",
+                "category": "WALKING SHOES",
+                "rows": 1
+            }
+        ]
+    },
+    "DP Fashion": {
+        "sourceCt": "DPF",
+        "rows": 1463,
+        "categories": [
+            {
+                "name": "HEELED SANDALS",
+                "rows": 332
+            },
+            {
+                "name": "PUMPS",
+                "rows": 257
+            },
+            {
+                "name": "KNEE-HIGH BOOTS",
+                "rows": 192
+            },
+            {
+                "name": "ANKLE & BOOTIE",
+                "rows": 177
+            },
+            {
+                "name": "FLATS",
+                "rows": 122
+            },
+            {
+                "name": "MID-CALF BOOTS",
+                "rows": 101
+            },
+            {
+                "name": "WEDGES SANDALS",
+                "rows": 68
+            },
+            {
+                "name": "OVER-THE-KNEE BOOTS",
+                "rows": 61
+            },
+            {
+                "name": "FLAT SANDALS",
+                "rows": 52
+            },
+            {
+                "name": "LOAFERS & SLIP-ONS",
+                "rows": 41
+            },
+            {
+                "name": "SLIDES-SANDALS",
+                "rows": 21
+            },
+            {
+                "name": "MULES & CLOGS",
+                "rows": 20
+            },
+            {
+                "name": "OXFORDS",
+                "rows": 8
+            },
+            {
+                "name": "FLIP-FLOPS",
+                "rows": 6
+            },
+            {
+                "name": "SLIPPERS",
+                "rows": 2
+            },
+            {
+                "name": "FUZZY BOOTS",
+                "rows": 2
+            },
+            {
+                "name": "Heeled Sandals",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "FLAPOINTED-SHINE",
+                "category": "FLATS",
+                "rows": 1
+            },
+            {
+                "name": "CHRISTIAN-NEW",
+                "category": "PUMPS",
+                "rows": 1
+            },
+            {
+                "name": "OPPOINTED",
+                "category": "PUMPS",
+                "rows": 1
+            },
+            {
+                "name": "OPPOINTED_MARY",
+                "category": "PUMPS",
+                "rows": 1
+            },
+            {
+                "name": "SHOO",
+                "category": "OVER-THE-KNEE BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "SIBERIAN-W",
+                "category": "KNEE-HIGH BOOTS",
+                "rows": 1
+            }
+        ]
+    }
+};
 
     const ctCategoryStyleSource = {
-        'Bruno Marc': {
-            'OXFORDS': ['CEREMONY-06', 'GORDON-01', 'HALSTED-02', 'HALSTED-01', 'URBAN-05', 'URBAN-08'],
-            'LOAFERS & SLIP-ONS': ['RALPH-02', 'CEREMONY-03', 'CEREMONY-02', 'HUGH-05', 'HUGH-03', 'PITTS_10'],
-            'FASHION SNEAKERS': ['150908-M', 'PITTS_12', 'PITTS', 'RIVERA-01', '170845M', '170844M'],
-            'CHUKKA BOOTS': ['FRANCISCO-HIGH', 'CHUKKA', 'MARLON-H', 'BERGEN-02', 'PHILLY-1', 'URBAN-02'],
-            'CHELSEA-BOOTS': ['URBAN-06', 'ENGLE-03', 'PHILLY-2', 'STONE-02', 'BERGEN_12', 'PHILLY_18'],
-            'SNOW BOOTS': ['SBSB211M', 'SBSB212W', 'SBBO2213M', 'SBSB226M', 'SBSB221K', 'SBSB226M-E']
-        },
-        'DP Kids': {
-            'FASHION SNEAKERS': ['170803K', '170804K', '170307-K', '170379-K', '151014-K', '160479-K'],
-            'FLATS': ['SOLE-FINA-K', 'SOPHIA-22', 'NEW-MUY', 'MUY-SHINE', 'MUY', 'STARLET'],
-            'RUNNING SHOES': ['160481-K', '160450-K', '160507-K', '151003-K', '160863-K', 'KD18001K'],
-            'FASHION SANDALS': ['SWEETY-2', 'SWEETY-1', 'SPARK-INF', 'KSD213', 'KSD214', 'SDSD2210K'],
-            'BOOTS': ['KOREL', 'KLOUCH', 'ARMY-K', 'KLOVE', 'AMAZON-K', 'KNICE'],
-            'SNOW BOOTS': ['DUCKO', 'MAPLE', 'NORDIC', 'KAMICK', 'FORESTER', 'KSNOW']
-        },
-        'Nortiv 8': {
-            'HIKING BOOTS': ['160489-M', '170411', '170412', 'MOUNTAINA', 'MACK_01', 'MACK_02'],
-            'SOCCER SHOES': ['160470-M', '160471-M', '160858-M', '160861-M', '160859-M', '160860-M'],
-            'SNOW BOOTS': ['COLORADO', 'GLACIER', 'MUSK', 'GLAM', '170390-M', '160448-M'],
-            'INDUSTRIAL BOOTS': ['EARTH-M', 'CONCRETE', 'DELTA-M', 'JOB', 'HAWK', 'ENGINE'],
-            'HIKING SHOES': ['160448_LOW', 'JS19007M', 'QUEST-1', 'QUEST-2', 'SNHS226M', 'SNHS223W'],
-            'MILITARY BOOTS': ['TROOPER', 'ALLOY', 'DESERT', 'RESPONSE', 'SPEEDMAN', 'DELTA-HIGH']
-        },
-        'DP Comfort': {
-            'SNOW BOOTS': ['GOOSE', 'SHORTY', 'DP-CANADA', 'DP-AVALANCHE', 'CANADA', 'SWISS-LOW'],
-            'FLATS': ['DFA213', 'DFA214', 'SDFA224W', 'SDFA223W', 'SDFA2216W', 'SDFA2224W'],
-            'WEDGES SANDALS': ['ANDREA-5', 'REED-2', 'NINI-3', 'REED-1', 'NINI-5', 'NINI-8'],
-            'FASHION SNEAKERS': ['149002', 'BREATHE-1', 'DNS211', 'SDFN2210W', 'SDFN2220W', 'SDFN2225W'],
-            'SLIPPERS': ['BLIZ', 'AUZY-02', 'AUZY-01', 'SHOZIE-02', 'SHOZIE-01', 'COZY-01'],
-            'PUMPS': ['DPU214', 'DPU212-1', 'SDPU2230W', 'SDPU2231W', 'SBDPU2301W', 'SBDPU2302W']
-        },
-        'Sneakers': {
-            'WALKING SHOES': ['SARR034W', 'SARR034M', 'SNWS245W', 'SNWS245M', 'SNWS246M', 'SNWS248W'],
-            'RUNNING SHOES': ['AWUMRS2516', 'AMUMRS2516', 'AMUMRS2514', 'AMUMRS2503', 'AWUMRS2503', 'SARS26007W'],
-            'TENNIS SHOES': ['SATS26004W', 'SATS26002W'],
-            'TRAIL RUNNING': ['SNRS26006W'],
-            'FITNESS & CROSS-TRAINING': ['SATR27001W']
-        },
-        'DP Fashion': {
-            'HEELED SANDALS': ['SWAN_16', 'KARRIE', 'NINA-166', 'NINA-150', 'SHOW', 'GIGI'],
-            'PUMPS': ['CHRISTIAN-NEW', 'OPPOINTED', 'OPPOINTED_MARY', 'SWAN_30', 'OPPOINTED_LACEY', 'OPPOINTED-ANKLE'],
-            'KNEE-HIGH BOOTS': ['SIBERIAN-W', 'AKRIS', 'UTAH-W', 'TURTLE-W', 'TURTLE', 'URA-W'],
-            'ANKLE & BOOTIE': ['MONTREAL', 'CECILE', 'BOSTON-03', 'BOSTON-01', 'CHICAGO-03', 'CHICAGO-01'],
-            'FLATS': ['FLAPOINTED-SHINE', 'FLAPOINTED-ANKLE', 'SOLE-CLASSIC', 'REVONA', 'SOLE-STRAPPY', 'JILIAN'],
-            'MID-CALF BOOTS': ['MISSION', 'POCONO', 'AMAZON', 'TERRAN-SNOW', 'TERRAN', 'OUSSIE']
-        }
-    };
+    "Bruno Marc": {
+        "OXFORDS": [
+            "CEREMONY-06",
+            "GORDON-01",
+            "HALSTED-02",
+            "HALSTED-01",
+            "URBAN-05",
+            "URBAN-08"
+        ],
+        "LOAFERS & SLIP-ONS": [
+            "RALPH-02",
+            "CEREMONY-03",
+            "CEREMONY-02",
+            "HUGH-05",
+            "HUGH-03",
+            "PITTS_10"
+        ],
+        "FASHION SNEAKERS": [
+            "150908-M",
+            "PITTS_12",
+            "PITTS",
+            "RIVERA-01",
+            "170845M",
+            "170844M"
+        ],
+        "CHUKKA BOOTS": [
+            "FRANCISCO-HIGH",
+            "CHUKKA",
+            "MARLON-H",
+            "BERGEN-02",
+            "PHILLY-1",
+            "URBAN-02"
+        ],
+        "CHELSEA-BOOTS": [
+            "URBAN-06",
+            "ENGLE-03",
+            "PHILLY-2",
+            "STONE-02",
+            "BERGEN_12",
+            "PHILLY_18"
+        ],
+        "SNOW BOOTS": [
+            "SBSB211M",
+            "SBSB212W",
+            "SBBO2213M",
+            "SBSB226M",
+            "SBSB221K",
+            "SBSB226M-E"
+        ],
+        "MOTORCYCLE & COMBAT BOOTS": [
+            "PHILLY-5",
+            "PHILLY-3",
+            "ENGLE-05",
+            "ENGLE-01",
+            "STONE-05",
+            "STONE-03"
+        ],
+        "WALKING SHOES": [
+            "WALK_EASY_02",
+            "WALK_LITE_01",
+            "WALK_WORK_01",
+            "WALK_WORK_02",
+            "SBWA2408M",
+            "SBWA2406M"
+        ],
+        "OXFORD & DERBY BOOTS": [
+            "APACHE-03",
+            "APACHE-02",
+            "APACHE-01",
+            "BERGEN-05",
+            "BERGEN-03",
+            "BERGEN-01"
+        ],
+        "WORKING SHOES": [
+            "SBWO2302M",
+            "SNIC2415M",
+            "SNIC2410M",
+            "SBWO2402M",
+            "SBWO2403M",
+            "SBWO2406M"
+        ],
+        "SLIPPERS": [
+            "SBSL222M",
+            "SBSL222W",
+            "SBSL226M",
+            "SBSL227M",
+            "SBSL227M-1",
+            "SBSL229M"
+        ],
+        "LEISURE SANDALS": [
+            "SBSA2213M",
+            "SBSA2213W",
+            "SBSA2214M",
+            "SBSA2214W",
+            "SBSA222M",
+            "SBSA224K"
+        ],
+        "SPORT SANDALS & SLIDES": [
+            "HAVANA-02",
+            "HAVANA-01",
+            "BANKOK-5",
+            "BANKOK-3",
+            "BANKOK",
+            "MAUI-3"
+        ],
+        "WESTERN BOOTS": [
+            "BMUMAB2403",
+            "BMUMMB2501",
+            "BMUMKB2502",
+            "SBMB26001M",
+            "SBMB26002M",
+            "SBMB26005M"
+        ],
+        "BELT": [
+            "ABBL211M",
+            "ABBL212M",
+            "ABBL213M",
+            "ABBL216M",
+            "ABBL218M",
+            "ABBL214M"
+        ],
+        "BOYS BOOTS": [
+            "SDBO2418K",
+            "SDBB2402K",
+            "SDBB2401K",
+            "SDBB2403K",
+            "KKUMMB2507"
+        ],
+        "HEALTH CARE & FOOD SERVICE": [
+            "SNIC249M",
+            "SNIC2411M",
+            "SNIC2412M",
+            "BWUMFO2501",
+            "SBFO26003M"
+        ],
+        "FUZZY BOOTS": [
+            "SBSB2402M",
+            "SBSB2403M",
+            "BMUMSB2501",
+            "BMUMSB2504"
+        ],
+        "RAIN BOOTS": [
+            "BMEMRB2503",
+            "BMEMRB2501",
+            "SBRB26003K",
+            "SBRB26004K-D"
+        ],
+        "WALLETS": [
+            "ABWL221M",
+            "ABWL222M",
+            "ABWL223M",
+            "ABWL224M"
+        ],
+        "BOOTS": [
+            "APACHE-01-K",
+            "APACHE-03-K",
+            "SBBO222K"
+        ],
+        "CARD CASES": [
+            "ABWL225M",
+            "ABWL226M"
+        ],
+        "FLIP-FLOPS": [
+            "BMUMFF2504",
+            "BMUMFF2501"
+        ],
+        "GOLF SHOES": [
+            "SBGS26005M",
+            "SBGS26003M"
+        ],
+        "SLIDES-SANDALS": [
+            "SBSA2305M",
+            "SBSA2305M-E"
+        ],
+        "WATER SHOES": [
+            "160712-2-M",
+            "C0209_M"
+        ],
+        "MONEY CLIPS": [
+            "ABWL227M"
+        ]
+    },
+    "DP Kids": {
+        "FASHION SNEAKERS": [
+            "170803K",
+            "170804K",
+            "170307-K",
+            "170379-K",
+            "151014-K",
+            "160479-K"
+        ],
+        "FLATS": [
+            "SOLE-FINA-K",
+            "SOPHIA-22",
+            "NEW-MUY",
+            "MUY-SHINE",
+            "MUY",
+            "STARLET"
+        ],
+        "RUNNING SHOES": [
+            "160481-K",
+            "160450-K",
+            "160507-K",
+            "151003-K",
+            "160863-K",
+            "KD18001K"
+        ],
+        "FASHION SANDALS": [
+            "SWEETY-2",
+            "SWEETY-1",
+            "SPARK-INF",
+            "KSD213",
+            "KSD214",
+            "SDSD2210K"
+        ],
+        "BOOTS": [
+            "KOREL",
+            "KLOUCH",
+            "ARMY-K",
+            "KLOVE",
+            "AMAZON-K",
+            "KNICE"
+        ],
+        "SNOW BOOTS": [
+            "DUCKO",
+            "MAPLE",
+            "NORDIC",
+            "KAMICK",
+            "FORESTER",
+            "KSNOW"
+        ],
+        "SPORT SANDALS & SLIDES": [
+            "170813-K",
+            "171111-K",
+            "160912-K",
+            "170892-K",
+            "170891_K",
+            "181105K"
+        ],
+        "WESTERN BOOTS": [
+            "SDBO214K",
+            "SDBO225K",
+            "SDBO2222K",
+            "SDBO225K-1",
+            "SDBO2302K",
+            "SDBO2307K"
+        ],
+        "PUMPS": [
+            "KFL219",
+            "KFL218",
+            "SDFL2212K",
+            "SDFL2314K",
+            "SDFL2317K",
+            "SDFL2318K"
+        ],
+        "UNIFORM & SCHOOL SHOES": [
+            "KFL217",
+            "SDFL2210K",
+            "SDFL2210K-1",
+            "SDFL2210K-2",
+            "SDFS2323K",
+            "SDFL2402K"
+        ],
+        "FUZZY BOOTS": [
+            "SHORTY-K",
+            "SHORTY-POMPOM",
+            "SWEATY-BUCKLE-K",
+            "KSB214",
+            "SHORTY-K-E",
+            "KSB214-1"
+        ],
+        "RAIN BOOTS": [
+            "SDRB2201K-E",
+            "SDRB2203K-E",
+            "SDRB2202K-E",
+            "SDRB2401K",
+            "KKEMRB2501",
+            "KKUMRB2506"
+        ],
+        "FUZZY SLIPPERS": [
+            "SDSL2401K",
+            "KKUMSL2501",
+            "KKUMSL2502",
+            "SDSL26003K",
+            "SDSL26004K"
+        ],
+        "SLIDES-SANDALS": [
+            "SDSS221K",
+            "KKUMPS2502",
+            "SKSS26001K"
+        ],
+        "LOAFERS & SLIP-ONS": [
+            "HL19005K",
+            "SDLF221K"
+        ],
+        "DANCE SHOES": [
+            "SDDS2401K"
+        ],
+        "SLIPPERS": [
+            "KSL211"
+        ]
+    },
+    "Nortiv 8": {
+        "HIKING BOOTS": [
+            "160489-M",
+            "170411",
+            "170412",
+            "MOUNTAINA",
+            "MACK_01",
+            "MACK_02"
+        ],
+        "SOCCER SHOES": [
+            "160470-M",
+            "160471-M",
+            "160858-M",
+            "160861-M",
+            "160859-M",
+            "160860-M"
+        ],
+        "SNOW BOOTS": [
+            "COLORADO",
+            "GLACIER",
+            "MUSK",
+            "GLAM",
+            "170390-M",
+            "160448-M"
+        ],
+        "INDUSTRIAL BOOTS": [
+            "EARTH-M",
+            "CONCRETE",
+            "DELTA-M",
+            "JOB",
+            "HAWK",
+            "ENGINE"
+        ],
+        "HIKING SHOES": [
+            "160448_LOW",
+            "JS19007M",
+            "QUEST-1",
+            "QUEST-2",
+            "SNHS226M",
+            "SNHS223W"
+        ],
+        "MILITARY BOOTS": [
+            "TROOPER",
+            "ALLOY",
+            "DESERT",
+            "RESPONSE",
+            "SPEEDMAN",
+            "DELTA-HIGH"
+        ],
+        "WATER SHOES": [
+            "160930-W",
+            "160933-W",
+            "1610041-W",
+            "1610042-W",
+            "160712-W",
+            "160712-2-W"
+        ],
+        "SPORT SANDALS & SLIDES": [
+            "181109M",
+            "181110M",
+            "181111M",
+            "181112M",
+            "181113M",
+            "181114M"
+        ],
+        "RUNNING SHOES": [
+            "PILOT-M",
+            "RUNPRO-W",
+            "160302-M",
+            "160373-M",
+            "160318-M",
+            "SNUO223M"
+        ],
+        "WALKING SHOES": [
+            "SDWS2201W",
+            "SDWS2307W",
+            "SARR009M",
+            "SARR009W",
+            "SARR022W",
+            "SARR029W"
+        ],
+        "INDUSTRIAL SHOES": [
+            "SNIC226M-E",
+            "SNIC227M-E",
+            "SNIC2212M-E",
+            "SNIC2213M-E",
+            "SNIC2214M-E",
+            "SNIC2215M-E"
+        ],
+        "TRAIL RUNNING": [
+            "SNTR224M",
+            "SNTR229M",
+            "SNTR2210M",
+            "SNTR2310M",
+            "SNRS25001M",
+            "SNRS26003W"
+        ],
+        "RAIN BOOTS": [
+            "MAD",
+            "KAM",
+            "ORIGIN-SHORT",
+            "ORIGIN",
+            "MUCKO",
+            "SNRB221W"
+        ],
+        "BASKETBALL SHOES": [
+            "SDBS221K",
+            "SDBS225K",
+            "SDBS226K",
+            "SDBS2302K",
+            "SDBS2401K"
+        ],
+        "FLIP-FLOPS": [
+            "REVIVA-1",
+            "REVIVA-3",
+            "NMUMST2501"
+        ],
+        "HEALTH CARE & FOOD SERVICE": [
+            "SNSS221M",
+            "SNIC2414M",
+            "SNIC245M"
+        ],
+        "FASHION SOCKS": [
+            "SDSO2307K-ACC-SOCK"
+        ],
+        "Inserts & Insoles": [
+            "SNIS221U"
+        ],
+        "URBAN OUTDOOR": [
+            "SNUO2213M-E"
+        ],
+        "WESTERN BOOTS": [
+            "SNMB27001M"
+        ]
+    },
+    "DP Comfort": {
+        "SNOW BOOTS": [
+            "GOOSE",
+            "SHORTY",
+            "DP-CANADA",
+            "DP-AVALANCHE",
+            "CANADA",
+            "SWISS-LOW"
+        ],
+        "FLATS": [
+            "DFA213",
+            "DFA214",
+            "SDFA224W",
+            "SDFA223W",
+            "SDFA2216W",
+            "SDFA2224W"
+        ],
+        "WEDGES SANDALS": [
+            "ANDREA-5",
+            "REED-2",
+            "NINI-3",
+            "REED-1",
+            "NINI-5",
+            "NINI-8"
+        ],
+        "FASHION SNEAKERS": [
+            "149002",
+            "BREATHE-1",
+            "DNS211",
+            "SDFN2210W",
+            "SDFN2220W",
+            "SDFN2225W"
+        ],
+        "SLIPPERS": [
+            "BLIZ",
+            "AUZY-02",
+            "AUZY-01",
+            "SHOZIE-02",
+            "SHOZIE-01",
+            "COZY-01"
+        ],
+        "PUMPS": [
+            "DPU214",
+            "DPU212-1",
+            "SDPU2230W",
+            "SDPU2231W",
+            "SBDPU2301W",
+            "SBDPU2302W"
+        ],
+        "FLAT SANDALS": [
+            "HOBOO-NEW",
+            "ELATICA-6",
+            "ELASTICA8",
+            "KIMMIE",
+            "ELENA-1",
+            "ELENA-2"
+        ],
+        "SPORT SANDALS & SLIDES": [
+            "160912-M-NEW",
+            "160912-W-NEW",
+            "141016-M",
+            "160431-M",
+            "181103",
+            "QDL19001L"
+        ],
+        "FUZZY BOOTS": [
+            "SHORTY_HIGH",
+            "SHORTY_NEW",
+            "SWEATY-BUCKLE",
+            "DSB214-1",
+            "SDSB2401W",
+            "SDSB2432W"
+        ],
+        "SLIDES-SANDALS": [
+            "FLORIDA",
+            "DSS211",
+            "SDSS2211W",
+            "SDSS2218W",
+            "SDSS2223W",
+            "SDSS2223M"
+        ],
+        "FLIP-FLOPS": [
+            "BREEZE-1",
+            "BREEZE-2",
+            "DFF211",
+            "SDFF2210W",
+            "SDFF2203W",
+            "SDFF2222W"
+        ],
+        "RAIN BOOTS": [
+            "0615W",
+            "SDRB2201W-E",
+            "SDRB2204W-E",
+            "SDRB2402W-E",
+            "SDRB2401M-E",
+            "SDRB2408W-E"
+        ],
+        "LOAFERS & SLIP-ONS": [
+            "DLS214",
+            "DLS213",
+            "SDLS2202W",
+            "SDLS2215W",
+            "SBDLS2302W",
+            "SBDLS2301W"
+        ],
+        "MULES & CLOGS": [
+            "SDML2201W",
+            "SDML2211W",
+            "SDML2207W",
+            "SDML2207W-E",
+            "SDML2321W",
+            "SDML2403W"
+        ],
+        "FUZZY SLIPPERS": [
+            "SOFIE-05",
+            "SDSL2408W",
+            "SDSL2401W",
+            "SDSL2413W",
+            "SDSL2412W",
+            "SDSL2402W"
+        ],
+        "WALKING SHOES": [
+            "M170889",
+            "170885W",
+            "RUN_EASE_02",
+            "DHF19003M",
+            "CITYGIRL-2",
+            "CADMAN"
+        ],
+        "HEELED SANDALS": [
+            "SDHS2412W",
+            "DWUMHS2557",
+            "DWUMHS2506",
+            "DWUMHS2528",
+            "DWUWHS2503",
+            "DWUMHS2503"
+        ],
+        "ANKLE & BOOTIE": [
+            "SDAB26012W"
+        ],
+        "HEALTH CARE & FOOD SERVICE": [
+            "METRO-1"
+        ],
+        "OXFORDS": [
+            "SDOX2301W"
+        ]
+    },
+    "Sneakers": {
+        "WALKING SHOES": [
+            "SARR034W",
+            "SARR034M",
+            "SNWS245W",
+            "SNWS245M",
+            "SNWS246M",
+            "SNWS248W"
+        ],
+        "RUNNING SHOES": [
+            "AWUMRS2516",
+            "AMUMRS2516",
+            "AMUMRS2514",
+            "AMUMRS2503",
+            "AWUMRS2503",
+            "SARS26007W"
+        ],
+        "TENNIS SHOES": [
+            "SATS26004W",
+            "SATS26002W"
+        ],
+        "FITNESS & CROSS-TRAINING": [
+            "SATR27001W"
+        ],
+        "TRAIL RUNNING": [
+            "SNRS26006W"
+        ]
+    },
+    "DP Fashion": {
+        "HEELED SANDALS": [
+            "SWAN_16",
+            "KARRIE",
+            "NINA-166",
+            "NINA-150",
+            "SHOW",
+            "GIGI"
+        ],
+        "PUMPS": [
+            "CHRISTIAN-NEW",
+            "OPPOINTED",
+            "OPPOINTED_MARY",
+            "SWAN_30",
+            "OPPOINTED_LACEY",
+            "OPPOINTED-ANKLE"
+        ],
+        "KNEE-HIGH BOOTS": [
+            "SIBERIAN-W",
+            "AKRIS",
+            "UTAH-W",
+            "TURTLE-W",
+            "TURTLE",
+            "URA-W"
+        ],
+        "ANKLE & BOOTIE": [
+            "MONTREAL",
+            "CECILE",
+            "BOSTON-03",
+            "BOSTON-01",
+            "CHICAGO-03",
+            "CHICAGO-01"
+        ],
+        "FLATS": [
+            "FLAPOINTED-SHINE",
+            "FLAPOINTED-ANKLE",
+            "SOLE-CLASSIC",
+            "REVONA",
+            "SOLE-STRAPPY",
+            "JILIAN"
+        ],
+        "MID-CALF BOOTS": [
+            "MISSION",
+            "POCONO",
+            "AMAZON",
+            "TERRAN-SNOW",
+            "TERRAN",
+            "OUSSIE"
+        ],
+        "WEDGES SANDALS": [
+            "SOLSOFT-6",
+            "INGRID",
+            "SANDRO-03",
+            "MULAN",
+            "ADITI-NEW",
+            "JONES"
+        ],
+        "OVER-THE-KNEE BOOTS": [
+            "SHOO",
+            "HIGHLEG",
+            "LAURENCE",
+            "PRADE-01",
+            "PRADE-HIGH",
+            "PAULINE"
+        ],
+        "FLAT SANDALS": [
+            "JEWEL_01",
+            "SLIM",
+            "GREEK-01",
+            "ARIZONA",
+            "ALEXA",
+            "DARRE"
+        ],
+        "LOAFERS & SLIP-ONS": [
+            "SDLS2207W",
+            "SDLS2205W-E",
+            "SDLS2210W",
+            "SDLS2210W-E",
+            "SDLS2211W-E",
+            "SDLS2212W-E"
+        ],
+        "SLIDES-SANDALS": [
+            "SDSS2212W",
+            "SDSS2213W",
+            "SDSS2224W",
+            "SDSS2319W",
+            "SDSS2401W",
+            "SDSS2403W"
+        ],
+        "MULES & CLOGS": [
+            "DML211",
+            "DML212",
+            "SDML2209W",
+            "DML211-1",
+            "SDML2212W",
+            "SDML2205W"
+        ],
+        "OXFORDS": [
+            "SDPU2205W",
+            "SDOX2201W-E",
+            "SDOX2202W-E",
+            "SDOX2302W",
+            "SDOX2303W",
+            "SDOX2404W"
+        ],
+        "FLIP-FLOPS": [
+            "SDFF2403W",
+            "DWUMFF2502",
+            "DWUMFF2508",
+            "DWUMFF2511",
+            "DWUMFF2505",
+            "SDFF26002W"
+        ],
+        "FUZZY BOOTS": [
+            "SDSB2421W",
+            "SDSB24011W-N1"
+        ],
+        "SLIPPERS": [
+            "FLUFFIA",
+            "EMMA"
+        ],
+        "Heeled Sandals": [
+            "SDHS26048W"
+        ]
+    }
+};
 
     function buildCategoryCards(ctName, data) {
         const items = ctRelationSource[ctName]?.categories || ['核心品类', '成长品类', '长尾品类', '季节品类', '清仓品类', '配件'].map(name => ({ name, rows: 0 }));
         const offsets = [-9, -4, 0, 4, 8, 11];
         return items.map((item, index) => {
             const name = item.name;
-            const score = Math.max(28, Math.min(96, Math.round((data.score + offsets[index]) * 10) / 10));
+            const offset = offsets[index % offsets.length];
+            const score = Math.max(28, Math.min(96, Math.round((data.score + offset) * 10) / 10));
             const indexes = {
-                '周转天数': Math.max(25, Math.min(96, data.indexes['周转天数'] + offsets[index])),
-                '缺货风险': Math.max(25, Math.min(96, data.indexes['缺货风险'] + offsets[index] - 1)),
-                '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offsets[index] - 2)),
-                '结构健康': Math.max(25, Math.min(96, data.indexes['结构健康'] + offsets[index] + 1))
+                '周转天数': Math.max(25, Math.min(96, data.indexes['周转天数'] + offset)),
+                '缺货风险': Math.max(25, Math.min(96, data.indexes['缺货风险'] + offset - 1)),
+                '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offset - 2)),
+                '结构健康': Math.max(25, Math.min(96, data.indexes['结构健康'] + offset + 1))
             };
             const status = scoreStatus(score);
             const amount = (Math.max(0.04, (100 - score) / 70)).toFixed(2);
@@ -2238,7 +3822,73 @@
         return Number(String(value || '').replace(/[^0-9.]/g, '')) || 0;
     }
 
-    function renderCtDiagnosticKpis(ctName, data, categories) {
+    function getFactorAdvice(label, value) {
+        const numeric = Number(value) || 0;
+        const level = scoreLevel(numeric);
+        if (level === 'success') return null;
+        const adviceMatrix = {
+            '缺货风险': {
+                danger: ['断货压力明显', '立即补货调拨'],
+                warning: ['局部爆款承压', '追发补货']
+            },
+            '积压风险': {
+                danger: ['长库龄拖累', '清仓调拨'],
+                warning: ['低动销累积', '控货促销']
+            },
+            '结构健康': {
+                danger: ['款式结构失衡', '冻结扩品'],
+                warning: ['结构偏离目标', '校准款色码']
+            },
+            '周转天数': {
+                danger: ['周转明显偏慢', '控采促销'],
+                warning: ['周转开始放缓', '控采提转']
+            }
+        };
+        const [diagnosis, suggestion] = adviceMatrix[label]?.[level] || ['指标偏低', '建议专项复盘'];
+        return { label, value: numeric, level, diagnosis, suggestion };
+    }
+
+    function getFactorInsightItems(indexes) {
+        return cardIndexOrder
+            .map(label => Object.prototype.hasOwnProperty.call(indexes || {}, label) ? getFactorAdvice(label, indexes[label]) : null)
+            .filter(Boolean)
+            .sort((a, b) => a.value - b.value);
+    }
+
+    function renderFactorInsightBar(indexes, clickAction) {
+        const items = getFactorInsightItems(indexes);
+        const isCalm = items.length === 0;
+        const tone = isCalm ? 'calm' : (items.some(item => item.level === 'danger') ? 'danger' : 'warning');
+        const tag = isCalm ? 'AI提示' : 'AI诊断';
+        const copy = isCalm
+            ? '当前四项因子均健康，建议保持现有补货与去化节奏。'
+            : items.slice(0, 2).map(item => `${item.label} ${item.value}：${item.diagnosis}，${item.suggestion}`).join('；');
+        const handler = clickAction ? ` onclick="event.stopPropagation(); ${clickAction}()"` : '';
+        return `<button type="button" class="factor-ai-strip ${tone}"${handler} title="点击打开 AI 详细解读"><span class="factor-ai-tag">${tag}</span><span class="factor-ai-copy">${escapeHtml(copy)}</span></button>`;
+    }
+
+    function updateFactorInsight(targetId, indexes, clickAction) {
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        target.innerHTML = renderFactorInsightBar(indexes, clickAction);
+    }
+
+    function getHomeFactorIndexes() {
+        const container = document.getElementById('globalFactorInsight')?.closest('.factor-stack')?.querySelector('.compact-factors');
+        const indexes = {};
+        container?.querySelectorAll('.factor-compact').forEach(card => {
+            const label = card.querySelector('.factor-header span')?.textContent.trim();
+            const value = parseMetricNumber(card.querySelector('.factor-score')?.textContent);
+            if (label) indexes[label] = value;
+        });
+        return indexes;
+    }
+
+    function updateHomeFactorInsight() {
+        updateFactorInsight('globalFactorInsight', getHomeFactorIndexes(), 'showGlobalIndexInsight');
+    }
+
+    function getCtDiagnosticMetrics(ctName, data, categories) {
         const styles = buildStyleCards(ctName, data);
         const riskCategories = categories.filter(item => item.score < SCORE_THRESHOLDS.success);
         const lowestCategory = categories[0];
@@ -2253,12 +3903,52 @@
         const pendingActions = clearActions + replenishActions + transferActions;
         const riskColor = riskCategories.some(item => scoreLevel(item.score) === 'danger') ? 'var(--color-danger)' : riskCategories.length ? 'var(--color-warning)' : 'var(--color-success)';
         const riskNote = lowestCategory ? `最低 ${lowestCategory.name} ${lowestCategory.score}` : '全部品类健康';
+        return { riskCategories, shortageStyles, shortageGap, staleRate, clearActions, replenishActions, transferActions, pendingActions, riskColor, riskNote };
+    }
+
+    function renderCtDiagnosticKpis(ctName, data, categories) {
+        const metrics = getCtDiagnosticMetrics(ctName, data, categories);
         return [
-            `<div class="kpi-card"><div class="label">风险品类数</div><div class="value" style="color: ${riskColor};">${riskCategories.length} / ${categories.length}</div><div class="note">${escapeHtml(riskNote)}</div></div>`,
-            `<div class="kpi-card"><div class="label">未来30天缺货款式</div><div class="value" style="color: var(--color-danger);">${shortageStyles}</div><div class="note">预计缺口 ${shortageGap}K双</div></div>`,
-            `<div class="kpi-card kpi-danger-alert"><div class="label">呆滞库存金额</div><div class="value">${data.risks['滞销金额']}</div><div class="note">360天+ 占比 ${staleRate}</div></div>`,
-            `<div class="kpi-card"><div class="label">待治理动作</div><div class="value" style="color: var(--color-success);">${pendingActions}</div><div class="note">补货${replenishActions} · 清仓${clearActions} · 调拨${transferActions}</div></div>`
+            `<div class="kpi-card"><div class="label">风险品类数</div><div class="value" style="color: ${metrics.riskColor};">${metrics.riskCategories.length} / ${categories.length}</div><div class="note">${escapeHtml(metrics.riskNote)}</div></div>`,
+            `<div class="kpi-card"><div class="label">未来30天缺货款式</div><div class="value" style="color: var(--color-danger);">${metrics.shortageStyles}</div><div class="note">预计缺口 ${metrics.shortageGap}K双</div></div>`,
+            `<div class="kpi-card kpi-danger-alert"><div class="label">呆滞库存金额</div><div class="value">${data.risks['滞销金额']}</div><div class="note">360天+ 占比 ${metrics.staleRate}</div></div>`,
+            `<div class="kpi-card"><div class="label">待治理动作</div><div class="value" style="color: var(--color-success);">${metrics.pendingActions}</div><div class="note">补货${metrics.replenishActions} · 清仓${metrics.clearActions} · 调拨${metrics.transferActions}</div></div>`
         ].join('');
+    }
+
+    function renderHomeCtSummaries() {
+        document.querySelectorAll('#homeCtCards > .ct-mini-card').forEach(card => {
+            const action = card.getAttribute('onclick') || '';
+            const match = action.match(/openCtDashboard\('(.+?)'\)/);
+            const ctName = match?.[1];
+            const data = ctDashboardData[ctName];
+            if (!ctName || !data) return;
+            const categories = buildCategoryCards(ctName, data);
+            const metrics = getCtDiagnosticMetrics(ctName, data, categories);
+            const oldBlock = card.querySelector('.ct-home-summary, .ct-decision-meta, .ct-metrics-list');
+            const summaryHtml = `
+                <div class="ct-home-summary">
+                    <div class="ct-home-summary-row"><span>风险品类</span><strong style="color:${metrics.riskColor};">${metrics.riskCategories.length} / ${categories.length}</strong></div>
+                    <div class="ct-home-summary-row"><span>缺货款式</span><strong style="color:var(--color-danger);">${metrics.shortageStyles}</strong></div>
+                    <div class="ct-home-summary-row"><span>待治理</span><strong style="color:var(--color-success);">${metrics.pendingActions}</strong></div>
+                </div>
+            `;
+            if (oldBlock) {
+                oldBlock.outerHTML = summaryHtml;
+            } else {
+                const aiButton = card.querySelector('.ai-capsule');
+                if (aiButton) aiButton.insertAdjacentHTML('beforebegin', summaryHtml);
+            }
+            let aiButton = card.querySelector('.ai-capsule');
+            if (!aiButton) {
+                card.insertAdjacentHTML('beforeend', '<button type="button" class="ai-capsule"><span class="ai-spark-icon"></span>AI</button>');
+                aiButton = card.querySelector('.ai-capsule');
+            }
+            if (aiButton) {
+                aiButton.setAttribute('onclick', `event.stopPropagation(); openDiagnosticReport('ct', { ct: ${JSON.stringify(ctName)} })`);
+                aiButton.setAttribute('title', `${ctName} CT 诊断报告`);
+            }
+        });
     }
 
     function renderBreadcrumb(items) {
@@ -2296,8 +3986,113 @@
         target.innerHTML = renderBreadcrumb(items);
     }
 
+    function buildDiagnosticReportUrl(level, payload = {}) {
+        const params = new URLSearchParams();
+        params.set('level', level);
+        if (payload.ct) params.set('ct', payload.ct);
+        if (payload.category) params.set('category', payload.category);
+        if (payload.style) params.set('style', payload.style);
+        return `全球库存健康诊断报告.html?${params.toString()}`;
+    }
+
+    function openDiagnosticReport(level, payload = {}) {
+        window.open(buildDiagnosticReportUrl(level, payload), '_blank', 'noopener,noreferrer');
+    }
+
     function getWeakestMetric(indexes) {
         return Object.entries(indexes).sort((a, b) => a[1] - b[1])[0] || ['综合健康', 0];
+    }
+
+    function getPrimaryAction(indexes, score) {
+        const [weakName, weakValue] = getWeakestMetric(indexes);
+        const actionScore = Math.min(Number(score) || 100, Number(weakValue) || 0);
+        const level = scoreLevel(actionScore);
+        const actionMatrix = {
+            danger: {
+                '缺货风险': '立即补货',
+                '积压风险': '清仓调拨',
+                '结构健康': '冻结扩品',
+                '周转天数': '停采促销'
+            },
+            warning: {
+                '缺货风险': '追发补货',
+                '积压风险': '控货促销',
+                '结构健康': '结构校准',
+                '周转天数': '控采提转'
+            },
+            success: {
+                '缺货风险': '小批快反',
+                '积压风险': '控货复盘',
+                '结构健康': '结构复制',
+                '周转天数': '维持节奏'
+            }
+        };
+        return { label: actionMatrix[level]?.[weakName] || '专项复盘', weakName, weakValue, level };
+    }
+
+    function getCategoryDiagnosticSummary(category) {
+        const shortageScore = Number(category.indexes['缺货风险']) || 0;
+        const styleCount = ctCategoryStyleSource[currentCtName]?.[category.name]?.length || 6;
+        const shortageStyles = shortageScore >= SCORE_THRESHOLDS.success
+            ? 0
+            : Math.max(1, Math.min(styleCount, Math.round(styleCount * (100 - shortageScore) / 78)));
+        const pendingActions = scoreLevel(category.score) === 'success'
+            ? 0
+            : Math.max(1, Math.round((100 - Number(category.score || 0)) / 14));
+        const action = getPrimaryAction(category.indexes, category.score);
+        return {
+            shortageStyles,
+            pendingActions,
+            actionLabel: action.label,
+            shortageColor: scoreColor(shortageScore),
+            pendingColor: pendingActions ? scoreColor(category.score) : 'var(--color-success)',
+            actionColor: scoreColor(action.weakValue)
+        };
+    }
+
+    function getStyleDiagnosticSummary(style) {
+        const metricValues = Object.values(style.indexes).map(value => Number(value) || 0);
+        const weakestValue = Math.min(...metricValues);
+        const riskSku = scoreLevel(style.score) === 'success' && weakestValue >= SCORE_THRESHOLDS.success
+            ? 0
+            : Math.max(1, Math.round((100 - weakestValue) / 6));
+        const pendingActions = riskSku ? Math.max(1, Math.ceil(riskSku / 4)) : 0;
+        const action = getPrimaryAction(style.indexes, style.score);
+        return {
+            riskSku,
+            pendingActions,
+            actionLabel: action.label,
+            riskSkuColor: riskSku ? scoreColor(weakestValue) : 'var(--color-success)',
+            pendingColor: pendingActions ? scoreColor(style.score) : 'var(--color-success)',
+            actionColor: scoreColor(action.weakValue)
+        };
+    }
+
+    function buildCtExpertGuidance(ctName, data, categories) {
+        const metrics = getCtDiagnosticMetrics(ctName, data, categories);
+        const [weakName, weakValue] = getWeakestMetric(data.indexes);
+        const action = getPrimaryAction(data.indexes, data.score);
+        const focusCategory = categories.find(item => item.name === currentCategoryName) || categories[0];
+        const riskNames = metrics.riskCategories.slice(0, 3).map(item => item.name).join('、') || '暂无明显风险品类';
+        const summary = `本次分析基于 <strong>${escapeHtml(ctName)}</strong> 的库存健康指数，对当前品类健康状况进行了全面诊断。数据显示，该 CT 处于 <strong>${escapeHtml(scoreStatus(data.score))}</strong> 状态，核心短板集中在 <strong>${escapeHtml(weakName)} ${escapeHtml(weakValue)}</strong> 分。风险品类共 <strong>${metrics.riskCategories.length}/${categories.length}</strong> 个，未来 30 天缺货款式约 <strong>${escapeHtml(metrics.shortageStyles)}</strong> 个，360天+ 呆滞库存金额约 <strong>${escapeHtml(data.risks['滞销金额'])}</strong>。当前优先聚焦 <strong>${escapeHtml(focusCategory?.name || '全部品类')}</strong>，建议执行 <strong>${escapeHtml(action.label)}</strong>，并围绕 <strong>${escapeHtml(riskNames)}</strong> 做单品级穿透，先处理低分款式，再回看补货、清仓与调拨策略，以释放资金占用并改善结构健康。`;
+        const reportBody = `#### 专家（大迈 M-AI）建议与指导\n* 当前 CT：${ctName}，健康状态：${scoreStatus(data.score)}。\n* 核心短板：${weakName} ${weakValue}分。\n* 风险品类：${metrics.riskCategories.length}/${categories.length}，当前聚焦：${focusCategory?.name || '全部品类'}。\n* 建议优先执行：${action.label}。\n* 重点穿透：${riskNames}。`;
+        return { summary, reportBody };
+    }
+
+    function renderCtExpertGuidance(ctName, data, categories) {
+        const guidance = buildCtExpertGuidance(ctName, data, categories);
+        return `<button type="button" class="ct-expert-panel" onclick="showCtExpertGuidanceAI()" title="点击查看 AI 详细解读"><div class="ct-expert-icon">AI建议与指导</div><div class="ct-expert-copy">${guidance.summary}</div></button>`;
+    }
+
+    function updateCtExpertGuidance(ctName, data, categories) {
+        const target = document.getElementById('ctExpertGuidance');
+        if (!target || !data) return;
+        target.innerHTML = renderCtExpertGuidance(ctName, data, categories);
+    }
+
+    function showCtExpertGuidanceAI() {
+        if (!currentCtName) return;
+        openDiagnosticReport('ct', { ct: currentCtName });
     }
 
     function updateCtIndexBroadcast() {
@@ -2320,7 +4115,46 @@
         const reportBodyArg = escapeHtml(JSON.stringify(`#### ${category.status}\n* 当前品类健康指数 ${category.score}。\n* 建议结合周转、缺货与积压风险做单品级穿透。`));
         const ctArg = escapeHtml(JSON.stringify(currentCtName));
         const categoryArg = escapeHtml(JSON.stringify(category.name));
-        return `<div class="ct-mini-card${riskClass}${activeClass}" onclick="selectCategory(${ctArg}, ${categoryArg})"><div class="ct-card-top"><div><div class="ct-name">${safeName}</div>${metaHtml}</div><div class="ct-score" style="color:${color};">${category.score}</div></div><div class="ct-index-grid">${indexHtml}</div><div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>${category.indexes['周转天数']} / ${category.indexes['缺货风险']}</span></div><div class="ct-metric-item"><span>滞销金额</span><span>$${category.amount}M</span></div></div><button class="ai-capsule" onclick="event.stopPropagation(); showAIReport(${reportTitleArg}, ${reportBodyArg})"><span class="ai-spark-icon"></span>AI</button></div>`;
+        const summary = getCategoryDiagnosticSummary(category);
+        return `<div class="ct-mini-card${riskClass}${activeClass}" onclick="selectCategory(${ctArg}, ${categoryArg})"><div class="ct-card-top"><div><div class="ct-name">${safeName}</div>${metaHtml}</div><div class="ct-score" style="color:${color};">${category.score}</div></div><div class="ct-index-grid">${indexHtml}</div><div class="ct-metrics-list"><div class="ct-metric-item"><span>缺货款式</span><strong style="color:${summary.shortageColor};">${summary.shortageStyles}</strong></div><div class="ct-metric-item"><span>待治理</span><strong style="color:${summary.pendingColor};">${summary.pendingActions}项</strong></div><div class="ct-metric-item"><span>优先动作</span><strong style="color:${summary.actionColor};">${summary.actionLabel}</strong></div></div><button class="ai-capsule" onclick="event.stopPropagation(); openDiagnosticReport('category', { ct: ${ctArg}, category: ${categoryArg} })" title="${safeName} 品类诊断报告"><span class="ai-spark-icon"></span>AI</button></div>`;
+    }
+
+    function getVisibleCategories(categories) {
+        return currentCategoryExpanded ? categories : categories.slice(0, CATEGORY_PREVIEW_LIMIT);
+    }
+
+    function renderCategorySection(ctName, categories) {
+        const total = categories.length;
+        const visibleCategories = getVisibleCategories(categories);
+        const shown = visibleCategories.length;
+        const hasMore = total > CATEGORY_PREVIEW_LIMIT;
+        const hint = hasMore
+            ? (currentCategoryExpanded ? `已展示全部${total}个` : `默认展示风险最高${shown}个 / 共${total}个`)
+            : `共${total}个品类`;
+        const action = hasMore
+            ? `<button type="button" class="ct-title-action" onclick="toggleCategoryExpand(event)">${currentCategoryExpanded ? '收起' : `查看全部 ${total}`}</button>`
+            : '';
+        document.getElementById('ctCategoryTitle').innerHTML = `${escapeHtml(ctName)} 各品类库存健康透视 <span>${escapeHtml(hint)}</span>${action}`;
+        document.getElementById('ctCategoryCards').innerHTML = visibleCategories.map(renderCategoryCard).join('');
+    }
+
+    function toggleCategoryExpand(event) {
+        event?.stopPropagation();
+        const data = ctDashboardData[currentCtName];
+        if (!data) return;
+        currentCategoryExpanded = !currentCategoryExpanded;
+        const categories = buildCategoryCards(currentCtName, data);
+        const visibleCategories = getVisibleCategories(categories);
+        if (!visibleCategories.some(item => item.name === currentCategoryName)) {
+            currentCategoryName = visibleCategories[0]?.name || '';
+            renderStyleSection(currentCtName, currentCategoryName);
+            closeSkuAdvisor();
+        }
+        renderCategorySection(currentCtName, categories);
+        updateCtExpertGuidance(currentCtName, data, categories);
+        updateCtBreadcrumb();
+        updateCtIndexBroadcast();
+        if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
     }
 
     function renderStyleCard(style) {
@@ -2331,9 +4165,11 @@
         const safeCategory = escapeHtml(style.category || 'UNMAPPED');
         const ctArg = escapeHtml(JSON.stringify(currentCtName));
         const styleArg = escapeHtml(JSON.stringify(style.name));
+        const categoryArg = escapeHtml(JSON.stringify(style.category || currentCategoryName || 'UNMAPPED'));
         const reportTitleArg = escapeHtml(JSON.stringify(`${style.name} 款式诊断`));
         const reportBodyArg = escapeHtml(JSON.stringify('点击卡片进入单品参谋，查看 SKU 级健康档案。'));
-        return `<div class="ct-mini-card${riskClass}" onclick="openSkuAdvisor(${ctArg}, ${styleArg})"><div class="ct-card-top"><div><div class="ct-name">${safeName}</div><div class="ct-card-sub">${safeCategory}</div></div><div class="ct-score" style="color:${color};">${style.score}</div></div><div class="ct-index-grid">${indexHtml}</div><div class="ct-metrics-list"><div class="ct-metric-item"><span>周转/缺货</span><span>${style.indexes['周转天数']} / ${style.indexes['缺货风险']}</span></div><div class="ct-metric-item"><span>滞销金额</span><span>$${style.amount}M</span></div></div><button class="ai-capsule" onclick="event.stopPropagation(); showAIReport(${reportTitleArg}, ${reportBodyArg})"><span class="ai-spark-icon"></span>AI</button></div>`;
+        const summary = getStyleDiagnosticSummary(style);
+        return `<div class="ct-mini-card${riskClass}" onclick="openSkuAdvisor(${ctArg}, ${styleArg})"><div class="ct-card-top"><div><div class="ct-name">${safeName}</div><div class="ct-card-sub">${safeCategory}</div></div><div class="ct-score" style="color:${color};">${style.score}</div></div><div class="ct-index-grid">${indexHtml}</div><div class="ct-metrics-list"><div class="ct-metric-item"><span>风险SKU</span><strong style="color:${summary.riskSkuColor};">${summary.riskSku}</strong></div><div class="ct-metric-item"><span>待治理</span><strong style="color:${summary.pendingColor};">${summary.pendingActions}项</strong></div><div class="ct-metric-item"><span>优先动作</span><strong style="color:${summary.actionColor};">${summary.actionLabel}</strong></div></div><button class="ai-capsule" onclick="event.stopPropagation(); openDiagnosticReport('style', { ct: ${ctArg}, category: ${categoryArg}, style: ${styleArg} })" title="${safeName} Style 诊断报告"><span class="ai-spark-icon"></span>AI</button></div>`;
     }
 
     function renderStyleSection(ctName, categoryName) {
@@ -2352,8 +4188,9 @@
         const data = ctDashboardData[ctName];
         if (!data) return;
         const categories = buildCategoryCards(ctName, data);
-        document.getElementById('ctCategoryCards').innerHTML = categories.map(renderCategoryCard).join('');
+        renderCategorySection(ctName, categories);
         renderStyleSection(ctName, categoryName);
+        updateCtExpertGuidance(ctName, data, categories);
         updateCtBreadcrumb();
         updateCtIndexBroadcast();
         if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
@@ -2364,6 +4201,7 @@
         const data = ctDashboardData[ctName];
         if (!data) return;
         currentCtName = ctName;
+        currentCategoryExpanded = false;
         const categories = buildCategoryCards(ctName, data);
         currentCategoryName = categories[0]?.name || '';
         document.getElementById('ctDashTitle').textContent = `${ctName} · By 品类库存健康指数看板`;
@@ -2385,10 +4223,11 @@
             renderFactor('结构健康', data.indexes['结构健康'], '25%'),
             renderFactor('周转天数', data.indexes['周转天数'], '30%')
         ].join('');
+        updateFactorInsight('ctFactorInsight', data.indexes, 'showCtIndexInsight');
         document.getElementById('ctDashKpis').innerHTML = renderCtDiagnosticKpis(ctName, data, categories);
-        document.getElementById('ctCategoryTitle').innerHTML = `${ctName} 各品类库存健康透视 <span>按风险优先级倒序排查</span>`;
-        document.getElementById('ctCategoryCards').innerHTML = categories.map(renderCategoryCard).join('');
+        renderCategorySection(ctName, categories);
         renderStyleSection(ctName, currentCategoryName);
+        updateCtExpertGuidance(ctName, data, categories);
         updateCtBreadcrumb();
         updateCtIndexBroadcast();
         document.getElementById('ctDashboard').classList.add('open');
@@ -2632,8 +4471,7 @@
     function showCurrentSkuAI() {
         if (!currentSkuAdvisor) return;
         const advisor = currentSkuAdvisor;
-        const w = advisor.warehouseMismatch;
-        showAIReport(`${advisor.styleName} 单品库存参谋`, `#### ${advisor.inventoryType.label}\n* 当前健康指数 ${advisor.score}，关键短板：${advisor.weakest}。\n* 缺货仓 ${w.shortageWarehouse} 预计缺口 ${w.shortageGap}双，积压仓 ${w.overstockWarehouse} 可调拨 ${w.transferQty}双。\n* AI建议：${advisor.actions[0][1]}`);
+        openDiagnosticReport('style', { ct: advisor.ctName, category: advisor.category, style: advisor.styleName });
     }
 
     function triggerWarehouseTransfer() {
@@ -2644,26 +4482,17 @@
     }
 
     function showGlobalIndexInsight() {
-        showAIReport('全球库存健康总指数 · 关键解读', `#### 指数解读\n* 当前全球库存健康总指数为71.4，同比下降2.1%，处在健康与预警之间的临界区。\n* 四项因子中，积压风险仅48分，是拉低总指数的首要短板；缺货风险68分，说明局部爆款仍有断货压力。\n* 结构健康85分、周转天数82分表现较好，说明问题不是全局失控，而是高库龄与低动销库存集中拖累。\n* 建议优先穿透Bruno Marc、DP Kids及360天+长库龄库存，并联动AI生成清仓、调拨与补货治理任务。`);
+        openDiagnosticReport('global');
     }
 
     function showCtIndexInsight() {
-        const data = ctDashboardData[currentCtName];
-        if (!data) return;
-        const categories = buildCategoryCards(currentCtName, data);
-        const activeCategory = categories.find(item => item.name === currentCategoryName) || categories[0];
-        const [weakName, weakValue] = getWeakestMetric(data.indexes);
-        const categoryLine = activeCategory
-            ? `当前聚焦品类 ${activeCategory.name}，品类健康指数 ${activeCategory.score}。`
-            : '当前未选中具体品类，建议先从风险最低分品类开始穿透。';
-        showAIReport(`${currentCtName} 品类健康总指数 · 关键解读`, `#### By 品类指数解读\n* ${currentCtName} 品类健康总指数为 ${data.score}，当前状态：${scoreStatus(data.score)}。\n* 指数短板为 ${weakName} ${weakValue}，建议优先判断是缺货、积压还是结构失衡造成。\n* ${categoryLine}\n* AI建议：${data.actions[0]}`);
+        if (!currentCtName) return;
+        openDiagnosticReport('ct', { ct: currentCtName });
     }
 
     function showCurrentCtAI() {
-        const data = ctDashboardData[currentCtName];
-        if (!data) return;
-        const [weakName, weakValue] = getWeakestMetric(data.indexes);
-        showAIReport(`${currentCtName} By 品类诊断`, `#### ${scoreStatus(data.score)}\n* 当前健康指数 ${data.score}，关键短板：${weakName} ${weakValue}。\n* 当前选中品类：${currentCategoryName || '全部品类'}。\n* AI 建议：${data.actions[0]}`);
+        if (!currentCtName) return;
+        openDiagnosticReport('ct', { ct: currentCtName });
     }
 
     function getAIContext() {
@@ -2729,6 +4558,7 @@
                     title: `${advisor.styleName} 单品治理方案`,
                     pill: 'SKU ACTION',
                     desc: `围绕${advisor.inventoryType.label}输出补货、清仓、调拨与复盘动作。`,
+                    href: buildDiagnosticReportUrl('style', { ct: advisor.ctName, category: advisor.category, style: advisor.styleName }),
                     reportTitle: `${advisor.styleName} 单品治理方案`,
                     reportBody: `#### ${advisor.inventoryType.label}\n* 关键短板：${advisor.weakest}。\n* 第一建议：${advisor.actions[0][1]}\n* 第二建议：${advisor.actions[1][1]}\n* 建议同步创建治理任务，跟踪执行与复盘。`
                 },
@@ -2762,12 +4592,14 @@
                     title: `${context.ctName} 库存健康诊断`,
                     pill: 'CT REPORT',
                     desc: `当前短板为${weakName} ${weakValue}，建议优先穿透 ${categoryName}。`,
+                    href: buildDiagnosticReportUrl('ct', { ct: context.ctName }),
                     reportTitle: `${context.ctName} 库存健康诊断`,
                     reportBody: `#### ${context.ctName} 风险聚焦\n* 健康指数 ${context.data.score}，短板：${weakName} ${weakValue}。\n* 当前选中品类：${categoryName}。\n* 建议优先查看款式：${styleNames}。`
                 },
                 {
                     icon: '□',
                     title: `${categoryName} 款式结构失衡诊断`,
+                    href: buildDiagnosticReportUrl('category', { ct: context.ctName, category: categoryName }),
                     reportTitle: `${categoryName} 款式结构失衡诊断`,
                     reportBody: `#### 款式结构\n* 当前款式已按风险优先级排序。\n* 优先检查 ${styleNames} 的周转、缺货、积压与结构健康。`
                 },
@@ -2788,20 +4620,22 @@
         return [
             {
                 featured: true,
-                href: '全球库存健康诊断报告.html',
+                href: buildDiagnosticReportUrl('global'),
                 title: '全球库存健康诊断报告',
                 pill: 'LIVE REPORT ↗',
                 desc: '总结建议：综合健康指数71.4，积压风险偏高，建议优先穿透高库龄与低动销 CT。'
             },
             {
                 icon: '□',
-                title: '库存积压诊断：哪些 CT / 品类最需要清退？',
+                title: 'Bruno Marc CT诊断：哪些品类最需要清退？',
+                href: buildDiagnosticReportUrl('ct', { ct: 'Bruno Marc' }),
                 reportTitle: '库存积压诊断',
                 reportBody: '#### 积压风险聚焦\n* Bruno Marc 与 DP Kids 的滞销金额较高。\n* 建议优先穿透360天+库存、低动销款式和高资金占用仓。'
             },
             {
                 icon: '⌘',
-                title: '缺货风险诊断：哪些爆款尺码需要紧急补货？',
+                title: 'DP Kids CT诊断：哪些爆款尺码需要紧急补货？',
+                href: buildDiagnosticReportUrl('ct', { ct: 'DP Kids' }),
                 reportTitle: '缺货风险诊断',
                 reportBody: '#### 缺货风险聚焦\n* 优先识别A类核心款、低可售天数款式和在途延迟节点。\n* 建议联动补货、调拨和销售预测修正。'
             },
@@ -2824,14 +4658,18 @@
         const title = escapeHtml(item.title);
         const desc = escapeHtml(item.desc || '');
         const pill = item.pill ? `<div class="ai-live-pill">${escapeHtml(item.pill)}</div>` : '';
+        const href = item.href ? escapeHtml(item.href) : '';
         if (item.featured) {
             const top = `<div class="ai-suggestion-top"><div class="ai-suggestion-text">${title}</div>${pill}</div><div class="ai-suggestion-desc">${desc}</div>`;
-            if (item.href) {
-                return `<a class="ai-suggestion-card featured" href="${escapeHtml(item.href)}" target="_blank" rel="noopener noreferrer">${top}</a>`;
+            if (href) {
+                return `<a class="ai-suggestion-card featured" href="${href}" target="_blank" rel="noopener noreferrer">${top}</a>`;
             }
             const reportTitle = escapeHtml(JSON.stringify(item.reportTitle || item.title));
             const reportBody = escapeHtml(JSON.stringify(item.reportBody || item.desc || item.title));
             return `<div class="ai-suggestion-card featured" onclick="showAIReport(${reportTitle}, ${reportBody})">${top}</div>`;
+        }
+        if (href) {
+            return `<a class="ai-suggestion-card" href="${href}" target="_blank" rel="noopener noreferrer"><div class="ai-suggestion-icon">${escapeHtml(item.icon || '□')}</div><div class="ai-suggestion-text">${title}</div></a>`;
         }
         const reportTitle = escapeHtml(JSON.stringify(item.reportTitle || item.title));
         const reportBody = escapeHtml(JSON.stringify(item.reportBody || item.desc || item.title));
@@ -2907,12 +4745,14 @@
     }
 
     try {
-        applyTheme(localStorage.getItem('inventory-dashboard-theme') || 'dark');
+        applyTheme(localStorage.getItem('inventory-dashboard-theme') || 'light');
     } catch (e) {
-        applyTheme('dark');
+        applyTheme('light');
     }
     normalizeStaticIndexGrids();
     normalizeStaticScoreStates();
+    updateHomeFactorInsight();
+    renderHomeCtSummaries();
     renderAIContextSuggestions();
 </script>
 </body>

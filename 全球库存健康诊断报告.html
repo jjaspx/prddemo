@@ -7,197 +7,2081 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --bg: #090A0D;
-            --panel: rgba(22, 22, 26, 0.78);
-            --panel-strong: rgba(28, 28, 34, 0.9);
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #F5F5F7;
-            --muted: #8E8E93;
-            --success: #30D158;
-            --warning: #FF9F0A;
-            --danger: #FF453A;
-            --purple: #BF5AF2;
+            --bg: #F7FAFD;
+            --paper: #FFFFFF;
+            --soft: #F2F7FC;
+            --soft-blue: #EAF4FF;
+            --line: #E3EAF2;
+            --line-strong: #D6E1ED;
+            --text: #1F2A37;
+            --muted: #6B7A90;
+            --light-muted: #97A6B8;
+            --blue: #1296DB;
+            --blue-dark: #0F75BD;
+            --green: #21B573;
+            --green-soft: #EAF8EF;
+            --red: #E95050;
+            --red-soft: #FDEEEE;
+            --orange: #F59E0B;
+            --orange-soft: #FFF5E3;
+            --shadow: 0 10px 28px rgba(31, 42, 55, 0.06);
         }
         body {
             min-height: 100vh;
-            background:
-                radial-gradient(circle at 10% 0%, rgba(255, 159, 10, 0.16), transparent 30%),
-                radial-gradient(circle at 92% 12%, rgba(48, 209, 88, 0.1), transparent 28%),
-                var(--bg);
+            background: var(--bg);
             color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-            padding: 26px;
+            font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            padding: 22px 16px 46px;
+            line-height: 1.55;
         }
-        .report-shell { max-width: 1180px; margin: 0 auto; }
-        .report-header {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 24px;
-            padding-bottom: 22px;
-            border-bottom: 1px solid var(--border);
+        a { color: inherit; }
+        .report-shell { width: min(1220px, 100%); margin: 0 auto; }
+        .report-header { padding: 2px 2px 18px; border-bottom: 1px solid var(--line-strong); }
+        .title-line { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        h1 { color: #152033; font-size: 23px; line-height: 1.25; font-weight: 820; letter-spacing: -0.2px; }
+        .level-pill {
+            display: inline-flex; align-items: center; min-height: 25px; padding: 4px 10px;
+            border-radius: 6px; color: #0F75BD; background: #EAF6FF; font-size: 12px; font-weight: 820;
         }
-        .eyebrow { color: var(--warning); font-size: 12px; font-weight: 760; letter-spacing: 1.8px; }
-        h1 { margin-top: 10px; font-size: 34px; line-height: 1.15; letter-spacing: 0; }
-        .subtitle { margin-top: 10px; color: #B8BCC8; font-size: 14px; line-height: 1.7; max-width: 680px; }
-        .stamp {
-            min-width: 190px;
-            padding: 14px 16px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.045);
-            border: 1px solid var(--border);
-            color: #C7CBD6;
-            font-size: 12px;
-            line-height: 1.7;
+        .detail-link { color: var(--blue); text-decoration: none; font-size: 13px; font-weight: 700; }
+        .detail-link:hover { text-decoration: underline; }
+        .meta-row { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; margin-top: 16px; color: var(--muted); font-size: 13px; }
+        .meta-item { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+        .meta-dot { width: 16px; height: 16px; border-radius: 50%; border: 1px solid #AEBBCD; position: relative; flex: 0 0 auto; }
+        .meta-dot::after { content: ''; position: absolute; inset: 5px; border-radius: inherit; background: #AEBBCD; }
+        .breadcrumb { margin-top: 14px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; color: #526173; font-size: 12px; }
+        .breadcrumb a { color: var(--blue-dark); text-decoration: none; font-weight: 760; }
+        .breadcrumb span { color: #97A6B8; }
+        .section { margin-top: 22px; }
+        .section-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; color: #152033; font-size: 17px; font-weight: 820; }
+        .section-heading::before { content: ''; width: 4px; height: 26px; border-radius: 2px; background: var(--blue); box-shadow: 0 0 0 1px rgba(18, 150, 219, 0.08); }
+        .summary-grid { display: grid; grid-template-columns: 1.3fr repeat(4, minmax(0, 1fr)); gap: 14px; }
+        .hero-score-card, .check-card, .sample-card, .mini-card {
+            border-radius: 8px; border: 1px solid var(--line); background: var(--paper); box-shadow: 0 1px 0 rgba(31, 42, 55, 0.02);
         }
-        .score-band {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 16px;
-            margin-top: 22px;
-        }
-        .hero-score {
-            padding: 22px;
-            border-radius: 22px;
-            background: linear-gradient(135deg, #E68A00 0%, #B86B00 100%);
-            border: 1px solid rgba(255, 159, 10, 0.55);
-            box-shadow: 0 18px 46px rgba(255, 159, 10, 0.24);
-        }
-        .hero-score span { color: rgba(255,255,255,0.82); font-size: 13px; }
-        .hero-score strong { display: block; margin: 18px 0 8px; font-size: 76px; line-height: 1; }
-        .trend { display: inline-block; padding: 5px 12px; border-radius: 999px; background: rgba(0,0,0,0.22); color: #FFC0B8; font-weight: 700; }
-        .grid { display: grid; gap: 14px; }
-        .factor-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-        .card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 16px;
-        }
-        .factor-label { color: var(--muted); font-size: 12px; display: flex; justify-content: space-between; }
-        .factor-value { margin-top: 14px; font-size: 34px; font-weight: 780; }
-        .bar { height: 7px; margin-top: 12px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
-        .bar i { display: block; height: 100%; border-radius: inherit; }
-        .section { margin-top: 18px; }
-        .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .section-title h2 { font-size: 18px; letter-spacing: 0; }
-        .section-title span { color: var(--muted); font-size: 12px; }
-        .risk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-        .metric-name { color: var(--muted); font-size: 12px; }
-        .metric-value { margin-top: 10px; font-size: 26px; font-weight: 780; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            overflow: hidden;
-            border-radius: 14px;
-            background: var(--panel);
-            border: 1px solid var(--border);
-        }
-        th, td { padding: 13px 14px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; }
-        th { color: #B8BCC8; background: rgba(255,255,255,0.035); font-weight: 680; }
-        td { color: #E5E7EF; }
+        .hero-score-card { padding: 17px 18px; min-height: 148px; background: linear-gradient(135deg, #FFFFFF, #F3F9FF); }
+        .hero-label { color: #536174; font-size: 13px; font-weight: 760; }
+        .hero-score { margin-top: 8px; font-size: 44px; line-height: 1; font-weight: 900; letter-spacing: -1.4px; }
+        .hero-status { margin-top: 10px; display: inline-flex; border-radius: 6px; padding: 4px 9px; font-size: 12px; font-weight: 820; }
+        .hero-desc { margin-top: 12px; color: #5E6C80; font-size: 12px; line-height: 1.7; }
+        .check-card { min-height: 132px; padding: 16px 16px 14px; }
+        .check-title { display: flex; align-items: center; gap: 9px; color: #1F2937; font-size: 14px; font-weight: 800; margin-bottom: 13px; }
+        .info-icon { width: 17px; height: 17px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #0B0F17; color: #FFFFFF; font-size: 11px; font-weight: 900; flex: 0 0 auto; }
+        .suggest-row { display: grid; grid-template-columns: 66px 1fr; gap: 10px; align-items: start; margin-top: 8px; color: #425166; font-size: 12px; }
+        .pill { display: inline-flex; justify-content: center; align-items: center; min-height: 23px; padding: 3px 9px; border-radius: 5px; font-size: 12px; font-weight: 760; white-space: nowrap; }
+        .pill-blue { color: var(--blue); background: #EAF6FF; }
+        .pill-green { color: #2AA660; background: var(--green-soft); }
+        .pill-red { color: var(--red); background: var(--red-soft); }
+        .pill-orange { color: #C87800; background: var(--orange-soft); }
+        .expert-panel { display: flex; align-items: flex-start; gap: 18px; padding: 20px 26px; border-radius: 10px; background: var(--soft-blue); border: 1px solid #DCEEFF; color: #314158; }
+        .expert-icon { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; color: #FFFFFF; background: linear-gradient(135deg, #13B3FF, #118AE8); box-shadow: 0 8px 18px rgba(18, 150, 219, 0.22); font-size: 14px; font-weight: 900; flex: 0 0 auto; letter-spacing: 0.4px; }
+        .expert-copy { font-size: 15px; line-height: 1.85; letter-spacing: 0.05px; }
+        .expert-copy strong { color: #152033; font-weight: 850; }
+        .sample-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+        .sample-card { display: block; padding: 13px 14px; text-decoration: none; transition: 180ms ease; }
+        .sample-card:hover { border-color: #B7DCF8; box-shadow: 0 8px 18px rgba(18, 150, 219, 0.08); transform: translateY(-1px); }
+        .sample-kicker { color: var(--blue); font-size: 11px; font-weight: 840; letter-spacing: 0.4px; }
+        .sample-title { margin-top: 5px; color: #1F2937; font-size: 13px; font-weight: 820; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .sample-note { margin-top: 6px; color: #7B8797; font-size: 12px; }
+        .result-table-wrap { overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #EEF2F6; font-size: 13px; vertical-align: middle; }
+        th { color: #4C596B; background: #F3F5F8; font-weight: 780; }
         tr:last-child td { border-bottom: 0; }
-        .status { font-weight: 760; }
-        .two-col { grid-template-columns: 1fr 1fr; }
-        .action-list { display: grid; gap: 10px; }
-        .action {
-            padding: 13px 14px;
-            border-radius: 14px;
-            background: rgba(255,255,255,0.045);
-            border: 1px solid rgba(255,255,255,0.065);
-            color: #D6DAE5;
-            font-size: 13px;
-            line-height: 1.6;
+        td { color: #3C485A; }
+        td a { color: var(--blue-dark); text-decoration: none; font-weight: 820; }
+        td a:hover { text-decoration: underline; }
+        .index-col { width: 58px; color: #6B7280; }
+        .status-text { font-weight: 800; }
+        .text-red { color: var(--red) !important; }
+        .text-green { color: var(--green) !important; }
+        .text-orange { color: var(--orange) !important; }
+        .bg-red { color: var(--red); background: var(--red-soft); }
+        .bg-green { color: var(--green); background: var(--green-soft); }
+        .bg-orange { color: var(--orange); background: var(--orange-soft); }
+        .value-strong { font-weight: 860; }
+        .two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        .mini-card { padding: 16px; }
+        .mini-title { color: #1F2937; font-size: 14px; font-weight: 820; margin-bottom: 12px; }
+        .metric-list { display: grid; gap: 10px; }
+        .metric-row { display: flex; justify-content: space-between; gap: 14px; color: #5D6B7E; font-size: 13px; }
+        .metric-row strong { color: #1F2937; }
+        .warehouse-grid { display: grid; grid-template-columns: 1fr 110px 1fr; gap: 14px; align-items: stretch; }
+        .warehouse-box { border-radius: 8px; border: 1px solid var(--line); background: #FFFFFF; padding: 16px; }
+        .warehouse-label { color: #69798D; font-size: 12px; font-weight: 760; }
+        .warehouse-name { margin-top: 7px; color: #1F2937; font-size: 20px; font-weight: 900; }
+        .warehouse-action { grid-column: 1 / -1; border-radius: 8px; border: 1px solid #DCEEFF; background: #F4FAFF; padding: 14px 16px; color: #425166; font-size: 13px; }
+        .warehouse-transfer { display: grid; place-items: center; color: var(--blue-dark); font-weight: 900; text-align: center; }
+        .warehouse-transfer .arrow { display: block; margin-bottom: 8px; font-size: 26px; }
+        .chart-card { border-radius: 10px; border: 1px solid var(--line); background: var(--paper); padding: 18px 18px 12px; min-height: 330px; }
+        .chart-svg { display: block; width: 100%; height: auto; min-height: 286px; }
+        .chart-axis { stroke: #DEE7F0; stroke-width: 1; }
+        .chart-grid { stroke: #EEF3F7; stroke-width: 1; stroke-dasharray: 3 5; }
+        .chart-label { fill: #8B98AA; font-size: 12px; }
+        .chart-line { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+        .chart-dot { stroke: #FFFFFF; stroke-width: 2; }
+        .legend { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: -4px; color: #6B7A90; font-size: 12px; }
+        .legend-item { display: inline-flex; align-items: center; gap: 7px; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .footer-note { margin-top: 20px; color: #8A96A8; font-size: 12px; text-align: right; }
+        @media (max-width: 980px) {
+            .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .hero-score-card { grid-column: span 2; }
+            .sample-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .result-table-wrap { overflow-x: auto; }
+            table { min-width: 760px; }
+            .warehouse-grid { grid-template-columns: 1fr; }
         }
-        @media (max-width: 900px) {
-            body { padding: 16px; }
-            .report-header, .score-band, .two-col { grid-template-columns: 1fr; display: grid; }
-            .factor-grid, .risk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        @media (max-width: 640px) {
+            body { padding: 16px 10px 32px; }
+            h1 { font-size: 20px; }
+            .summary-grid, .two-col, .sample-grid { grid-template-columns: 1fr; }
+            .hero-score-card { grid-column: auto; }
+            .expert-panel { flex-direction: column; gap: 12px; padding: 18px; }
+            .meta-row { gap: 10px 16px; }
+            .chart-card { padding: 12px; }
+        }
+        @media print {
+            body { background: #FFFFFF; padding: 0; }
+            .report-shell { width: 100%; }
+            .check-card, .expert-panel, .result-table-wrap, .chart-card, .sample-card, .hero-score-card, .mini-card { box-shadow: none; }
+            .detail-link, .sample-section { display: none; }
         }
     </style>
 </head>
 <body>
     <main class="report-shell">
-        <header class="report-header">
-            <div>
-                <div class="eyebrow">LIVE REPORT · INVENTORY HEALTH</div>
-                <h1>全球库存健康诊断报告</h1>
-                <p class="subtitle">基于集团库存健康驾驶舱数据，对全球库存周转、缺货、积压、结构健康与仓库库容进行综合诊断，输出高风险业务线与优先处置建议。</p>
-            </div>
-            <div class="stamp">
-                报告口径：集团库存中台<br>
-                刷新周期：实时快照<br>
-                诊断对象：CT / 品类 / 款式
-            </div>
-        </header>
-
-        <section class="score-band">
-            <div class="hero-score">
-                <span>全球库存健康总指数</span>
-                <strong>71.4</strong>
-                <div class="trend">同比 -2.1%</div>
-            </div>
-            <div class="grid factor-grid">
-                <div class="card"><div class="factor-label"><span>周转天数</span><span>30%</span></div><div class="factor-value" style="color:var(--success)">82</div><div class="bar"><i style="width:82%;background:var(--success)"></i></div></div>
-                <div class="card"><div class="factor-label"><span>缺货风险</span><span>25%</span></div><div class="factor-value" style="color:var(--warning)">68</div><div class="bar"><i style="width:68%;background:var(--warning)"></i></div></div>
-                <div class="card"><div class="factor-label"><span>积压风险</span><span>20%</span></div><div class="factor-value" style="color:var(--danger)">48</div><div class="bar"><i style="width:48%;background:var(--danger)"></i></div></div>
-                <div class="card"><div class="factor-label"><span>结构健康</span><span>25%</span></div><div class="factor-value" style="color:var(--success)">85</div><div class="bar"><i style="width:85%;background:var(--success)"></i></div></div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-title"><h2>核心风险摘要</h2><span>按影响程度排序</span></div>
-            <div class="grid risk-grid">
-                <div class="card"><div class="metric-name">总 SKU 数量</div><div class="metric-value">14,852</div></div>
-                <div class="card"><div class="metric-name">全渠道动销率</div><div class="metric-value" style="color:var(--success)">74.2%</div></div>
-                <div class="card"><div class="metric-name">异常滞销占比</div><div class="metric-value" style="color:var(--danger)">28.4%</div></div>
-                <div class="card"><div class="metric-name">平均可售周数</div><div class="metric-value">11.4 Wks</div></div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-title"><h2>CT 风险排行</h2><span>风险优先级倒序</span></div>
-            <table>
-                <thead><tr><th>业务线 CT</th><th>健康指数</th><th>风险状态</th><th>周转 / 缺货</th><th>滞销金额</th><th>诊断结论</th></tr></thead>
-                <tbody>
-                    <tr><td>Bruno Marc</td><td style="color:var(--danger);font-weight:800">42.5</td><td class="status" style="color:var(--danger)">严重</td><td>51 / 38</td><td>$1.42M</td><td>积压与断货双重旋涡，需立即清退长库龄库存并补齐爆款尺码。</td></tr>
-                    <tr><td>DP Kids</td><td style="color:var(--warning);font-weight:800">58.0</td><td class="status" style="color:var(--warning)">高危预警</td><td>60 / 52</td><td>$0.85M</td><td>季节错配导致局部积压，需快速促销清库与仓位调拨。</td></tr>
-                    <tr><td>Nortiv 8</td><td style="color:var(--warning);font-weight:800">69.4</td><td class="status" style="color:var(--warning)">亚健康</td><td>72 / 65</td><td>$0.54M</td><td>整体稳健但局部缺货，需精准追发户外高频码。</td></tr>
-                    <tr><td>DP Comfort</td><td style="color:var(--success);font-weight:800">76.1</td><td class="status" style="color:var(--success)">良性平稳</td><td>81 / 74</td><td>$0.31M</td><td>维持补货模型，关注局部慢动销 SKU。</td></tr>
-                    <tr><td>Sneakers</td><td style="color:var(--success);font-weight:800">81.2</td><td class="status" style="color:var(--success)">卓越表现</td><td>85 / 80</td><td>$0.22M</td><td>动销健康，可复制模型到相近品类。</td></tr>
-                    <tr><td>DP Fashion</td><td style="color:var(--success);font-weight:800">88.5</td><td class="status" style="color:var(--success)">标杆卓越</td><td>92 / 89</td><td>$0.09M</td><td>柔性供应链标杆，建议沉淀为集团知识库模型。</td></tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section class="section grid two-col">
-            <div>
-                <div class="section-title"><h2>库存积压诊断</h2><span>高库龄与资金占用</span></div>
-                <div class="action-list">
-                    <div class="action">360天+ 僵死库存资金占用达 $4.21M，较上月继续上升，需要优先清退。</div>
-                    <div class="action">Bruno Marc 贡献集团主要积压风险，建议冻结低动销 SKU 新采买。</div>
-                    <div class="action">德国仓与美东仓库容率超过 92%，清库动作应优先投放这两个仓。</div>
-                </div>
-            </div>
-            <div>
-                <div class="section-title"><h2>缺货风险诊断</h2><span>爆款与高频码</span></div>
-                <div class="action-list">
-                    <div class="action">缺货风险指数 68，属于关注区间，核心爆款尺码存在断码扩散趋势。</div>
-                    <div class="action">Bruno Marc 与 DP Kids 需优先补齐高频尺码，避免促销期转化损失。</div>
-                    <div class="action">建议建立 CT / 品类 / 款式三级缺货预警阈值，联动自动补货建议。</div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-title"><h2>AI 行动建议</h2><span>未来 7-14 天</span></div>
-            <div class="action-list">
-                <div class="action">1. 立即启动 Bruno Marc 高库龄清退专项，组合折扣、跨渠道调拨和采购冻结三类动作。</div>
-                <div class="action">2. 对德国仓、美东仓设置库容红线任务，优先释放 360天+ 与低动销款式仓位。</div>
-                <div class="action">3. 对缺货风险高的爆款尺码执行快速补货，优先保障周转健康但缺货上升的品类。</div>
-                <div class="action">4. 将 DP Fashion 与 Sneakers 的补货和动销模型沉淀为健康 CT 标杆，反向校准高风险 CT。</div>
-            </div>
-        </section>
+        <header class="report-header" id="reportHeader"></header>
+        <section class="section" id="abnormalSection"></section>
+        <section class="section" id="expertSection"></section>
+        <section class="section" id="checkSection"></section>
+        <section class="section" id="detailSection"></section>
+        <section class="section" id="trendSection"></section>
+        <section class="section sample-section" id="sampleSection"></section>
+        <div class="footer-note">报告由库存健康指数驾驶舱自动生成，建议结合 CT / 品类 / 款式 / SKU 明细继续穿透。</div>
     </main>
+
+    <script>
+    const ctDashboardData = {
+        'Bruno Marc': {
+            score: 42.5, status: '严重', color: 'var(--color-danger)',
+            indexes: { '周转天数': 51, '缺货风险': 38, '积压风险': 32, '结构健康': 49 },
+            risks: { '滞销金额': '$1.42M', '断货 SKU': '186', '360天+ 库存': '31.8%', '可售周数': '18.6 Wks' },
+            actions: ['冻结低动销 SKU 新采买，优先清退 360天+ 库存。', '对核心爆款高频尺码做紧急补货，避免断码继续放大。', '联动渠道促销与仓间调拨，先释放德国仓与美东仓库容。']
+        },
+        'DP Kids': {
+            score: 58.0, status: '严重', color: 'var(--color-danger)',
+            indexes: { '周转天数': 60, '缺货风险': 52, '积压风险': 45, '结构健康': 67 },
+            risks: { '滞销金额': '$0.85M', '断货 SKU': '121', '360天+ 库存': '22.4%', '可售周数': '15.2 Wks' },
+            actions: ['对季节错配鞋款启动折扣清仓。', '把主力码库存向高动销渠道倾斜。', '下调下一轮备货预测中的长尾 SKU 权重。']
+        },
+        'Nortiv 8': {
+            score: 69.4, status: '关注预警', color: 'var(--color-warning)',
+            indexes: { '周转天数': 72, '缺货风险': 65, '积压风险': 58, '结构健康': 78 },
+            risks: { '滞销金额': '$0.54M', '断货 SKU': '78', '360天+ 库存': '14.2%', '可售周数': '11.8 Wks' },
+            actions: ['补齐户外核心款高频尺码。', '把慢周转库存转入更适合的区域仓。', '维持主力款备货节奏，谨慎扩充长尾色码。']
+        },
+        'DP Comfort': {
+            score: 76.1, status: '关注预警', color: 'var(--color-warning)',
+            indexes: { '周转天数': 81, '缺货风险': 74, '积压风险': 63, '结构健康': 84 },
+            risks: { '滞销金额': '$0.31M', '断货 SKU': '46', '360天+ 库存': '8.7%', '可售周数': '9.4 Wks' },
+            actions: ['维持现有补货模型。', '对局部慢动销 SKU 做小批量促销。', '保持安全库存水位，避免过度压仓。']
+        },
+        'Sneakers': {
+            score: 81.2, status: '卓越表现', color: 'var(--color-success)',
+            indexes: { '周转天数': 85, '缺货风险': 80, '积压风险': 76, '结构健康': 87 },
+            risks: { '滞销金额': '$0.22M', '断货 SKU': '32', '360天+ 库存': '5.9%', '可售周数': '8.1 Wks' },
+            actions: ['复制当前动销模型到相近品类。', '对高转化款保持快速补货。', '继续监控新品生命周期，避免后段积压。']
+        },
+        'DP Fashion': {
+            score: 88.5, status: '卓越表现', color: 'var(--color-success)',
+            indexes: { '周转天数': 92, '缺货风险': 89, '积压风险': 84, '结构健康': 91 },
+            risks: { '滞销金额': '$0.09M', '断货 SKU': '18', '360天+ 库存': '3.1%', '可售周数': '6.8 Wks' },
+            actions: ['沉淀为集团柔性供应链标杆模型。', '保持小批量快反策略。', '扩大数据样本，用于训练其他 CT 的补货阈值。']
+        }
+    };
+    const ctRelationSource = {
+    "Bruno Marc": {
+        "sourceCt": "BM",
+        "rows": 991,
+        "categories": [
+            {
+                "name": "OXFORDS",
+                "rows": 315
+            },
+            {
+                "name": "LOAFERS & SLIP-ONS",
+                "rows": 288
+            },
+            {
+                "name": "FASHION SNEAKERS",
+                "rows": 151
+            },
+            {
+                "name": "CHUKKA BOOTS",
+                "rows": 34
+            },
+            {
+                "name": "CHELSEA-BOOTS",
+                "rows": 25
+            },
+            {
+                "name": "SNOW BOOTS",
+                "rows": 25
+            },
+            {
+                "name": "MOTORCYCLE & COMBAT BOOTS",
+                "rows": 21
+            },
+            {
+                "name": "WALKING SHOES",
+                "rows": 19
+            },
+            {
+                "name": "OXFORD & DERBY BOOTS",
+                "rows": 17
+            },
+            {
+                "name": "WORKING SHOES",
+                "rows": 17
+            },
+            {
+                "name": "SLIPPERS",
+                "rows": 11
+            },
+            {
+                "name": "LEISURE SANDALS",
+                "rows": 10
+            },
+            {
+                "name": "SPORT SANDALS & SLIDES",
+                "rows": 9
+            },
+            {
+                "name": "WESTERN BOOTS",
+                "rows": 7
+            },
+            {
+                "name": "BELT",
+                "rows": 6
+            },
+            {
+                "name": "HEALTH CARE & FOOD SERVICE",
+                "rows": 5
+            },
+            {
+                "name": "BOYS BOOTS",
+                "rows": 5
+            },
+            {
+                "name": "WALLETS",
+                "rows": 4
+            },
+            {
+                "name": "FUZZY BOOTS",
+                "rows": 4
+            },
+            {
+                "name": "RAIN BOOTS",
+                "rows": 4
+            },
+            {
+                "name": "BOOTS",
+                "rows": 3
+            },
+            {
+                "name": "WATER SHOES",
+                "rows": 2
+            },
+            {
+                "name": "CARD CASES",
+                "rows": 2
+            },
+            {
+                "name": "SLIDES-SANDALS",
+                "rows": 2
+            },
+            {
+                "name": "FLIP-FLOPS",
+                "rows": 2
+            },
+            {
+                "name": "GOLF SHOES",
+                "rows": 2
+            },
+            {
+                "name": "MONEY CLIPS",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "RALPH-02",
+                "category": "LOAFERS & SLIP-ONS",
+                "rows": 1
+            },
+            {
+                "name": "CEREMONY-06",
+                "category": "OXFORDS",
+                "rows": 1
+            },
+            {
+                "name": "150908-M",
+                "category": "FASHION SNEAKERS",
+                "rows": 1
+            },
+            {
+                "name": "CEREMONY-03",
+                "category": "LOAFERS & SLIP-ONS",
+                "rows": 1
+            },
+            {
+                "name": "CEREMONY-02",
+                "category": "LOAFERS & SLIP-ONS",
+                "rows": 1
+            },
+            {
+                "name": "HUGH-05",
+                "category": "LOAFERS & SLIP-ONS",
+                "rows": 1
+            }
+        ]
+    },
+    "DP Kids": {
+        "sourceCt": "DPK",
+        "rows": 503,
+        "categories": [
+            {
+                "name": "FASHION SNEAKERS",
+                "rows": 74
+            },
+            {
+                "name": "FLATS",
+                "rows": 73
+            },
+            {
+                "name": "RUNNING SHOES",
+                "rows": 63
+            },
+            {
+                "name": "FASHION SANDALS",
+                "rows": 53
+            },
+            {
+                "name": "BOOTS",
+                "rows": 52
+            },
+            {
+                "name": "SNOW BOOTS",
+                "rows": 48
+            },
+            {
+                "name": "SPORT SANDALS & SLIDES",
+                "rows": 28
+            },
+            {
+                "name": "WESTERN BOOTS",
+                "rows": 28
+            },
+            {
+                "name": "PUMPS",
+                "rows": 23
+            },
+            {
+                "name": "UNIFORM & SCHOOL SHOES",
+                "rows": 20
+            },
+            {
+                "name": "FUZZY BOOTS",
+                "rows": 16
+            },
+            {
+                "name": "RAIN BOOTS",
+                "rows": 13
+            },
+            {
+                "name": "FUZZY SLIPPERS",
+                "rows": 5
+            },
+            {
+                "name": "SLIDES-SANDALS",
+                "rows": 3
+            },
+            {
+                "name": "LOAFERS & SLIP-ONS",
+                "rows": 2
+            },
+            {
+                "name": "SLIPPERS",
+                "rows": 1
+            },
+            {
+                "name": "DANCE SHOES",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "170813-K",
+                "category": "SPORT SANDALS & SLIDES",
+                "rows": 1
+            },
+            {
+                "name": "SOLE-FINA-K",
+                "category": "FLATS",
+                "rows": 1
+            },
+            {
+                "name": "160481-K",
+                "category": "RUNNING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "DUCKO",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "KOREL",
+                "category": "BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "KLOUCH",
+                "category": "BOOTS",
+                "rows": 1
+            }
+        ]
+    },
+    "Nortiv 8": {
+        "sourceCt": "N8AS",
+        "rows": 620,
+        "categories": [
+            {
+                "name": "HIKING BOOTS",
+                "rows": 92
+            },
+            {
+                "name": "SOCCER SHOES",
+                "rows": 90
+            },
+            {
+                "name": "SNOW BOOTS",
+                "rows": 84
+            },
+            {
+                "name": "INDUSTRIAL BOOTS",
+                "rows": 73
+            },
+            {
+                "name": "HIKING SHOES",
+                "rows": 57
+            },
+            {
+                "name": "MILITARY BOOTS",
+                "rows": 55
+            },
+            {
+                "name": "WATER SHOES",
+                "rows": 50
+            },
+            {
+                "name": "SPORT SANDALS & SLIDES",
+                "rows": 37
+            },
+            {
+                "name": "RUNNING SHOES",
+                "rows": 28
+            },
+            {
+                "name": "WALKING SHOES",
+                "rows": 14
+            },
+            {
+                "name": "INDUSTRIAL SHOES",
+                "rows": 10
+            },
+            {
+                "name": "TRAIL RUNNING",
+                "rows": 9
+            },
+            {
+                "name": "RAIN BOOTS",
+                "rows": 6
+            },
+            {
+                "name": "BASKETBALL SHOES",
+                "rows": 5
+            },
+            {
+                "name": "FLIP-FLOPS",
+                "rows": 3
+            },
+            {
+                "name": "HEALTH CARE & FOOD SERVICE",
+                "rows": 3
+            },
+            {
+                "name": "URBAN OUTDOOR",
+                "rows": 1
+            },
+            {
+                "name": "Inserts & Insoles",
+                "rows": 1
+            },
+            {
+                "name": "FASHION SOCKS",
+                "rows": 1
+            },
+            {
+                "name": "WESTERN BOOTS",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "MAD",
+                "category": "RAIN BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "EARTH-M",
+                "category": "INDUSTRIAL BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "CONCRETE",
+                "category": "INDUSTRIAL BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "DELTA-M",
+                "category": "INDUSTRIAL BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "COLORADO",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "GLACIER",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            }
+        ]
+    },
+    "DP Comfort": {
+        "sourceCt": "DPC",
+        "rows": 658,
+        "categories": [
+            {
+                "name": "SNOW BOOTS",
+                "rows": 87
+            },
+            {
+                "name": "FLATS",
+                "rows": 80
+            },
+            {
+                "name": "WEDGES SANDALS",
+                "rows": 64
+            },
+            {
+                "name": "FASHION SNEAKERS",
+                "rows": 56
+            },
+            {
+                "name": "SLIPPERS",
+                "rows": 46
+            },
+            {
+                "name": "PUMPS",
+                "rows": 45
+            },
+            {
+                "name": "FLAT SANDALS",
+                "rows": 44
+            },
+            {
+                "name": "SPORT SANDALS & SLIDES",
+                "rows": 35
+            },
+            {
+                "name": "FUZZY BOOTS",
+                "rows": 32
+            },
+            {
+                "name": "SLIDES-SANDALS",
+                "rows": 32
+            },
+            {
+                "name": "FLIP-FLOPS",
+                "rows": 31
+            },
+            {
+                "name": "RAIN BOOTS",
+                "rows": 28
+            },
+            {
+                "name": "LOAFERS & SLIP-ONS",
+                "rows": 21
+            },
+            {
+                "name": "MULES & CLOGS",
+                "rows": 18
+            },
+            {
+                "name": "WALKING SHOES",
+                "rows": 15
+            },
+            {
+                "name": "FUZZY SLIPPERS",
+                "rows": 15
+            },
+            {
+                "name": "HEELED SANDALS",
+                "rows": 6
+            },
+            {
+                "name": "HEALTH CARE & FOOD SERVICE",
+                "rows": 1
+            },
+            {
+                "name": "OXFORDS",
+                "rows": 1
+            },
+            {
+                "name": "ANKLE & BOOTIE",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "M170889",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "160912-M-NEW",
+                "category": "SPORT SANDALS & SLIDES",
+                "rows": 1
+            },
+            {
+                "name": "160912-W-NEW",
+                "category": "SPORT SANDALS & SLIDES",
+                "rows": 1
+            },
+            {
+                "name": "GOOSE",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "BLIZ",
+                "category": "SLIPPERS",
+                "rows": 1
+            },
+            {
+                "name": "SHORTY",
+                "category": "SNOW BOOTS",
+                "rows": 1
+            }
+        ]
+    },
+    "Sneakers": {
+        "sourceCt": "SN",
+        "rows": 57,
+        "categories": [
+            {
+                "name": "WALKING SHOES",
+                "rows": 43
+            },
+            {
+                "name": "RUNNING SHOES",
+                "rows": 10
+            },
+            {
+                "name": "TENNIS SHOES",
+                "rows": 2
+            },
+            {
+                "name": "TRAIL RUNNING",
+                "rows": 1
+            },
+            {
+                "name": "FITNESS & CROSS-TRAINING",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "SARR034W",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SARR034M",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SNWS245W",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SNWS245M",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SNWS246M",
+                "category": "WALKING SHOES",
+                "rows": 1
+            },
+            {
+                "name": "SNWS248W",
+                "category": "WALKING SHOES",
+                "rows": 1
+            }
+        ]
+    },
+    "DP Fashion": {
+        "sourceCt": "DPF",
+        "rows": 1463,
+        "categories": [
+            {
+                "name": "HEELED SANDALS",
+                "rows": 332
+            },
+            {
+                "name": "PUMPS",
+                "rows": 257
+            },
+            {
+                "name": "KNEE-HIGH BOOTS",
+                "rows": 192
+            },
+            {
+                "name": "ANKLE & BOOTIE",
+                "rows": 177
+            },
+            {
+                "name": "FLATS",
+                "rows": 122
+            },
+            {
+                "name": "MID-CALF BOOTS",
+                "rows": 101
+            },
+            {
+                "name": "WEDGES SANDALS",
+                "rows": 68
+            },
+            {
+                "name": "OVER-THE-KNEE BOOTS",
+                "rows": 61
+            },
+            {
+                "name": "FLAT SANDALS",
+                "rows": 52
+            },
+            {
+                "name": "LOAFERS & SLIP-ONS",
+                "rows": 41
+            },
+            {
+                "name": "SLIDES-SANDALS",
+                "rows": 21
+            },
+            {
+                "name": "MULES & CLOGS",
+                "rows": 20
+            },
+            {
+                "name": "OXFORDS",
+                "rows": 8
+            },
+            {
+                "name": "FLIP-FLOPS",
+                "rows": 6
+            },
+            {
+                "name": "SLIPPERS",
+                "rows": 2
+            },
+            {
+                "name": "FUZZY BOOTS",
+                "rows": 2
+            },
+            {
+                "name": "Heeled Sandals",
+                "rows": 1
+            }
+        ],
+        "styles": [
+            {
+                "name": "FLAPOINTED-SHINE",
+                "category": "FLATS",
+                "rows": 1
+            },
+            {
+                "name": "CHRISTIAN-NEW",
+                "category": "PUMPS",
+                "rows": 1
+            },
+            {
+                "name": "OPPOINTED",
+                "category": "PUMPS",
+                "rows": 1
+            },
+            {
+                "name": "OPPOINTED_MARY",
+                "category": "PUMPS",
+                "rows": 1
+            },
+            {
+                "name": "SHOO",
+                "category": "OVER-THE-KNEE BOOTS",
+                "rows": 1
+            },
+            {
+                "name": "SIBERIAN-W",
+                "category": "KNEE-HIGH BOOTS",
+                "rows": 1
+            }
+        ]
+    }
+};
+    const ctCategoryStyleSource = {
+    "Bruno Marc": {
+        "OXFORDS": [
+            "CEREMONY-06",
+            "GORDON-01",
+            "HALSTED-02",
+            "HALSTED-01",
+            "URBAN-05",
+            "URBAN-08"
+        ],
+        "LOAFERS & SLIP-ONS": [
+            "RALPH-02",
+            "CEREMONY-03",
+            "CEREMONY-02",
+            "HUGH-05",
+            "HUGH-03",
+            "PITTS_10"
+        ],
+        "FASHION SNEAKERS": [
+            "150908-M",
+            "PITTS_12",
+            "PITTS",
+            "RIVERA-01",
+            "170845M",
+            "170844M"
+        ],
+        "CHUKKA BOOTS": [
+            "FRANCISCO-HIGH",
+            "CHUKKA",
+            "MARLON-H",
+            "BERGEN-02",
+            "PHILLY-1",
+            "URBAN-02"
+        ],
+        "CHELSEA-BOOTS": [
+            "URBAN-06",
+            "ENGLE-03",
+            "PHILLY-2",
+            "STONE-02",
+            "BERGEN_12",
+            "PHILLY_18"
+        ],
+        "SNOW BOOTS": [
+            "SBSB211M",
+            "SBSB212W",
+            "SBBO2213M",
+            "SBSB226M",
+            "SBSB221K",
+            "SBSB226M-E"
+        ],
+        "MOTORCYCLE & COMBAT BOOTS": [
+            "PHILLY-5",
+            "PHILLY-3",
+            "ENGLE-05",
+            "ENGLE-01",
+            "STONE-05",
+            "STONE-03"
+        ],
+        "WALKING SHOES": [
+            "WALK_EASY_02",
+            "WALK_LITE_01",
+            "WALK_WORK_01",
+            "WALK_WORK_02",
+            "SBWA2408M",
+            "SBWA2406M"
+        ],
+        "OXFORD & DERBY BOOTS": [
+            "APACHE-03",
+            "APACHE-02",
+            "APACHE-01",
+            "BERGEN-05",
+            "BERGEN-03",
+            "BERGEN-01"
+        ],
+        "WORKING SHOES": [
+            "SBWO2302M",
+            "SNIC2415M",
+            "SNIC2410M",
+            "SBWO2402M",
+            "SBWO2403M",
+            "SBWO2406M"
+        ],
+        "SLIPPERS": [
+            "SBSL222M",
+            "SBSL222W",
+            "SBSL226M",
+            "SBSL227M",
+            "SBSL227M-1",
+            "SBSL229M"
+        ],
+        "LEISURE SANDALS": [
+            "SBSA2213M",
+            "SBSA2213W",
+            "SBSA2214M",
+            "SBSA2214W",
+            "SBSA222M",
+            "SBSA224K"
+        ],
+        "SPORT SANDALS & SLIDES": [
+            "HAVANA-02",
+            "HAVANA-01",
+            "BANKOK-5",
+            "BANKOK-3",
+            "BANKOK",
+            "MAUI-3"
+        ],
+        "WESTERN BOOTS": [
+            "BMUMAB2403",
+            "BMUMMB2501",
+            "BMUMKB2502",
+            "SBMB26001M",
+            "SBMB26002M",
+            "SBMB26005M"
+        ],
+        "BELT": [
+            "ABBL211M",
+            "ABBL212M",
+            "ABBL213M",
+            "ABBL216M",
+            "ABBL218M",
+            "ABBL214M"
+        ],
+        "BOYS BOOTS": [
+            "SDBO2418K",
+            "SDBB2402K",
+            "SDBB2401K",
+            "SDBB2403K",
+            "KKUMMB2507"
+        ],
+        "HEALTH CARE & FOOD SERVICE": [
+            "SNIC249M",
+            "SNIC2411M",
+            "SNIC2412M",
+            "BWUMFO2501",
+            "SBFO26003M"
+        ],
+        "FUZZY BOOTS": [
+            "SBSB2402M",
+            "SBSB2403M",
+            "BMUMSB2501",
+            "BMUMSB2504"
+        ],
+        "RAIN BOOTS": [
+            "BMEMRB2503",
+            "BMEMRB2501",
+            "SBRB26003K",
+            "SBRB26004K-D"
+        ],
+        "WALLETS": [
+            "ABWL221M",
+            "ABWL222M",
+            "ABWL223M",
+            "ABWL224M"
+        ],
+        "BOOTS": [
+            "APACHE-01-K",
+            "APACHE-03-K",
+            "SBBO222K"
+        ],
+        "CARD CASES": [
+            "ABWL225M",
+            "ABWL226M"
+        ],
+        "FLIP-FLOPS": [
+            "BMUMFF2504",
+            "BMUMFF2501"
+        ],
+        "GOLF SHOES": [
+            "SBGS26005M",
+            "SBGS26003M"
+        ],
+        "SLIDES-SANDALS": [
+            "SBSA2305M",
+            "SBSA2305M-E"
+        ],
+        "WATER SHOES": [
+            "160712-2-M",
+            "C0209_M"
+        ],
+        "MONEY CLIPS": [
+            "ABWL227M"
+        ]
+    },
+    "DP Kids": {
+        "FASHION SNEAKERS": [
+            "170803K",
+            "170804K",
+            "170307-K",
+            "170379-K",
+            "151014-K",
+            "160479-K"
+        ],
+        "FLATS": [
+            "SOLE-FINA-K",
+            "SOPHIA-22",
+            "NEW-MUY",
+            "MUY-SHINE",
+            "MUY",
+            "STARLET"
+        ],
+        "RUNNING SHOES": [
+            "160481-K",
+            "160450-K",
+            "160507-K",
+            "151003-K",
+            "160863-K",
+            "KD18001K"
+        ],
+        "FASHION SANDALS": [
+            "SWEETY-2",
+            "SWEETY-1",
+            "SPARK-INF",
+            "KSD213",
+            "KSD214",
+            "SDSD2210K"
+        ],
+        "BOOTS": [
+            "KOREL",
+            "KLOUCH",
+            "ARMY-K",
+            "KLOVE",
+            "AMAZON-K",
+            "KNICE"
+        ],
+        "SNOW BOOTS": [
+            "DUCKO",
+            "MAPLE",
+            "NORDIC",
+            "KAMICK",
+            "FORESTER",
+            "KSNOW"
+        ],
+        "SPORT SANDALS & SLIDES": [
+            "170813-K",
+            "171111-K",
+            "160912-K",
+            "170892-K",
+            "170891_K",
+            "181105K"
+        ],
+        "WESTERN BOOTS": [
+            "SDBO214K",
+            "SDBO225K",
+            "SDBO2222K",
+            "SDBO225K-1",
+            "SDBO2302K",
+            "SDBO2307K"
+        ],
+        "PUMPS": [
+            "KFL219",
+            "KFL218",
+            "SDFL2212K",
+            "SDFL2314K",
+            "SDFL2317K",
+            "SDFL2318K"
+        ],
+        "UNIFORM & SCHOOL SHOES": [
+            "KFL217",
+            "SDFL2210K",
+            "SDFL2210K-1",
+            "SDFL2210K-2",
+            "SDFS2323K",
+            "SDFL2402K"
+        ],
+        "FUZZY BOOTS": [
+            "SHORTY-K",
+            "SHORTY-POMPOM",
+            "SWEATY-BUCKLE-K",
+            "KSB214",
+            "SHORTY-K-E",
+            "KSB214-1"
+        ],
+        "RAIN BOOTS": [
+            "SDRB2201K-E",
+            "SDRB2203K-E",
+            "SDRB2202K-E",
+            "SDRB2401K",
+            "KKEMRB2501",
+            "KKUMRB2506"
+        ],
+        "FUZZY SLIPPERS": [
+            "SDSL2401K",
+            "KKUMSL2501",
+            "KKUMSL2502",
+            "SDSL26003K",
+            "SDSL26004K"
+        ],
+        "SLIDES-SANDALS": [
+            "SDSS221K",
+            "KKUMPS2502",
+            "SKSS26001K"
+        ],
+        "LOAFERS & SLIP-ONS": [
+            "HL19005K",
+            "SDLF221K"
+        ],
+        "DANCE SHOES": [
+            "SDDS2401K"
+        ],
+        "SLIPPERS": [
+            "KSL211"
+        ]
+    },
+    "Nortiv 8": {
+        "HIKING BOOTS": [
+            "160489-M",
+            "170411",
+            "170412",
+            "MOUNTAINA",
+            "MACK_01",
+            "MACK_02"
+        ],
+        "SOCCER SHOES": [
+            "160470-M",
+            "160471-M",
+            "160858-M",
+            "160861-M",
+            "160859-M",
+            "160860-M"
+        ],
+        "SNOW BOOTS": [
+            "COLORADO",
+            "GLACIER",
+            "MUSK",
+            "GLAM",
+            "170390-M",
+            "160448-M"
+        ],
+        "INDUSTRIAL BOOTS": [
+            "EARTH-M",
+            "CONCRETE",
+            "DELTA-M",
+            "JOB",
+            "HAWK",
+            "ENGINE"
+        ],
+        "HIKING SHOES": [
+            "160448_LOW",
+            "JS19007M",
+            "QUEST-1",
+            "QUEST-2",
+            "SNHS226M",
+            "SNHS223W"
+        ],
+        "MILITARY BOOTS": [
+            "TROOPER",
+            "ALLOY",
+            "DESERT",
+            "RESPONSE",
+            "SPEEDMAN",
+            "DELTA-HIGH"
+        ],
+        "WATER SHOES": [
+            "160930-W",
+            "160933-W",
+            "1610041-W",
+            "1610042-W",
+            "160712-W",
+            "160712-2-W"
+        ],
+        "SPORT SANDALS & SLIDES": [
+            "181109M",
+            "181110M",
+            "181111M",
+            "181112M",
+            "181113M",
+            "181114M"
+        ],
+        "RUNNING SHOES": [
+            "PILOT-M",
+            "RUNPRO-W",
+            "160302-M",
+            "160373-M",
+            "160318-M",
+            "SNUO223M"
+        ],
+        "WALKING SHOES": [
+            "SDWS2201W",
+            "SDWS2307W",
+            "SARR009M",
+            "SARR009W",
+            "SARR022W",
+            "SARR029W"
+        ],
+        "INDUSTRIAL SHOES": [
+            "SNIC226M-E",
+            "SNIC227M-E",
+            "SNIC2212M-E",
+            "SNIC2213M-E",
+            "SNIC2214M-E",
+            "SNIC2215M-E"
+        ],
+        "TRAIL RUNNING": [
+            "SNTR224M",
+            "SNTR229M",
+            "SNTR2210M",
+            "SNTR2310M",
+            "SNRS25001M",
+            "SNRS26003W"
+        ],
+        "RAIN BOOTS": [
+            "MAD",
+            "KAM",
+            "ORIGIN-SHORT",
+            "ORIGIN",
+            "MUCKO",
+            "SNRB221W"
+        ],
+        "BASKETBALL SHOES": [
+            "SDBS221K",
+            "SDBS225K",
+            "SDBS226K",
+            "SDBS2302K",
+            "SDBS2401K"
+        ],
+        "FLIP-FLOPS": [
+            "REVIVA-1",
+            "REVIVA-3",
+            "NMUMST2501"
+        ],
+        "HEALTH CARE & FOOD SERVICE": [
+            "SNSS221M",
+            "SNIC2414M",
+            "SNIC245M"
+        ],
+        "FASHION SOCKS": [
+            "SDSO2307K-ACC-SOCK"
+        ],
+        "Inserts & Insoles": [
+            "SNIS221U"
+        ],
+        "URBAN OUTDOOR": [
+            "SNUO2213M-E"
+        ],
+        "WESTERN BOOTS": [
+            "SNMB27001M"
+        ]
+    },
+    "DP Comfort": {
+        "SNOW BOOTS": [
+            "GOOSE",
+            "SHORTY",
+            "DP-CANADA",
+            "DP-AVALANCHE",
+            "CANADA",
+            "SWISS-LOW"
+        ],
+        "FLATS": [
+            "DFA213",
+            "DFA214",
+            "SDFA224W",
+            "SDFA223W",
+            "SDFA2216W",
+            "SDFA2224W"
+        ],
+        "WEDGES SANDALS": [
+            "ANDREA-5",
+            "REED-2",
+            "NINI-3",
+            "REED-1",
+            "NINI-5",
+            "NINI-8"
+        ],
+        "FASHION SNEAKERS": [
+            "149002",
+            "BREATHE-1",
+            "DNS211",
+            "SDFN2210W",
+            "SDFN2220W",
+            "SDFN2225W"
+        ],
+        "SLIPPERS": [
+            "BLIZ",
+            "AUZY-02",
+            "AUZY-01",
+            "SHOZIE-02",
+            "SHOZIE-01",
+            "COZY-01"
+        ],
+        "PUMPS": [
+            "DPU214",
+            "DPU212-1",
+            "SDPU2230W",
+            "SDPU2231W",
+            "SBDPU2301W",
+            "SBDPU2302W"
+        ],
+        "FLAT SANDALS": [
+            "HOBOO-NEW",
+            "ELATICA-6",
+            "ELASTICA8",
+            "KIMMIE",
+            "ELENA-1",
+            "ELENA-2"
+        ],
+        "SPORT SANDALS & SLIDES": [
+            "160912-M-NEW",
+            "160912-W-NEW",
+            "141016-M",
+            "160431-M",
+            "181103",
+            "QDL19001L"
+        ],
+        "FUZZY BOOTS": [
+            "SHORTY_HIGH",
+            "SHORTY_NEW",
+            "SWEATY-BUCKLE",
+            "DSB214-1",
+            "SDSB2401W",
+            "SDSB2432W"
+        ],
+        "SLIDES-SANDALS": [
+            "FLORIDA",
+            "DSS211",
+            "SDSS2211W",
+            "SDSS2218W",
+            "SDSS2223W",
+            "SDSS2223M"
+        ],
+        "FLIP-FLOPS": [
+            "BREEZE-1",
+            "BREEZE-2",
+            "DFF211",
+            "SDFF2210W",
+            "SDFF2203W",
+            "SDFF2222W"
+        ],
+        "RAIN BOOTS": [
+            "0615W",
+            "SDRB2201W-E",
+            "SDRB2204W-E",
+            "SDRB2402W-E",
+            "SDRB2401M-E",
+            "SDRB2408W-E"
+        ],
+        "LOAFERS & SLIP-ONS": [
+            "DLS214",
+            "DLS213",
+            "SDLS2202W",
+            "SDLS2215W",
+            "SBDLS2302W",
+            "SBDLS2301W"
+        ],
+        "MULES & CLOGS": [
+            "SDML2201W",
+            "SDML2211W",
+            "SDML2207W",
+            "SDML2207W-E",
+            "SDML2321W",
+            "SDML2403W"
+        ],
+        "FUZZY SLIPPERS": [
+            "SOFIE-05",
+            "SDSL2408W",
+            "SDSL2401W",
+            "SDSL2413W",
+            "SDSL2412W",
+            "SDSL2402W"
+        ],
+        "WALKING SHOES": [
+            "M170889",
+            "170885W",
+            "RUN_EASE_02",
+            "DHF19003M",
+            "CITYGIRL-2",
+            "CADMAN"
+        ],
+        "HEELED SANDALS": [
+            "SDHS2412W",
+            "DWUMHS2557",
+            "DWUMHS2506",
+            "DWUMHS2528",
+            "DWUWHS2503",
+            "DWUMHS2503"
+        ],
+        "ANKLE & BOOTIE": [
+            "SDAB26012W"
+        ],
+        "HEALTH CARE & FOOD SERVICE": [
+            "METRO-1"
+        ],
+        "OXFORDS": [
+            "SDOX2301W"
+        ]
+    },
+    "Sneakers": {
+        "WALKING SHOES": [
+            "SARR034W",
+            "SARR034M",
+            "SNWS245W",
+            "SNWS245M",
+            "SNWS246M",
+            "SNWS248W"
+        ],
+        "RUNNING SHOES": [
+            "AWUMRS2516",
+            "AMUMRS2516",
+            "AMUMRS2514",
+            "AMUMRS2503",
+            "AWUMRS2503",
+            "SARS26007W"
+        ],
+        "TENNIS SHOES": [
+            "SATS26004W",
+            "SATS26002W"
+        ],
+        "FITNESS & CROSS-TRAINING": [
+            "SATR27001W"
+        ],
+        "TRAIL RUNNING": [
+            "SNRS26006W"
+        ]
+    },
+    "DP Fashion": {
+        "HEELED SANDALS": [
+            "SWAN_16",
+            "KARRIE",
+            "NINA-166",
+            "NINA-150",
+            "SHOW",
+            "GIGI"
+        ],
+        "PUMPS": [
+            "CHRISTIAN-NEW",
+            "OPPOINTED",
+            "OPPOINTED_MARY",
+            "SWAN_30",
+            "OPPOINTED_LACEY",
+            "OPPOINTED-ANKLE"
+        ],
+        "KNEE-HIGH BOOTS": [
+            "SIBERIAN-W",
+            "AKRIS",
+            "UTAH-W",
+            "TURTLE-W",
+            "TURTLE",
+            "URA-W"
+        ],
+        "ANKLE & BOOTIE": [
+            "MONTREAL",
+            "CECILE",
+            "BOSTON-03",
+            "BOSTON-01",
+            "CHICAGO-03",
+            "CHICAGO-01"
+        ],
+        "FLATS": [
+            "FLAPOINTED-SHINE",
+            "FLAPOINTED-ANKLE",
+            "SOLE-CLASSIC",
+            "REVONA",
+            "SOLE-STRAPPY",
+            "JILIAN"
+        ],
+        "MID-CALF BOOTS": [
+            "MISSION",
+            "POCONO",
+            "AMAZON",
+            "TERRAN-SNOW",
+            "TERRAN",
+            "OUSSIE"
+        ],
+        "WEDGES SANDALS": [
+            "SOLSOFT-6",
+            "INGRID",
+            "SANDRO-03",
+            "MULAN",
+            "ADITI-NEW",
+            "JONES"
+        ],
+        "OVER-THE-KNEE BOOTS": [
+            "SHOO",
+            "HIGHLEG",
+            "LAURENCE",
+            "PRADE-01",
+            "PRADE-HIGH",
+            "PAULINE"
+        ],
+        "FLAT SANDALS": [
+            "JEWEL_01",
+            "SLIM",
+            "GREEK-01",
+            "ARIZONA",
+            "ALEXA",
+            "DARRE"
+        ],
+        "LOAFERS & SLIP-ONS": [
+            "SDLS2207W",
+            "SDLS2205W-E",
+            "SDLS2210W",
+            "SDLS2210W-E",
+            "SDLS2211W-E",
+            "SDLS2212W-E"
+        ],
+        "SLIDES-SANDALS": [
+            "SDSS2212W",
+            "SDSS2213W",
+            "SDSS2224W",
+            "SDSS2319W",
+            "SDSS2401W",
+            "SDSS2403W"
+        ],
+        "MULES & CLOGS": [
+            "DML211",
+            "DML212",
+            "SDML2209W",
+            "DML211-1",
+            "SDML2212W",
+            "SDML2205W"
+        ],
+        "OXFORDS": [
+            "SDPU2205W",
+            "SDOX2201W-E",
+            "SDOX2202W-E",
+            "SDOX2302W",
+            "SDOX2303W",
+            "SDOX2404W"
+        ],
+        "FLIP-FLOPS": [
+            "SDFF2403W",
+            "DWUMFF2502",
+            "DWUMFF2508",
+            "DWUMFF2511",
+            "DWUMFF2505",
+            "SDFF26002W"
+        ],
+        "FUZZY BOOTS": [
+            "SDSB2421W",
+            "SDSB24011W-N1"
+        ],
+        "SLIPPERS": [
+            "FLUFFIA",
+            "EMMA"
+        ],
+        "Heeled Sandals": [
+            "SDHS26048W"
+        ]
+    }
+};
+
+    const SCORE_THRESHOLDS = { success: 80, warning: 60 };
+    const factorOrder = ['缺货风险', '积压风险', '结构健康', '周转天数'];
+    const factorWeights = { '缺货风险': '25%', '积压风险': '20%', '结构健康': '25%', '周转天数': '30%' };
+    const todayText = '2026-06-01';
+    const globalIndexes = { '缺货风险': 68, '积压风险': 48, '结构健康': 85, '周转天数': 82 };
+
+    function escapeHtml(text) {
+        return String(text ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    }
+
+    function scoreLevel(value) {
+        const numeric = Number(value) || 0;
+        if (numeric >= SCORE_THRESHOLDS.success) return 'success';
+        if (numeric >= SCORE_THRESHOLDS.warning) return 'warning';
+        return 'danger';
+    }
+
+    function scoreStatus(value) {
+        const level = scoreLevel(value);
+        if (level === 'success') return '健康';
+        if (level === 'warning') return '关注';
+        return '风险';
+    }
+
+    function textClass(value) {
+        const level = scoreLevel(value);
+        if (level === 'success') return 'text-green';
+        if (level === 'warning') return 'text-orange';
+        return 'text-red';
+    }
+
+    function bgClass(value) {
+        const level = scoreLevel(value);
+        if (level === 'success') return 'bg-green';
+        if (level === 'warning') return 'bg-orange';
+        return 'bg-red';
+    }
+
+    function parseMetricNumber(value) {
+        return Number(String(value || '').replace(/[^0-9.]/g, '')) || 0;
+    }
+
+    function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    function hashText(text) {
+        return Array.from(String(text || '')).reduce((hash, char) => ((hash << 5) - hash + char.charCodeAt(0)) | 0, 0);
+    }
+
+    function getWeakestMetric(indexes) {
+        return Object.entries(indexes || {}).sort((a, b) => a[1] - b[1])[0] || ['综合健康', 0];
+    }
+
+    function getPrimaryAction(indexes, score) {
+        const [weakName, weakValue] = getWeakestMetric(indexes);
+        const actionScore = Math.min(Number(score) || 100, Number(weakValue) || 0);
+        const level = scoreLevel(actionScore);
+        const actionMatrix = {
+            danger: { '缺货风险': '立即补货调拨', '积压风险': '清仓调拨并冻结低效采购', '结构健康': '冻结扩品并校准款色码', '周转天数': '停采促销并提升去化' },
+            warning: { '缺货风险': '追发补货并复核在途', '积压风险': '控货促销并跨仓调拨', '结构健康': '结构校准并减少长尾', '周转天数': '控采提转并复盘动销' },
+            success: { '缺货风险': '维持小批快反', '积压风险': '持续控货复盘', '结构健康': '复制健康结构', '周转天数': '保持补货节奏' }
+        };
+        return { label: actionMatrix[level]?.[weakName] || '专项复盘', weakName, weakValue, level };
+    }
+
+    function buildCategoryCards(ctName, data) {
+        const items = ctRelationSource[ctName]?.categories || ['核心品类', '成长品类', '长尾品类', '季节品类', '清仓品类', '配件'].map(name => ({ name, rows: 0 }));
+        const offsets = [-9, -4, 0, 4, 8, 11];
+        return items.map((item, index) => {
+            const offset = offsets[index % offsets.length];
+            const score = Math.max(28, Math.min(96, Math.round((data.score + offset) * 10) / 10));
+            const indexes = {
+                '周转天数': Math.max(25, Math.min(96, data.indexes['周转天数'] + offset)),
+                '缺货风险': Math.max(25, Math.min(96, data.indexes['缺货风险'] + offset - 1)),
+                '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offset - 2)),
+                '结构健康': Math.max(25, Math.min(96, data.indexes['结构健康'] + offset + 1))
+            };
+            const amount = (Math.max(0.04, (100 - score) / 70)).toFixed(2);
+            return { name: item.name, sourceRows: item.rows, score, status: scoreStatus(score), indexes, amount };
+        }).sort((a, b) => a.score - b.score);
+    }
+
+    function buildStyleCards(ctName, data, categoryName = '') {
+        const categoryStyles = categoryName ? ctCategoryStyleSource[ctName]?.[categoryName] : null;
+        const items = categoryStyles
+            ? categoryStyles.map(name => ({ name, category: categoryName, rows: 1 }))
+            : (ctRelationSource[ctName]?.styles || ['核心款', '成长款', '新品款', '季节款', '清仓款', '平台款'].map(name => ({ name, rows: 0 })));
+        const offsets = [-12, -6, -1, 3, 7, 10];
+        return items.map((item, index) => {
+            const offset = offsets[index % offsets.length];
+            const score = Math.max(24, Math.min(96, Math.round((data.score + offset) * 10) / 10));
+            const indexes = {
+                '周转天数': Math.max(25, Math.min(96, data.indexes['周转天数'] + offset)),
+                '缺货风险': Math.max(25, Math.min(96, data.indexes['缺货风险'] + offset - 2)),
+                '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offset - 3)),
+                '结构健康': Math.max(25, Math.min(96, data.indexes['结构健康'] + offset + 2))
+            };
+            const amount = (Math.max(0.03, (100 - score) / 85)).toFixed(2);
+            return { name: item.name, category: item.category || categoryName || 'UNMAPPED', sourceRows: item.rows, score, status: scoreStatus(score), indexes, amount };
+        }).sort((a, b) => a.score - b.score);
+    }
+
+    function buildReportUrl(level, payload = {}) {
+        const params = new URLSearchParams();
+        params.set('level', level);
+        if (payload.ct) params.set('ct', payload.ct);
+        if (payload.category) params.set('category', payload.category);
+        if (payload.style) params.set('style', payload.style);
+        return `全球库存健康诊断报告.html?${params.toString()}`;
+    }
+
+    function getState() {
+        const params = new URLSearchParams(window.location.search);
+        const level = params.get('level') || 'global';
+        const ctNames = Object.keys(ctDashboardData);
+        const ctName = ctDashboardData[params.get('ct')] ? params.get('ct') : ctNames[0];
+        const data = ctDashboardData[ctName];
+        const categories = buildCategoryCards(ctName, data);
+        const requestedCategory = params.get('category');
+        const category = categories.find(item => item.name === requestedCategory) || categories[0];
+        const styles = buildStyleCards(ctName, data, category?.name);
+        const requestedStyle = params.get('style');
+        const style = styles.find(item => item.name === requestedStyle) || styles[0];
+        if (level === 'ct') return { level, ctName, data, categories, category };
+        if (level === 'category') return { level, ctName, data, categories, category, styles };
+        if (level === 'style') return { level, ctName, data, categories, category, styles, style };
+        return { level: 'global', ctName, data, categories };
+    }
+
+    function getModel(state) {
+        if (state.level === 'ct') return buildCtModel(state);
+        if (state.level === 'category') return buildCategoryModel(state);
+        if (state.level === 'style') return buildStyleModel(state);
+        return buildGlobalModel(state);
+    }
+
+    function getCtRows() {
+        return Object.entries(ctDashboardData).map(([ctName, data]) => {
+            const categories = buildCategoryCards(ctName, data);
+            const metrics = getCtMetrics(ctName, data, categories);
+            const [weakName, weakValue] = getWeakestMetric(data.indexes);
+            return { ctName, data, categories, metrics, weakName, weakValue };
+        }).sort((a, b) => a.data.score - b.data.score);
+    }
+
+    function getCtMetrics(ctName, data, categories) {
+        const styles = buildStyleCards(ctName, data, categories[0]?.name);
+        const riskCategories = categories.filter(item => item.score < SCORE_THRESHOLDS.success);
+        const shortageSku = parseMetricNumber(data.risks['断货 SKU']);
+        const shortageStyles = Math.max(1, Math.round(shortageSku * 0.23));
+        const weakStyles = styles.filter(item => item.score < SCORE_THRESHOLDS.success);
+        const clearActions = riskCategories.length ? Math.max(1, Math.round(riskCategories.length * 0.8)) : 0;
+        const replenishActions = Math.max(1, Math.round(shortageStyles / 12));
+        const transferActions = Math.max(1, Math.ceil(weakStyles.length / 3));
+        return { riskCategories, shortageStyles, weakStyles, clearActions, replenishActions, transferActions, pendingActions: clearActions + replenishActions + transferActions };
+    }
+
+    function buildGlobalModel() {
+        const rows = getCtRows();
+        const [weakName, weakValue] = getWeakestMetric(globalIndexes);
+        const riskCtCount = rows.filter(row => row.data.score < SCORE_THRESHOLDS.success).length;
+        return {
+            level: 'global', levelName: 'GLOBAL REPORT', title: `全球库存健康诊断报告 ${todayText}`,
+            scope: '全球库存健康', score: 71.4, indexes: globalIndexes, trend: '同比 -2.1%',
+            path: [{ label: '全球库存健康', href: buildReportUrl('global') }],
+            heroDesc: '集团总指数处于关注区间，风险不是全局失控，而是积压风险和局部缺货同时拖累。',
+            weakName, weakValue, primaryAction: '优先穿透 Bruno Marc 与 DP Kids，联动清仓、调拨、补货三类治理动作。',
+            expert: `本次分析基于全球库存健康指数看板的实时快照数据，对集团库存健康状况进行了全面诊断。数据显示，全球库存健康总指数为 <strong>71.4</strong>，处于关注区间，核心问题集中在 <strong>${weakName} ${weakValue}分</strong> 与 <strong>缺货风险 68分</strong>。Bruno Marc 和 DP Kids 是主要风险来源，高危 SKU 数达到 <strong>426</strong>，未来 30 天缺货 SKU 约 <strong>186</strong>，360天+ 呆滞库存金额约 <strong>$4.21M</strong>。建议以 CT 为责任单元，优先完成高库龄库存清理、爆款尺码补货与跨仓调拨协同。`,
+            cards: [
+                card('风险CT数', `${riskCtCount} / ${rows.length}`, '复查建议', '每日监控低于80分的 CT 变化。', '处理建议', '先治理风险最低的 CT。'),
+                card('关键短板', `${weakName} ${weakValue}`, '复查建议', '核对长库龄占比与低动销金额。', '处理建议', '清仓调拨，冻结低效采购。'),
+                card('未来30天缺货SKU', '186', '复查建议', '跟踪爆款尺码和在途延迟。', '处理建议', '追发补货，保障 A 类 SKU。'),
+                card('呆滞库存金额', '$4.21M', '复查建议', '每周盘点360天+库存。', '处理建议', '按 CT 分派清退任务。')
+            ],
+            checkRows: buildMetricRows('全球库存健康总指数', 71.4, globalIndexes).concat([
+                ['高危 SKU 数', '关注', '426↑', '个', '持续下降', 'text-orange'],
+                ['未来 30 天缺货 SKU', '风险', '186↑', '个', '持续下降', 'text-red'],
+                ['呆滞库存金额', '风险', '$4.21M↑', '美元', '持续下降', 'text-red'],
+                ['待治理任务', '关注', '29↑', '项', '按期闭环', 'text-orange']
+            ]),
+            detailTitle: '各 CT 库存健康诊断结果', detailHtml: renderCtDetail(rows),
+            sampleTitle: '各 CT 诊断报告样例', sampleItems: rows.map(row => sample('CT REPORT', row.ctName, `${row.data.score}分 · ${scoreStatus(row.data.score)}`, buildReportUrl('ct', { ct: row.ctName })))
+        };
+    }
+
+    function buildCtModel(state) {
+        const { ctName, data, categories } = state;
+        const [weakName, weakValue] = getWeakestMetric(data.indexes);
+        const action = getPrimaryAction(data.indexes, data.score);
+        const metrics = getCtMetrics(ctName, data, categories);
+        const focus = categories[0];
+        return {
+            level: 'ct', levelName: 'CT REPORT', title: `${ctName} CT库存健康诊断报告 ${todayText}`,
+            scope: `${ctName} / By 品类`, score: data.score, indexes: data.indexes, trend: scoreLevel(data.score) === 'success' ? '环比 +1.4%' : '环比 -2.1%',
+            path: [{ label: '全球库存健康', href: buildReportUrl('global') }, { label: ctName, href: buildReportUrl('ct', { ct: ctName }) }],
+            heroDesc: `${ctName} 当前处于${scoreStatus(data.score)}状态，建议从最低分品类开始穿透到款式。`,
+            weakName, weakValue, primaryAction: action.label,
+            expert: `本次分析聚焦 <strong>${escapeHtml(ctName)}</strong> 的库存健康状态。该 CT 健康指数为 <strong>${data.score}</strong>，核心短板为 <strong>${escapeHtml(weakName)} ${weakValue}分</strong>。当前风险品类共 <strong>${metrics.riskCategories.length}/${categories.length}</strong> 个，最低分品类为 <strong>${escapeHtml(focus?.name || '-')}</strong>。建议围绕 <strong>${escapeHtml(action.label)}</strong> 形成治理闭环，并将品类下高风险款式继续穿透到单品参谋。`,
+            cards: [
+                card('风险品类数', `${metrics.riskCategories.length} / ${categories.length}`, '复查建议', '按风险优先级复查低于80分品类。', '处理建议', `优先穿透 ${focus?.name || '最低分品类'}。`),
+                card('关键短板', `${weakName} ${weakValue}`, '复查建议', '核对因子是否由缺货、积压或结构拖累。', '处理建议', action.label),
+                card('未来30天缺货款式', metrics.shortageStyles, '复查建议', '核对核心款可售天数。', '处理建议', '追发补货或跨仓调拨。'),
+                card('待治理动作', metrics.pendingActions, '复查建议', '按补货、清仓、调拨分类。', '处理建议', '推送责任人跟踪闭环。')
+            ],
+            checkRows: buildMetricRows(`${ctName} CT库存健康指数`, data.score, data.indexes).concat([
+                ['风险品类数', scoreStatus(metrics.riskCategories.length ? 59 : 85), `${metrics.riskCategories.length}/${categories.length}`, '个', '持续下降', metrics.riskCategories.length ? 'text-red' : 'text-green'],
+                ['呆滞库存金额', '关注', data.risks['滞销金额'], '美元', '持续下降', data.score < 60 ? 'text-red' : 'text-orange'],
+                ['待治理动作', '关注', metrics.pendingActions, '项', '按期闭环', 'text-orange']
+            ]),
+            detailTitle: `${ctName} 下品类诊断报告样例`, detailHtml: renderCategoryDetail(ctName, categories),
+            sampleTitle: `${ctName} 下品类诊断报告入口`, sampleItems: categories.map(item => sample('CATEGORY REPORT', item.name, `${item.score}分 · ${scoreStatus(item.score)}`, buildReportUrl('category', { ct: ctName, category: item.name })))
+        };
+    }
+
+    function buildCategoryModel(state) {
+        const { ctName, data, category, styles } = state;
+        const [weakName, weakValue] = getWeakestMetric(category.indexes);
+        const action = getPrimaryAction(category.indexes, category.score);
+        const riskStyles = styles.filter(item => item.score < SCORE_THRESHOLDS.success);
+        return {
+            level: 'category', levelName: 'CATEGORY REPORT', title: `${ctName} / ${category.name} 品类诊断报告 ${todayText}`,
+            scope: `${ctName} / ${category.name} / By Style`, score: category.score, indexes: category.indexes, trend: scoreLevel(category.score) === 'success' ? '环比 +1.2%' : '环比 -1.8%',
+            path: [{ label: '全球库存健康', href: buildReportUrl('global') }, { label: ctName, href: buildReportUrl('ct', { ct: ctName }) }, { label: category.name, href: buildReportUrl('category', { ct: ctName, category: category.name }) }],
+            heroDesc: `${category.name} 品类当前健康指数 ${category.score}，下方已按风险优先级生成款式诊断样例。`,
+            weakName, weakValue, primaryAction: action.label,
+            expert: `本次分析聚焦 <strong>${escapeHtml(ctName)} / ${escapeHtml(category.name)}</strong>。该品类健康指数为 <strong>${category.score}</strong>，核心短板为 <strong>${escapeHtml(weakName)} ${weakValue}分</strong>。当前款式中低于80分的风险款式共 <strong>${riskStyles.length}/${styles.length}</strong> 个，建议优先打开最低分 Style 诊断报告，结合单品参谋识别“会缺货”与“根本不该存在”的库存。`,
+            cards: [
+                card('风险款式数', `${riskStyles.length} / ${styles.length}`, '复查建议', '按款式健康指数倒序检查。', '处理建议', '先处理最低分 Style。'),
+                card('关键短板', `${weakName} ${weakValue}`, '复查建议', '复核款色码和库龄结构。', '处理建议', action.label),
+                card('样本行数', category.sourceRows || '-', '复查建议', '核对品类口径是否完整。', '处理建议', '按原始英文品类保留口径。'),
+                card('预计滞销金额', `$${category.amount}M`, '复查建议', '核对长库龄金额占比。', '处理建议', '清仓、调拨、控采联动。')
+            ],
+            checkRows: buildMetricRows(`${category.name} 品类库存健康指数`, category.score, category.indexes).concat([
+                ['风险款式数', riskStyles.length ? '关注' : '健康', `${riskStyles.length}/${styles.length}`, '个', '持续下降', riskStyles.length ? 'text-orange' : 'text-green'],
+                ['预计滞销金额', scoreStatus(category.score), `$${category.amount}M`, '美元', '持续下降', textClass(category.score)],
+                ['优先动作', scoreStatus(category.score), action.label, '策略', '按期闭环', textClass(category.score)]
+            ]),
+            detailTitle: `${ctName} / ${category.name} 下 Style 诊断报告样例`, detailHtml: renderStyleDetail(ctName, category.name, styles),
+            sampleTitle: `${category.name} 下 Style 诊断报告入口`, sampleItems: styles.map(item => sample('STYLE REPORT', item.name, `${item.score}分 · ${scoreStatus(item.score)}`, buildReportUrl('style', { ct: ctName, category: category.name, style: item.name })))
+        };
+    }
+
+    function buildStyleModel(state) {
+        const { ctName, category, style } = state;
+        const [weakName, weakValue] = getWeakestMetric(style.indexes);
+        const action = getPrimaryAction(style.indexes, style.score);
+        const advisor = buildStyleAdvisor(ctName, category.name, style);
+        return {
+            level: 'style', levelName: 'STYLE REPORT', title: `${ctName} / ${category.name} / ${style.name} Style诊断报告样例 ${todayText}`,
+            scope: `${ctName} / ${category.name} / ${style.name}`, score: style.score, indexes: style.indexes, trend: scoreLevel(style.score) === 'success' ? '环比 +0.9%' : '环比 -2.4%',
+            path: [{ label: '全球库存健康', href: buildReportUrl('global') }, { label: ctName, href: buildReportUrl('ct', { ct: ctName }) }, { label: category.name, href: buildReportUrl('category', { ct: ctName, category: category.name }) }, { label: style.name, href: buildReportUrl('style', { ct: ctName, category: category.name, style: style.name }) }],
+            heroDesc: `${style.name} 已进入单品参谋样例报告，重点查看缺货仓与积压仓错配。`,
+            weakName, weakValue, primaryAction: action.label,
+            expert: `本次分析聚焦 Style <strong>${escapeHtml(style.name)}</strong>。当前健康指数为 <strong>${style.score}</strong>，关键短板为 <strong>${escapeHtml(weakName)} ${weakValue}分</strong>。单品参谋判定该款式属于 <strong>${escapeHtml(advisor.inventoryType)}</strong>，建议优先执行 <strong>${escapeHtml(action.label)}</strong>，并从 <strong>国内仓</strong> 调往 <strong>NJ仓</strong> 处理局部缺货与积压错配。`,
+            cards: [
+                card('库存类型', advisor.inventoryType, '复查建议', '结合动销、库龄、可售天数复核。', '处理建议', action.label),
+                card('可售天数', `${advisor.sellableDays}天`, '复查建议', '低于安全线自动预警。', '处理建议', '优先保障核心仓。'),
+                card('库存占用', `$${advisor.stockValue}M`, '复查建议', '核对资金成本与仓租。', '处理建议', '调拨或清仓释放占用。'),
+                card('调拨建议', `${advisor.transferQty}双`, '复查建议', '确认国内仓可调拨数量。', '处理建议', '从国内仓调往NJ仓。')
+            ],
+            checkRows: buildMetricRows(`${style.name} Style库存健康指数`, style.score, style.indexes).concat([
+                ['库存类型', scoreStatus(style.score), advisor.inventoryType, '分类', '会卖掉/卖得慢/不该存在/会缺货', textClass(style.score)],
+                ['可售天数', scoreStatus(advisor.sellableScore), `${advisor.sellableDays}天`, '天', '60-90天', textClass(advisor.sellableScore)],
+                ['库存占用', scoreStatus(style.score), `$${advisor.stockValue}M`, '美元', '持续下降', textClass(style.score)],
+                ['建议调拨量', '关注', `${advisor.transferQty}双`, '双', '按需调拨', 'text-orange']
+            ]),
+            detailTitle: `${style.name} 单品参谋诊断样例`, detailHtml: renderStyleAdvisorDetail(advisor),
+            sampleTitle: `${category.name} 同品类 Style 报告入口`, sampleItems: state.styles.map(item => sample('STYLE REPORT', item.name, `${item.score}分 · ${scoreStatus(item.score)}`, buildReportUrl('style', { ct: ctName, category: category.name, style: item.name })))
+        };
+    }
+
+    function buildStyleAdvisor(ctName, categoryName, style) {
+        const seed = Math.abs(hashText(`${ctName}:${categoryName}:${style.name}`));
+        const [weakName] = getWeakestMetric(style.indexes);
+        let inventoryType = '会卖掉的库存';
+        if (style.indexes['积压风险'] < 60) inventoryType = '根本不该存在的库存';
+        else if (style.indexes['缺货风险'] < 60) inventoryType = '会缺货的库存';
+        else if (style.indexes['周转天数'] < 80 || style.indexes['积压风险'] < 80) inventoryType = '卖得慢的库存';
+        const sellableDays = clamp(Math.round(style.indexes['缺货风险'] * 0.72 + (seed % 14) - 16), 8, 88);
+        const stockValue = clamp((100 - style.score) / 38 + 0.16 + (seed % 4) * 0.05, 0.18, 2.6).toFixed(2);
+        const shortageGap = inventoryType === '会卖掉的库存' ? clamp(36 + seed % 72, 32, 118) : inventoryType === '根本不该存在的库存' ? clamp(88 + seed % 160, 80, 260) : clamp(260 + seed % 520, 240, 780);
+        const overstockQty = inventoryType === '会卖掉的库存' ? clamp(180 + seed % 190, 160, 420) : inventoryType === '会缺货的库存' ? clamp(420 + seed % 620, 360, 1120) : clamp(720 + seed % 860, 640, 1680);
+        const transferQty = clamp(Math.round(Math.min(shortageGap * 0.86, overstockQty * 0.58)), 32, 680);
+        return {
+            ctName, categoryName, styleName: style.name, inventoryType, weakName,
+            sellableDays, sellableScore: style.indexes['缺货风险'], stockValue,
+            shortageWarehouse: 'NJ仓', overstockWarehouse: '国内仓', shortageGap, overstockQty,
+            shortageDays: clamp(Math.round(sellableDays * 0.42), 2, 18),
+            overstockDays: clamp(Math.round((100 - style.indexes['积压风险']) * 1.65 + 36 + (seed % 36)), 32, 220),
+            transferQty,
+            route: '国内仓 → NJ仓'
+        };
+    }
+
+    function card(title, value, checkLabel, checkText, actionLabel, actionText) {
+        return { title, value, checkLabel, checkText, actionLabel, actionText };
+    }
+
+    function sample(kicker, title, note, href) {
+        return { kicker, title, note, href };
+    }
+
+    function buildMetricRows(totalName, totalScore, indexes) {
+        const rows = [[totalName, scoreStatus(totalScore), `${totalScore}${totalScore >= 80 ? '↑' : '↓'}`, '分', '>=80', textClass(totalScore)]];
+        factorOrder.forEach(label => {
+            const value = indexes[label];
+            rows.push([`${label}指数`, scoreStatus(value), `${value}${value >= 80 ? '↑' : '↓'}`, '分', `>=80 · 权重${factorWeights[label]}`, textClass(value)]);
+        });
+        return rows;
+    }
+
+    function renderHeader(model) {
+        document.title = model.title.replace(/ 2026-06-01$/, '');
+        const breadcrumb = model.path.map((item, index) => {
+            const prefix = index ? '<span>/</span>' : '';
+            return `${prefix}<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`;
+        }).join('');
+        return `
+            <div class="title-line">
+                <h1>${escapeHtml(model.title)}</h1>
+                <span class="level-pill">${escapeHtml(model.levelName)}</span>
+                <a class="detail-link" href="库存健康指数.html" target="_blank" rel="noopener noreferrer">查看驾驶舱</a>
+            </div>
+            <div class="meta-row">
+                <span class="meta-item"><span class="meta-dot"></span>发布者：大迈（M-AI）</span>
+                <span class="meta-item"><span class="meta-dot"></span>诊断范围：${escapeHtml(model.scope)}</span>
+                <span class="meta-item"><span class="meta-dot"></span>诊断时间：${todayText}</span>
+                <span class="meta-item"><span class="meta-dot"></span>评分阈值：>=80 健康，60-79 关注，<60 风险</span>
+            </div>
+            <div class="breadcrumb">${breadcrumb}</div>
+        `;
+    }
+
+    function renderSamples(model) {
+        const items = model.sampleItems || [];
+        const capped = items.slice(0, 12);
+        return `
+            <div class="section-heading">${escapeHtml(model.sampleTitle || '报告样例入口')}</div>
+            <div class="sample-grid">
+                ${capped.map(item => `<a class="sample-card" href="${escapeHtml(item.href)}"><div class="sample-kicker">${escapeHtml(item.kicker)}</div><div class="sample-title">${escapeHtml(item.title)}</div><div class="sample-note">${escapeHtml(item.note)}</div></a>`).join('')}
+            </div>
+        `;
+    }
+
+    function renderAbnormal(model) {
+        return `
+            <div class="section-heading">1. 库存重要异常结果、复查建议及处理建议</div>
+            <div class="summary-grid">
+                <article class="hero-score-card">
+                    <div class="hero-label">${escapeHtml(model.scope)}</div>
+                    <div class="hero-score ${textClass(model.score)}">${escapeHtml(model.score)}</div>
+                    <div class="hero-status ${bgClass(model.score)}">${escapeHtml(scoreStatus(model.score))} · ${escapeHtml(model.trend)}</div>
+                    <div class="hero-desc">${escapeHtml(model.heroDesc)}</div>
+                </article>
+                ${model.cards.map(item => `
+                    <article class="check-card">
+                        <div class="check-title"><span class="info-icon">i</span>${escapeHtml(item.title)}：${escapeHtml(item.value)}</div>
+                        <div class="suggest-row"><span class="pill pill-blue">${escapeHtml(item.checkLabel)}</span><span>${escapeHtml(item.checkText)}</span></div>
+                        <div class="suggest-row"><span class="pill pill-green">${escapeHtml(item.actionLabel)}</span><span>${escapeHtml(item.actionText)}</span></div>
+                    </article>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function renderExpert(model) {
+        return `
+            <div class="section-heading">2. 专家（大迈 M-AI）建议与指导</div>
+            <div class="expert-panel">
+                <div class="expert-icon">AI</div>
+                <div class="expert-copy">${model.expert}</div>
+            </div>
+        `;
+    }
+
+    function renderCheck(model) {
+        return `
+            <div class="section-heading">3. 库存健康检查结果</div>
+            <div class="result-table-wrap">
+                <table>
+                    <thead><tr><th class="index-col">序号</th><th>指标名称</th><th>状态</th><th>结果</th><th>单位</th><th>健康参考值</th></tr></thead>
+                    <tbody>${model.checkRows.map((row, index) => `<tr><td class="index-col">${index + 1}</td><td>${escapeHtml(row[0])}</td><td class="status-text ${row[5]}">${escapeHtml(row[1])}</td><td class="value-strong ${row[5]}">${escapeHtml(row[2])}</td><td>${escapeHtml(row[3])}</td><td>${escapeHtml(row[4])}</td></tr>`).join('')}</tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    function renderDetail(model) {
+        return `<div class="section-heading">4. ${escapeHtml(model.detailTitle)}</div>${model.detailHtml}`;
+    }
+
+    function renderCtDetail(rows) {
+        return `
+            <div class="result-table-wrap"><table class="ct-table">
+                <thead><tr><th class="index-col">序号</th><th>业务线 CT</th><th>健康指数</th><th>状态</th><th>关键短板</th><th>重点品类</th><th>处理建议</th></tr></thead>
+                <tbody>${rows.map((row, index) => {
+                    const action = getPrimaryAction(row.data.indexes, row.data.score);
+                    const focus = row.categories[0];
+                    return `<tr><td class="index-col">${index + 1}</td><td><a href="${escapeHtml(buildReportUrl('ct', { ct: row.ctName }))}">${escapeHtml(row.ctName)}</a></td><td class="${textClass(row.data.score)} value-strong">${row.data.score}</td><td class="status-text ${textClass(row.data.score)}">${scoreStatus(row.data.score)}</td><td>${escapeHtml(row.weakName)} ${row.weakValue}</td><td>${escapeHtml(focus?.name || '-')}</td><td>${escapeHtml(action.label)}</td></tr>`;
+                }).join('')}</tbody>
+            </table></div>`;
+    }
+
+    function renderCategoryDetail(ctName, categories) {
+        return `
+            <div class="result-table-wrap"><table>
+                <thead><tr><th class="index-col">序号</th><th>品类</th><th>健康指数</th><th>状态</th><th>关键短板</th><th>预计滞销金额</th><th>Style报告</th></tr></thead>
+                <tbody>${categories.map((item, index) => {
+                    const [weakName, weakValue] = getWeakestMetric(item.indexes);
+                    return `<tr><td class="index-col">${index + 1}</td><td><a href="${escapeHtml(buildReportUrl('category', { ct: ctName, category: item.name }))}">${escapeHtml(item.name)}</a></td><td class="${textClass(item.score)} value-strong">${item.score}</td><td class="status-text ${textClass(item.score)}">${scoreStatus(item.score)}</td><td>${escapeHtml(weakName)} ${weakValue}</td><td>$${item.amount}M</td><td><a href="${escapeHtml(buildReportUrl('style', { ct: ctName, category: item.name }))}">打开样例</a></td></tr>`;
+                }).join('')}</tbody>
+            </table></div>`;
+    }
+
+    function renderStyleDetail(ctName, categoryName, styles) {
+        return `
+            <div class="result-table-wrap"><table>
+                <thead><tr><th class="index-col">序号</th><th>Style</th><th>健康指数</th><th>状态</th><th>关键短板</th><th>预计滞销金额</th><th>单品参谋</th></tr></thead>
+                <tbody>${styles.map((item, index) => {
+                    const [weakName, weakValue] = getWeakestMetric(item.indexes);
+                    return `<tr><td class="index-col">${index + 1}</td><td><a href="${escapeHtml(buildReportUrl('style', { ct: ctName, category: categoryName, style: item.name }))}">${escapeHtml(item.name)}</a></td><td class="${textClass(item.score)} value-strong">${item.score}</td><td class="status-text ${textClass(item.score)}">${scoreStatus(item.score)}</td><td>${escapeHtml(weakName)} ${weakValue}</td><td>$${item.amount}M</td><td><a href="${escapeHtml(buildReportUrl('style', { ct: ctName, category: categoryName, style: item.name }))}">打开报告</a></td></tr>`;
+                }).join('')}</tbody>
+            </table></div>`;
+    }
+
+    function renderStyleAdvisorDetail(advisor) {
+        return `
+            <div class="two-col">
+                <div class="mini-card">
+                    <div class="mini-title">单品经营信号</div>
+                    <div class="metric-list">
+                        <div class="metric-row"><span>Style</span><strong>${escapeHtml(advisor.styleName)}</strong></div>
+                        <div class="metric-row"><span>库存类型</span><strong>${escapeHtml(advisor.inventoryType)}</strong></div>
+                        <div class="metric-row"><span>关键短板</span><strong>${escapeHtml(advisor.weakName)}</strong></div>
+                        <div class="metric-row"><span>库存占用</span><strong>$${escapeHtml(advisor.stockValue)}M</strong></div>
+                    </div>
+                </div>
+                <div class="mini-card">
+                    <div class="mini-title">缺货仓 vs 积压仓</div>
+                    <div class="warehouse-grid">
+                        <div class="warehouse-box"><div class="warehouse-label">调出仓（积压仓）</div><div class="warehouse-name">${escapeHtml(advisor.overstockWarehouse)}</div><div class="metric-row"><span>积压库存</span><strong>${advisor.overstockQty}双</strong></div><div class="metric-row"><span>最长库龄</span><strong>${advisor.overstockDays}天</strong></div></div>
+                        <div class="warehouse-transfer"><span class="arrow">→</span><span>${escapeHtml(advisor.route)}<br>${advisor.transferQty}双</span></div>
+                        <div class="warehouse-box"><div class="warehouse-label">调入仓（缺货仓）</div><div class="warehouse-name">${escapeHtml(advisor.shortageWarehouse)}</div><div class="metric-row"><span>可售天数</span><strong>${advisor.shortageDays}天</strong></div><div class="metric-row"><span>预测缺口</span><strong>${advisor.shortageGap}双</strong></div></div>
+                        <div class="warehouse-action"><strong>建议动作：</strong>从国内仓调往NJ仓，优先用调拨解决局部缺货，同时避免重复补货扩大长库龄。</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderTrend(model) {
+        const values = [clamp(model.score + 6, 0, 100), clamp(model.score + 3, 0, 100), clamp(model.score - 1, 0, 100), clamp(model.score + 2, 0, 100), model.score];
+        const shortage = [model.indexes['缺货风险'] + 4, model.indexes['缺货风险'] + 2, model.indexes['缺货风险'] - 3, model.indexes['缺货风险'] - 1, model.indexes['缺货风险']].map(v => clamp(v, 0, 100));
+        const overstock = [model.indexes['积压风险'] + 7, model.indexes['积压风险'] + 4, model.indexes['积压风险'] + 1, model.indexes['积压风险'] - 2, model.indexes['积压风险']].map(v => clamp(v, 0, 100));
+        const x = [100, 294, 488, 682, 876];
+        const y = value => 252 - (value / 100) * 224;
+        const line = arr => arr.map((value, index) => `${x[index]},${y(value).toFixed(1)}`).join(' ');
+        const dots = (arr, color) => arr.map((value, index) => `<circle class="chart-dot" cx="${x[index]}" cy="${y(value).toFixed(1)}" r="4" fill="${color}"></circle>`).join('');
+        return `
+            <div class="section-heading">5. 历史主要异常指标对比</div>
+            <div class="chart-card">
+                <svg class="chart-svg" viewBox="0 0 1040 310" role="img" aria-label="库存健康历史指标趋势图">
+                    <line class="chart-axis" x1="54" y1="252" x2="1010" y2="252"></line><line class="chart-axis" x1="54" y1="28" x2="54" y2="252"></line>
+                    <g><line class="chart-grid" x1="54" y1="28" x2="1010" y2="28"></line><line class="chart-grid" x1="54" y1="73" x2="1010" y2="73"></line><line class="chart-grid" x1="54" y1="118" x2="1010" y2="118"></line><line class="chart-grid" x1="54" y1="163" x2="1010" y2="163"></line><line class="chart-grid" x1="54" y1="208" x2="1010" y2="208"></line></g>
+                    <g class="chart-label"><text x="18" y="33">100</text><text x="25" y="78">80</text><text x="25" y="123">60</text><text x="25" y="168">40</text><text x="25" y="213">20</text><text x="33" y="257">0</text><text x="82" y="282">02月</text><text x="276" y="282">03月</text><text x="470" y="282">04月</text><text x="664" y="282">05月</text><text x="858" y="282">06月</text></g>
+                    <polyline class="chart-line" style="stroke:#2F80ED" points="${line(values)}"></polyline>
+                    <polyline class="chart-line" style="stroke:#21B573" points="${line(shortage)}"></polyline>
+                    <polyline class="chart-line" style="stroke:#E95050" points="${line(overstock)}"></polyline>
+                    <g>${dots(values, '#2F80ED')}${dots(shortage, '#21B573')}${dots(overstock, '#E95050')}</g>
+                </svg>
+                <div class="legend"><span class="legend-item"><span class="legend-dot" style="background:#2F80ED"></span>健康总指数</span><span class="legend-item"><span class="legend-dot" style="background:#21B573"></span>缺货风险</span><span class="legend-item"><span class="legend-dot" style="background:#E95050"></span>积压风险</span></div>
+            </div>
+        `;
+    }
+
+    function renderReport() {
+        const model = getModel(getState());
+        document.getElementById('reportHeader').innerHTML = renderHeader(model);
+        document.getElementById('sampleSection').innerHTML = renderSamples(model);
+        document.getElementById('abnormalSection').innerHTML = renderAbnormal(model);
+        document.getElementById('expertSection').innerHTML = renderExpert(model);
+        document.getElementById('checkSection').innerHTML = renderCheck(model);
+        document.getElementById('detailSection').innerHTML = renderDetail(model);
+        document.getElementById('trendSection').innerHTML = renderTrend(model);
+    }
+
+    renderReport();
+    </script>
 </body>
 </html>
