@@ -2299,23 +2299,39 @@
         }
         .home-draft-main { height: 48vh; min-height: 300px; display: grid; grid-template-columns: 10fr 14fr; gap: 24px; }
         .home-draft-inventory-card {
-            height: 100%;
-            min-width: 0;
-            background: #E88A00;
+           background: #E88A00;
             border-radius: 28px;
             padding: 24px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,.4),
-                        0 0 0 0 rgba(255,190,80,0),
-                        0 0 0 0 rgba(232,138,0,0);
-            animation: homeDraftSoftGlow 3.6s infinite cubic-bezier(.4,0,.2,1);
-            cursor: pointer;
-            overflow: hidden;
-            transition: box-shadow .2s ease;
+            /* 基础阴影（深邃感） + 初始光晕（全0） */
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4),
+                        0 0 0 0 rgba(255, 180, 70, 0),
+                        0 0 0 0 rgba(232, 138, 0, 0);
+            transition: box-shadow 0.2s ease;
+            animation: softGlowBreathing 3.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
             will-change: box-shadow;
+
         }
+         @keyframes softGlowBreathing {
+            0% {
+              box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4),
+                          0 0 0 0 rgba(255, 190, 80, 0),
+                          0 0 0 0 rgba(232, 138, 0, 0);
+            }
+            50% {
+              box-shadow: 0 22px 40px -12px rgba(0, 0, 0, 0.45),
+                          0 0 18px 12px rgba(255, 180, 70, 0.45),
+                          0 0 32px 20px rgba(232, 138, 0, 0.35);
+            }
+            100% {
+              box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4),
+                          0 0 0 0 rgba(255, 190, 80, 0),
+                          0 0 0 0 rgba(232, 138, 0, 0);
+            }
+          }
+
         @keyframes homeDraftSoftGlow {
             0% {
                 box-shadow: 0 20px 35px -12px rgba(0,0,0,.4),
@@ -2767,6 +2783,162 @@
             .home-draft-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .home-draft-ct-grid { grid-template-columns: 1fr; }
         }
+        /* 核心区域 */
+      .main {
+        height: 48vh;
+        display: grid;
+        grid-template-columns: 10fr 14fr;
+        gap: 24px;
+      }
+    
+      /* ========= 左侧公司健康卡片：多层 box-shadow 柔和光晕（无缩放/无边框/无生硬底色变化） ========= */
+      .inventory-card {
+        background: #E88A00;
+        border-radius: 28px;
+        padding: 24px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        /* 基础阴影（深邃感） + 初始光晕（全0） */
+        box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4),
+                    0 0 0 0 rgba(255, 180, 70, 0),
+                    0 0 0 0 rgba(232, 138, 0, 0);
+        transition: box-shadow 0.2s ease;
+        animation: softGlowBreathing 3.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: box-shadow;
+      }
+    
+      /* 柔和光晕呼吸动画：只有外发光的强弱与范围变化，无任何尺寸/背景缩放 */
+      @keyframes softGlowBreathing {
+        0% {
+          box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4),
+                      0 0 0 0 rgba(255, 190, 80, 0),
+                      0 0 0 0 rgba(232, 138, 0, 0);
+        }
+        50% {
+          box-shadow: 0 22px 40px -12px rgba(0, 0, 0, 0.45),
+                      0 0 18px 12px rgba(255, 180, 70, 0.45),
+                      0 0 32px 20px rgba(232, 138, 0, 0.35);
+        }
+        100% {
+          box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4),
+                      0 0 0 0 rgba(255, 190, 80, 0),
+                      0 0 0 0 rgba(232, 138, 0, 0);
+        }
+      }
+    
+      .inventory-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+      }
+      .inventory-title {
+        font-size: 46px;
+        font-weight: 800;
+        line-height: 1.0;
+        letter-spacing: 0px;
+        color: #FFFFFF;
+      }
+      .inventory-title span {
+        display: block;
+        margin-top: 24px;
+      }
+      .inventory-score {
+        font-size: 130px;
+        font-weight: 900;
+        line-height: 0.85;
+        margin-top: 16px;
+        color: #FFFFFF;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      }
+      .mom {
+        display: inline-block;
+        padding: 4px 14px;
+        background: #fff;
+        border-radius: 999px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #c92d2d;
+        width: max-content;
+        margin-top: 8px;
+      }
+      /* 折线图 */
+      .chart {
+        width: 52%;
+        height: 95%;
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+      }
+      .chart svg {
+        width: 100%;
+        height: 100%;
+      }
+      .chart text {
+        fill: #7A4100;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .chart-dot {
+        fill: #FFF;
+        filter: drop-shadow(0 0 8px rgba(255,255,255,0.9));
+      }
+    
+      /* ========= 右侧区域 ========= */
+      .right-panel {
+        display: grid;
+        grid-template-rows: 155px 1fr;
+        gap: 16px;
+        height: 100%;
+        overflow: hidden;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .metric-card {
+        background: rgba(255,255,255,.04);
+        backdrop-filter: blur(30px);
+        border-radius: 20px;
+        padding: 16px 18px;
+        border: 1px solid rgba(255,255,255,.08);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .metric-title {
+        font-size: 16px;
+        color: #a9acb5;
+      }
+      .metric-weight {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        font-size: 15px;
+        color: #8c8f96;
+      }
+      /* 数值完全无动效 */
+      .metric-value {
+        font-size: 64px;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 4px;
+        display: inline-block;
+      }
+      .danger {
+        color: #ff4d4f;
+      }
+      .warning {
+        color: #ffb020;
+      }
+      .good {
+        color: #32d74b;
+      }
 
     </style>
 </head>
@@ -2777,34 +2949,33 @@
 </header>
 
 <main class="home-draft-main">
-    <section class="home-draft-inventory-card" onclick="showGlobalIndexInsight()" title="点击查看全球库存健康诊断报告">
-        <div class="home-draft-inventory-left">
-            <div class="home-draft-inventory-title">INVENTORY<span>HEALTH</span></div>
-            <div class="home-draft-inventory-score">71.4</div>
-            <div class="home-draft-mom">环比 -2.1%</div>
-        </div>
-        <div class="home-draft-chart" aria-hidden="true">
-            <svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid meet">
-                <defs>
-                    <linearGradient id="homeDraftAreaGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#B66801" stop-opacity="0.3"/>
-                        <stop offset="100%" stop-color="#B66801" stop-opacity="0"/>
-                    </linearGradient>
-                </defs>
-                <path fill="url(#homeDraftAreaGradient)" d="M 20,150 C 70,135 100,122 120,120 C 150,117 190,175 220,170 C 250,165 290,143 320,140 C 350,137 365,102 380,90 L 380,195 L 20,195 Z"/>
-                <path fill="none" stroke="#B66801" stroke-width="7" stroke-linecap="round" d="M 20,150 C 70,135 100,122 120,120 C 150,117 190,175 220,170 C 250,165 290,143 320,140 C 350,137 365,102 380,90"/>
-                <circle class="home-draft-chart-dot" cx="20" cy="150" r="5"/>
-                <circle class="home-draft-chart-dot" cx="120" cy="120" r="5"/>
-                <circle class="home-draft-chart-dot" cx="220" cy="170" r="5"/>
-                <circle class="home-draft-chart-dot" cx="380" cy="90" r="5"/>
-                <text x="20" y="220">W15</text>
-                <text x="120" y="220">W16</text>
-                <text x="220" y="220">W17</text>
-                <text x="320" y="220">W18</text>
-            </svg>
-        </div>
-    </section>
-
+   <div class="inventory-card">
+    <div class="inventory-left">
+      <div class="inventory-title">INVENTORY<span>HEALTH</span></div>
+      <div class="inventory-score">71.4</div>
+      <div class="mom">环比 -2.1%</div>
+    </div>
+    <div class="chart">
+      <svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#B66801" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#B66801" stop-opacity="0.0"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#areaGradient)" d="M 20,150 C 70,135 100,122 120,120 C 150,117 190,175 220,170 C 250,165 290,143 320,140 C 350,137 365,102 380,90 L 380,195 L 20,195 Z"/>
+        <path fill="none" stroke="#B66801" stroke-width="7" stroke-linecap="round" d="M 20,150 C 70,135 100,122 120,120 C 150,117 190,175 220,170 C 250,165 290,143 320,140 C 350,137 365,102 380,90"/>
+        <circle class="chart-dot" cx="20" cy="150" r="5" />
+        <circle class="chart-dot" cx="120" cy="120" r="5" />
+        <circle class="chart-dot" cx="220" cy="170" r="5" />
+        <circle class="chart-dot" cx="380" cy="90" r="5" />
+        <text x="20" y="220">W15</text>
+        <text x="120" y="220">W16</text>
+        <text x="220" y="220">W17</text>
+        <text x="320" y="220">W18</text>
+      </svg>
+    </div>
+  </div>
     <section class="home-draft-right-panel">
         <div class="home-draft-metrics" id="homeGlobalFactors">
             <div class="factor-compact home-draft-metric-card">
@@ -2852,8 +3023,8 @@
             <div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name">DP Comfort</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value">76.1</div><div class="home-draft-ct-mom-badge good">↑ 环比 +0.8%</div></div></div>
             <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">74</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">63</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">动销结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">84</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">81</div></div></div>
         </div>
-        <div class="ct-mini-card home-draft-ct-card" onclick="openCtDashboard('Sneakers')">
-            <div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name">Sneakers</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value">81.2</div><div class="home-draft-ct-mom-badge good">↑ 环比 +1.4%</div></div></div>
+        <div class="ct-mini-card home-draft-ct-card" onclick="openCtDashboard('运动组')">
+            <div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name">运动组</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value">81.2</div><div class="home-draft-ct-mom-badge good">↑ 环比 +1.4%</div></div></div>
             <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">80</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">76</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">动销结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">87</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">85</div></div></div>
         </div>
         <div class="ct-mini-card home-draft-ct-card" onclick="openCtDashboard('DP Fashion')">
@@ -3057,7 +3228,7 @@
             risks: { '滞销金额': '$0.31M', '断货 SKU': '46', '360天+ 库存': '8.7%', '可售周数': '9.4 Wks' },
             actions: ['维持现有补货模型。', '对局部慢动销 SKU 做小批量促销。', '保持安全库存水位，避免过度压仓。']
         },
-        'Sneakers': {
+        '运动组': {
             score: 81.2, status: '卓越表现', color: 'var(--color-success)',
             indexes: { '周转天数': 85, '缺货风险': 80, '积压风险': 76, '动销结构': 87 },
             risks: { '滞销金额': '$0.22M', '断货 SKU': '32', '360天+ 库存': '5.9%', '可售周数': '8.1 Wks' },
@@ -3627,7 +3798,7 @@
             }
         ]
     },
-    "Sneakers": {
+    "运动组": {
         "sourceCt": "SN",
         "rows": 57,
         "categories": [
@@ -4378,7 +4549,7 @@
             "SDOX2301W"
         ]
     },
-    "Sneakers": {
+    "运动组": {
         "WALKING SHOES": [
             "SARR034W",
             "SARR034M",
