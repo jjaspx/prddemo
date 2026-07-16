@@ -42,6 +42,7 @@
   .header h1 .score-num { font-size: 42px; font-weight: 900; line-height: 0.9; color: #FF4D4F; text-shadow: 0 2px 8px rgba(255,77,79,0.35); }
   .header h1 .score-num.good { color: #32D74B; text-shadow: 0 2px 8px rgba(50,215,75,0.35); }
   .header h1 .score-num.warning { color: #FFB020; text-shadow: 0 2px 8px rgba(255,176,32,0.35); }
+  .header h1 .score-num.danger { color: #FF4D4F; text-shadow: 0 2px 8px rgba(255,77,79,0.35); }
   .header h1 .score-mom { display: inline-block; padding: 4px 12px; background: #fff; border-radius: 999px; font-size: 13px; font-weight: 700; color: #FF4D4F; line-height: 1.2; }
   .header h1 .score-mom.good { color: #32D74B; }
   .header h1 .score-mom.warning { color: #FFB020; }
@@ -190,10 +191,10 @@
     <div class="ititle">🤖 AI 款式积压洞察</div>
     <p>SDFN2379W 是 Fashion Sneakers 类目积压最严重的款式，全部 <span class="hl">3.9万件</span> 库存均为 12m+ 深度积压，占类目深度积压的 <span class="hl">24.2%</span>。该款式已于 2025 年 12 月进入 EOL 状态，Listing 流量持续下滑，去化率不足 2%/月。</p>
     <ul>
-      <li><strong>全部为深度积压：</strong>100% 库存超过 12 个月，已进入成本倒挂区间（仓储费 + 资金成本 &gt; 残值）</li>
-      <li><strong>渠道高度集中：</strong>AmazonUS 占 <span class="hl">92%</span>，FBA 仓储费持续侵蚀利润，建议优先清仓</li>
-      <li><strong>尺码分布极端：</strong>US9 / US10 黄金码占积压 68%，非标准码占比低但同样去化困难</li>
-      <li><strong>建议方案：</strong>立即启动站外清仓 + 捆绑销售 + 线下奥莱多渠道并行，目标 90 天去化 70%</li>
+      <li>🔴 <strong style="color:#ef4444;">紧急 — 全部为深度积压：</strong>100% 库存超过 12 个月，已进入成本倒挂区间（仓储费 + 资金成本 &gt; 残值）</li>
+      <li>🔴 <strong style="color:#ef4444;">紧急 — 渠道高度集中：</strong>AmazonUS 占 <span class="hl">92%</span>，FBA 仓储费持续侵蚀利润，建议优先清仓</li>
+      <li>🟡 <strong style="color:#f59e0b;">重点 — 尺码分布极端：</strong>US9 / US10 黄金码占积压 68%，非标准码占比低但同样去化困难</li>
+      <li>🟢 <strong style="color:#10b981;">关注 — 建议方案：</strong>立即启动站外清仓 + 捆绑销售 + 线下奥莱多渠道并行，目标 90 天去化 70%</li>
     </ul>
   </div>
 
@@ -202,15 +203,15 @@
     <div class="trend-wrap">
       <div id="trendChart"></div>
       <table class="trend-table">
-        <thead><tr><th>周</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>合计</th></tr></thead>
+        <thead><tr><th>周</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>合计</th><th class="num">环比</th></tr></thead>
         <tbody>
-          <tr><td>W21</td><td>0万</td><td>0.8万</td><td>2.9万</td><td>3.7万</td></tr>
-          <tr><td>W22</td><td>0万</td><td>0.6万</td><td>3.1万</td><td>3.7万</td></tr>
-          <tr><td>W23</td><td>0万</td><td>0.4万</td><td>3.3万</td><td>3.7万</td></tr>
-          <tr><td>W24</td><td>0万</td><td>0.2万</td><td>3.5万</td><td>3.7万</td></tr>
-          <tr><td>W25</td><td>0万</td><td>0万</td><td>3.6万</td><td>3.6万</td></tr>
-          <tr><td>W26</td><td>0万</td><td>0万</td><td>3.7万</td><td>3.7万</td></tr>
-          <tr class="current"><td>W27</td><td>0万</td><td>0万</td><td>3.9万</td><td>3.9万</td></tr>
+          <tr><td>W21</td><td>0万</td><td>0.8万</td><td>2.9万</td><td>3.7万</td><td class="num">—</td></tr>
+          <tr><td>W22</td><td>0万</td><td>0.6万</td><td>3.1万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
+          <tr><td>W23</td><td>0万</td><td>0.4万</td><td>3.3万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
+          <tr><td>W24</td><td>0万</td><td>0.2万</td><td>3.5万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
+          <tr><td>W25</td><td>0万</td><td>0万</td><td>3.6万</td><td>3.6万</td><td class="num" style="color:#10b981;">↓ -2.7%</td></tr>
+          <tr><td>W26</td><td>0万</td><td>0万</td><td>3.7万</td><td>3.7万</td><td class="num" style="color:#ef4444;">↑ +2.8%</td></tr>
+          <tr class="current"><td>W27</td><td>0万</td><td>0万</td><td>3.9万</td><td>3.9万</td><td class="num" style="color:#ef4444;">↑ +5.4%</td></tr>
         </tbody>
       </table>
     </div>
@@ -244,7 +245,7 @@
           <table>
             <thead><tr><th>渠道</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
             <tbody>
-              <tr><td><strong>AmazonUS</strong></td><td class="num">4.5万</td><td class="num">0万</td><td class="num">0万</td><td class="num">3.6万</td><td class="num"><strong>3.6万</strong></td><td class="num">92.3%</td></tr>
+              <tr><td><strong>AmazonUS</strong></td><td class="num">210.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">3.6万</td><td class="num"><strong>3.6万</strong></td><td class="num"><strong style="color:#ef4444;">92.3%</strong></td></tr>
               <tr><td><strong>Shein</strong></td><td class="num">0.3万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.2万</td><td class="num"><strong>0.2万</strong></td><td class="num">5.1%</td></tr>
               <tr><td><strong>Standwebsite</strong></td><td class="num">0.1万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.08万</td><td class="num"><strong>0.08万</strong></td><td class="num">2.1%</td></tr>
               <tr><td><strong>其他渠道</strong></td><td class="num">0.05万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.02万</td><td class="num"><strong>0.02万</strong></td><td class="num">0.5%</td></tr>
@@ -274,8 +275,8 @@
           <table>
             <thead><tr><th>颜色</th><th>SKC</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
             <tbody>
-              <tr><td><strong>白色 White</strong></td><td>主色</td><td class="num">2.8万</td><td class="num">0万</td><td class="num">0万</td><td class="num">2.2万</td><td class="num"><strong>2.2万</strong></td><td class="num">56.4%</td></tr>
-              <tr><td><strong>黑色 Black</strong></td><td>主色</td><td class="num">1.5万</td><td class="num">0万</td><td class="num">0万</td><td class="num">1.2万</td><td class="num"><strong>1.2万</strong></td><td class="num">30.8%</td></tr>
+              <tr><td><strong>白色 White</strong></td><td>主色</td><td class="num">2.8万</td><td class="num">0万</td><td class="num">0万</td><td class="num">2.2万</td><td class="num"><strong>2.2万</strong></td><td class="num"><strong style="color:#ef4444;">56.4%</strong></td></tr>
+              <tr><td><strong>黑色 Black</strong></td><td>主色</td><td class="num">1.5万</td><td class="num">0万</td><td class="num">0万</td><td class="num">1.2万</td><td class="num"><strong>1.2万</strong></td><td class="num"><strong style="color:#ef4444;">30.8%</strong></td></tr>
               <tr><td><strong style="color:#f59e0b;">灰色 Grey</strong></td><td>测试色</td><td class="num">0.4万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.35万</td><td class="num"><strong>0.35万</strong></td><td class="num">9.0%</td></tr>
               <tr><td><strong style="color:#f59e0b;">蓝色 Blue</strong></td><td>测试色</td><td class="num">0.25万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.15万</td><td class="num"><strong>0.15万</strong></td><td class="num">3.8%</td></tr>
               <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td><strong>4 SKC</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num"><strong>3.9万</strong></td><td class="num">100%</td></tr>
@@ -308,7 +309,7 @@
               <tr><td><strong>US7</strong></td><td class="num">0.35万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.28万</td><td class="num"><strong>0.28万</strong></td><td class="num">7.2%</td></tr>
               <tr><td><strong>US8</strong></td><td class="num">0.6万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.48万</td><td class="num"><strong>0.48万</strong></td><td class="num">12.3%</td></tr>
               <tr><td><strong>US9</strong></td><td class="num">0.95万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.75万</td><td class="num"><strong>0.75万</strong></td><td class="num">19.2%</td></tr>
-              <tr><td><strong>US10</strong></td><td class="num">1.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.8万</td><td class="num"><strong>0.8万</strong></td><td class="num">20.5%</td></tr>
+              <tr><td><strong>US10</strong></td><td class="num">1.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.8万</td><td class="num"><strong>0.8万</strong></td><td class="num"><strong style="color:#f59e0b;">20.5%</strong></td></tr>
               <tr><td><strong>US11</strong></td><td class="num">0.8万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.62万</td><td class="num"><strong>0.62万</strong></td><td class="num">15.9%</td></tr>
               <tr><td><strong>US12</strong></td><td class="num">0.55万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.45万</td><td class="num"><strong>0.45万</strong></td><td class="num">11.5%</td></tr>
               <tr><td><strong>US13</strong></td><td class="num">0.3万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.22万</td><td class="num"><strong>0.22万</strong></td><td class="num">5.6%</td></tr>

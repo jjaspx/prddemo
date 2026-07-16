@@ -160,7 +160,7 @@
     grid-template-columns: 2fr 1fr;
     gap: 20px;
   }
-  #trendChart { width: 100%; height: 280px; }
+
   .trend-table { width: 100%; font-size: 12.5px; }
   .trend-table th {
     padding: 10px 8px;
@@ -203,7 +203,6 @@
     border-bottom: 1px solid rgba(255,255,255,0.04);
   }
   tbody tr:hover { background: rgba(255,255,255,0.02); }
-  .cat-name-short { font-size: 12.5px; }
 
   /* 款式Top20表格 */
   .style-table { width: 100%; font-size: 12px; }
@@ -457,11 +456,11 @@
       CT高度集中：<span class="hl">DP 系三大 CT</span>（Fashion + Comfort + Kids）合计占总积压的 <span class="hl">72.7%</span>，是全球积压治理的核心战场。
     </p>
     <ul>
-      <li><strong>类目集中度极高：</strong>Fashion Sneakers、Ankle Boots、Dress Oxfords Top3 类目占总量 69%，清仓资源应重点倾斜</li>
-      <li><strong>正常品积压过半：</strong>正常品占总积压 56.3%，主要根因是预测偏高（28.3%）和早期入库沉淀（11.3%）</li>
-      <li><strong>EOL品问题突出：</strong>EOL品占总积压 43.7%，24-26年新品生命周期管理失败占比达 40.7%</li>
-      <li><strong>重点配色积压占优：</strong>重点配色超6月积压 151.2万件（85.4%），非重点配色（长尾测试色）占 11.2%</li>
-      <li><strong>标准码段供需脱节：</strong>标准码段超6月积压达 165.1万件（93.3%），核心码段积压最为严重</li>
+      <li>🔴 <strong style="color:#ef4444;">紧急 — 品类集中度过高：</strong>Fashion Sneakers、Ankle Boots、Dress Oxfords Top3 类目占总量 69%，清仓资源应立即重点倾斜</li>
+      <li>🔴 <strong style="color:#ef4444;">紧急 — EOL品管理失效：</strong>EOL品占总积压 43.7%，24-26年新品生命周期管理失败占比达 40.7%</li>
+      <li>🟡 <strong style="color:#f59e0b;">重点 — 正常品积压严重：</strong>正常品占总积压 56.3%，主要根因是预测偏高（28.3%）和早期入库沉淀（11.3%）</li>
+      <li>🟡 <strong style="color:#f59e0b;">重点 — 标准码段供需脱节：</strong>标准码段超6月积压达 165.1万件（93.3%），核心码段积压最为严重</li>
+      <li>🟢 <strong style="color:#10b981;">关注 — 重点配色积压占优：</strong>重点配色超6月积压 151.2万件（85.4%），非重点配色（长尾测试色）占 11.2%</li>
     </ul>
   </div>
 
@@ -473,15 +472,15 @@
       <div id="trendChart"></div>
       <div>
         <table class="trend-table">
-          <thead><tr><th>周次</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>合计</th></tr></thead>
+          <thead><tr><th>周次</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>合计</th><th class="num">环比</th></tr></thead>
           <tbody>
-            <tr><td>W21</td><td>58.4万</td><td>38.5万</td><td>76.5万</td><td>173.4万</td></tr>
-            <tr><td>W22</td><td>54.0万</td><td>39.9万</td><td>74.7万</td><td>168.5万</td></tr>
-            <tr><td>W23</td><td>55.2万</td><td>41.1万</td><td>72.4万</td><td>168.7万</td></tr>
-            <tr><td>W24</td><td>51.6万</td><td>42.1万</td><td>72.3万</td><td>166.0万</td></tr>
-            <tr><td>W25</td><td>51.6万</td><td>43.9万</td><td>71.6万</td><td>167.1万</td></tr>
-            <tr><td>W26</td><td>48.8万</td><td>43.3万</td><td>72.7万</td><td>164.8万</td></tr>
-            <tr class="current"><td>W27</td><td>61.7万</td><td>40.4万</td><td>75.6万</td><td>177.7万</td></tr>
+            <tr><td>W21</td><td>58.4万</td><td>38.5万</td><td>76.5万</td><td>173.4万</td><td class="num">—</td></tr>
+            <tr><td>W22</td><td>54.0万</td><td>39.9万</td><td>74.7万</td><td>168.5万</td><td class="num" style="color:#10b981;">↓ -2.8%</td></tr>
+            <tr><td>W23</td><td>55.2万</td><td>41.1万</td><td>72.4万</td><td>168.7万</td><td class="num" style="color:#ef4444;">↑ +0.1%</td></tr>
+            <tr><td>W24</td><td>51.6万</td><td>42.1万</td><td>72.3万</td><td>166.0万</td><td class="num" style="color:#10b981;">↓ -1.6%</td></tr>
+            <tr><td>W25</td><td>51.6万</td><td>43.9万</td><td>71.6万</td><td>167.1万</td><td class="num" style="color:#ef4444;">↑ +0.7%</td></tr>
+            <tr><td>W26</td><td>48.8万</td><td>43.3万</td><td>72.7万</td><td>164.8万</td><td class="num" style="color:#10b981;">↓ -1.4%</td></tr>
+            <tr class="current"><td>W27</td><td>61.7万</td><td>40.4万</td><td>75.6万</td><td>177.7万</td><td class="num" style="color:#ef4444;">↑ +7.8%</td></tr>
           </tbody>
         </table>
       </div>
@@ -523,17 +522,17 @@
         </tr>
         <tr>
           <td>2</td>
-          <td><strong>Dream Pairs Comfort</strong></td>
+          <td><strong><a href="DP Comfort_积压风险报告.html" style="color:#e2e8f0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#60a5fa'" onmouseout="this.style.color='#e2e8f0'">Dream Pairs Comfort</a></strong></td>
           <td class="num">21,234</td>
           <td class="num">14.3万</td>
           <td class="num">9.5万</td>
           <td class="num"><span class="tag red">18.4万</span></td>
           <td class="num"><strong>42.2万</strong></td>
-          <td class="num"><strong style="color:#ef4444;">23.7%</strong></td>
+          <td class="num"><strong style="color:#f59e0b;">23.7%</strong></td>
         </tr>
         <tr>
           <td>3</td>
-          <td><strong>Dream Pairs Kids</strong></td>
+          <td><strong><a href="DP Kids_积压风险报告.html" style="color:#e2e8f0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#60a5fa'" onmouseout="this.style.color='#e2e8f0'">Dream Pairs Kids</a></strong></td>
           <td class="num">19,099</td>
           <td class="num">9.2万</td>
           <td class="num">6.2万</td>
@@ -543,7 +542,7 @@
         </tr>
         <tr>
           <td>4</td>
-          <td><strong>Bruno Marc</strong></td>
+          <td><strong><a href="Bruno Marc_积压风险报告.html" style="color:#e2e8f0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#60a5fa'" onmouseout="this.style.color='#e2e8f0'">Bruno Marc</a></strong></td>
           <td class="num">13,317</td>
           <td class="num">7.3万</td>
           <td class="num">5.0万</td>
@@ -553,7 +552,7 @@
         </tr>
         <tr>
           <td>5</td>
-          <td><strong>Nortiv8</strong></td>
+          <td><strong><a href="Nortiv8_积压风险报告.html" style="color:#e2e8f0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#60a5fa'" onmouseout="this.style.color='#e2e8f0'">Nortiv8</a></strong></td>
           <td class="num">12,069</td>
           <td class="num">7.3万</td>
           <td class="num">4.9万</td>
@@ -565,11 +564,11 @@
           <td>6</td>
           <td><strong>运动组</strong></td>
           <td class="num">2,819</td>
-          <td class="num">1.7万</td>
+          <td class="num">3.5万</td>
           <td class="num">1.2万</td>
-          <td class="num">2.2万</td>
-          <td class="num"><strong>5.0万</strong></td>
-          <td class="num">2.8%</td>
+          <td class="num">0.4万</td>
+          <td class="num"><strong>5.1万</strong></td>
+          <td class="num">2.9%</td>
         </tr>
         <tr>
           <td>7</td>
@@ -874,37 +873,37 @@
               <tr>
                 <td><strong>标准码段</strong></td>
                 <td class="num">720.0万</td>
-                <td class="num">87.8万</td>
-                <td class="num">47.9万</td>
-                <td class="num">29.4万</td>
-                <td class="num"><strong>165.1万</strong></td>
-                <td class="num">93.29%</td>
+                <td class="num">57.2万</td>
+                <td class="num">37.8万</td>
+                <td class="num">70.6万</td>
+                <td class="num"><strong>165.6万</strong></td>
+                <td class="num">93.20%</td>
               </tr>
               <tr>
                 <td><strong style="color:#f59e0b;">非标准码</strong></td>
                 <td class="num">41.0万</td>
                 <td class="num">4.1万</td>
                 <td class="num">1.8万</td>
-                <td class="num">1.0万</td>
-                <td class="num"><strong>6.9万</strong></td>
-                <td class="num">39.00%</td>
+                <td class="num">4.1万</td>
+                <td class="num"><strong>10.0万</strong></td>
+                <td class="num">24.40%</td>
               </tr>
               <tr>
                 <td><strong style="color:#8b5cf6;">欧楦尺码</strong></td>
                 <td class="num">12.0万</td>
-                <td class="num">2.3万</td>
-                <td class="num">1.6万</td>
-                <td class="num">1.1万</td>
-                <td class="num"><strong>4.9万</strong></td>
-                <td class="num">2.80%</td>
+                <td class="num">0.4万</td>
+                <td class="num">0.8万</td>
+                <td class="num">0.9万</td>
+                <td class="num"><strong>2.1万</strong></td>
+                <td class="num">17.50%</td>
               </tr>
               <tr style="background:rgba(59,130,246,0.1);">
                 <td><strong>合计</strong></td>
                 <td class="num"><strong>773.0万</strong></td>
-                <td class="num">94.2万</td>
-                <td class="num">51.3万</td>
-                <td class="num">31.5万</td>
-                <td class="num"><strong>177.0万</strong></td>
+                <td class="num">61.7万</td>
+                <td class="num">40.4万</td>
+                <td class="num">75.6万</td>
+                <td class="num"><strong>177.7万</strong></td>
                 <td class="num">—</td>
               </tr>
             </tbody>
@@ -979,19 +978,19 @@
             </tr>
             <tr>
               <td><strong style="color:#64748b;">其它</strong></td>
-              <td class="num">1.4万</td>
-              <td class="num">0.9万</td>
+              <td class="num">1.5万</td>
+              <td class="num">1.0万</td>
               <td class="num">0.7万</td>
-              <td class="num"><strong>3.0万</strong></td>
-              <td class="num">1.69%</td>
+              <td class="num"><strong>3.2万</strong></td>
+              <td class="num">1.80%</td>
             </tr>
             <tr style="background:rgba(59,130,246,0.1);">
               <td><strong>正常品合计</strong></td>
-              <td class="num"><strong>46.5万</strong></td>
-              <td class="num"><strong>27.7万</strong></td>
+              <td class="num"><strong>46.6万</strong></td>
+              <td class="num"><strong>27.8万</strong></td>
               <td class="num"><strong>26.5万</strong></td>
-              <td class="num"><strong style="color:#3b82f6;">100.7万</strong></td>
-              <td class="num"><strong style="color:#3b82f6;">56.70%</strong></td>
+              <td class="num"><strong style="color:#3b82f6;">100.9万</strong></td>
+              <td class="num"><strong style="color:#3b82f6;">56.80%</strong></td>
             </tr>
           </tbody>
         </table>
@@ -1042,19 +1041,19 @@
             </tr>
             <tr>
               <td><strong style="color:#ef4444;">高风险（侵权）</strong></td>
-              <td class="num">2.7万</td>
+              <td class="num">2.1万</td>
               <td class="num">2.0万</td>
-              <td class="num">0.6万</td>
-              <td class="num"><strong>5.3万</strong></td>
-              <td class="num">2.99%</td>
+              <td class="num">1.0万</td>
+              <td class="num"><strong>5.1万</strong></td>
+              <td class="num">2.87%</td>
             </tr>
             <tr style="background:rgba(239,68,68,0.1);">
               <td><strong>EOL品合计</strong></td>
-              <td class="num"><strong>48.4万</strong></td>
+              <td class="num"><strong>47.8万</strong></td>
               <td class="num"><strong>23.6万</strong></td>
-              <td class="num"><strong>5.0万</strong></td>
-              <td class="num"><strong style="color:#ef4444;">77.3万</strong></td>
-              <td class="num"><strong style="color:#ef4444;">43.67%</strong></td>
+              <td class="num"><strong>5.4万</strong></td>
+              <td class="num"><strong style="color:#ef4444;">76.8万</strong></td>
+              <td class="num"><strong style="color:#ef4444;">43.20%</strong></td>
             </tr>
           </tbody>
         </table>
@@ -1222,7 +1221,7 @@
       <tbody>
         <tr>
           <td>1</td>
-          <td class="st">SDFN2379W</td>
+          <td class="st"><a href="SDFN2379W_积压风险报告.html" style="color:#e2e8f0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#60a5fa'" onmouseout="this.style.color='#e2e8f0'">SDFN2379W</a></td>
           <td><span class="tag">DREAM PAIRS</span></td>
           <td><span class="cat-name-short">Fashion Sneakers</span></td>
           <td class="num">176</td>
