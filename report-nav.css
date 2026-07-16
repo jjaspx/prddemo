@@ -1,0 +1,110 @@
+/* 报告导航样式 */
+
+/* 面包屑导航 */
+.report-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(30,41,59,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #94a3b8;
+}
+.breadcrumb-item a {
+  color: #60a5fa;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.breadcrumb-item a:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+.breadcrumb-item.current {
+  color: #fff;
+  font-weight: 600;
+}
+.breadcrumb-sep {
+  color: #475569;
+  font-size: 11px;
+}
+
+/* 快速入口区 */
+.quick-nav-section {
+  background: rgba(30,41,59,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.quick-nav-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.quick-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+.quick-nav-card {
+  background: rgba(15,23,42,0.8);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+  display: block;
+}
+.quick-nav-card:hover {
+  border-color: rgba(59,130,246,0.4);
+  transform: translateY(-2px);
+  background: rgba(30,41,59,0.8);
+}
+.quick-nav-card.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.quick-nav-card .nav-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.quick-nav-card .nav-count {
+  font-size: 11px;
+  color: #64748b;
+}
+.quick-nav-card .nav-arrow {
+  font-size: 10px;
+  color: #60a5fa;
+  margin-top: 6px;
+}
+
+/* 导航层级标签 */
+.level-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.level-tag.l1 { background: rgba(139,92,246,0.2); color: #a78bfa; }
+.level-tag.l2 { background: rgba(59,130,246,0.2); color: #60a5fa; }
+.level-tag.l3 { background: rgba(16,185,129,0.2); color: #34d399; }
+.level-tag.l4 { background: rgba(239,68,68,0.2); color: #f87171; }

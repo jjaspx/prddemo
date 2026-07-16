@@ -609,73 +609,24 @@
         .kpi-card .note { margin-top: 5px; color: #8E8E93; font-size: 9px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
         .kpi-danger-alert { background: var(--color-bg-danger-soft) !important; border: 1px solid rgba(255, 69, 58, 0.25) !important; }
         .kpi-danger-alert .value { color: var(--color-danger); text-shadow: 0 0 8px rgba(255, 69, 58, 0.2); }
-        .ct-diagnostic-summary-card .kpi-danger-alert {
-            background: rgba(255, 255, 255, 0.025) !important;
-            border-color: rgba(255, 255, 255, 0.045) !important;
-        }
-        .ct-diagnostic-summary-card .kpi-danger-alert .value {
-            color: var(--color-danger);
-            text-shadow: none;
-        }
-        .ct-diagnostic-summary-card {
-            display: flex;
-            flex-direction: column;
-            gap: 9px;
-        }
-        .ct-diagnostic-summary-card .kpi-grid {
-            flex: 1;
-            height: auto;
-            min-height: 0;
-        }
-        .ct-diagnostic-summary-head {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 8px;
-            padding: 0 2px;
-        }
-        .ct-diagnostic-summary-title {
-            color: #F5F5F7;
-            font-size: 12px;
-            font-weight: 680;
-            letter-spacing: 0.1px;
-        }
-        .ct-diagnostic-summary-sub {
-            margin-top: 3px;
-            color: #8E8E93;
-            font-size: 9px;
-            line-height: 1.2;
-            white-space: nowrap;
-        }
-        .ct-diagnostic-summary-tag {
-            flex: 0 0 auto;
-            color: var(--color-warning);
-            background: rgba(255, 159, 10, 0.1);
-            border: 1px solid rgba(255, 159, 10, 0.18);
-            border-radius: 999px;
-            padding: 3px 7px;
-            font-size: 8px;
-            font-weight: 680;
-            letter-spacing: 0.5px;
-        }
-
         /* 业务线卡片 */
         .ct-section-title { 
-            font-size: 13px; 
-            font-weight: 590; 
+            font-size: 18px; 
+            font-weight: 850; 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
-            margin-bottom: 14px; 
-            color: #D1D1D6; 
+            gap: 12px; 
+            margin-bottom: 10px; 
+            color: #E5E9F0; 
         }
         .ct-section-title span { 
-            font-size: 10px; 
-            color: var(--color-warning); 
-            background: var(--color-bg-warning-soft); 
-            padding: 2px 10px; 
-            border-radius: 30px; 
-            border: 1px solid rgba(255, 159, 10, 0.2);
+            font-size: 11px; 
+            color: #A9ACB5; 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 600;
         }
         .ct-title-action {
             margin-left: auto;
@@ -695,10 +646,11 @@
         }
         .ct-cards-container { 
             display: grid; 
-            grid-template-columns: repeat(6, 1fr); 
+            grid-template-columns: repeat(6, minmax(0, 1fr)); 
             gap: 16px; 
             flex: 1;
             align-items: stretch;
+            min-height: 0;
         }
         .home-ct-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -737,10 +689,6 @@
         .home-ct-grid .ct-index-label {
             font-size: 8px;
         }
-        .home-ct-grid .ct-home-summary {
-            margin: 5px 0 0 0;
-            gap: 4px;
-        }
         .ct-mini-card {
             position: relative;
             padding: 14px 12px;
@@ -754,6 +702,24 @@
             cursor: pointer;
         }
         .ct-mini-card:hover { background: rgba(255, 255, 255, 0.045); border-color: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+
+        .ct-dashboard-view .ct-mini-card {
+            padding: 14px 12px;
+            border-radius: 18px;
+            background: rgba(255,255,255,.03);
+            border: 1px solid rgba(255,255,255,.05);
+            backdrop-filter: blur(20px);
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .ct-dashboard-view .ct-mini-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,180,70,.4);
+            background: rgba(255,255,255,.05);
+        }
         .ct-mini-card.category-active {
             border-color: rgba(64, 158, 255, 0.92) !important;
             box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.22), 0 14px 30px rgba(64, 158, 255, 0.16);
@@ -804,10 +770,22 @@
             background: linear-gradient(145deg, rgba(255, 159, 10, 0.035) 0%, rgba(22, 22, 26, 0.7) 100%) !important;
             box-shadow: inset 3px 0 0 rgba(255, 159, 10, 0.58);
         }
-        .ct-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .ct-card-top > div:first-child { min-width: 0; }
+
         .ct-name { font-size: 15px; font-weight: 620; color: #FFFFFF; letter-spacing: 0; line-height: 1.15; overflow-wrap: anywhere; }
         .ct-score { font-size: 22px; font-weight: 720; }
+
+        .ct-dashboard-view .ct-name {
+            color: #FFFFFF;
+            font-size: 18px;
+            font-weight: 780;
+            white-space: nowrap;
+            line-height: 1.1;
+        }
+        .ct-dashboard-view .ct-score {
+            font-size: 30px;
+            font-weight: 850;
+            line-height: 1;
+        }
         .ct-score-cluster {
             display: flex;
             align-items: flex-start;
@@ -854,26 +832,7 @@
             font-weight: 760;
             text-align: right;
         }
-        .ct-home-summary {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin: 10px 0 12px 0;
-            padding-top: 1px;
-        }
-        .ct-home-summary-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-            color: #98989E;
-            font-size: 10px;
-            line-height: 1.25;
-        }
-        .ct-home-summary-row strong {
-            color: #F5F5F7;
-            font-weight: 760;
-            text-align: right;
-        }
+
         .ct-decision-actions {
             display: flex;
             flex-wrap: wrap;
@@ -910,6 +869,20 @@
             background: rgba(255, 255, 255, 0.035);
             border: 1px solid rgba(255, 255, 255, 0.055);
         }
+
+        .ct-dashboard-view .ct-index-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px;
+            margin: 0;
+            flex: 1;
+        }
+        .ct-dashboard-view .ct-index-item {
+            min-width: 0;
+            padding: 6px 8px;
+            border-radius: 10px;
+            background: rgba(255,255,255,.02);
+            border: 0;
+        }
         .ct-index-item.weakest {
             background: rgba(255, 69, 58, 0.065);
             border-color: rgba(255, 69, 58, 0.28);
@@ -930,16 +903,25 @@
             line-height: 1;
         }
 
+        .ct-dashboard-view .ct-index-label {
+            color: #9DA2AA;
+            font-size: 11px;
+            line-height: 1;
+        }
+        .ct-dashboard-view .ct-index-value {
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
         .ct-dashboard-view {
             position: fixed;
             inset: 0;
             z-index: 700;
             display: none;
-            padding: 18px 22px;
-            background:
-                radial-gradient(circle at 20% 14%, rgba(255, 159, 10, 0.16), transparent 30%),
-                linear-gradient(180deg, rgba(10, 10, 12, 0.98), rgba(10, 10, 12, 0.94));
-            backdrop-filter: blur(28px);
+            padding: 16px 24px;
+            background: radial-gradient(circle at 15% 0%, #0B0E17 0%, #04060A 100%);
+            backdrop-filter: blur(30px);
             overflow-y: auto;
         }
         .ct-dashboard-view.open { display: flex; flex-direction: column; gap: 14px; }
@@ -947,25 +929,41 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            height: 8vh;
+            min-height: 54px;
+            padding: 0;
+            border: 0;
         }
         .ct-back-btn {
             border: 1px solid rgba(255, 255, 255, 0.12);
             background: rgba(255, 255, 255, 0.06);
-            color: #E5E5EA;
+            color: #FFFFFF;
             border-radius: 999px;
-            padding: 7px 12px;
+            padding: 7px 14px;
             font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+        .ct-back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
         }
         .ct-dashboard-title {
             flex: 1;
             min-width: 0;
             text-align: center;
         }
-        .ct-dashboard-title h2 { font-size: 18px; font-weight: 680; letter-spacing: 0; }
-        .ct-dashboard-title span { display: block; margin-top: 4px; color: #8E8E93; font-size: 11px; }
+        .ct-dashboard-title h2 { 
+            font-size: clamp(24px, 2.5vw, 32px); 
+            font-weight: 850; 
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFE3B0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .ct-dashboard-title span { display: block; margin-top: 4px; color: #A9ACB5; font-size: 12px; font-weight: 500; }
         .dashboard-breadcrumb {
             display: flex;
             align-items: center;
@@ -1010,6 +1008,176 @@
             color: #48546A;
             font-weight: 800;
         }
+        .ct-dashboard-view .home-draft-ct-grid {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .ct-dashboard-view .home-draft-right-panel {
+            height: 100%;
+            min-width: 0;
+        }
+        .ct-dashboard-view .home-draft-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            min-width: 0;
+        }
+        .ct-dashboard-view .home-draft-ai-card {
+            min-height: 0;
+        }
+        .ct-dashboard-view .home-draft-ct-card {
+            min-width: 0;
+            padding: 14px 12px;
+            border-radius: 18px;
+            background: rgba(255,255,255,.03) !important;
+            border: 1px solid rgba(255,255,255,.05) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: none !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            position: relative;
+        }
+        .ct-dashboard-view .home-draft-ct-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,180,70,.4) !important;
+            background: rgba(255,255,255,.05) !important;
+        }
+        .ct-dashboard-view .home-draft-ct-card.category-active {
+            border-color: rgba(64, 158, 255, 0.92) !important;
+            box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.22), 0 14px 30px rgba(64, 158, 255, 0.16);
+            transform: translateY(-3px);
+        }
+        .ct-dashboard-view .home-draft-ct-card.category-active::before {
+            content: '↓';
+            position: absolute;
+            left: 50%;
+            bottom: -19px;
+            transform: translateX(-50%);
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            color: #FFFFFF;
+            background: #409EFF;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 18px rgba(64, 158, 255, 0.35);
+            font-size: 15px;
+            font-weight: 800;
+            z-index: 5;
+        }
+        .ct-dashboard-view .home-draft-ct-card.category-active::after {
+            content: '当前选中';
+            position: absolute;
+            right: -10px;
+            top: -13px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            color: #BFE2FF;
+            background: rgba(64, 158, 255, 0.16);
+            border: 1px solid rgba(64, 158, 255, 0.42);
+            font-size: 9px;
+            font-weight: 760;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+            z-index: 5;
+        }
+        .ct-dashboard-view .home-draft-ct-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            min-width: 0;
+        }
+        .ct-dashboard-view .home-draft-ct-name,
+        .ct-dashboard-view .home-draft-ct-name.home-draft-ct-name {
+            color: #FFFFFF !important;
+            font-size: 18px !important;
+            font-weight: 780 !important;
+            white-space: nowrap;
+            line-height: 1.1;
+            flex: 1 1 auto;
+            min-width: 0;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .ct-dashboard-view .home-draft-ct-score-box {
+            text-align: right;
+            flex: 0 0 auto;
+        }
+        .ct-dashboard-view .home-draft-ct-score-value {
+            font-size: 30px !important;
+            font-weight: 850 !important;
+            line-height: 1;
+        }
+        .ct-dashboard-view .home-draft-ct-mom-badge {
+            display: inline-block !important;
+            margin-top: 4px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            color: #FF9194 !important;
+            background: rgba(255,77,79,.15) !important;
+            border: 1px solid rgba(255,77,79,.25) !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        .ct-dashboard-view .home-draft-ct-mom-badge.good {
+            color: #70E08B !important;
+            background: rgba(50,215,75,.13) !important;
+            border-color: rgba(50,215,75,.24) !important;
+        }
+        .ct-dashboard-view .home-draft-sub-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 6px !important;
+            flex: 1;
+            margin: 0 !important;
+        }
+        .ct-dashboard-view .home-draft-small-card,
+        .ct-dashboard-view .home-draft-small-card.home-draft-small-card {
+            min-width: 0;
+            padding: 6px 8px !important;
+            border-radius: 10px !important;
+            background: rgba(255,255,255,.02) !important;
+            border: 0 !important;
+        }
+        .ct-dashboard-view .home-draft-small-title {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            gap: 4px;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+        .ct-dashboard-view .home-draft-small-title .ct-index-label,
+        .ct-dashboard-view .home-draft-small-title .ct-index-label.ct-index-label {
+            color: #9DA2AA !important;
+            font-size: 11px !important;
+            line-height: 1 !important;
+        }
+        .ct-dashboard-view .home-draft-small-weight {
+            color: rgba(255,255,255,.35) !important;
+            font-size: 10px !important;
+            font-weight: 600 !important;
+        }
+        .ct-dashboard-view .home-draft-small-score {
+            color: #FFFFFF !important;
+            font-size: 16px !important;
+            font-weight: 800 !important;
+            line-height: 1 !important;
+        }
+        .ct-dashboard-view .home-draft-small-score.danger { color: #FF4D4F !important; }
+        .ct-dashboard-view .home-draft-small-score.warning { color: #FFB020 !important; }
+        .ct-dashboard-view .home-draft-small-score.good { color: #32D74B !important; }
         .ct-dashboard-grid {
             display: flex;
             flex-direction: column;
@@ -1023,6 +1191,7 @@
             flex: 0 0 auto;
             height: auto;
             min-height: 0;
+            padding: 0 14px 24px 14px;
         }
         .ct-expert-row {
             flex: 0 0 auto;
@@ -1885,11 +2054,6 @@
         body.light-theme .ct-decision-row {
             color: #64748B;
         }
-        body.light-theme .ct-home-summary-row,
-        body.light-theme .ct-decision-row {
-            color: #64748B;
-        }
-        body.light-theme .ct-home-summary-row strong,
         body.light-theme .ct-decision-row strong {
             color: #111827;
         }
@@ -1936,10 +2100,6 @@
         body.light-theme .home-ai-title {
             color: #0F172A;
         }
-        body.light-theme .ct-diagnostic-summary-card .kpi-danger-alert {
-            background: rgba(248, 250, 252, 0.92) !important;
-            border-color: rgba(15, 23, 42, 0.09) !important;
-        }
         body.light-theme .ct-expert-title {
             color: #111827;
         }
@@ -1974,31 +2134,115 @@
         body.light-theme .ct-metric-item,
         body.light-theme .kpi-card .label,
         body.light-theme .kpi-card .note,
-        body.light-theme .ct-diagnostic-summary-sub,
         body.light-theme .card-title {
             color: #64748B;
-        }
-        body.light-theme .ct-diagnostic-summary-title {
-            color: #111827;
-        }
-        body.light-theme .ct-diagnostic-summary-tag {
-            background: rgba(255, 159, 10, 0.12);
-            border-color: rgba(255, 159, 10, 0.26);
         }
         body.light-theme .ct-metric-item strong {
             color: #111827;
         }
         body.light-theme .ct-dashboard-view {
             background:
-                radial-gradient(circle at 18% 8%, rgba(255, 159, 10, 0.12), transparent 28%),
-                linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(238, 242, 247, 0.96));
-            color: #111827;
+                radial-gradient(circle at 12% 0%, rgba(232, 138, 0, 0.15), transparent 32%),
+                linear-gradient(180deg, #F8FAFC 0%, #EEF2F7 100%);
+            color: #0F172A;
         }
         body.light-theme .ct-dashboard-header {
-            border-bottom-color: rgba(15, 23, 42, 0.1);
+            border-bottom-color: transparent;
         }
-        body.light-theme .ct-dashboard-title h2 { color: #111827; }
+        body.light-theme .ct-dashboard-title h2 { 
+            background: linear-gradient(135deg, #111827 0%, #92400E 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
         body.light-theme .ct-dashboard-title span { color: #64748B; }
+        body.light-theme .ct-dashboard-view .ct-mini-card {
+            background: rgba(255, 255, 255, 0.88) !important;
+            border: 1px solid rgba(15, 23, 42, 0.09) !important;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08) !important;
+        }
+        body.light-theme .ct-dashboard-view .ct-mini-card:hover {
+            background: #FFFFFF !important;
+            border-color: rgba(232, 138, 0, 0.28) !important;
+        }
+        body.light-theme .ct-dashboard-view .ct-name {
+            color: #111827;
+        }
+        body.light-theme .ct-dashboard-view .ct-index-item {
+            background: rgba(248, 250, 252, 0.92) !important;
+            border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        }
+        body.light-theme .ct-dashboard-view .ct-index-label {
+            color: #64748B;
+        }
+        body.light-theme .ct-section-title {
+            color: #111827;
+        }
+        body.light-theme .ct-section-title span {
+            color: #64748B;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-ct-card {
+            background: rgba(255,255,255,0.88) !important;
+            border: 1px solid rgba(15,23,42,0.09) !important;
+            box-shadow: 0 12px 28px rgba(15,23,42,0.08) !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-ct-card:hover {
+            background: #FFFFFF !important;
+            border-color: rgba(232,138,0,0.28) !important;
+            box-shadow: 0 16px 32px rgba(146,64,14,0.12) !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-ct-name {
+            color: #111827 !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-small-card {
+            background: rgba(255,255,255,0.88) !important;
+            border: 1px solid rgba(15,23,42,0.09) !important;
+            box-shadow: 0 12px 28px rgba(15,23,42,0.08) !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-small-title .ct-index-label,
+        body.light-theme .ct-dashboard-view .home-draft-small-weight {
+            color: #64748B !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-ct-mom-badge {
+            color: #DC2626 !important;
+            background: rgba(255,69,58,0.08) !important;
+            border-color: rgba(255,69,58,0.2) !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-ct-mom-badge.good {
+            color: #15803D !important;
+            background: rgba(48,209,88,0.1) !important;
+            border-color: rgba(22,163,74,0.2) !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-small-score {
+            color: #0F172A !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-small-score.danger { color: #DC2626 !important; }
+        body.light-theme .ct-dashboard-view .home-draft-small-score.warning { color: #B45309 !important; }
+        body.light-theme .ct-dashboard-view .home-draft-small-score.good { color: #15803D !important; }
+        body.light-theme .ct-dashboard-view .home-draft-ct-card.category-active {
+            box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.32), 0 14px 30px rgba(64, 158, 255, 0.18) !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-ct-card.category-active::before {
+            border-color: #FFFFFF;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-ct-card.category-active::after {
+            color: #1D4ED8;
+            background: rgba(64, 158, 255, 0.18);
+            border-color: rgba(64, 158, 255, 0.5);
+        }
+        body.light-theme .ct-dashboard-view .home-draft-metric-card {
+            background: rgba(255,255,255,0.88) !important;
+            border: 1px solid rgba(15,23,42,0.09) !important;
+            box-shadow: 0 12px 28px rgba(15,23,42,0.08) !important;
+        }
+        body.light-theme .ct-dashboard-view .home-draft-ai-card {
+            background: linear-gradient(135deg, rgba(240, 245, 255, 0.95), rgba(255, 255, 255, 0.95));
+            border-color: rgba(64, 158, 255, 0.35);
+            box-shadow: 0 0 24px rgba(0, 122, 255, 0.08);
+        }
+        body.light-theme .ct-dashboard-view .home-draft-ai-main-title {
+            color: #0F172A;
+        }
         body.light-theme .dashboard-breadcrumb {
             color: #64748B;
         }
@@ -2298,73 +2542,7 @@
             text-shadow: 0 2px 5px rgba(0,0,0,.2);
         }
         .home-draft-main { height: 48vh; min-height: 300px; display: grid; grid-template-columns: 10fr 14fr; gap: 24px; }
-        .home-draft-inventory-card {
-           background: #E88A00;
-            border-radius: 28px;
-            padding: 24px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            /* 基础阴影（深邃感） + 初始光晕（全0） */
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4),
-                        0 0 0 0 rgba(255, 180, 70, 0),
-                        0 0 0 0 rgba(232, 138, 0, 0);
-            transition: box-shadow 0.2s ease;
-            animation: softGlowBreathing 3.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: box-shadow;
 
-        }
-         @keyframes softGlowBreathing {
-            0% {
-              box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4),
-                          0 0 0 0 rgba(255, 190, 80, 0),
-                          0 0 0 0 rgba(232, 138, 0, 0);
-            }
-            50% {
-              box-shadow: 0 22px 40px -12px rgba(0, 0, 0, 0.45),
-                          0 0 18px 12px rgba(255, 180, 70, 0.45),
-                          0 0 32px 20px rgba(232, 138, 0, 0.35);
-            }
-            100% {
-              box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4),
-                          0 0 0 0 rgba(255, 190, 80, 0),
-                          0 0 0 0 rgba(232, 138, 0, 0);
-            }
-          }
-
-        @keyframes homeDraftSoftGlow {
-            0% {
-                box-shadow: 0 20px 35px -12px rgba(0,0,0,.4),
-                            0 0 0 0 rgba(255,190,80,0),
-                            0 0 0 0 rgba(232,138,0,0);
-            }
-            50% {
-                box-shadow: 0 22px 40px -12px rgba(0,0,0,.45),
-                            0 0 18px 12px rgba(255,180,70,.45),
-                            0 0 32px 20px rgba(232,138,0,.35);
-            }
-            100% {
-                box-shadow: 0 20px 35px -12px rgba(0,0,0,.4),
-                            0 0 0 0 rgba(255,190,80,0),
-                            0 0 0 0 rgba(232,138,0,0);
-            }
-        }
-        .home-draft-inventory-left { display: flex; flex-direction: column; height: 100%; justify-content: center; min-width: 0; flex: 0 0 44%; position: relative; z-index: 2; }
-        .home-draft-inventory-title { font-size: clamp(30px, 3.5vw, 46px); font-weight: 850; line-height: 1; color: #FFFFFF; }
-        .home-draft-inventory-title span { display: block; margin-top: 24px; }
-        .home-draft-inventory-score {
-            font-size: clamp(82px, 9vw, 130px);
-            font-weight: 950;
-            line-height: .85;
-            margin-top: 16px;
-            color: #FFFFFF;
-            text-shadow: 0 4px 12px rgba(0,0,0,.2);
-        }
-        .home-draft-mom { display: inline-flex; width: max-content; margin-top: 8px; padding: 4px 14px; background: #FFFFFF; border-radius: 999px; color: #C92D2D; font-size: 16px; font-weight: 800; }
-        .home-draft-chart { width: 52%; height: 95%; display: flex; align-items: center; position: relative; z-index: 2; }
-        .home-draft-chart svg { width: 100%; height: 100%; }
-        .home-draft-chart text { fill: #7A4100; font-size: 15px; font-weight: 800; }
-        .home-draft-chart-dot { fill: #FFFFFF; filter: drop-shadow(0 0 8px rgba(255,255,255,.9)) drop-shadow(0 0 15px rgba(255,255,255,.5)); }
         .home-draft-right-panel { height: 100%; min-width: 0; display: grid; grid-template-rows: 155px 1fr; gap: 16px; overflow: hidden; }
         .home-draft-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
         .home-draft-metric-card,
@@ -2548,33 +2726,7 @@
             color: transparent !important;
             text-shadow: 0 2px 5px rgba(0,0,0,.2) !important;
         }
-        body.home-draft-page:not(.light-theme) .home-draft-inventory-card {
-            background: #E88A00 !important;
-            border: 0 !important;
-            border-radius: 28px !important;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,.4),
-                        0 0 0 0 rgba(255,190,80,0),
-                        0 0 0 0 rgba(232,138,0,0) !important;
-            animation: homeDraftSoftGlow 3.6s infinite cubic-bezier(.4,0,.2,1) !important;
-        }
-        body.home-draft-page:not(.light-theme) .home-draft-inventory-title,
-        body.home-draft-page:not(.light-theme) .home-draft-inventory-score {
-            color: #FFFFFF !important;
-        }
-        body.home-draft-page:not(.light-theme) .home-draft-inventory-score {
-            text-shadow: 0 4px 12px rgba(0,0,0,.2) !important;
-        }
-        body.home-draft-page:not(.light-theme) .home-draft-mom {
-            background: #FFFFFF !important;
-            color: #C92D2D !important;
-        }
-        body.home-draft-page:not(.light-theme) .home-draft-chart text {
-            fill: #7A4100 !important;
-        }
-        body.home-draft-page:not(.light-theme) .home-draft-chart-dot {
-            fill: #FFFFFF !important;
-            filter: drop-shadow(0 0 8px rgba(255,255,255,.9)) !important;
-        }
+
         body.home-draft-page:not(.light-theme) .home-draft-metric-card {
             background: rgba(255,255,255,.04) !important;
             border-color: rgba(255,255,255,.08) !important;
@@ -2692,13 +2844,7 @@
             color: transparent !important;
             text-shadow: 0 2px 5px rgba(0,0,0,.2) !important;
         }
-        html[data-theme="dark"] body.home-draft-page .home-draft-inventory-card {
-            background: #E88A00 !important;
-            border: 0 !important;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,.4),
-                        0 0 0 0 rgba(255,190,80,0),
-                        0 0 0 0 rgba(232,138,0,0) !important;
-        }
+
         html[data-theme="dark"] body.home-draft-page .home-draft-metric-card {
             background: linear-gradient(180deg, rgba(18, 22, 34, 0.92), rgba(9, 12, 20, 0.92)) !important;
             border-color: rgba(255,255,255,.08) !important;
@@ -2778,8 +2924,8 @@
             .home-draft-ct-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         @media (max-width: 720px) {
-            .home-draft-inventory-card { flex-direction: column; align-items: flex-start; }
-            .home-draft-chart { width: 100%; height: 180px; }
+            .inventory-card { flex-direction: column; align-items: flex-start; }
+            .chart { width: 100%; height: 180px; }
             .home-draft-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .home-draft-ct-grid { grid-template-columns: 1fr; }
         }
@@ -2887,58 +3033,7 @@
         filter: drop-shadow(0 0 8px rgba(255,255,255,0.9));
       }
     
-      /* ========= 右侧区域 ========= */
-      .right-panel {
-        display: grid;
-        grid-template-rows: 155px 1fr;
-        gap: 16px;
-        height: 100%;
-        overflow: hidden;
-      }
-      .metrics {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-      }
-      .metric-card {
-        background: rgba(255,255,255,.04);
-        backdrop-filter: blur(30px);
-        border-radius: 20px;
-        padding: 16px 18px;
-        border: 1px solid rgba(255,255,255,.08);
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-      .metric-title {
-        font-size: 16px;
-        color: #a9acb5;
-      }
-      .metric-weight {
-        position: absolute;
-        right: 16px;
-        top: 16px;
-        font-size: 15px;
-        color: #8c8f96;
-      }
-      /* 数值完全无动效 */
-      .metric-value {
-        font-size: 64px;
-        font-weight: 800;
-        line-height: 1;
-        margin-bottom: 4px;
-        display: inline-block;
-      }
-      .danger {
-        color: #ff4d4f;
-      }
-      .warning {
-        color: #ffb020;
-      }
-      .good {
-        color: #32d74b;
-      }
+
 
     </style>
 </head>
@@ -2982,12 +3077,12 @@
                 <div class="factor-header home-draft-metric-header"><span>缺货风险</span><span>25%</span></div>
                 <div class="factor-main"><span class="factor-score home-draft-metric-value warning">68</span></div>
             </div>
-            <div class="factor-compact home-draft-metric-card">
+            <div class="factor-compact home-draft-metric-card" style="cursor:pointer;" onclick="window.open('全球积压风险报告.html', '_blank')">
                 <div class="factor-header home-draft-metric-header"><span>积压风险</span><span>20%</span></div>
                 <div class="factor-main"><span class="factor-score home-draft-metric-value danger">48</span></div>
             </div>
             <div class="factor-compact home-draft-metric-card">
-                <div class="factor-header home-draft-metric-header"><span>动销结构</span><span>25%</span></div>
+                <div class="factor-header home-draft-metric-header"><span>产品结构</span><span>25%</span></div>
                 <div class="factor-main"><span class="factor-score home-draft-metric-value good">85</span></div>
             </div>
             <div class="factor-compact home-draft-metric-card" data-factor="周转天数">
@@ -3009,29 +3104,29 @@
     <div class="ct-cards-container home-draft-ct-grid" id="homeCtCards">
         <div class="ct-mini-card home-draft-ct-card" onclick="openCtDashboard('DP Comfort')">
             <div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name">DP Comfort</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value">76.1</div><div class="home-draft-ct-mom-badge good">↑ 环比 +0.8%</div></div></div>
-            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">74</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">63</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">动销结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">84</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">81</div></div></div>
+            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">74</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">63</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">产品结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">84</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">81</div></div></div>
         </div>
  <div class="ct-mini-card home-draft-ct-card" onclick="openCtDashboard('DP Fashion')">
             <div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name">DP Fashion</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value">88.5</div><div class="home-draft-ct-mom-badge good">↑ 环比 +2.0%</div></div></div>
-            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">89</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">84</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">动销结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">91</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">92</div></div></div>
+            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">89</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">84</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">产品结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">91</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">92</div></div></div>
         </div>
 
        
         <div class="ct-mini-card home-draft-ct-card" onclick="openCtDashboard('DP Kids')">
             <div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name">DP Kids</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value">58.0</div><div class="home-draft-ct-mom-badge">↓ 环比 -1.8%</div></div></div>
-            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">52</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">45</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">动销结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">67</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">60</div></div></div>
+            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">52</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">45</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">产品结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">67</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">60</div></div></div>
         </div>
          <div class="ct-mini-card home-draft-ct-card" onclick="openCtDashboard('Bruno Marc')">
             <div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name">Bruno Marc</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value">42.5</div><div class="home-draft-ct-mom-badge">↓ 环比 -2.1%</div></div></div>
-            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">38</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">32</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">动销结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">49</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">51</div></div></div>
+            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">38</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">32</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">产品结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">49</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">51</div></div></div>
         </div>
         <div class="ct-mini-card home-draft-ct-card" onclick="openCtDashboard('Nortiv 8')">
             <div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name">Nortiv8</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value">69.4</div><div class="home-draft-ct-mom-badge">↓ 环比 -0.6%</div></div></div>
-            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">65</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">58</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">动销结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">78</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">72</div></div></div>
+            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">65</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">58</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">产品结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">78</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">72</div></div></div>
         </div>
                <div class="ct-mini-card home-draft-ct-card" onclick="openCtDashboard('运动组')">
             <div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name">运动组</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value">81.2</div><div class="home-draft-ct-mom-badge good">↑ 环比 +1.4%</div></div></div>
-            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">80</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">76</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">动销结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">87</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">85</div></div></div>
+            <div class="ct-index-grid home-draft-sub-grid"><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">缺货风险</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">80</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">积压风险</span><span class="home-draft-small-weight">20%</span></div><div class="ct-index-value home-draft-small-score">76</div></div><div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">产品结构</span><span class="home-draft-small-weight">25%</span></div><div class="ct-index-value home-draft-small-score">87</div></div><div class="ct-index-item home-draft-small-card" data-factor="周转天数"><div class="home-draft-small-title"><span class="ct-index-label">周转效率</span><span class="home-draft-small-weight">30%</span></div><div class="ct-index-value home-draft-small-score">85</div></div></div>
         </div>
            </div>
 </section>
@@ -3042,41 +3137,47 @@
         <div class="ct-dashboard-title">
             <div class="dashboard-breadcrumb" id="ctBreadcrumb"></div>
             <h2 id="ctDashTitle">By 品类库存健康指数看板</h2>
-            <span id="ctDashSubTitle">按品类穿透库存健康、缺货、积压与结构风险</span>
         </div>
         <button class="ai-capsule" onclick="showCurrentCtAI()"><span class="ai-spark-icon"></span>AI</button>
     </div>
     <div class="ct-dashboard-grid">
-        <div class="grid-24 row-top">
-            <div class="apple-card col-16" style="min-height: 170px; padding: 12px 18px;">
-                <div class="ihi-dashboard">
-                    <div class="ihi-hero">
-                        <div class="ihi-hero-label" id="ctHeroLabel">品类库存健康总指数</div>
-                        <div class="ihi-hero-score" id="ctDashScore">--</div>
-                        <div class="ihi-hero-trend"><span>环比 </span><span id="ctDashTrend" class="trend-down">--</span></div>
-                        <div class="ihi-hero-broadcast" onclick="event.stopPropagation(); showCtIndexInsight()" title="点击打开 AI 详细解读">
-                            <span class="ihi-hero-broadcast-label">AI解读</span>
-                            <div class="ihi-hero-broadcast-viewport">
-                                <div class="ihi-hero-broadcast-track" id="ctIndexBroadcastText">品类健康总指数加载中 · 点击查看 AI 解读</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="factor-stack">
-                        <div class="compact-factors" id="ctDashIndexes"></div>
-                        <div id="ctFactorInsight"></div>
-                    </div>
+        <div class="grid-24 row-top" style="display:grid; grid-template-columns: 10fr 14fr; gap: 24px; min-height: 260px;">
+            <div class="inventory-card">
+                <div class="inventory-left">
+                    <div class="inventory-title">INVENTORY<span>HEALTH</span></div>
+                    <div class="inventory-score" id="ctDashScore">--</div>
+                    <div class="mom" id="ctDashMom">环比 --</div>
+                </div>
+                <div class="chart">
+                    <svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <linearGradient id="areaGradientCt" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#B66801" stop-opacity="0.3"/>
+                                <stop offset="100%" stop-color="#B66801" stop-opacity="0.0"/>
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#areaGradientCt)" d="M 20,150 C 70,135 100,122 120,120 C 150,117 190,175 220,170 C 250,165 290,143 320,140 C 350,137 365,102 380,90 L 380,195 L 20,195 Z"/>
+                        <path fill="none" stroke="#B66801" stroke-width="7" stroke-linecap="round" d="M 20,150 C 70,135 100,122 120,120 C 150,117 190,175 220,170 C 250,165 290,143 320,140 C 350,137 365,102 380,90"/>
+                        <circle class="chart-dot" cx="20" cy="150" r="5" />
+                        <circle class="chart-dot" cx="120" cy="120" r="5" />
+                        <circle class="chart-dot" cx="220" cy="170" r="5" />
+                        <circle class="chart-dot" cx="380" cy="90" r="5" />
+                        <text x="20" y="220">W15</text>
+                        <text x="120" y="220">W16</text>
+                        <text x="220" y="220">W17</text>
+                        <text x="320" y="220">W18</text>
+                    </svg>
                 </div>
             </div>
-            <div class="apple-card col-8 ct-diagnostic-summary-card" style="min-height: 170px; padding: 12px 14px;">
-                <div class="ct-diagnostic-summary-head">
-                    <div>
-                        <div class="ct-diagnostic-summary-title">CT诊疗摘要</div>
-                        <div class="ct-diagnostic-summary-sub">基于品类 / 款式风险自动汇总</div>
+            <section class="home-draft-right-panel" style="flex: 1; min-width: 0;">
+                <div class="home-draft-metrics" id="ctDashIndexes"></div>
+                <div class="home-draft-ai-card">
+                    <div class="home-draft-ai-title-row">
+                        <div class="home-draft-ai-main-title"><span class="home-draft-ai-badge">AI 诊断</span> 4 条诊断记录 · 实时决策</div>
                     </div>
-                    <div class="ct-diagnostic-summary-tag">AUTO</div>
+                    <div id="ctFactorInsight" class="home-draft-ai-slot"></div>
                 </div>
-                <div class="kpi-grid" id="ctDashKpis"></div>
-            </div>
+            </section>
         </div>
         <div class="grid-24 ct-expert-row">
             <div class="ct-expert-card" id="ctExpertGuidance"></div>
@@ -3208,37 +3309,37 @@
     const ctDashboardData = {
         'Bruno Marc': {
             score: 42.5, status: '严重', color: 'var(--color-danger)',
-            indexes: { '周转天数': 51, '缺货风险': 38, '积压风险': 32, '动销结构': 49 },
+            indexes: { '周转天数': 51, '缺货风险': 38, '积压风险': 32, '产品结构': 49 },
             risks: { '滞销金额': '$1.42M', '断货 SKU': '186', '360天+ 库存': '31.8%', '可售周数': '18.6 Wks' },
             actions: ['冻结低动销 SKU 新采买，优先清退 360天+ 库存。', '对核心爆款高频尺码做紧急补货，避免断码继续放大。', '联动渠道促销与仓间调拨，先释放德国仓与美东仓库容。']
         },
         'DP Kids': {
             score: 58.0, status: '严重', color: 'var(--color-danger)',
-            indexes: { '周转天数': 60, '缺货风险': 52, '积压风险': 45, '动销结构': 67 },
+            indexes: { '周转天数': 60, '缺货风险': 52, '积压风险': 45, '产品结构': 67 },
             risks: { '滞销金额': '$0.85M', '断货 SKU': '121', '360天+ 库存': '22.4%', '可售周数': '15.2 Wks' },
             actions: ['对季节错配鞋款启动折扣清仓。', '把主力码库存向高动销渠道倾斜。', '下调下一轮备货预测中的长尾 SKU 权重。']
         },
         'Nortiv 8': {
             score: 69.4, status: '关注预警', color: 'var(--color-warning)',
-            indexes: { '周转天数': 72, '缺货风险': 65, '积压风险': 58, '动销结构': 78 },
+            indexes: { '周转天数': 72, '缺货风险': 65, '积压风险': 58, '产品结构': 78 },
             risks: { '滞销金额': '$0.54M', '断货 SKU': '78', '360天+ 库存': '14.2%', '可售周数': '11.8 Wks' },
             actions: ['补齐户外核心款高频尺码。', '把慢周转库存转入更适合的区域仓。', '维持主力款备货节奏，谨慎扩充长尾色码。']
         },
         'DP Comfort': {
             score: 76.1, status: '关注预警', color: 'var(--color-warning)',
-            indexes: { '周转天数': 81, '缺货风险': 74, '积压风险': 63, '动销结构': 84 },
+            indexes: { '周转天数': 81, '缺货风险': 74, '积压风险': 63, '产品结构': 84 },
             risks: { '滞销金额': '$0.31M', '断货 SKU': '46', '360天+ 库存': '8.7%', '可售周数': '9.4 Wks' },
             actions: ['维持现有补货模型。', '对局部慢动销 SKU 做小批量促销。', '保持安全库存水位，避免过度压仓。']
         },
         '运动组': {
             score: 81.2, status: '卓越表现', color: 'var(--color-success)',
-            indexes: { '周转天数': 85, '缺货风险': 80, '积压风险': 76, '动销结构': 87 },
+            indexes: { '周转天数': 85, '缺货风险': 80, '积压风险': 76, '产品结构': 87 },
             risks: { '滞销金额': '$0.22M', '断货 SKU': '32', '360天+ 库存': '5.9%', '可售周数': '8.1 Wks' },
             actions: ['复制当前动销模型到相近品类。', '对高转化款保持快速补货。', '继续监控新品生命周期，避免后段积压。']
         },
         'DP Fashion': {
             score: 88.5, status: '卓越表现', color: 'var(--color-success)',
-            indexes: { '周转天数': 92, '缺货风险': 89, '积压风险': 84, '动销结构': 91 },
+            indexes: { '周转天数': 92, '缺货风险': 89, '积压风险': 84, '产品结构': 91 },
             risks: { '滞销金额': '$0.09M', '断货 SKU': '18', '360天+ 库存': '3.1%', '可售周数': '6.8 Wks' },
             actions: ['沉淀为集团柔性供应链标杆模型。', '保持小批量快反策略。', '扩大数据样本，用于训练其他 CT 的补货阈值。']
         }
@@ -3274,7 +3375,7 @@
         return '';
     }
 
-    const cardIndexOrder = ['缺货风险', '积压风险', '动销结构', '周转天数'];
+    const cardIndexOrder = ['缺货风险', '积压风险', '产品结构', '周转天数'];
 
     function renderIndexItems(indexes) {
         return cardIndexOrder.map(label => {
@@ -4717,7 +4818,7 @@
                 '周转天数': Math.max(25, Math.min(96, data.indexes['周转天数'] + offset)),
                 '缺货风险': Math.max(25, Math.min(96, data.indexes['缺货风险'] + offset - 1)),
                 '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offset - 2)),
-                '动销结构': Math.max(25, Math.min(96, data.indexes['动销结构'] + offset + 1))
+                '产品结构': Math.max(25, Math.min(96, data.indexes['产品结构'] + offset + 1))
             };
             const status = scoreStatus(score);
             const amount = (Math.max(0.04, (100 - score) / 70)).toFixed(2);
@@ -4739,7 +4840,7 @@
                 '周转天数': Math.max(25, Math.min(96, data.indexes['周转天数'] + offset)),
                 '缺货风险': Math.max(25, Math.min(96, data.indexes['缺货风险'] + offset - 2)),
                 '积压风险': Math.max(25, Math.min(96, data.indexes['积压风险'] + offset - 3)),
-                '动销结构': Math.max(25, Math.min(96, data.indexes['动销结构'] + offset + 2))
+                '产品结构': Math.max(25, Math.min(96, data.indexes['产品结构'] + offset + 2))
             };
             const status = scoreStatus(score);
             const amount = (Math.max(0.03, (100 - score) / 85)).toFixed(2);
@@ -4749,7 +4850,9 @@
 
     function renderFactor(label, value, weight) {
         const color = scoreColor(value);
-        return `<div class="factor-compact"><div class="factor-header"><span>${label}</span><span>${weight}</span></div><div class="factor-main"><span class="factor-score" style="color: ${color};">${value}</span></div><div class="progress-micro"><div class="progress-fill" style="width:${value}%; background: ${color};"></div></div></div>`;
+        const lv = getIndexLevelClass(value);
+        const dataFactor = label === '周转天数' ? ' data-factor="周转天数"' : '';
+        return `<div class="factor-compact home-draft-metric-card"${dataFactor}><div class="factor-header home-draft-metric-header"><span>${displayFactorLabel(label)}</span><span>${weight}</span></div><div class="factor-main"><span class="factor-score home-draft-metric-value ${lv}">${value}</span></div></div>`;
     }
 
     function parseMetricNumber(value) {
@@ -4770,7 +4873,7 @@
                 warning: ['低动销累积', '部分长尾款开始堆积，若继续按原节奏补货，会从关注区滑向严重积压。', '控货促销，结合渠道分流和跨仓调拨加快去化'],
                 success: ['长库龄可控', '高库龄库存仍处于可管理区间，暂未形成明显资金沉淀压力。', '持续去化，保持先进先出和慢动销复盘节奏']
             },
-            '动销结构': {
+            '产品结构': {
                 danger: ['款式结构失衡', '库存集中在低效款色码，畅销码段和滞销尾货并存，容易造成一边缺货一边积压。', '冻结扩品，收缩长尾SKU并校准款色码结构'],
                 warning: ['结构偏离目标', '品类、尺码或区域仓配置开始偏离销售结构，后续可能传导为缺货或积压。', '校准款色码，优先修正核心款和核心仓结构'],
                 success: ['结构相对稳健', '当前款式、码段和仓配结构匹配度较好，是总指数的重要支撑。', '复制健康模型，把高分品类的备货结构沉淀为参考阈值']
@@ -4948,19 +5051,19 @@
             danger: {
                 '缺货风险': '立即补货',
                 '积压风险': '清仓调拨',
-                '动销结构': '冻结扩品',
+                '产品结构': '冻结扩品',
                 '周转天数': '停采促销'
             },
             warning: {
                 '缺货风险': '追发补货',
                 '积压风险': '控货促销',
-                '动销结构': '结构校准',
+                '产品结构': '结构校准',
                 '周转天数': '控采提转'
             },
             success: {
                 '缺货风险': '小批快反',
                 '积压风险': '控货复盘',
-                '动销结构': '结构复制',
+                '产品结构': '结构复制',
                 '周转天数': '维持节奏'
             }
         };
@@ -5038,28 +5141,33 @@
         openDiagnosticReport('ct', { ct: currentCtName });
     }
 
-    function updateCtIndexBroadcast() {
-        const data = ctDashboardData[currentCtName];
-        const target = document.getElementById('ctIndexBroadcastText');
-        if (!data || !target) return;
-        const [weakName, weakValue] = getWeakestMetric(data.indexes);
-        const categoryText = currentCategoryName ? `当前聚焦 ${currentCategoryName}` : '当前聚焦全部品类';
-        target.textContent = `${currentCtName} 品类总指数 ${data.score} · 短板 ${weakName} ${weakValue} · ${categoryText} · 点击查看 AI 解读`;
+    function getIndexLevelClass(value) {
+        if (value >= 75) return 'good';
+        if (value >= 55) return 'warning';
+        return 'danger';
     }
-
     function renderCategoryCard(category) {
         const color = scoreColor(category.score);
         const riskClass = riskClassForScore(category.score);
         const activeClass = category.name === currentCategoryName ? ' category-active' : '';
-        const indexHtml = renderIndexItems(category.indexes);
+        const mom = typeof category.mom === 'number' ? category.mom : (Math.random() * 4 - 2);
+        const momBadgeClass = mom >= 0 ? ' good' : '';
+        const momBadgeText = mom >= 0 ? `↑ 环比 +${Math.abs(mom).toFixed(1)}%` : `↓ 环比 ${mom.toFixed(1)}%`;
         const safeName = escapeHtml(category.name);
-        const metaHtml = category.category ? `<div class="ct-card-sub">${escapeHtml(category.category)}</div>` : '';
-        const reportTitleArg = escapeHtml(JSON.stringify(`${category.name} 品类诊断`));
-        const reportBodyArg = escapeHtml(JSON.stringify(`#### ${category.status}\n* 当前品类健康指数 ${category.score}。\n* 建议结合周转、缺货与积压风险做单品级穿透。`));
         const ctArg = escapeHtml(JSON.stringify(currentCtName));
         const categoryArg = escapeHtml(JSON.stringify(category.name));
-        const summary = getCategoryDiagnosticSummary(category);
-        return `<div class="ct-mini-card${riskClass}${activeClass}" onclick="selectCategory(${ctArg}, ${categoryArg})"><div class="ct-card-top"><div><div class="ct-name">${safeName}</div>${metaHtml}</div><div class="ct-score" style="color:${color};">${category.score}</div></div><div class="ct-index-grid">${indexHtml}</div><div class="ct-metrics-list"><div class="ct-metric-item"><span>缺货款式</span><strong style="color:${summary.shortageColor};">${summary.shortageStyles}</strong></div><div class="ct-metric-item"><span>待治理</span><strong style="color:${summary.pendingColor};">${summary.pendingActions}项</strong></div><div class="ct-metric-item"><span>优先动作</span><strong style="color:${summary.actionColor};">${summary.actionLabel}</strong></div></div><button class="ai-capsule" onclick="event.stopPropagation(); openDiagnosticReport('category', { ct: ${ctArg}, category: ${categoryArg} })" title="${safeName} 品类诊断报告"><span class="ai-spark-icon"></span>AI</button></div>`;
+        const indexes = category.indexes || {};
+        const indexItems = [
+            { label: '缺货风险', weight: '25%', value: Math.round(indexes['缺货风险'] || 0) },
+            { label: '积压风险', weight: '20%', value: Math.round(indexes['积压风险'] || 0) },
+            { label: '产品结构', weight: '25%', value: Math.round(indexes['产品结构'] || 0) },
+            { label: '周转效率', weight: '30%', value: Math.round(indexes['周转天数'] || 0) }
+        ];
+        const indexHtml = indexItems.map(item => {
+            const lv = getIndexLevelClass(item.value);
+            return `<div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">${item.label}</span><span class="home-draft-small-weight">${item.weight}</span></div><div class="ct-index-value home-draft-small-score ${lv}">${item.value}</div></div>`;
+        }).join('');
+        return `<div class="ct-mini-card home-draft-ct-card${riskClass}${activeClass}" onclick="selectCategory(${ctArg}, ${categoryArg})"><div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name" title="${safeName}">${safeName}</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value" style="color:${color};">${category.score}</div><div class="home-draft-ct-mom-badge${momBadgeClass}">${momBadgeText}</div></div></div><div class="ct-index-grid home-draft-sub-grid">${indexHtml}</div></div>`;
     }
 
     function getVisibleCategories(categories) {
@@ -5096,23 +5204,30 @@
         renderCategorySection(currentCtName, categories);
         updateCtExpertGuidance(currentCtName, data, categories);
         updateCtBreadcrumb();
-        updateCtIndexBroadcast();
         if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
     }
 
     function renderStyleCard(style) {
         const color = scoreColor(style.score);
         const riskClass = riskClassForScore(style.score);
-        const indexHtml = renderIndexItems(style.indexes);
+        const mom = typeof style.mom === 'number' ? style.mom : (Math.random() * 4 - 2);
+        const momBadgeClass = mom >= 0 ? ' good' : '';
+        const momBadgeText = mom >= 0 ? `↑ 环比 +${Math.abs(mom).toFixed(1)}%` : `↓ 环比 ${mom.toFixed(1)}%`;
         const safeName = escapeHtml(style.name);
-        const safeCategory = escapeHtml(style.category || 'UNMAPPED');
         const ctArg = escapeHtml(JSON.stringify(currentCtName));
         const styleArg = escapeHtml(JSON.stringify(style.name));
-        const categoryArg = escapeHtml(JSON.stringify(style.category || currentCategoryName || 'UNMAPPED'));
-        const reportTitleArg = escapeHtml(JSON.stringify(`${style.name} 款式诊断`));
-        const reportBodyArg = escapeHtml(JSON.stringify('点击卡片进入单品参谋，查看 SKU 级健康档案。'));
-        const summary = getStyleDiagnosticSummary(style);
-        return `<div class="ct-mini-card${riskClass}" onclick="openSkuAdvisor(${ctArg}, ${styleArg})"><div class="ct-card-top"><div><div class="ct-name">${safeName}</div><div class="ct-card-sub">${safeCategory}</div></div><div class="ct-score" style="color:${color};">${style.score}</div></div><div class="ct-index-grid">${indexHtml}</div><div class="ct-metrics-list"><div class="ct-metric-item"><span>风险SKU</span><strong style="color:${summary.riskSkuColor};">${summary.riskSku}</strong></div><div class="ct-metric-item"><span>待治理</span><strong style="color:${summary.pendingColor};">${summary.pendingActions}项</strong></div><div class="ct-metric-item"><span>优先动作</span><strong style="color:${summary.actionColor};">${summary.actionLabel}</strong></div></div><button class="ai-capsule" onclick="event.stopPropagation(); openDiagnosticReport('style', { ct: ${ctArg}, category: ${categoryArg}, style: ${styleArg} })" title="${safeName} Style 诊断报告"><span class="ai-spark-icon"></span>AI</button></div>`;
+        const indexes = style.indexes || {};
+        const indexItems = [
+            { label: '缺货风险', weight: '25%', value: Math.round(indexes['缺货风险'] || 0) },
+            { label: '积压风险', weight: '20%', value: Math.round(indexes['积压风险'] || 0) },
+            { label: '产品结构', weight: '25%', value: Math.round(indexes['产品结构'] || 0) },
+            { label: '周转效率', weight: '30%', value: Math.round(indexes['周转天数'] || 0) }
+        ];
+        const indexHtml = indexItems.map(item => {
+            const lv = getIndexLevelClass(item.value);
+            return `<div class="ct-index-item home-draft-small-card"><div class="home-draft-small-title"><span class="ct-index-label">${item.label}</span><span class="home-draft-small-weight">${item.weight}</span></div><div class="ct-index-value home-draft-small-score ${lv}">${item.value}</div></div>`;
+        }).join('');
+        return `<div class="ct-mini-card home-draft-ct-card${riskClass}" onclick="openSkuAdvisor(${ctArg}, ${styleArg})"><div class="home-draft-ct-top"><div class="ct-name home-draft-ct-name" title="${safeName}">${safeName}</div><div class="home-draft-ct-score-box"><div class="ct-score home-draft-ct-score-value" style="color:${color};">${style.score}</div><div class="home-draft-ct-mom-badge${momBadgeClass}">${momBadgeText}</div></div></div><div class="ct-index-grid home-draft-sub-grid">${indexHtml}</div></div>`;
     }
 
     function renderStyleSection(ctName, categoryName) {
@@ -5130,12 +5245,18 @@
         currentCategoryName = categoryName;
         const data = ctDashboardData[ctName];
         if (!data) return;
+        // 只更新选中状态，不重新渲染品类卡片（避免环比数据变动）
+        document.querySelectorAll('#ctCategoryCards .category-active').forEach(el => el.classList.remove('category-active'));
+        const cards = document.querySelectorAll('#ctCategoryCards .home-draft-ct-card');
+        cards.forEach(card => {
+            if (card.querySelector('.home-draft-ct-name')?.textContent === categoryName) {
+                card.classList.add('category-active');
+            }
+        });
         const categories = buildCategoryCards(ctName, data);
-        renderCategorySection(ctName, categories);
         renderStyleSection(ctName, categoryName);
         updateCtExpertGuidance(ctName, data, categories);
         updateCtBreadcrumb();
-        updateCtIndexBroadcast();
         if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
         closeSkuAdvisor();
     }
@@ -5149,30 +5270,26 @@
         currentCategoryName = categories[0]?.name || '';
         document.getElementById('ctDashTitle').textContent = `${ctName} · By 品类库存健康指数看板`;
         const ctStatus = scoreStatus(data.score);
-        document.getElementById('ctDashSubTitle').textContent = `${ctStatus} · 与主看板一致，按品类穿透库存健康`;
-        document.getElementById('ctHeroLabel').textContent = `${ctName} 品类库存健康总指数`;
         const scoreEl = document.getElementById('ctDashScore');
         scoreEl.textContent = data.score;
-        const heroEl = scoreEl.closest('.ihi-hero');
+        const heroEl = scoreEl.closest('.inventory-card');
         heroEl.classList.remove('health-success', 'health-danger');
         if (scoreLevel(data.score) === 'success') heroEl.classList.add('health-success');
         if (scoreLevel(data.score) === 'danger') heroEl.classList.add('health-danger');
-        const trendEl = document.getElementById('ctDashTrend');
-        trendEl.textContent = scoreLevel(data.score) === 'success' ? '+1.4%' : '-2.1%';
-        trendEl.className = scoreLevel(data.score) === 'success' ? 'trend-up' : 'trend-down';
+        const momEl = document.getElementById('ctDashMom');
+        momEl.textContent = '环比 ' + (scoreLevel(data.score) === 'success' ? '-2.1%' : '-2.1%');
+        momEl.className = 'mom ' + (scoreLevel(data.score) === 'success' ? 'good' : 'danger');
         document.getElementById('ctDashIndexes').innerHTML = [
             renderFactor('缺货风险', data.indexes['缺货风险'], '25%'),
             renderFactor('积压风险', data.indexes['积压风险'], '20%'),
-            renderFactor('动销结构', data.indexes['动销结构'], '25%'),
+            renderFactor('产品结构', data.indexes['产品结构'], '25%'),
             renderFactor('周转天数', data.indexes['周转天数'], '30%')
         ].join('');
         updateFactorInsight('ctFactorInsight', data.indexes, 'showCtIndexInsight');
-        document.getElementById('ctDashKpis').innerHTML = renderCtDiagnosticKpis(ctName, data, categories);
         renderCategorySection(ctName, categories);
         renderStyleSection(ctName, currentCategoryName);
         updateCtExpertGuidance(ctName, data, categories);
         updateCtBreadcrumb();
-        updateCtIndexBroadcast();
         document.getElementById('ctDashboard').classList.add('open');
         if (document.getElementById('aiDrawer')?.classList.contains('open')) renderAIContextSuggestions();
     }
@@ -5544,7 +5661,7 @@
                     title: `${categoryName} 款式结构失衡诊断`,
                     href: buildDiagnosticReportUrl('category', { ct: context.ctName, category: categoryName }),
                     reportTitle: `${categoryName} 款式结构失衡诊断`,
-                    reportBody: `#### 款式结构\n* 当前款式已按风险优先级排序。\n* 优先检查 ${styleNames} 的周转、缺货、积压与动销结构。`
+                    reportBody: `#### 款式结构\n* 当前款式已按风险优先级排序。\n* 优先检查 ${styleNames} 的周转、缺货、积压与产品结构。`
                 },
                 {
                     icon: '⌘',
