@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DP Fashion 积压风险报告</title>
+<title>DP Fashion 积压风险AI诊断报告</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <link rel="stylesheet" href="report-nav.css">
 <style>
@@ -143,31 +143,21 @@
 <body>
 <nav class="page-nav" id="pageNav">
   <a href="#sec-insight" data-target="sec-insight"><span class="nav-dot"></span>AI洞察</a>
+  <a href="#sec-root" data-target="sec-root"><span class="nav-dot"></span>根因矩阵</a>
   <a href="#sec-trend" data-target="sec-trend"><span class="nav-dot"></span>趋势</a>
   <a href="#sec-cat" data-target="sec-cat"><span class="nav-dot"></span>类目分布</a>
   <a href="#sec-multi" data-target="sec-multi"><span class="nav-dot"></span>结构分析</a>
-  <a href="#sec-root" data-target="sec-root"><span class="nav-dot"></span>根因矩阵</a>
   <a href="#sec-top20" data-target="sec-top20"><span class="nav-dot"></span>款式Top20</a>
 </nav>
 
 <div class="container">
   <div class="header">
-    <h1><span class="title-text"><span class="globe">🏢</span> DP Fashion 积压风险报告</span><span class="score-cluster"><span class="score-num warning">63</span><span class="score-mom warning">↓ 环比 -1.2%</span><span class="score-tag">CT维度 · 偏高</span></span></h1>
+    <h1><span class="title-text"><span class="globe">🏢</span> DP Fashion 积压风险AI诊断报告</span><span class="score-cluster"><span class="score-num warning">63</span><span class="score-mom warning">↓ 环比 -1.2%</span></span></h1>
     <div class="meta"><span class="sub">DP Fashion 品牌 · 全渠道 · 积压风险总览</span> &nbsp;|&nbsp; 数据截止：2026-07-04（W27）&nbsp;|&nbsp; 数据来源：ads_inventory_health_backlog_risk_df</div>
   </div>
 
-  <div class="report-breadcrumb">
-    <div class="breadcrumb-item"><a href="全球积压风险报告.html">🌍 全球全景</a></div>
-    <span class="breadcrumb-sep">→</span>
-    <div class="breadcrumb-item current">DP Fashion</div>
-    <span class="breadcrumb-sep">→</span>
-    <div class="breadcrumb-item">类目下钻</div>
-    <span class="breadcrumb-sep">→</span>
-    <div class="breadcrumb-item">款式下钻</div>
-  </div>
-
   <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-label">SKU 总数</div><div class="kpi-value-line"><span class="kpi-value">58,320<span class="kpi-unit">个</span></span><span class="kpi-trend down">↓ 2.1% 周环比</span></div></div>
+    <div class="kpi-card"><div class="kpi-label">总库存数</div><div class="kpi-value-line"><span class="kpi-value">299.5<span class="kpi-unit">万</span></span><span class="kpi-trend down">↓ 2.1% 周环比</span></div></div>
     <div class="kpi-card warning"><div class="kpi-label">6-9m 关注</div><div class="kpi-value-line"><span class="kpi-value">19.9<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 18.5% 周环比</span></div></div>
     <div class="kpi-card warning"><div class="kpi-label">9-12m 预警</div><div class="kpi-value-line"><span class="kpi-value">13.6<span class="kpi-unit">万</span></span><span class="kpi-trend down">↓ 3.2% 周环比</span></div></div>
     <div class="kpi-card danger"><div class="kpi-label">12m+ 深度积压</div><div class="kpi-value-line"><span class="kpi-value">26.5<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 5.8% 周环比</span></div></div>
@@ -175,7 +165,7 @@
   </div>
 
   <div class="insight-box" id="sec-insight">
-    <div class="ititle">🤖 AI CT积压洞察</div>
+    <div class="ititle">🤖 AI诊断与治疗方案</div>
     <p>DP Fashion 本周超6个月积压达 <span class="hl">59.9万件</span>，占全球积压的 <span class="hl">33.7%</span>，是全球积压治理的头号战场。12m+深度积压占比高达 <span class="hl">44.2%</span>，需紧急启动清仓方案。</p>
     <ul>
       <li>🔴 <strong style="color:#ef4444;">紧急 — 类目集中度过高：</strong>Fashion Sneakers 单一类目占 CT 总积压的 <span class="hl">58%</span>，是首要治理对象</li>
@@ -184,20 +174,170 @@
     </ul>
   </div>
 
+  <!-- 根因矩阵 -->
+  <div class="section" id="sec-root">
+    <h2>🔍 积压库存根因结构矩阵</h2>
+    <div class="sec-sub">按正常品 / EOL品分层诊断根因</div>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>正常品积压以预测偏高和非重点 SKC 为主，EOL品积压集中在 24-25 年新品生命周期管理失败。<span class="hl">治疗建议：</span>正常品通过促销和渠道调整消化，EOL品启动站外清仓和捆绑销售。</p>
+    </div>
+
+    <div class="root-matrix-grid">
+      <!-- 正常产品积压根因矩阵 -->
+      <div class="root-matrix-card">
+        <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+          <span style="display:inline-block;width:8px;height:8px;background:#3b82f6;border-radius:50%;"></span>
+          1. 正常产品积压根因矩阵
+          <span style="font-size:13px;color:#94a3b8;font-weight:400;margin-left:auto;">正常品总冗余: 31.6万双</span>
+        </h3>
+        <table>
+          <thead>
+            <tr>
+              <th>指标名称 (正常品根因)</th>
+              <th class="num">总库存</th><th class="num">6-9m库龄</th>
+              <th class="num">9-12m库龄</th>
+              <th class="num">超12m库龄</th>
+              <th class="num">超6m合计</th>
+              <th class="num">占比</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:#f59e0b;">预测偏高</strong></td>
+              <td class="num">62.5万</td><td class="num">6.0万</td>
+              <td class="num">3.5万</td>
+              <td class="num">3.0万</td>
+              <td class="num"><strong>12.5万</strong></td>
+              <td class="num">20.8%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#8b5cf6;">12M+之前入库</strong></td>
+              <td class="num">39.0万</td><td class="num">0.0万</td>
+              <td class="num">2.0万</td>
+              <td class="num">5.8万</td>
+              <td class="num"><strong>7.8万</strong></td>
+              <td class="num">13.0%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#06b6d4;">非重点skc</strong></td>
+              <td class="num">28.0万</td><td class="num">2.1万</td>
+              <td class="num">1.8万</td>
+              <td class="num">1.7万</td>
+              <td class="num"><strong>5.6万</strong></td>
+              <td class="num">9.3%</td>
+            </tr>
+            <tr>
+              <td><strong>非标准码段</strong></td>
+              <td class="num">19.0万</td><td class="num">1.2万</td>
+              <td class="num">0.8万</td>
+              <td class="num">1.8万</td>
+              <td class="num"><strong>3.8万</strong></td>
+              <td class="num">6.3%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#64748b;">其它</strong></td>
+              <td class="num">9.5万</td><td class="num">0.6万</td>
+              <td class="num">0.3万</td>
+              <td class="num">1.0万</td>
+              <td class="num"><strong>1.9万</strong></td>
+              <td class="num">3.2%</td>
+            </tr>
+            <tr style="background:rgba(59,130,246,0.1);">
+              <td><strong>正常品合计</strong></td>
+              <td class="num">158万</td><td class="num"><strong>9.9万</strong></td>
+              <td class="num"><strong>8.4万</strong></td>
+              <td class="num"><strong>13.3万</strong></td>
+              <td class="num"><strong style="color:#3b82f6;">31.6万</strong></td>
+              <td class="num"><strong style="color:#3b82f6;">52.7%</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- EOL产品积压根因矩阵 -->
+      <div class="root-matrix-card eol">
+        <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+          <span style="display:inline-block;width:8px;height:8px;background:#ef4444;border-radius:50%;"></span>
+          2. EOL产品积压根因矩阵
+          <span style="font-size:13px;color:#94a3b8;font-weight:400;margin-left:auto;">EOL产品总冗余: 28.4万双</span>
+        </h3>
+        <table>
+          <thead>
+            <tr>
+              <th>指标名称 (EOL品根因)</th>
+              <th class="num">总库存</th><th class="num">6-9m库龄</th>
+              <th class="num">9-12m库龄</th>
+              <th class="num">超12m库龄</th>
+              <th class="num">超6m合计</th>
+              <th class="num">占比</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:#ef4444;">24年新品</strong></td>
+              <td class="num">67.5万</td><td class="num">6.0万</td>
+              <td class="num">4.0万</td>
+              <td class="num">3.5万</td>
+              <td class="num"><strong>13.5万</strong></td>
+              <td class="num">22.5%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#f59e0b;">25年新品</strong></td>
+              <td class="num">35.0万</td><td class="num">4.0万</td>
+              <td class="num">2.0万</td>
+              <td class="num">1.0万</td>
+              <td class="num"><strong>7.0万</strong></td>
+              <td class="num">11.7%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#10b981;">26年新品</strong></td>
+              <td class="num">17.5万</td><td class="num">2.0万</td>
+              <td class="num">1.0万</td>
+              <td class="num">0.5万</td>
+              <td class="num"><strong>3.5万</strong></td>
+              <td class="num">5.8%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#ef4444;">高风险（侵权）</strong></td>
+              <td class="num">22.0万</td><td class="num">1.5万</td>
+              <td class="num">1.0万</td>
+              <td class="num">1.9万</td>
+              <td class="num"><strong>4.4万</strong></td>
+              <td class="num">7.3%</td>
+            </tr>
+            <tr style="background:rgba(239,68,68,0.1);">
+              <td><strong>EOL品合计</strong></td>
+              <td class="num">142万</td><td class="num"><strong>13.5万</strong></td>
+              <td class="num"><strong>8.0万</strong></td>
+              <td class="num"><strong>6.9万</strong></td>
+              <td class="num"><strong style="color:#ef4444;">28.4万</strong></td>
+              <td class="num"><strong style="color:#ef4444;">47.3%</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <div class="section" id="sec-trend">
     <h2>📈 近7周 DP Fashion 积压趋势</h2>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>近7周积压量稳定在 <span class="hl">55万件</span>左右，12m+ 库龄占比约 45%，去化缓慢。<span class="hl">治疗建议：</span>对 6-9m 库存启动限时促销防止深化，12m+ 库存启动深度清仓。</p>
+    </div>
     <div class="trend-wrap">
       <div id="trendChart"></div>
       <table class="trend-table">
-        <thead><tr><th>周</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>合计</th><th class="num">环比</th></tr></thead>
+        <thead><tr><th>周</th><th class="num">总库存</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>合计</th><th class="num">环比</th></tr></thead>
         <tbody>
-          <tr><td>W21</td><td>16.2万</td><td>14.1万</td><td>24.8万</td><td>55.1万</td><td class="num">—</td></tr>
-          <tr><td>W22</td><td>15.8万</td><td>14.5万</td><td>25.2万</td><td>55.5万</td><td class="num" style="color:#ef4444;">↑ +0.7%</td></tr>
-          <tr><td>W23</td><td>16.5万</td><td>14.2万</td><td>25.5万</td><td>56.2万</td><td class="num" style="color:#ef4444;">↑ +1.3%</td></tr>
-          <tr><td>W24</td><td>17.1万</td><td>13.9万</td><td>25.8万</td><td>56.8万</td><td class="num" style="color:#ef4444;">↑ +1.1%</td></tr>
-          <tr><td>W25</td><td>17.8万</td><td>14.3万</td><td>25.1万</td><td>57.2万</td><td class="num" style="color:#ef4444;">↑ +0.7%</td></tr>
-          <tr><td>W26</td><td>18.2万</td><td>14.0万</td><td>25.7万</td><td>57.9万</td><td class="num" style="color:#ef4444;">↑ +1.2%</td></tr>
-          <tr class="current"><td>W27</td><td>19.9万</td><td>13.6万</td><td>26.5万</td><td>59.9万</td><td class="num" style="color:#ef4444;">↑ +3.5%</td></tr>
+          <tr><td>W21</td><td class="num">276万</td><td>16.2万</td><td>14.1万</td><td>24.8万</td><td>55.1万</td><td class="num">—</td></tr>
+          <tr><td>W22</td><td class="num">278万</td><td>15.8万</td><td>14.5万</td><td>25.2万</td><td>55.5万</td><td class="num" style="color:#ef4444;">↑ +0.7%</td></tr>
+          <tr><td>W23</td><td class="num">281万</td><td>16.5万</td><td>14.2万</td><td>25.5万</td><td>56.2万</td><td class="num" style="color:#ef4444;">↑ +1.3%</td></tr>
+          <tr><td>W24</td><td class="num">284万</td><td>17.1万</td><td>13.9万</td><td>25.8万</td><td>56.8万</td><td class="num" style="color:#ef4444;">↑ +1.1%</td></tr>
+          <tr><td>W25</td><td class="num">286万</td><td>17.8万</td><td>14.3万</td><td>25.1万</td><td>57.2万</td><td class="num" style="color:#ef4444;">↑ +0.7%</td></tr>
+          <tr><td>W26</td><td class="num">290万</td><td>18.2万</td><td>14.0万</td><td>25.7万</td><td>57.9万</td><td class="num" style="color:#ef4444;">↑ +1.2%</td></tr>
+          <tr class="current"><td>W27</td><td class="num">300万</td><td>19.9万</td><td>13.6万</td><td>26.5万</td><td>59.9万</td><td class="num" style="color:#ef4444;">↑ +3.5%</td></tr>
         </tbody>
       </table>
     </div>
@@ -206,17 +346,26 @@
   <div class="section" id="sec-cat">
     <h2>📦 DP Fashion 类目积压分布</h2>
     <div class="sec-sub">按类目分组 · 各库龄段库存明细</div>
+    <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <span style="font-size:18px;">🤖</span>
+        <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
+      </div>
+      <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
+        Fashion Sneakers 为该 CT 最大积压类目，占比超 60%，建议优先启动该类目的清仓策略。
+      </div>
+    </div>
     <div class="tab-grid">
       <div class="tab-chart-wrap"><div class="tab-chart" id="catChart"></div></div>
       <div class="tab-table-wrap">
         <table>
           <thead><tr><th>类目</th><th class="num">总库存</th><th class="num">6-9m</th><th class="num">9-12m</th><th class="num">12m+</th><th class="num">超6m合计</th><th class="num">占比</th></tr></thead>
           <tbody>
-            <tr><td><strong><a href="Fashion Sneakers_积压风险报告.html" style="color:#e2e8f0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#60a5fa'" onmouseout="this.style.color='#e2e8f0'">Fashion Sneakers</a></strong></td><td class="num">280.0万</td><td class="num">11.8万</td><td class="num">8.2万</td><td class="num">16.1万</td><td class="num"><strong>36.1万</strong></td><td class="num"><strong style="color:#ef4444;">60.3%</strong></td></tr>
-            <tr><td><strong>Ankle Boots</strong></td><td class="num">95.0万</td><td class="num">4.2万</td><td class="num">2.8万</td><td class="num">5.2万</td><td class="num"><strong>12.2万</strong></td><td class="num"><strong style="color:#ef4444;">20.4%</strong></td></tr>
-            <tr><td><strong>Dress Oxfords</strong></td><td class="num">65.0万</td><td class="num">2.1万</td><td class="num">1.6万</td><td class="num">3.2万</td><td class="num"><strong>6.9万</strong></td><td class="num">11.5%</td></tr>
-            <tr><td><strong>Loafers</strong></td><td class="num">40.0万</td><td class="num">1.2万</td><td class="num">0.6万</td><td class="num">1.4万</td><td class="num"><strong>3.2万</strong></td><td class="num">5.3%</td></tr>
-            <tr><td><strong>其他</strong></td><td class="num">30.0万</td><td class="num">0.6万</td><td class="num">0.4万</td><td class="num">0.6万</td><td class="num"><strong>1.5万</strong></td><td class="num">2.5%</td></tr>
+            <tr><td><strong><a href="Fashion Sneakers_积压风险报告.html" style="color:#e2e8f0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#60a5fa'" onmouseout="this.style.color='#e2e8f0'">Fashion Sneakers</a></strong></td><td class="num">180万</td><td class="num">11.8万</td><td class="num">8.2万</td><td class="num">16.1万</td><td class="num"><strong>36.1万</strong></td><td class="num"><strong style="color:#ef4444;">60.3%</strong></td></tr>
+            <tr><td><strong>Ankle Boots</strong></td><td class="num">61.0万</td><td class="num">4.2万</td><td class="num">2.8万</td><td class="num">5.2万</td><td class="num"><strong>12.2万</strong></td><td class="num"><strong style="color:#ef4444;">20.4%</strong></td></tr>
+            <tr><td><strong>Dress Oxfords</strong></td><td class="num">34.5万</td><td class="num">2.1万</td><td class="num">1.6万</td><td class="num">3.2万</td><td class="num"><strong>6.9万</strong></td><td class="num">11.5%</td></tr>
+            <tr><td><strong>Loafers</strong></td><td class="num">16.0万</td><td class="num">1.2万</td><td class="num">0.6万</td><td class="num">1.4万</td><td class="num"><strong>3.2万</strong></td><td class="num">5.3%</td></tr>
+            <tr><td><strong>其他</strong></td><td class="num">7.5万</td><td class="num">0.6万</td><td class="num">0.4万</td><td class="num">0.6万</td><td class="num"><strong>1.5万</strong></td><td class="num">2.5%</td></tr>
             <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td class="num"><strong>510.0万</strong></td><td class="num">19.9万</td><td class="num">13.6万</td><td class="num">26.5万</td><td class="num"><strong>59.9万</strong></td><td class="num">100%</td></tr>
           </tbody>
         </table>
@@ -239,7 +388,7 @@
       <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI 诊断总结</span>
+          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
         </div>
         <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
           DP Fashion 正常品占比较高但去化迟缓，EOL 产品由于失去 Listing 流量权重，沉淀为高危僵死资产。
@@ -253,8 +402,8 @@
           <table>
             <thead><tr><th>指标名称</th><th>季节</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
             <tbody>
-              <tr><td><strong>正常产品</strong></td><td>四季款/两季款</td><td class="num">320.0万</td><td class="num">14.2万</td><td class="num">9.1万</td><td class="num">8.3万</td><td class="num"><strong>31.6万</strong></td><td class="num">52.8%</td></tr>
-              <tr><td><strong style="color:#ef4444;">EOL产品</strong></td><td>四季款</td><td class="num">190.0万</td><td class="num">5.7万</td><td class="num">4.5万</td><td class="num">18.2万</td><td class="num"><strong>28.4万</strong></td><td class="num">47.4%</td></tr>
+              <tr><td><strong>正常产品</strong></td><td>四季款/两季款</td><td class="num">158万</td><td class="num">14.2万</td><td class="num">9.1万</td><td class="num">8.3万</td><td class="num"><strong>31.6万</strong></td><td class="num">52.8%</td></tr>
+              <tr><td><strong style="color:#ef4444;">EOL产品</strong></td><td>四季款</td><td class="num">142万</td><td class="num">5.7万</td><td class="num">4.5万</td><td class="num">18.2万</td><td class="num"><strong>28.4万</strong></td><td class="num">47.4%</td></tr>
               <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td><strong>全大盘</strong></td><td class="num"><strong>510.0万</strong></td><td class="num">19.9万</td><td class="num">13.6万</td><td class="num">26.5万</td><td class="num"><strong>59.9万</strong></td><td class="num">100%</td></tr>
             </tbody>
           </table>
@@ -267,7 +416,7 @@
       <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI 诊断总结</span>
+          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
         </div>
         <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
           DP Fashion 冗余库存呈现高度集中的渠道头部效应，前三大备货渠道冗余合计占比 &gt;72%。
@@ -281,10 +430,10 @@
           <table>
             <thead><tr><th>指标名称</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th></tr></thead>
             <tbody>
-              <tr><td><strong>AmazonUS</strong></td><td class="num">220.0万</td><td class="num">12.5万</td><td class="num">8.6万</td><td class="num">15.9万</td><td class="num"><strong>37.0万</strong></td></tr>
-              <tr><td><strong>Shein</strong></td><td class="num">120.0万</td><td class="num">4.5万</td><td class="num">3.2万</td><td class="num">6.8万</td><td class="num"><strong>14.5万</strong></td></tr>
-              <tr><td><strong>Standwebsite</strong></td><td class="num">70.0万</td><td class="num">1.9万</td><td class="num">1.1万</td><td class="num">2.3万</td><td class="num"><strong>5.3万</strong></td></tr>
-              <tr><td><strong>其他渠道</strong></td><td class="num">100.0万</td><td class="num">1.0万</td><td class="num">0.7万</td><td class="num">1.5万</td><td class="num"><strong>3.2万</strong></td></tr>
+              <tr><td><strong>AmazonUS</strong></td><td class="num">185万</td><td class="num">12.5万</td><td class="num">8.6万</td><td class="num">15.9万</td><td class="num"><strong>37.0万</strong></td></tr>
+              <tr><td><strong>Shein</strong></td><td class="num">72.5万</td><td class="num">4.5万</td><td class="num">3.2万</td><td class="num">6.8万</td><td class="num"><strong>14.5万</strong></td></tr>
+              <tr><td><strong>Standwebsite</strong></td><td class="num">26.5万</td><td class="num">1.9万</td><td class="num">1.1万</td><td class="num">2.3万</td><td class="num"><strong>5.3万</strong></td></tr>
+              <tr><td><strong>其他渠道</strong></td><td class="num">16.0万</td><td class="num">1.0万</td><td class="num">0.7万</td><td class="num">1.5万</td><td class="num"><strong>3.2万</strong></td></tr>
               <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td class="num"><strong>510.0万</strong></td><td class="num">19.9万</td><td class="num">13.6万</td><td class="num">26.5万</td><td class="num"><strong>59.9万</strong></td></tr>
             </tbody>
           </table>
@@ -297,7 +446,7 @@
       <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI 诊断总结</span>
+          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
         </div>
         <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
           非重点配色（长尾测试色、冷门色）的冗余沉淀明显，说明前期"宽测款"备货存在偏差。
@@ -311,8 +460,8 @@
           <table>
             <thead><tr><th>指标名称</th><th>SKC 属性</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
             <tbody>
-              <tr><td><strong>重点配色</strong></td><td>重点 SKC</td><td class="num">400.0万</td><td class="num">17.1万</td><td class="num">11.8万</td><td class="num">22.8万</td><td class="num"><strong>51.7万</strong></td><td class="num">86.3%</td></tr>
-              <tr><td><strong style="color:#f59e0b;">非重点配色</strong></td><td>非重点 SKC</td><td class="num">110.0万</td><td class="num">2.8万</td><td class="num">1.8万</td><td class="num">3.7万</td><td class="num"><strong>8.3万</strong></td><td class="num">13.9%</td></tr>
+              <tr><td><strong>重点配色</strong></td><td>重点 SKC</td><td class="num">258万</td><td class="num">17.1万</td><td class="num">11.8万</td><td class="num">22.8万</td><td class="num"><strong>51.7万</strong></td><td class="num">86.3%</td></tr>
+              <tr><td><strong style="color:#f59e0b;">非重点配色</strong></td><td>非重点 SKC</td><td class="num">41.5万</td><td class="num">2.8万</td><td class="num">1.8万</td><td class="num">3.7万</td><td class="num"><strong>8.3万</strong></td><td class="num">13.9%</td></tr>
               <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td><strong>全大盘</strong></td><td class="num"><strong>510.0万</strong></td><td class="num">19.9万</td><td class="num">13.6万</td><td class="num">26.5万</td><td class="num"><strong>59.9万</strong></td><td class="num">100%</td></tr>
             </tbody>
           </table>
@@ -325,7 +474,7 @@
       <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI 诊断总结</span>
+          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
         </div>
         <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
           黄金标准码由于整体供需脱节产生了大量被动冗余；而非标准码及欧楦呈现长库龄"沉睡"特征。
@@ -339,9 +488,9 @@
           <table>
             <thead><tr><th>指标名称</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
             <tbody>
-              <tr><td><strong>黄金标准码</strong></td><td class="num">280.0万</td><td class="num">12.1万</td><td class="num">8.5万</td><td class="num">14.2万</td><td class="num"><strong>34.8万</strong></td><td class="num">58.1%</td></tr>
-              <tr><td><strong>非标准码</strong></td><td class="num">150.0万</td><td class="num">4.9万</td><td class="num">3.2万</td><td class="num">7.8万</td><td class="num"><strong>15.9万</strong></td><td class="num">26.5%</td></tr>
-              <tr><td><strong>欧楦</strong></td><td class="num">80.0万</td><td class="num">2.9万</td><td class="num">1.9万</td><td class="num">4.5万</td><td class="num"><strong>9.3万</strong></td><td class="num">15.5%</td></tr>
+              <tr><td><strong>黄金标准码</strong></td><td class="num">174万</td><td class="num">12.1万</td><td class="num">8.5万</td><td class="num">14.2万</td><td class="num"><strong>34.8万</strong></td><td class="num">58.1%</td></tr>
+              <tr><td><strong>非标准码</strong></td><td class="num">79.5万</td><td class="num">4.9万</td><td class="num">3.2万</td><td class="num">7.8万</td><td class="num"><strong>15.9万</strong></td><td class="num">26.5%</td></tr>
+              <tr><td><strong>欧楦</strong></td><td class="num">46.5万</td><td class="num">2.9万</td><td class="num">1.9万</td><td class="num">4.5万</td><td class="num"><strong>9.3万</strong></td><td class="num">15.5%</td></tr>
               <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td class="num"><strong>510.0万</strong></td><td class="num">19.9万</td><td class="num">13.6万</td><td class="num">26.5万</td><td class="num"><strong>59.9万</strong></td><td class="num">100%</td></tr>
             </tbody>
           </table>
@@ -350,183 +499,40 @@
     </div>
   </div>
 
-  <!-- 根因矩阵 -->
-  <div class="section" id="sec-root">
-    <h2>🔍 积压库存根因结构矩阵</h2>
-    <div class="sec-sub">按正常品 / EOL品分层诊断根因</div>
-
-    <div class="root-matrix-grid">
-      <!-- 正常产品积压根因矩阵 -->
-      <div class="root-matrix-card">
-        <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-          <span style="display:inline-block;width:8px;height:8px;background:#3b82f6;border-radius:50%;"></span>
-          1. 正常产品积压根因矩阵
-          <span style="font-size:13px;color:#94a3b8;font-weight:400;margin-left:auto;">正常品总冗余: 31.6万双</span>
-        </h3>
-        <table>
-          <thead>
-            <tr>
-              <th>指标名称 (正常品根因)</th>
-              <th class="num">6-9m库龄</th>
-              <th class="num">9-12m库龄</th>
-              <th class="num">超12m库龄</th>
-              <th class="num">超6m合计</th>
-              <th class="num">占比</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong style="color:#f59e0b;">预测偏高</strong></td>
-              <td class="num">6.0万</td>
-              <td class="num">3.5万</td>
-              <td class="num">3.0万</td>
-              <td class="num"><strong>12.5万</strong></td>
-              <td class="num">20.8%</td>
-            </tr>
-            <tr>
-              <td><strong style="color:#8b5cf6;">12M+之前入库</strong></td>
-              <td class="num">0.0万</td>
-              <td class="num">2.0万</td>
-              <td class="num">5.8万</td>
-              <td class="num"><strong>7.8万</strong></td>
-              <td class="num">13.0%</td>
-            </tr>
-            <tr>
-              <td><strong style="color:#06b6d4;">非重点skc</strong></td>
-              <td class="num">2.1万</td>
-              <td class="num">1.8万</td>
-              <td class="num">1.7万</td>
-              <td class="num"><strong>5.6万</strong></td>
-              <td class="num">9.3%</td>
-            </tr>
-            <tr>
-              <td><strong>非标准码段</strong></td>
-              <td class="num">1.2万</td>
-              <td class="num">0.8万</td>
-              <td class="num">1.8万</td>
-              <td class="num"><strong>3.8万</strong></td>
-              <td class="num">6.3%</td>
-            </tr>
-            <tr>
-              <td><strong style="color:#64748b;">其它</strong></td>
-              <td class="num">0.6万</td>
-              <td class="num">0.3万</td>
-              <td class="num">1.0万</td>
-              <td class="num"><strong>1.9万</strong></td>
-              <td class="num">3.2%</td>
-            </tr>
-            <tr style="background:rgba(59,130,246,0.1);">
-              <td><strong>正常品合计</strong></td>
-              <td class="num"><strong>9.9万</strong></td>
-              <td class="num"><strong>8.4万</strong></td>
-              <td class="num"><strong>13.3万</strong></td>
-              <td class="num"><strong style="color:#3b82f6;">31.6万</strong></td>
-              <td class="num"><strong style="color:#3b82f6;">52.7%</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- EOL产品积压根因矩阵 -->
-      <div class="root-matrix-card eol">
-        <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-          <span style="display:inline-block;width:8px;height:8px;background:#ef4444;border-radius:50%;"></span>
-          2. EOL产品积压根因矩阵
-          <span style="font-size:13px;color:#94a3b8;font-weight:400;margin-left:auto;">EOL产品总冗余: 28.4万双</span>
-        </h3>
-        <table>
-          <thead>
-            <tr>
-              <th>指标名称 (EOL品根因)</th>
-              <th class="num">6-9m库龄</th>
-              <th class="num">9-12m库龄</th>
-              <th class="num">超12m库龄</th>
-              <th class="num">超6m合计</th>
-              <th class="num">占比</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong style="color:#ef4444;">24年新品</strong></td>
-              <td class="num">6.0万</td>
-              <td class="num">4.0万</td>
-              <td class="num">3.5万</td>
-              <td class="num"><strong>13.5万</strong></td>
-              <td class="num">22.5%</td>
-            </tr>
-            <tr>
-              <td><strong style="color:#f59e0b;">25年新品</strong></td>
-              <td class="num">4.0万</td>
-              <td class="num">2.0万</td>
-              <td class="num">1.0万</td>
-              <td class="num"><strong>7.0万</strong></td>
-              <td class="num">11.7%</td>
-            </tr>
-            <tr>
-              <td><strong style="color:#10b981;">26年新品</strong></td>
-              <td class="num">2.0万</td>
-              <td class="num">1.0万</td>
-              <td class="num">0.5万</td>
-              <td class="num"><strong>3.5万</strong></td>
-              <td class="num">5.8%</td>
-            </tr>
-            <tr>
-              <td><strong style="color:#ef4444;">高风险（侵权）</strong></td>
-              <td class="num">1.5万</td>
-              <td class="num">1.0万</td>
-              <td class="num">1.9万</td>
-              <td class="num"><strong>4.4万</strong></td>
-              <td class="num">7.3%</td>
-            </tr>
-            <tr style="background:rgba(239,68,68,0.1);">
-              <td><strong>EOL品合计</strong></td>
-              <td class="num"><strong>13.5万</strong></td>
-              <td class="num"><strong>8.0万</strong></td>
-              <td class="num"><strong>6.9万</strong></td>
-              <td class="num"><strong style="color:#ef4444;">28.4万</strong></td>
-              <td class="num"><strong style="color:#ef4444;">47.3%</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div style="margin-top:16px;padding:14px 18px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;font-size:12.5px;color:#cbd5e1;line-height:1.8;">
-      💡 <strong style="color:#fca5a5;">根因诊断结论：</strong>
-      <strong style="color:#fbbf24;">正常品</strong>主要根因是预测偏高（20.8%）和早期入库沉淀（13.0%）；<strong style="color:#ef4444;">EOL品</strong>核心问题是新品生命周期管理失败，24-26年新品占比达40.0%，建议加强新品上市前的市场测试与快速退市机制。
-    </div>
-  </div>
-
   <div class="section" id="sec-top20">
     <h2>🔝 DP Fashion 积压款式 Top 20</h2>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>Top 3 款式（SDFN2379W + SDFN2415W + SDFN2413W）合计积压 <span class="hl">6.9万件</span>，全部为 EOL 状态。<span class="hl">治疗建议：</span>对 Top 10 款式逐一制定清仓计划，优先处理已进入 12m+ 库龄的款式。</p>
+    </div>
     <table class="style-table">
-      <thead><tr><th>#</th><th>款式</th><th>品牌</th><th>类目</th><th>SKU</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>超6m合计</th></tr></thead>
+      <thead><tr><th>#</th><th>款式</th><th>品牌</th><th>类目</th><th>SKU</th><th class="num">总库存</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>超6m合计</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td><span class="st"><a href="SDFN2379W_积压风险报告.html" style="color:#e2e8f0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#60a5fa'" onmouseout="this.style.color='#e2e8f0'">SDFN2379W</a></span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">1,248</td><td>0万</td><td>0万</td><td><span class="tag red">3.9万</span></td><td><strong>3.9万</strong></td></tr>
-        <tr><td>2</td><td><span class="st">SDFN2415W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">892</td><td>0万</td><td>0万</td><td><span class="tag red">1.6万</span></td><td><strong>1.6万</strong></td></tr>
-        <tr><td>3</td><td><span class="st">SDFN2413W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">756</td><td>0万</td><td>0万</td><td><span class="tag red">1.4万</span></td><td><strong>1.4万</strong></td></tr>
-        <tr><td>4</td><td><span class="st">SDFN2368W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">689</td><td>0.6万</td><td>0万</td><td>0.6万</td><td><strong>1.2万</strong></td></tr>
-        <tr><td>5</td><td><span class="st">SDFN2406W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">645</td><td>0万</td><td>0万</td><td><span class="tag red">0.9万</span></td><td><strong>0.9万</strong></td></tr>
-        <tr><td>6</td><td><span class="st">SDFN2455W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">598</td><td>0万</td><td>0万</td><td><span class="tag red">0.7万</span></td><td><strong>0.7万</strong></td></tr>
-        <tr><td>7</td><td><span class="st">SDSB2427W</span></td><td><span class="bg">DP Fashion</span></td><td>Ankle Boots</td><td class="num">523</td><td><span class="tag orange">1.2万</span></td><td>0.1万</td><td>0.2万</td><td><strong>1.5万</strong></td></tr>
-        <tr><td>8</td><td><span class="st">SDSL2413W</span></td><td><span class="bg">DP Fashion</span></td><td>Dress Oxfords</td><td class="num">489</td><td><span class="tag orange">1.1万</span></td><td>0.3万</td><td>0.1万</td><td><strong>1.5万</strong></td></tr>
-        <tr><td>9</td><td><span class="st">SNAS222M</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">456</td><td><span class="tag orange">1.3万</span></td><td>0万</td><td>0万</td><td><strong>1.3万</strong></td></tr>
-        <tr><td>10</td><td><span class="st">SDKB2407W</span></td><td><span class="bg">DP Fashion</span></td><td>Loafers</td><td class="num">423</td><td>0.8万</td><td>0.2万</td><td>0.1万</td><td><strong>1.1万</strong></td></tr>
-        <tr><td>11</td><td><span class="st">SDSB2428W</span></td><td><span class="bg">DP Fashion</span></td><td>Ankle Boots</td><td class="num">398</td><td>0万</td><td><span class="tag orange">0.9万</span></td><td>0.1万</td><td><strong>1.0万</strong></td></tr>
-        <tr><td>12</td><td><span class="st">SDSL2412W</span></td><td><span class="bg">DP Fashion</span></td><td>Dress Oxfords</td><td class="num">376</td><td>0.7万</td><td>0.1万</td><td>0万</td><td><strong>0.8万</strong></td></tr>
-        <tr><td>13</td><td><span class="st">SNWS245W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">354</td><td>0.7万</td><td>0万</td><td>0万</td><td><strong>0.8万</strong></td></tr>
-        <tr><td>14</td><td><span class="st">SNRS24007W-L</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">332</td><td>0.8万</td><td>0万</td><td>0万</td><td><strong>0.8万</strong></td></tr>
-        <tr><td>15</td><td><span class="st">SDSB2432W</span></td><td><span class="bg">DP Fashion</span></td><td>Ankle Boots</td><td class="num">312</td><td>0.3万</td><td>0.3万</td><td>0万</td><td><strong>0.7万</strong></td></tr>
-        <tr><td>16</td><td><span class="st">SDFN2422W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">298</td><td>0.5万</td><td>0.2万</td><td>0万</td><td><strong>0.7万</strong></td></tr>
-        <tr><td>17</td><td><span class="st">SDMB2221W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">287</td><td>0.4万</td><td>0.2万</td><td>0.1万</td><td><strong>0.7万</strong></td></tr>
-        <tr><td>18</td><td><span class="st">SDKB2415W</span></td><td><span class="bg">DP Fashion</span></td><td>Loafers</td><td class="num">265</td><td>0.4万</td><td>0.2万</td><td>0.1万</td><td><strong>0.7万</strong></td></tr>
-        <tr><td>19</td><td><span class="st">SDFN2431W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">256</td><td>0.3万</td><td>0.3万</td><td>0万</td><td><strong>0.6万</strong></td></tr>
-        <tr><td>20</td><td><span class="st">SNAS235M</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">245</td><td>0.5万</td><td>0.1万</td><td>0万</td><td><strong>0.6万</strong></td></tr>
+        <tr><td>1</td><td><span class="st"><a href="SDFN2379W_积压风险报告.html" style="color:#e2e8f0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#60a5fa'" onmouseout="this.style.color='#e2e8f0'">SDFN2379W</a></span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">1,248</td><td class="num">19.5万</td><td>0万</td><td>0万</td><td><span class="tag red">3.9万</span></td><td><strong>3.9万</strong></td></tr>
+        <tr><td>2</td><td><span class="st">SDFN2415W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">892</td><td class="num">8.0万</td><td>0万</td><td>0万</td><td><span class="tag red">1.6万</span></td><td><strong>1.6万</strong></td></tr>
+        <tr><td>3</td><td><span class="st">SDFN2413W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">756</td><td class="num">7.0万</td><td>0万</td><td>0万</td><td><span class="tag red">1.4万</span></td><td><strong>1.4万</strong></td></tr>
+        <tr><td>4</td><td><span class="st">SDFN2368W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">689</td><td class="num">6.0万</td><td>0.6万</td><td>0万</td><td>0.6万</td><td><strong>1.2万</strong></td></tr>
+        <tr><td>5</td><td><span class="st">SDFN2406W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">645</td><td class="num">4.5万</td><td>0万</td><td>0万</td><td><span class="tag red">0.9万</span></td><td><strong>0.9万</strong></td></tr>
+        <tr><td>6</td><td><span class="st">SDFN2455W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">598</td><td class="num">3.5万</td><td>0万</td><td>0万</td><td><span class="tag red">0.7万</span></td><td><strong>0.7万</strong></td></tr>
+        <tr><td>7</td><td><span class="st">SDSB2427W</span></td><td><span class="bg">DP Fashion</span></td><td>Ankle Boots</td><td class="num">523</td><td class="num">7.5万</td><td><span class="tag orange">1.2万</span></td><td>0.1万</td><td>0.2万</td><td><strong>1.5万</strong></td></tr>
+        <tr><td>8</td><td><span class="st">SDSL2413W</span></td><td><span class="bg">DP Fashion</span></td><td>Dress Oxfords</td><td class="num">489</td><td class="num">7.5万</td><td><span class="tag orange">1.1万</span></td><td>0.3万</td><td>0.1万</td><td><strong>1.5万</strong></td></tr>
+        <tr><td>9</td><td><span class="st">SNAS222M</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">456</td><td class="num">6.5万</td><td><span class="tag orange">1.3万</span></td><td>0万</td><td>0万</td><td><strong>1.3万</strong></td></tr>
+        <tr><td>10</td><td><span class="st">SDKB2407W</span></td><td><span class="bg">DP Fashion</span></td><td>Loafers</td><td class="num">423</td><td class="num">5.5万</td><td>0.8万</td><td>0.2万</td><td>0.1万</td><td><strong>1.1万</strong></td></tr>
+        <tr><td>11</td><td><span class="st">SDSB2428W</span></td><td><span class="bg">DP Fashion</span></td><td>Ankle Boots</td><td class="num">398</td><td class="num">5.0万</td><td>0万</td><td><span class="tag orange">0.9万</span></td><td>0.1万</td><td><strong>1.0万</strong></td></tr>
+        <tr><td>12</td><td><span class="st">SDSL2412W</span></td><td><span class="bg">DP Fashion</span></td><td>Dress Oxfords</td><td class="num">376</td><td class="num">4.0万</td><td>0.7万</td><td>0.1万</td><td>0万</td><td><strong>0.8万</strong></td></tr>
+        <tr><td>13</td><td><span class="st">SNWS245W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">354</td><td class="num">4.0万</td><td>0.7万</td><td>0万</td><td>0万</td><td><strong>0.8万</strong></td></tr>
+        <tr><td>14</td><td><span class="st">SNRS24007W-L</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">332</td><td class="num">4.0万</td><td>0.8万</td><td>0万</td><td>0万</td><td><strong>0.8万</strong></td></tr>
+        <tr><td>15</td><td><span class="st">SDSB2432W</span></td><td><span class="bg">DP Fashion</span></td><td>Ankle Boots</td><td class="num">312</td><td class="num">3.5万</td><td>0.3万</td><td>0.3万</td><td>0万</td><td><strong>0.7万</strong></td></tr>
+        <tr><td>16</td><td><span class="st">SDFN2422W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">298</td><td class="num">3.5万</td><td>0.5万</td><td>0.2万</td><td>0万</td><td><strong>0.7万</strong></td></tr>
+        <tr><td>17</td><td><span class="st">SDMB2221W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">287</td><td class="num">3.5万</td><td>0.4万</td><td>0.2万</td><td>0.1万</td><td><strong>0.7万</strong></td></tr>
+        <tr><td>18</td><td><span class="st">SDKB2415W</span></td><td><span class="bg">DP Fashion</span></td><td>Loafers</td><td class="num">265</td><td class="num">3.5万</td><td>0.4万</td><td>0.2万</td><td>0.1万</td><td><strong>0.7万</strong></td></tr>
+        <tr><td>19</td><td><span class="st">SDFN2431W</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">256</td><td class="num">3.0万</td><td>0.3万</td><td>0.3万</td><td>0万</td><td><strong>0.6万</strong></td></tr>
+        <tr><td>20</td><td><span class="st">SNAS235M</span></td><td><span class="bg">DP Fashion</span></td><td>Fashion Sneakers</td><td class="num">245</td><td class="num">3.0万</td><td>0.5万</td><td>0.1万</td><td>0万</td><td><strong>0.6万</strong></td></tr>
       </tbody>
     </table>
   </div>
 
-  <div class="footer">🌍 DP Fashion 积压风险报告 · 数据截止 2026-07-04 · 仅供内部参考</div>
+  <div class="footer">🌍 DP Fashion 积压风险AI诊断报告 · 数据截止 2026-07-04 · 仅供内部参考</div>
 </div>
 
 <script>
@@ -681,7 +687,7 @@ chart3.setOption({
 
 (function() {
   var navLinks = document.querySelectorAll('.page-nav a');
-  var sections = ['sec-insight', 'sec-trend', 'sec-cat', 'sec-multi', 'sec-root', 'sec-top20'].map(function(id){ return document.getElementById(id); });
+  var sections = ['sec-insight', 'sec-root', 'sec-trend', 'sec-cat', 'sec-multi', 'sec-top20'].map(function(id){ return document.getElementById(id); });
   navLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
       e.preventDefault();

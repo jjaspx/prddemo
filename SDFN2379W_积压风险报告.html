@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SDFN2379W 积压风险报告</title>
+<title>SDFN2379W 积压风险AI诊断报告</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <link rel="stylesheet" href="report-nav.css">
 <style>
@@ -149,15 +149,15 @@
 <body>
 <nav class="page-nav" id="pageNav">
   <a href="#sec-insight" data-target="sec-insight"><span class="nav-dot"></span>AI洞察</a>
+  <a href="#sec-root" data-target="sec-root"><span class="nav-dot"></span>根因矩阵</a>
   <a href="#sec-trend" data-target="sec-trend"><span class="nav-dot"></span>趋势</a>
   <a href="#sec-multi" data-target="sec-multi"><span class="nav-dot"></span>结构分析</a>
-  <a href="#sec-root" data-target="sec-root"><span class="nav-dot"></span>根因矩阵</a>
   <a href="#sec-sku" data-target="sec-sku"><span class="nav-dot"></span>TOP SKU</a>
 </nav>
 
 <div class="container">
   <div class="header">
-    <h1><span class="title-text"><span class="globe">👟</span> SDFN2379W 积压风险报告</span><span class="score-cluster"><span class="score-num danger">42</span><span class="score-mom">↑ 环比 +5.3%</span><span class="score-tag">款式维度 · 高危</span></span></h1>
+    <h1><span class="title-text"><span class="globe">👟</span> SDFN2379W 积压风险AI诊断报告</span><span class="score-cluster"><span class="score-num danger">42</span><span class="score-mom">↑ 环比 +5.3%</span></span></h1>
     <div class="meta"><span class="sub">DP Fashion · Fashion Sneakers · 款式级积压详情</span> &nbsp;|&nbsp; 数据截止：2026-07-04（W27）&nbsp;|&nbsp; 数据来源：ads_inventory_health_backlog_risk_df</div>
     <div class="style-info">
       <span><span class="info-label">款式编号：</span><span class="info-val">SDFN2379W</span></span>
@@ -169,18 +169,8 @@
     </div>
   </div>
 
-  <div class="report-breadcrumb">
-    <div class="breadcrumb-item"><a href="全球积压风险报告.html">🌍 全球全景</a></div>
-    <span class="breadcrumb-sep">→</span>
-    <div class="breadcrumb-item"><a href="DP Fashion_积压风险报告.html">DP Fashion</a></div>
-    <span class="breadcrumb-sep">→</span>
-    <div class="breadcrumb-item"><a href="Fashion Sneakers_积压风险报告.html">Fashion Sneakers</a></div>
-    <span class="breadcrumb-sep">→</span>
-    <div class="breadcrumb-item current">SDFN2379W</div>
-  </div>
-
   <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-label">SKU 数</div><div class="kpi-value-line"><span class="kpi-value">1,248<span class="kpi-unit">个</span></span><span class="kpi-trend down">↓ 3.2% 周环比</span></div></div>
+    <div class="kpi-card"><div class="kpi-label">总库存数</div><div class="kpi-value-line"><span class="kpi-value">3.9<span class="kpi-unit">万</span></span><span class="kpi-trend down">↓ 3.2% 周环比</span></div></div>
     <div class="kpi-card warning"><div class="kpi-label">6-9m 关注</div><div class="kpi-value-line"><span class="kpi-value">0<span class="kpi-unit">万</span></span><span class="kpi-trend down">—</span></div></div>
     <div class="kpi-card warning"><div class="kpi-label">9-12m 预警</div><div class="kpi-value-line"><span class="kpi-value">0<span class="kpi-unit">万</span></span><span class="kpi-trend down">—</span></div></div>
     <div class="kpi-card danger"><div class="kpi-label">12m+ 深度积压</div><div class="kpi-value-line"><span class="kpi-value">3.9<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 6.1% 周环比</span></div></div>
@@ -188,7 +178,7 @@
   </div>
 
   <div class="insight-box" id="sec-insight">
-    <div class="ititle">🤖 AI 款式积压洞察</div>
+    <div class="ititle">🤖 AI诊断与治疗方案</div>
     <p>SDFN2379W 是 Fashion Sneakers 类目积压最严重的款式，全部 <span class="hl">3.9万件</span> 库存均为 12m+ 深度积压，占类目深度积压的 <span class="hl">24.2%</span>。该款式已于 2025 年 12 月进入 EOL 状态，Listing 流量持续下滑，去化率不足 2%/月。</p>
     <ul>
       <li>🔴 <strong style="color:#ef4444;">紧急 — 全部为深度积压：</strong>100% 库存超过 12 个月，已进入成本倒挂区间（仓储费 + 资金成本 &gt; 残值）</li>
@@ -198,136 +188,14 @@
     </ul>
   </div>
 
-  <div class="section" id="sec-trend">
-    <h2>📈 近7周 SDFN2379W 积压趋势</h2>
-    <div class="trend-wrap">
-      <div id="trendChart"></div>
-      <table class="trend-table">
-        <thead><tr><th>周</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>合计</th><th class="num">环比</th></tr></thead>
-        <tbody>
-          <tr><td>W21</td><td>0万</td><td>0.8万</td><td>2.9万</td><td>3.7万</td><td class="num">—</td></tr>
-          <tr><td>W22</td><td>0万</td><td>0.6万</td><td>3.1万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
-          <tr><td>W23</td><td>0万</td><td>0.4万</td><td>3.3万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
-          <tr><td>W24</td><td>0万</td><td>0.2万</td><td>3.5万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
-          <tr><td>W25</td><td>0万</td><td>0万</td><td>3.6万</td><td>3.6万</td><td class="num" style="color:#10b981;">↓ -2.7%</td></tr>
-          <tr><td>W26</td><td>0万</td><td>0万</td><td>3.7万</td><td>3.7万</td><td class="num" style="color:#ef4444;">↑ +2.8%</td></tr>
-          <tr class="current"><td>W27</td><td>0万</td><td>0万</td><td>3.9万</td><td>3.9万</td><td class="num" style="color:#ef4444;">↑ +5.4%</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 多维度分析 -->
-  <div class="section" id="sec-multi">
-    <h2>🎯 多维度结构分析</h2>
-    <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab(0)">📦 备货渠道库存结构</button>
-      <button class="tab-btn" onclick="switchTab(1)">🎨 颜色 SKC 库存结构</button>
-      <button class="tab-btn" onclick="switchTab(2)">📐 尺码结构分布</button>
-    </div>
-
-    <!-- Tab 0: 备货渠道库存结构 -->
-    <div class="tab-panel active" id="tab0">
-      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI 诊断总结</span>
-        </div>
-        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
-          该款式 92% 的积压集中在 AmazonUS，FBA 长期仓储费持续累积，需优先制定亚马逊专属清仓方案。
-        </div>
-      </div>
-      <div class="tab-grid">
-        <div class="tab-chart-wrap">
-          <div class="tab-chart" id="chart0"></div>
-        </div>
-        <div class="tab-table-wrap">
-          <table>
-            <thead><tr><th>渠道</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
-            <tbody>
-              <tr><td><strong>AmazonUS</strong></td><td class="num">210.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">3.6万</td><td class="num"><strong>3.6万</strong></td><td class="num"><strong style="color:#ef4444;">92.3%</strong></td></tr>
-              <tr><td><strong>Shein</strong></td><td class="num">0.3万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.2万</td><td class="num"><strong>0.2万</strong></td><td class="num">5.1%</td></tr>
-              <tr><td><strong>Standwebsite</strong></td><td class="num">0.1万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.08万</td><td class="num"><strong>0.08万</strong></td><td class="num">2.1%</td></tr>
-              <tr><td><strong>其他渠道</strong></td><td class="num">0.05万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.02万</td><td class="num"><strong>0.02万</strong></td><td class="num">0.5%</td></tr>
-              <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num"><strong>3.9万</strong></td><td class="num">100%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 1: 颜色 SKC 库存结构 -->
-    <div class="tab-panel" id="tab1">
-      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI 诊断总结</span>
-        </div>
-        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
-          白色为该款式主力配色，积压量最大；灰色和蓝色为测试色，虽然量小但去化率更低，建议优先处理测试色回笼仓位。
-        </div>
-      </div>
-      <div class="tab-grid">
-        <div class="tab-chart-wrap">
-          <div class="tab-chart" id="chart1"></div>
-        </div>
-        <div class="tab-table-wrap">
-          <table>
-            <thead><tr><th>颜色</th><th>SKC</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
-            <tbody>
-              <tr><td><strong>白色 White</strong></td><td>主色</td><td class="num">2.8万</td><td class="num">0万</td><td class="num">0万</td><td class="num">2.2万</td><td class="num"><strong>2.2万</strong></td><td class="num"><strong style="color:#ef4444;">56.4%</strong></td></tr>
-              <tr><td><strong>黑色 Black</strong></td><td>主色</td><td class="num">1.5万</td><td class="num">0万</td><td class="num">0万</td><td class="num">1.2万</td><td class="num"><strong>1.2万</strong></td><td class="num"><strong style="color:#ef4444;">30.8%</strong></td></tr>
-              <tr><td><strong style="color:#f59e0b;">灰色 Grey</strong></td><td>测试色</td><td class="num">0.4万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.35万</td><td class="num"><strong>0.35万</strong></td><td class="num">9.0%</td></tr>
-              <tr><td><strong style="color:#f59e0b;">蓝色 Blue</strong></td><td>测试色</td><td class="num">0.25万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.15万</td><td class="num"><strong>0.15万</strong></td><td class="num">3.8%</td></tr>
-              <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td><strong>4 SKC</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num"><strong>3.9万</strong></td><td class="num">100%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 2: 尺码结构分布 -->
-    <div class="tab-panel" id="tab2">
-      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI 诊断总结</span>
-        </div>
-        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
-          US9 / US10 黄金码占积压总量 68%，是清仓重点。大码 US12 和小码 US6 占比虽低但去化极度困难，建议折价处理。
-        </div>
-      </div>
-      <div class="tab-grid">
-        <div class="tab-chart-wrap">
-          <div class="tab-chart" id="chart2"></div>
-        </div>
-        <div class="tab-table-wrap">
-          <table>
-            <thead><tr><th>尺码 (US)</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
-            <tbody>
-              <tr><td><strong>US6</strong></td><td class="num">0.15万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.12万</td><td class="num"><strong>0.12万</strong></td><td class="num">3.1%</td></tr>
-              <tr><td><strong>US7</strong></td><td class="num">0.35万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.28万</td><td class="num"><strong>0.28万</strong></td><td class="num">7.2%</td></tr>
-              <tr><td><strong>US8</strong></td><td class="num">0.6万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.48万</td><td class="num"><strong>0.48万</strong></td><td class="num">12.3%</td></tr>
-              <tr><td><strong>US9</strong></td><td class="num">0.95万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.75万</td><td class="num"><strong>0.75万</strong></td><td class="num">19.2%</td></tr>
-              <tr><td><strong>US10</strong></td><td class="num">1.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.8万</td><td class="num"><strong>0.8万</strong></td><td class="num"><strong style="color:#f59e0b;">20.5%</strong></td></tr>
-              <tr><td><strong>US11</strong></td><td class="num">0.8万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.62万</td><td class="num"><strong>0.62万</strong></td><td class="num">15.9%</td></tr>
-              <tr><td><strong>US12</strong></td><td class="num">0.55万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.45万</td><td class="num"><strong>0.45万</strong></td><td class="num">11.5%</td></tr>
-              <tr><td><strong>US13</strong></td><td class="num">0.3万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.22万</td><td class="num"><strong>0.22万</strong></td><td class="num">5.6%</td></tr>
-              <tr><td><strong>US14</strong></td><td class="num">0.25万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.18万</td><td class="num"><strong>0.18万</strong></td><td class="num">4.6%</td></tr>
-              <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num"><strong>3.9万</strong></td><td class="num">100%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-
-  </div>
-
   <!-- 根因矩阵 -->
   <div class="section" id="sec-root">
     <h2>🔍 积压库存根因结构矩阵</h2>
     <div class="sec-sub">按正常品 / EOL品分层诊断根因</div>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>该款式已全部进入 EOL 状态，积压 <span class="hl">3.9万件</span>全部为 12m+ 库龄。<span class="hl">治疗建议：</span>立即启动站外清仓和捆绑销售，避免长期仓储费持续累积。</p>
+    </div>
 
     <div class="root-matrix-grid">
       <!-- 正常产品积压根因矩阵 -->
@@ -353,7 +221,7 @@
           <thead>
             <tr>
               <th>指标名称 (EOL品根因)</th>
-              <th class="num">6-9m库龄</th>
+              <th class="num">总库存</th><th class="num">6-9m库龄</th>
               <th class="num">9-12m库龄</th>
               <th class="num">超12m库龄</th>
               <th class="num">超6m合计</th>
@@ -363,7 +231,7 @@
           <tbody>
             <tr>
               <td><strong style="color:#f59e0b;">25年新品</strong></td>
-              <td class="num">0.0万</td>
+              <td class="num">12.5万</td><td class="num">0.0万</td>
               <td class="num">0.0万</td>
               <td class="num">2.5万</td>
               <td class="num"><strong>2.5万</strong></td>
@@ -371,7 +239,7 @@
             </tr>
             <tr>
               <td><strong style="color:#8b5cf6;">12M+之前入库</strong></td>
-              <td class="num">0.0万</td>
+              <td class="num">3.0万</td><td class="num">0.0万</td>
               <td class="num">0.0万</td>
               <td class="num">0.6万</td>
               <td class="num"><strong>0.6万</strong></td>
@@ -379,7 +247,7 @@
             </tr>
             <tr>
               <td><strong style="color:#06b6d4;">非重点skc</strong></td>
-              <td class="num">0.0万</td>
+              <td class="num">2.0万</td><td class="num">0.0万</td>
               <td class="num">0.0万</td>
               <td class="num">0.4万</td>
               <td class="num"><strong>0.4万</strong></td>
@@ -387,7 +255,7 @@
             </tr>
             <tr>
               <td><strong style="color:#ef4444;">高风险（侵权）</strong></td>
-              <td class="num">0.0万</td>
+              <td class="num">1.0万</td><td class="num">0.0万</td>
               <td class="num">0.0万</td>
               <td class="num">0.2万</td>
               <td class="num"><strong>0.2万</strong></td>
@@ -395,7 +263,7 @@
             </tr>
             <tr>
               <td><strong style="color:#64748b;">其它</strong></td>
-              <td class="num">0.0万</td>
+              <td class="num">1.0万</td><td class="num">0.0万</td>
               <td class="num">0.0万</td>
               <td class="num">0.2万</td>
               <td class="num"><strong>0.2万</strong></td>
@@ -403,7 +271,7 @@
             </tr>
             <tr style="background:rgba(239,68,68,0.1);">
               <td><strong>EOL品合计</strong></td>
-              <td class="num"><strong>0.0万</strong></td>
+              <td class="num">19.5万</td><td class="num"><strong>0.0万</strong></td>
               <td class="num"><strong>0.0万</strong></td>
               <td class="num"><strong>3.9万</strong></td>
               <td class="num"><strong style="color:#ef4444;">3.9万</strong></td>
@@ -413,17 +281,146 @@
         </table>
       </div>
     </div>
+  </div>
 
-    <div style="margin-top:16px;padding:14px 18px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;font-size:12.5px;color:#cbd5e1;line-height:1.8;">
-      💡 <strong style="color:#fca5a5;">根因诊断结论：</strong>
-      该款式 <strong style="color:#ef4444;">100% 为 EOL 产品</strong>，核心根因是 <strong style="color:#fbbf24;">25年新品退市</strong>（64.1%），叠加早期入库沉淀（15.4%）和非重点 SKC 积压（10.3%）。建议立即启动多渠道清仓，90 天内去化 70% 以上，避免 FBA 长期仓储费持续侵蚀残值。
+  <div class="section" id="sec-trend">
+    <h2>📈 近7周 SDFN2379W 积压趋势</h2>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>近7周积压量稳定在 <span class="hl">3.6-3.7万件</span>，但 12m+ 库龄占比持续上升至 100%，去化完全停滞。<span class="hl">治疗建议：</span>常规促销已无效，需启动深度折价清仓或批量处置方案。</p>
     </div>
+    <div class="trend-wrap">
+      <div id="trendChart"></div>
+      <table class="trend-table">
+        <thead><tr><th>周</th><th class="num">总库存</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>合计</th><th class="num">环比</th></tr></thead>
+        <tbody>
+          <tr><td>W21</td><td class="num">18.5万</td><td>0万</td><td>0.8万</td><td>2.9万</td><td>3.7万</td><td class="num">—</td></tr>
+          <tr><td>W22</td><td class="num">18.5万</td><td>0万</td><td>0.6万</td><td>3.1万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
+          <tr><td>W23</td><td class="num">18.5万</td><td>0万</td><td>0.4万</td><td>3.3万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
+          <tr><td>W24</td><td class="num">18.5万</td><td>0万</td><td>0.2万</td><td>3.5万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
+          <tr><td>W25</td><td class="num">18.0万</td><td>0万</td><td>0万</td><td>3.6万</td><td>3.6万</td><td class="num" style="color:#10b981;">↓ -2.7%</td></tr>
+          <tr><td>W26</td><td class="num">18.5万</td><td>0万</td><td>0万</td><td>3.7万</td><td>3.7万</td><td class="num" style="color:#ef4444;">↑ +2.8%</td></tr>
+          <tr class="current"><td>W27</td><td class="num">19.5万</td><td>0万</td><td>0万</td><td>3.9万</td><td>3.9万</td><td class="num" style="color:#ef4444;">↑ +5.4%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 多维度分析 -->
+  <div class="section" id="sec-multi">
+    <h2>🎯 多维度结构分析</h2>
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab(0)">📦 备货渠道库存结构</button>
+      <button class="tab-btn" onclick="switchTab(1)">🎨 颜色 SKC 库存结构</button>
+      <button class="tab-btn" onclick="switchTab(2)">📐 尺码结构分布</button>
+    </div>
+
+    <!-- Tab 0: 备货渠道库存结构 -->
+    <div class="tab-panel active" id="tab0">
+      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <span style="font-size:18px;">🤖</span>
+          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
+        </div>
+        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
+          该款式 92% 的积压集中在 AmazonUS，FBA 长期仓储费持续累积，需优先制定亚马逊专属清仓方案。
+        </div>
+      </div>
+      <div class="tab-grid">
+        <div class="tab-chart-wrap">
+          <div class="tab-chart" id="chart0"></div>
+        </div>
+        <div class="tab-table-wrap">
+          <table>
+            <thead><tr><th>渠道</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
+            <tbody>
+              <tr><td><strong>AmazonUS</strong></td><td class="num">18.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">3.6万</td><td class="num"><strong>3.6万</strong></td><td class="num"><strong style="color:#ef4444;">92.3%</strong></td></tr>
+              <tr><td><strong>Shein</strong></td><td class="num">1.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.2万</td><td class="num"><strong>0.2万</strong></td><td class="num">5.1%</td></tr>
+              <tr><td><strong>Standwebsite</strong></td><td class="num">0.4万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.08万</td><td class="num"><strong>0.08万</strong></td><td class="num">2.1%</td></tr>
+              <tr><td><strong>其他渠道</strong></td><td class="num">0.1万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.02万</td><td class="num"><strong>0.02万</strong></td><td class="num">0.5%</td></tr>
+              <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num"><strong>3.9万</strong></td><td class="num">100%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 1: 颜色 SKC 库存结构 -->
+    <div class="tab-panel" id="tab1">
+      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <span style="font-size:18px;">🤖</span>
+          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
+        </div>
+        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
+          白色为该款式主力配色，积压量最大；灰色和蓝色为测试色，虽然量小但去化率更低，建议优先处理测试色回笼仓位。
+        </div>
+      </div>
+      <div class="tab-grid">
+        <div class="tab-chart-wrap">
+          <div class="tab-chart" id="chart1"></div>
+        </div>
+        <div class="tab-table-wrap">
+          <table>
+            <thead><tr><th>颜色</th><th>SKC</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
+            <tbody>
+              <tr><td><strong>白色 White</strong></td><td>主色</td><td class="num">11.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">2.2万</td><td class="num"><strong>2.2万</strong></td><td class="num"><strong style="color:#ef4444;">56.4%</strong></td></tr>
+              <tr><td><strong>黑色 Black</strong></td><td>主色</td><td class="num">6.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">1.2万</td><td class="num"><strong>1.2万</strong></td><td class="num"><strong style="color:#ef4444;">30.8%</strong></td></tr>
+              <tr><td><strong style="color:#f59e0b;">灰色 Grey</strong></td><td>测试色</td><td class="num">1.7万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.35万</td><td class="num"><strong>0.35万</strong></td><td class="num">9.0%</td></tr>
+              <tr><td><strong style="color:#f59e0b;">蓝色 Blue</strong></td><td>测试色</td><td class="num">0.7万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.15万</td><td class="num"><strong>0.15万</strong></td><td class="num">3.8%</td></tr>
+              <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td><strong>4 SKC</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num"><strong>3.9万</strong></td><td class="num">100%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: 尺码结构分布 -->
+    <div class="tab-panel" id="tab2">
+      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <span style="font-size:18px;">🤖</span>
+          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
+        </div>
+        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
+          US9 / US10 黄金码占积压总量 68%，是清仓重点。大码 US12 和小码 US6 占比虽低但去化极度困难，建议折价处理。
+        </div>
+      </div>
+      <div class="tab-grid">
+        <div class="tab-chart-wrap">
+          <div class="tab-chart" id="chart2"></div>
+        </div>
+        <div class="tab-table-wrap">
+          <table>
+            <thead><tr><th>尺码 (US)</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">超6月合计</th><th class="num">占比</th></tr></thead>
+            <tbody>
+              <tr><td><strong>US6</strong></td><td class="num">0.6万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.12万</td><td class="num"><strong>0.12万</strong></td><td class="num">3.1%</td></tr>
+              <tr><td><strong>US7</strong></td><td class="num">1.4万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.28万</td><td class="num"><strong>0.28万</strong></td><td class="num">7.2%</td></tr>
+              <tr><td><strong>US8</strong></td><td class="num">2.4万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.48万</td><td class="num"><strong>0.48万</strong></td><td class="num">12.3%</td></tr>
+              <tr><td><strong>US9</strong></td><td class="num">3.8万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.75万</td><td class="num"><strong>0.75万</strong></td><td class="num">19.2%</td></tr>
+              <tr><td><strong>US10</strong></td><td class="num">4.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.8万</td><td class="num"><strong>0.8万</strong></td><td class="num"><strong style="color:#f59e0b;">20.5%</strong></td></tr>
+              <tr><td><strong>US11</strong></td><td class="num">3.1万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.62万</td><td class="num"><strong>0.62万</strong></td><td class="num">15.9%</td></tr>
+              <tr><td><strong>US12</strong></td><td class="num">2.2万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.45万</td><td class="num"><strong>0.45万</strong></td><td class="num">11.5%</td></tr>
+              <tr><td><strong>US13</strong></td><td class="num">1.1万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.22万</td><td class="num"><strong>0.22万</strong></td><td class="num">5.6%</td></tr>
+              <tr><td><strong>US14</strong></td><td class="num">0.9万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.18万</td><td class="num"><strong>0.18万</strong></td><td class="num">4.6%</td></tr>
+              <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num"><strong>3.9万</strong></td><td class="num">100%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 
   <!-- SKU TOP10 -->
   <div class="section" id="sec-sku">
     <h2>🔝 SDFN2379W 积压 SKU Top 10</h2>
     <div class="sec-sub">按超6个月积压量排序</div>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>积压集中在白色和黑色主色 SKU，黄金码 US9/US10 占比最高。<span class="hl">治疗建议：</span>优先清仓大码和测试色 SKU，主色主码通过亚马逊 Outlet 和站外渠道快速去化。</p>
+    </div>
     <table class="style-table">
       <thead>
         <tr>
@@ -444,7 +441,7 @@
           <td class="st">SDFN2379W-WT-US10</td>
           <td><span class="tag">白色</span></td>
           <td>US10</td>
-          <td class="num">4,200</td>
+          <td class="num">2.1万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.42万</span></td>
@@ -455,7 +452,7 @@
           <td class="st">SDFN2379W-WT-US9</td>
           <td><span class="tag">白色</span></td>
           <td>US9</td>
-          <td class="num">3,800</td>
+          <td class="num">1.9万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.38万</span></td>
@@ -466,7 +463,7 @@
           <td class="st">SDFN2379W-WT-US11</td>
           <td><span class="tag">白色</span></td>
           <td>US11</td>
-          <td class="num">3,500</td>
+          <td class="num">1.7万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.35万</span></td>
@@ -477,7 +474,7 @@
           <td class="st">SDFN2379W-BK-US10</td>
           <td><span class="tag">黑色</span></td>
           <td>US10</td>
-          <td class="num">2,800</td>
+          <td class="num">1.4万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.28万</span></td>
@@ -488,7 +485,7 @@
           <td class="st">SDFN2379W-BK-US9</td>
           <td><span class="tag">黑色</span></td>
           <td>US9</td>
-          <td class="num">2,500</td>
+          <td class="num">1.2万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.25万</span></td>
@@ -499,7 +496,7 @@
           <td class="st">SDFN2379W-WT-US8</td>
           <td><span class="tag">白色</span></td>
           <td>US8</td>
-          <td class="num">2,400</td>
+          <td class="num">1.2万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.24万</span></td>
@@ -510,7 +507,7 @@
           <td class="st">SDFN2379W-BK-US11</td>
           <td><span class="tag">黑色</span></td>
           <td>US11</td>
-          <td class="num">2,200</td>
+          <td class="num">1.1万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.22万</span></td>
@@ -521,7 +518,7 @@
           <td class="st">SDFN2379W-WT-US12</td>
           <td><span class="tag">白色</span></td>
           <td>US12</td>
-          <td class="num">1,800</td>
+          <td class="num">0.9万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.18万</span></td>
@@ -532,7 +529,7 @@
           <td class="st">SDFN2379W-GR-US10</td>
           <td><span class="tag orange">灰色</span></td>
           <td>US10</td>
-          <td class="num">1,500</td>
+          <td class="num">0.7万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.15万</span></td>
@@ -543,7 +540,7 @@
           <td class="st">SDFN2379W-WT-US7</td>
           <td><span class="tag">白色</span></td>
           <td>US7</td>
-          <td class="num">1,400</td>
+          <td class="num">0.7万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.14万</span></td>
@@ -553,7 +550,7 @@
     </table>
   </div>
 
-  <div class="footer">👟 SDFN2379W 积压风险报告 · 数据截止 2026-07-04 · 仅供内部参考</div>
+  <div class="footer">👟 SDFN2379W 积压风险AI诊断报告 · 数据截止 2026-07-04 · 仅供内部参考</div>
 </div>
 
 <script>
@@ -687,7 +684,7 @@ chart2.setOption({
 // 滚动导航高亮
 (function() {
   var navLinks = document.querySelectorAll('.page-nav a');
-  var sections = ['sec-insight', 'sec-trend', 'sec-multi', 'sec-root', 'sec-sku'].map(function(id){ return document.getElementById(id); });
+  var sections = ['sec-insight', 'sec-root', 'sec-trend', 'sec-multi', 'sec-sku'].map(function(id){ return document.getElementById(id); });
   navLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
       e.preventDefault();
