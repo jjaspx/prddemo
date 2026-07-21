@@ -50,7 +50,7 @@
   .header .sub { font-size: 14px; color: #94a3b8; }
   .header .meta { font-size: 12px; color: #64748b; margin-top: 14px; }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 20px; }
   .kpi-card { background: rgba(30,41,59,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 20px; position: relative; overflow: hidden; transition: all 0.3s; }
   .kpi-card:hover { transform: translateY(-2px); border-color: rgba(59,130,246,0.3); }
   .kpi-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #3b82f6; }
@@ -139,11 +139,247 @@
     .trend-wrap { grid-template-columns: 1fr; }
     .page-nav { display: none; }
   }
+  /* AI问数提示词按钮 */
+  .ai-prompt-btn {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: inherit;
+    flex-shrink: 0;
+  }
+  .ai-prompt-btn:hover {
+    background: rgba(59, 130, 246, 0.25);
+    border-color: rgba(59, 130, 246, 0.5);
+    color: #bfdbfe;
+  }
+  .ai-prompt-btn.copied {
+    color: #4ade80;
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+
+  /* ===== 可点击数字 ===== */
+  .clickable-num {
+    cursor: pointer;
+    transition: all 0.15s;
+    border-bottom: 1px dashed rgba(96,165,250,0.35);
+    text-decoration: none !important;
+  }
+  .clickable-num:hover {
+    color: #60a5fa !important;
+    border-bottom-color: #60a5fa !important;
+    background: rgba(59,130,246,0.06);
+  }
+  .kpi-value.clickable-num {
+    border-bottom: 2px dashed rgba(96,165,250,0.4);
+  }
+  .kpi-value.clickable-num:hover {
+    text-shadow: 0 0 12px rgba(96,165,250,0.3);
+  }
+  .hl.clickable-num {
+    border-bottom: 1px dashed rgba(96,165,250,0.5);
+  }
+  td.clickable-num {
+    border-bottom: none;
+    border-radius: 4px;
+  }
+
+  /* ===== 详情弹窗 ===== */
+  .detail-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: detailFadeIn 0.2s ease;
+  }
+  @keyframes detailFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .detail-overlay.active { display: flex; }
+  .detail-modal {
+    background: #1e293b;
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 16px;
+    width: 92%;
+    max-width: 1100px;
+    max-height: 85vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    animation: detailSlideUp 0.25s ease;
+  }
+  @keyframes detailSlideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .detail-modal-header {
+    padding: 18px 26px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .detail-modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .detail-modal-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    line-height: 1;
+  }
+  .detail-modal-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .detail-modal-body {
+    padding: 18px 26px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .detail-info-bar {
+    font-size: 12.5px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    background: rgba(59,130,246,0.06);
+    border-radius: 10px;
+    border: 1px solid rgba(59,130,246,0.12);
+  }
+  .detail-info-bar span { display: inline-flex; align-items: center; gap: 5px; }
+  .detail-info-bar b { color: #e2e8f0; font-weight: 600; }
+  .detail-info-bar .val { color: #60a5fa; font-size: 14px; font-weight: 700; }
+  .detail-table {
+    width: 100%;
+    font-size: 12.5px;
+    border-collapse: collapse;
+  }
+  .detail-table th {
+    padding: 9px 12px;
+    text-align: left;
+    color: #64748b;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    position: sticky;
+    top: 0;
+    background: #1e293b;
+    z-index: 1;
+    white-space: nowrap;
+  }
+  .detail-table th.num { text-align: right; }
+  .detail-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: #cbd5e1;
+    white-space: nowrap;
+  }
+  .detail-table td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+  .detail-table tr:hover td { background: rgba(59,130,246,0.05); }
+  .detail-table .status-eol { color: #ef4444; font-weight: 600; }
+  .detail-table .status-normal { color: #10b981; font-weight: 600; }
+  .detail-footer {
+    margin-top: 14px;
+    padding: 10px 16px;
+    background: rgba(59,130,246,0.06);
+    border-radius: 8px;
+    font-size: 12px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* === 未来风险预警 === */
+  .kpi-card.forecast { position: relative; }
+  .kpi-card.forecast .kpi-value { color: #fb923c; }
+  .kpi-card.forecast .kpi-trend { color: #f97316 !important; }
+
+  .forecast-summary {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px;
+  }
+  .forecast-stat {
+    background: rgba(15,23,42,0.5); border-radius: 12px; padding: 18px 20px;
+    text-align: center; border: 1px solid rgba(255,255,255,0.06);
+  }
+  .forecast-stat.urgent { border-color: rgba(239,68,68,0.3); }
+  .forecast-stat.high { border-color: rgba(249,115,22,0.3); }
+  .forecast-stat.warning { border-color: rgba(245,158,11,0.3); }
+  .forecast-stat.safe { border-color: rgba(34,197,94,0.3); }
+  .forecast-stat .fs-label { font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
+  .forecast-stat .fs-value { font-size: 28px; font-weight: 800; line-height: 1; }
+  .forecast-stat.urgent .fs-value { color: #ef4444; }
+  .forecast-stat.high .fs-value { color: #f97316; }
+  .forecast-stat.warning .fs-value { color: #f59e0b; }
+  .forecast-stat.safe .fs-value { color: #22c55e; }
+  .forecast-stat .fs-desc { font-size: 11px; color: #64748b; margin-top: 6px; }
+
+  .forecast-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .forecast-table thead th {
+    background: rgba(15,23,42,0.8); color: #94a3b8; font-weight: 600;
+    padding: 10px 12px; text-align: left; border-bottom: 2px solid rgba(255,255,255,0.08);
+    white-space: nowrap;
+  }
+  .forecast-table thead th.num { text-align: right; }
+  .forecast-table tbody td {
+    padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #cbd5e1;
+  }
+  .forecast-table tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .forecast-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  .risk-badge {
+    display: inline-block; padding: 2px 10px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; white-space: nowrap;
+  }
+  .risk-badge.urgent { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .risk-badge.high { background: rgba(249,115,22,0.15); color: #f97316; border: 1px solid rgba(249,115,22,0.3); }
+  .risk-badge.warning { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .risk-badge.safe { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+
+  .forecast-formula {
+    background: rgba(15,23,42,0.4); border-radius: 10px; padding: 14px 18px;
+    margin-bottom: 16px; font-size: 12px; color: #64748b; line-height: 1.8;
+    border: 1px dashed rgba(255,255,255,0.06);
+  }
+  .forecast-formula code {
+    background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 4px;
+    color: #e2e8f0; font-family: 'SF Mono', monospace; font-size: 11px;
+  }
+
+
+  .trend-table tr.forecast-row td { color: #fb923c; }
+  .trend-table tr.forecast-row td:first-child { color: #f97316; }
 </style>
 </head>
 <body>
 <nav class="page-nav" id="pageNav">
   <a href="#sec-insight" data-target="sec-insight"><span class="nav-dot"></span>AI洞察</a>
+  <a href="#sec-forecast" data-target="sec-forecast"><span class="nav-dot"></span>风险预警</a>
   <a href="#sec-root" data-target="sec-root"><span class="nav-dot"></span>根因矩阵</a>
   <a href="#sec-trend" data-target="sec-trend"><span class="nav-dot"></span>趋势</a>
   <a href="#sec-multi" data-target="sec-multi"><span class="nav-dot"></span>结构分析</a>
@@ -158,10 +394,17 @@
 
   <div class="kpi-grid">
     <div class="kpi-card"><div class="kpi-label">总库存数</div><div class="kpi-value-line"><span class="kpi-value">180.5<span class="kpi-unit">万</span></span><span class="kpi-trend down">↓ 1.8% 周环比</span></div></div>
-    <div class="kpi-card warning"><div class="kpi-label">6-9m 关注</div><div class="kpi-value-line"><span class="kpi-value">11.8<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 22.4% 周环比</span></div></div>
     <div class="kpi-card warning"><div class="kpi-label">9-12m 预警</div><div class="kpi-value-line"><span class="kpi-value">8.2<span class="kpi-unit">万</span></span><span class="kpi-trend down">↓ 4.5% 周环比</span></div></div>
     <div class="kpi-card danger"><div class="kpi-label">12m+ 深度积压</div><div class="kpi-value-line"><span class="kpi-value">16.1<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 6.7% 周环比</span></div></div>
     <div class="kpi-card danger"><div class="kpi-label">超6m合计</div><div class="kpi-value-line"><span class="kpi-value">36.1<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 7.1% 周环比</span></div></div>
+    <div class="kpi-card forecast">
+      <div class="kpi-label">2026年9月预计冗余</div>
+      <div class="kpi-value-line"><span class="kpi-value">48.3<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 预测新增 +12.2万</span></div>
+    </div>
+    <div class="kpi-card forecast">
+      <div class="kpi-label">预计新增冗余</div>
+      <div class="kpi-value-line"><span class="kpi-value">+12.2<span class="kpi-unit">万</span></span><span class="kpi-trend up">冗余率 26.8%</span></div>
+    </div>
   </div>
 
   <div class="insight-box" id="sec-insight">
@@ -172,12 +415,137 @@
       <li>🔴 <strong style="color:#ef4444;">紧急 — 款式高度集中：</strong>TOP5款式占类目积压的 <span class="hl">28%</span>，建议优先清理头部款式</li>
       <li>🟡 <strong style="color:#f59e0b;">重点 — 渠道高度集中：</strong>AmazonUS 占比 <span class="hl">65%</span>，需制定亚马逊专属清仓方案</li>
     </ul>
+
+
+</div>
+
+  <!-- 未来风险预警 -->
+  <div class="section" id="sec-forecast">
+    <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
+      <h2 style="margin-bottom:0;">🔮 2026年9月冗余风险预警<button class="ai-prompt-btn" data-prompt="请预测至2026年9月Fashion Sneakers类目各款式将新增的冗余量，按预计进入积压时间排序，重点标注2周内即将进入积压区的紧急款式，并给出治疗建议。">🤖 AI问数提示词</button></h2>
+      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">双维交叉预测 · 款式维度 · 量预测 + 时预测 · 提前发现风险</div>
+    </div>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>预计至2026年9月Fashion Sneakers新增冗余 <span class="hl">12.2万件</span>，至2026年9月总冗余将达 <span class="hl">48.3万件</span>（冗余率26.8%）。6-9m库龄库存正以22.4%周环比加速转化，<span class="hl">8个SKU</span> 将在2周内跨入180天积压区。</p>
+    </div>
+
+    <div class="forecast-formula">
+      <strong style="color:#94a3b8;">预测模型：</strong>
+      预计冗余量 = MAX(0, 总链路库存 + 在途 - 预测总销量)　|　预计进入积压周数 = <code>(180 - 当前最大库龄) / 7</code>　|　风险级别 = 冗余率 × 进入积压速度 双维交叉分级
+    </div>
+
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>款式编码</th>
+          <th>款式名称</th>
+          <th class="num">SKU数</th>
+          <th class="num">最大库龄(天)</th>
+          <th class="num">预计进入积压</th>
+          <th class="num">预计冗余量</th>
+          <th class="num">冗余率</th>
+          <th>风险级别</th>
+          <th>建议动作</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+              <td>SDFN2456W</td>
+              <td>Fashion Sneakers Pro</td>
+              <td class="num">12</td>
+              <td class="num">168</td>
+              <td class="num">1.7周</td>
+              <td class="num">8,400双</td>
+              <td class="num">41%</td>
+              <td><span class="risk-badge urgent">紧急</span></td>
+              <td>拦截在途+清仓</td>
+            </tr>
+            <tr>
+              <td>SDFN2381M</td>
+              <td>Fashion Sneakers Air</td>
+              <td class="num">10</td>
+              <td class="num">165</td>
+              <td class="num">2.1周</td>
+              <td class="num">6,200双</td>
+              <td class="num">35%</td>
+              <td><span class="risk-badge urgent">紧急</span></td>
+              <td>暂停采购</td>
+            </tr>
+            <tr>
+              <td>SDFN2602W</td>
+              <td>Fashion Sneakers Lite</td>
+              <td class="num">8</td>
+              <td class="num">162</td>
+              <td class="num">2.6周</td>
+              <td class="num">3,800双</td>
+              <td class="num">28%</td>
+              <td><span class="risk-badge high">高危</span></td>
+              <td>调整预算</td>
+            </tr>
+            <tr>
+              <td>SDFN2755W</td>
+              <td>Fashion Sneakers Max</td>
+              <td class="num">11</td>
+              <td class="num">158</td>
+              <td class="num">3.1周</td>
+              <td class="num">5,600双</td>
+              <td class="num">33%</td>
+              <td><span class="risk-badge high">高危</span></td>
+              <td>暂停采购</td>
+            </tr>
+            <tr>
+              <td>SDCA3301W</td>
+              <td>Street Sneakers</td>
+              <td class="num">7</td>
+              <td class="num">155</td>
+              <td class="num">3.6周</td>
+              <td class="num">2,100双</td>
+              <td class="num">25%</td>
+              <td><span class="risk-badge high">高危</span></td>
+              <td>调拨</td>
+            </tr>
+            <tr>
+              <td>SDFN2901M</td>
+              <td>Fashion Sneakers Sport</td>
+              <td class="num">9</td>
+              <td class="num">148</td>
+              <td class="num">4.6周</td>
+              <td class="num">3,200双</td>
+              <td class="num">20%</td>
+              <td><span class="risk-badge warning">预警</span></td>
+              <td>调整预算</td>
+            </tr>
+            <tr>
+              <td>SDCA4405W</td>
+              <td>Urban Sneakers</td>
+              <td class="num">6</td>
+              <td class="num">142</td>
+              <td class="num">5.4周</td>
+              <td class="num">1,600双</td>
+              <td class="num">14%</td>
+              <td><span class="risk-badge warning">预警</span></td>
+              <td>监控</td>
+            </tr>
+            <tr>
+              <td>SDFN3120W</td>
+              <td>Fashion Sneakers Elite</td>
+              <td class="num">8</td>
+              <td class="num">138</td>
+              <td class="num">6.0周</td>
+              <td class="num">2,800双</td>
+              <td class="num">16%</td>
+              <td><span class="risk-badge warning">预警</span></td>
+              <td>监控</td>
+            </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- 根因矩阵 -->
   <div class="section" id="sec-root">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">🔍 积压库存根因结构矩阵</h2>
+      <h2 style="margin-bottom:0;">🔍 积压库存根因结构矩阵<button class="ai-prompt-btn" data-prompt="请分析Fashion Sneakers库存积压的根因结构，按正常品和EOL品分层，分别诊断各根因（预测偏高、季节性错配、早期入库沉淀等）对应的积压量、占比，并给出治疗建议。">🤖 AI问数提示词</button></h2>
       <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按正常品 / EOL品分层诊断根因</div>
     </div>
     <div class="insight-box" style="margin-bottom:16px;">
@@ -324,7 +692,7 @@
 
   <div class="section" id="sec-trend">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">📈 近7周 Fashion Sneakers 积压趋势</h2>
+      <h2 style="margin-bottom:0;">📈 近7周 Fashion Sneakers 积压趋势<button class="ai-prompt-btn" data-prompt="请查询近7周（W21-W27）Fashion Sneakers各库龄段（6-9m、9-12m、12m+）的积压库存变化趋势，按周输出库存量及环比变化。">🤖 AI问数提示词</button></h2>
       <div class="sec-sub" style="margin-top:0; margin-bottom:0;">W21 - W27 · 6-9m / 9-12m / 12m+ 库存变化</div>
     </div>
     <div class="insight-box" style="margin-bottom:16px;">
@@ -343,6 +711,10 @@
           <tr><td>W25</td><td class="num">172万</td><td>10.8万</td><td>8.6万</td><td>15.0万</td><td>34.4万</td><td class="num" style="color:#ef4444;">↑ +1.8%</td></tr>
           <tr><td>W26</td><td class="num">174万</td><td>11.1万</td><td>8.6万</td><td>15.1万</td><td>34.8万</td><td class="num" style="color:#ef4444;">↑ +1.2%</td></tr>
           <tr class="current"><td>W27</td><td class="num">180万</td><td>11.8万</td><td>8.2万</td><td>16.1万</td><td>36.1万</td><td class="num" style="color:#ef4444;">↑ +3.7%</td></tr>
+            <tr class="forecast-row"><td>W28 <span style="font-size:10px;color:#f97316;">预测</span></td><td class="num">182万</td><td>13.1万</td><td>8.5万</td><td>16.5万</td><td>38.1万</td><td class="num" style="color:#f97316;">↑ +5.5%</td></tr>
+            <tr class="forecast-row"><td>W29 <span style="font-size:10px;color:#f97316;">预测</span></td><td class="num">184万</td><td>14.6万</td><td>8.9万</td><td>17.0万</td><td>40.5万</td><td class="num" style="color:#f97316;">↑ +6.3%</td></tr>
+            <tr class="forecast-row"><td>W30 <span style="font-size:10px;color:#f97316;">预测</span></td><td class="num">186万</td><td>16.2万</td><td>9.3万</td><td>17.6万</td><td>43.1万</td><td class="num" style="color:#f97316;">↑ +6.4%</td></tr>
+            <tr class="forecast-row"><td>W31 <span style="font-size:10px;color:#f97316;">预测</span></td><td class="num">188万</td><td>17.9万</td><td>9.8万</td><td>18.3万</td><td>46.0万</td><td class="num" style="color:#f97316;">↑ +6.7%</td></tr>
         </tbody>
       </table>
     </div>
@@ -350,7 +722,7 @@
 
   <!-- 多维度分析 -->
   <div class="section" id="sec-multi">
-    <h2>🎯 多维度结构分析</h2>
+    <h2 style="margin-bottom:0;">🎯 多维度结构分析<button class="ai-prompt-btn" data-prompt="请从货品属性、备货渠道、颜色SKC、尺码与椥型四个维度，分析Fashion Sneakers积压库存的结构分布，输出各维度的积压量和占比。">🤖 AI问数提示词</button></h2>
     <div class="tab-nav">
       <button class="tab-btn active" onclick="switchTab(0)">📋 货品属性库存结构</button>
       <button class="tab-btn" onclick="switchTab(1)">📦 备货渠道库存结构分布</button>
@@ -474,10 +846,13 @@
     </div>
   </div>
 
-  <div class="section" id="sec-top20">
+
+      <div class="section" id="sec-top20">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">🔝 Fashion Sneakers 积压款式 Top 20</h2>
+      <h2 style="margin-bottom:0;">🔝 Fashion Sneakers 积压款式 Top 20<button class="ai-prompt-btn" data-prompt="请按超6个月积压量排序，列出Fashion Sneakers积压款式TOP 20，包含款式编码、类目、总库存、各库龄段库存量和积压天数。">🤖 AI问数提示词</button></h2>
       <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按超6个月积压量排序</div>
+
+
     </div>
     <div class="insight-box" style="margin-bottom:16px;">
       <div class="ititle">🤖 AI诊断与治疗方案</div>
@@ -525,7 +900,7 @@ trendChart.setOption({
     valueFormatter: function(v) { return v.toFixed(1) + '万'; }
   },
   legend: {
-    data: ['6-9m', '9-12m', '12m+'],
+    data: ['6-9m', '9-12m', '12m+', '预计超6m合计'],
     textStyle: { color: '#94a3b8' },
     top: 0, right: 0
   },
@@ -533,7 +908,7 @@ trendChart.setOption({
   xAxis: {
     type: 'category',
     boundaryGap: false,
-    data: ['W21','W22','W23','W24','W25','W26','W27'],
+    data: ['W21','W22','W23','W24','W25','W26','W27','W28','W29','W30','W31'],
     axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
     axisLabel: { color: '#64748b', fontSize: 11 }
   },
@@ -577,6 +952,23 @@ trendChart.setOption({
         { offset: 1, color: 'rgba(239,68,68,0.02)' }
       ])},
       lineStyle: { width: 2 }
+    }
+,
+    {
+      name: '预计超6m合计', type: 'line', smooth: true,
+      data: [null, null, null, null, null, null, null, 38.1, 40.5, 43.1, 46.0],
+      itemStyle: { color: '#f97316' },
+      lineStyle: { width: 2, type: 'dashed' },
+      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        { offset: 0, color: 'rgba(249,115,22,0.12)' },
+        { offset: 1, color: 'rgba(249,115,22,0.01)' }
+      ])},
+      markLine: {
+        symbol: 'none',
+        data: [{ xAxis: 'W27' }],
+        lineStyle: { color: 'rgba(255,255,255,0.15)', type: 'dashed', width: 1 },
+        label: { formatter: '预测起点', color: '#64748b', fontSize: 10 }
+      }
     }
   ]
 });
@@ -650,7 +1042,7 @@ chart3.setOption({
 
 (function() {
   var navLinks = document.querySelectorAll('.page-nav a');
-  var sections = ['sec-insight', 'sec-root', 'sec-trend', 'sec-multi', 'sec-top20'].map(function(id){ return document.getElementById(id); });
+  var sections = ['sec-insight', 'sec-forecast', 'sec-root', 'sec-trend', 'sec-multi', 'sec-top20'].map(function(id){ return document.getElementById(id); });
   navLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -669,5 +1061,210 @@ chart3.setOption({
   window.addEventListener('scroll', updateActive); updateActive();
 })();
 </script>
-</body>
+<script>
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.ai-prompt-btn');
+  if (!btn) return;
+  var text = btn.getAttribute('data-prompt');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '✓ 已复制';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    var orig = btn.innerHTML;
+    btn.innerHTML = '✓ 已复制';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+  }
+});
+</script>
+
+<!-- 数字详情弹窗 -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-modal">
+    <div class="detail-modal-header">
+      <div class="detail-modal-title" id="detailTitle">📋 SKU级明细清单</div>
+      <button class="detail-modal-close" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="detail-modal-body" id="detailBody"></div>
+  </div>
+</div>
+<script>
+// ===== 可点击数字 - 详情弹窗 =====
+(function() {
+  var skipRe = /^[—–-]$/;
+
+  function hasNumber(el) {
+    var t = el.textContent.trim();
+    if (!t || skipRe.test(t)) return false;
+    if (!/\d/.test(t)) return false;
+    return true;
+  }
+
+  function isPureRankOrWeek(t) {
+    t = t.trim();
+    if (/^\d{1,2}$/.test(t)) return true;
+    if (/^W\d{1,2}$/.test(t)) return true;
+    return false;
+  }
+
+  function buildContext(td) {
+    var tr = td.closest('tr');
+    var table = td.closest('table');
+    var section = td.closest('.section');
+    var sectionTitle = '';
+    if (section) {
+      var h2 = section.querySelector('h2');
+      if (h2) sectionTitle = h2.textContent.replace(/🤖.*$/, '').trim();
+    }
+    var colIndex = 0;
+    var sibling = td;
+    while (sibling = sibling.previousElementSibling) colIndex++;
+    var columnHeader = '';
+    if (table) {
+      var ths = table.querySelectorAll('thead th');
+      if (ths[colIndex]) columnHeader = ths[colIndex].textContent.trim();
+    }
+    var rowLabel = '';
+    if (tr && tr.firstElementChild) rowLabel = tr.firstElementChild.textContent.trim();
+    var value = td.textContent.trim();
+    return { section: sectionTitle, row: rowLabel, column: columnHeader, value: value };
+  }
+
+  function generateMockRows(ctx, count) {
+    var cats = ['Fashion Sneakers', 'Ankle Boots', 'Dress Oxfords', 'Loafers', 'Sandals', 'Running Shoes', 'Snow Boots', 'Pumps'];
+    var cts = ['Dream Pairs Fashion', 'Dream Pairs Comfort', 'Dream Pairs Kids', 'Bruno Marc', 'Dream Pairs'];
+    var ages = ['6-9m', '9-12m', '12m+'];
+    var roots = ['预测偏高', '季节性错配', '早期入库沉淀', '非重点SKC', '非标准码段'];
+    var html = '<table class="detail-table"><thead><tr>';
+    html += '<th>SKU编码</th><th>款式</th><th>类目</th><th>CT</th>';
+    html += '<th>库龄段</th><th>根因</th><th class="num">库存量</th><th>入库日期</th><th class="num">积压天数</th><th>状态</th>';
+    html += '</tr></thead><tbody>';
+    var letters = 'ABCDEFGHJKLMNPQRST';
+    for (var i = 0; i < count; i++) {
+      var li = i % letters.length;
+      var skuCode = 'SD' + letters[li] + (1000 + Math.floor(Math.random() * 8999));
+      var style = 'SDFN' + (2370 + i) + 'W';
+      var cat = cats[Math.floor(Math.random() * cats.length)];
+      var ct = cts[Math.floor(Math.random() * cts.length)];
+      var age = ages[Math.floor(Math.random() * ages.length)];
+      var root = roots[Math.floor(Math.random() * roots.length)];
+      var qty = Math.floor(Math.random() * 4800 + 200);
+      var mo = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+      var dy = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+      var dt = '2025-' + mo + '-' + dy;
+      var days = Math.floor(Math.random() * 280) + 180;
+      var isEol = Math.random() < 0.35;
+      var stCls = isEol ? 'status-eol' : 'status-normal';
+      var stTxt = isEol ? 'EOL品' : '正常品';
+      html += '<tr>';
+      html += '<td>' + skuCode + '</td>';
+      html += '<td>' + style + '</td>';
+      html += '<td>' + cat + '</td>';
+      html += '<td>' + ct + '</td>';
+      html += '<td>' + age + '</td>';
+      html += '<td>' + root + '</td>';
+      html += '<td class="num">' + qty.toLocaleString() + '</td>';
+      html += '<td>' + dt + '</td>';
+      html += '<td class="num">' + days + '</td>';
+      html += '<td><span class="' + stCls + '">' + stTxt + '</span></td>';
+      html += '</tr>';
+    }
+    html += '</tbody></table>';
+    html += '<div class="detail-footer">💡 以上为模拟数据，实际接入后将展示真实SKU级明细。点击任意统计数字可下钻查看构成该指标的所有SKU详情。</div>';
+    return html;
+  }
+
+  function showDetail(ctx) {
+    var overlay = document.getElementById('detailOverlay');
+    var title = document.getElementById('detailTitle');
+    var body = document.getElementById('detailBody');
+    title.innerHTML = '📋 SKU级明细清单';
+    var infoHtml = '<div class="detail-info-bar">';
+    infoHtml += '<span>模块: <b>' + (ctx.section || '—') + '</b></span>';
+    infoHtml += '<span>维度: <b>' + (ctx.row || '—') + '</b></span>';
+    infoHtml += '<span>指标: <b>' + (ctx.column || '—') + '</b></span>';
+    infoHtml += '<span>数值: <span class="val">' + (ctx.value || '—') + '</span></span>';
+    infoHtml += '</div>';
+    body.innerHTML = infoHtml + generateMockRows(ctx, 15);
+    overlay.classList.add('active');
+  }
+
+  window.closeDetail = function() {
+    document.getElementById('detailOverlay').classList.remove('active');
+  };
+
+  function init() {
+    // 1. td.num cells with numbers
+    document.querySelectorAll('td.num').forEach(function(td) {
+      if (!hasNumber(td)) return;
+      td.classList.add('clickable-num');
+      td.addEventListener('click', function() { showDetail(buildContext(td)); });
+    });
+
+    // 2. td without class=num but containing numbers (trend table etc.)
+    document.querySelectorAll('td:not(.num)').forEach(function(td) {
+      if (!hasNumber(td)) return;
+      var t = td.textContent.trim();
+      if (isPureRankOrWeek(t)) return;
+      if (td.querySelector('a, button')) return;
+      td.classList.add('clickable-num');
+      td.addEventListener('click', function() { showDetail(buildContext(td)); });
+    });
+
+    // 3. KPI values
+    document.querySelectorAll('.kpi-value').forEach(function(el) {
+      if (!hasNumber(el)) return;
+      el.classList.add('clickable-num');
+      el.addEventListener('click', function() {
+        var card = el.closest('.kpi-card');
+        var label = card ? (card.querySelector('.kpi-label') || {}).textContent || '' : '';
+        showDetail({ section: 'KPI指标卡', row: label, column: '数值', value: el.textContent.trim() });
+      });
+    });
+
+    // 4. Highlighted numbers in insight boxes
+    document.querySelectorAll('.hl').forEach(function(el) {
+      if (!hasNumber(el)) return;
+      el.classList.add('clickable-num');
+      el.addEventListener('click', function() {
+        showDetail({ section: 'AI诊断洞察', row: '高亮数据', column: '数值', value: el.textContent.trim() });
+      });
+    });
+
+    // 5. H3 header numbers (e.g. "正常品总冗余: 99.6万双")
+    document.querySelectorAll('.root-matrix-card h3 span').forEach(function(el) {
+      if (!hasNumber(el)) return;
+      el.classList.add('clickable-num');
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function() {
+        showDetail({ section: '根因矩阵', row: el.textContent.trim(), column: '汇总值', value: el.textContent.trim() });
+      });
+    });
+
+    // Close on overlay click or ESC
+    document.getElementById('detailOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeDetail();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeDetail();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script></body>
 </html>
