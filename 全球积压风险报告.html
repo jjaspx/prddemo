@@ -90,7 +90,7 @@
   /* KPI */
   .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 14px;
     margin-bottom: 20px;
   }
@@ -663,17 +663,13 @@
       <div class="kpi-label">12m+ 深度积压</div>
       <div class="kpi-value-line"><span class="kpi-value">75.6<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 4.0% 周环比</span></div>
     </div>
-    <div class="kpi-card danger">
-      <div class="kpi-label">超6m合计</div>
-      <div class="kpi-value-line"><span class="kpi-value">177.7<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 7.8% 周环比</span></div>
+    <div class="kpi-card forecast">
+      <div class="kpi-label">预估当季末12M+</div>
+      <div class="kpi-value-line"><span class="kpi-value">108.2<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 预测新增 +32.6万</span></div>
     </div>
     <div class="kpi-card forecast">
-      <div class="kpi-label">2026年9月预计冗余</div>
-      <div class="kpi-value-line"><span class="kpi-value">245.2<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 预测新增 +67.5万</span></div>
-    </div>
-    <div class="kpi-card forecast">
-      <div class="kpi-label">预计新增冗余</div>
-      <div class="kpi-value-line"><span class="kpi-value">+67.5<span class="kpi-unit">万</span></span><span class="kpi-trend up">冗余率 31.7%</span></div>
+      <div class="kpi-label">预估下季末12m+</div>
+      <div class="kpi-value-line"><span class="kpi-value">144.6<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 预测新增 +69.0万</span></div>
     </div>
   </div>
 
@@ -681,7 +677,7 @@
   <div class="insight-box" id="sec-insight">
     <div class="ititle">🤖 AI诊断与治疗方案</div>
     <p>
-      本周全球超6个月积压达 <span class="hl">177.7 万件</span>，周环比 +7.8%，其中 6-9m 库存激增 26.3%，预示 Q3 末深度积压压力将进一步加大。
+      本周全球 <span class="hl">12m+ 深度积压</span>达 <span class="hl">75.6 万件</span>，周环比 <span class="hl">+4.0%</span>，是当前最紧迫的部分；<span class="hl">9-12m 库龄</span>（40.4 万件）正持续向其转化，预计下季末 12m+ 将攀升至 <span class="hl">144.6 万件</span>，深度积压压力进一步加重。
       CT高度集中：<span class="hl">DP 系三大 CT</span>（Fashion + Comfort + Kids）合计占总积压的 <span class="hl">72.7%</span>，是全球积压治理的核心战场。
     </p>
     <ul>
@@ -698,101 +694,103 @@
   <!-- 未来风险预警 -->
   <div class="section" id="sec-forecast">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">🔮 2026年9月冗余风险预警<button class="ai-prompt-btn" data-prompt="请预测至2026年9月全球各CT将新增的冗余量，按预计进入积压时间排序，重点标注2周内即将进入积压区的紧急CT，并给出治疗建议（拦截在途/暂停采购/调拨/清仓）。">🤖 AI问数提示词</button></h2>
-      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">双维交叉预测 · CT维度 · 量预测 + 时预测 · 提前发现风险</div>
+      <h2 style="margin-bottom:0;">🔮 当季末/下季度末冗余风险预警<button class="ai-prompt-btn" data-prompt="请预测至当季末和下季度末全球各CT将新增的冗余量，按预计进入积压时间排序，重点标注2周内即将进入积压区的紧急CT，并给出治疗建议（拦截在途/暂停采购/调拨/清仓）。">🤖 AI问数提示词</button></h2>
+      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">CT维度 · 滚动看当季末/下季末超库龄 · 提前发现风险</div>
     </div>
     <div class="insight-box" style="margin-bottom:16px;">
       <div class="ititle">🤖 AI诊断与治疗方案</div>
-      <p>基于双维交叉预测模型，预计至2026年9月全球新增冗余 <span class="hl">67.5万件</span>，至2026年9月总冗余将达 <span class="hl">245.2万件</span>（冗余率31.7%）。其中 <span class="hl">Dream Pairs Fashion</span> 和 <span class="hl">Dream Pairs Comfort</span> 两个CT将在2周内新增大量积压，需立即拦截在途订单。</p>
+      <p>全球 12m+ 深度积压将从当前 75.6 万持续攀升至预估当季末 108.2 万、预估下季末 144.6 万（两期分别新增 32.6 万 / 69.0 万）。其中 Dream Pairs Fashion（下季末 47.2 万，占全局 32.0%）与 Dream Pairs Comfort（31.5 万，占 22.0%）合计超半数，需优先制定专项清仓与在途拦截方案。</p>
     </div>
 
-    <div class="forecast-formula">
-      <strong style="color:#94a3b8;">预测模型：</strong>
-      预计冗余量 = MAX(0, 总链路库存 + 在途 - 预测总销量)　|　预计进入积压周数 = <code>(180 - 当前最大库龄) / 7</code>　|　风险级别 = 冗余率 × 进入积压速度 双维交叉分级
-    </div>
-
+<div class="tab-grid">
+      <div class="tab-chart-wrap">
+        <div class="tab-chart" id="forecastChart"></div>
+      </div>
+      <div class="tab-table-wrap">
     <table class="forecast-table">
       <thead>
         <tr>
           <th>CT名称</th>
-          <th class="num">SKU数</th>
-          <th class="num">最大库龄(天)</th>
-          <th class="num">预计进入积压</th>
-          <th class="num">预计冗余量</th>
-          <th class="num">冗余率</th>
-          <th>风险级别</th>
-          <th>建议动作</th>
+          <th class="num">当季末6-9</th>
+          <th class="num">当季末9-12</th>
+          <th class="num">当季末12m+</th>
+          <th class="num">下季末6-9</th>
+          <th class="num">下季末9-12</th>
+          <th class="num">下季末12m+</th>
+          <th class="num">占比<span style="font-weight:400;font-size:11px;color:#94a3b8;"> (下季末)</span></th>
         </tr>
       </thead>
       <tbody>
             <tr>
               <td>Dream Pairs Fashion</td>
-              <td class="num">165</td>
-              <td class="num">168</td>
-              <td class="num">1.7周</td>
-              <td class="num">18.6万双</td>
-              <td class="num">26.2%</td>
-              <td><span class="risk-badge urgent">紧急</span></td>
-              <td>拦截在途+暂停采购</td>
+              <td class="num">15.2万</td>
+              <td class="num">18.9万</td>
+              <td class="num">35.8万</td>
+              <td class="num">11.8万</td>
+              <td class="num">15.6万</td>
+              <td class="num">47.2万</td>
+              <td class="num"><strong style="color:#ef4444;">32.0%</strong></td>
             </tr>
             <tr>
               <td>Dream Pairs Comfort</td>
-              <td class="num">82</td>
-              <td class="num">162</td>
-              <td class="num">2.6周</td>
-              <td class="num">8.2万双</td>
-              <td class="num">22.1%</td>
-              <td><span class="risk-badge urgent">紧急</span></td>
-              <td>暂停采购+促销</td>
+              <td class="num">11.1万</td>
+              <td class="num">13.2万</td>
+              <td class="num">24.7万</td>
+              <td class="num">8.6万</td>
+              <td class="num">11.0万</td>
+              <td class="num">31.5万</td>
+              <td class="num"><strong style="color:#f59e0b;">22.0%</strong></td>
             </tr>
             <tr>
               <td>Dream Pairs Kids</td>
-              <td class="num">56</td>
-              <td class="num">155</td>
-              <td class="num">3.6周</td>
-              <td class="num">4.5万双</td>
-              <td class="num">18.3%</td>
-              <td><span class="risk-badge high">高危</span></td>
-              <td>调拨+促销</td>
+              <td class="num">6.9万</td>
+              <td class="num">7.8万</td>
+              <td class="num">12.1万</td>
+              <td class="num">5.2万</td>
+              <td class="num">6.5万</td>
+              <td class="num">16.8万</td>
+              <td class="num"><strong style="color:#94a3b8;">12.2%</strong></td>
             </tr>
             <tr>
               <td>Bruno Marc</td>
-              <td class="num">98</td>
-              <td class="num">150</td>
-              <td class="num">4.3周</td>
-              <td class="num">12.1万双</td>
-              <td class="num">15.7%</td>
-              <td><span class="risk-badge high">高危</span></td>
-              <td>调整预算</td>
+              <td class="num">9.8万</td>
+              <td class="num">11.1万</td>
+              <td class="num">20.3万</td>
+              <td class="num">7.5万</td>
+              <td class="num">9.2万</td>
+              <td class="num">27.8万</td>
+              <td class="num"><strong style="color:#f59e0b;">19.1%</strong></td>
             </tr>
             <tr>
               <td>Nortiv8</td>
-              <td class="num">43</td>
-              <td class="num">138</td>
-              <td class="num">6.0周</td>
-              <td class="num">6.8万双</td>
-              <td class="num">12.4%</td>
-              <td><span class="risk-badge warning">预警</span></td>
-              <td>监控+调整预算</td>
+              <td class="num">5.2万</td>
+              <td class="num">5.9万</td>
+              <td class="num">10.2万</td>
+              <td class="num">3.8万</td>
+              <td class="num">4.7万</td>
+              <td class="num">14.1万</td>
+              <td class="num"><strong style="color:#94a3b8;">9.7%</strong></td>
             </tr>
             <tr>
               <td>运动组</td>
-              <td class="num">27</td>
-              <td class="num">130</td>
-              <td class="num">7.1周</td>
-              <td class="num">3.2万双</td>
-              <td class="num">8.6%</td>
-              <td><span class="risk-badge warning">预警</span></td>
-              <td>监控</td>
+              <td class="num">2.6万</td>
+              <td class="num">3.0万</td>
+              <td class="num">5.1万</td>
+              <td class="num">1.9万</td>
+              <td class="num">2.4万</td>
+              <td class="num">7.2万</td>
+              <td class="num"><strong style="color:#94a3b8;">4.9%</strong></td>
             </tr>
       </tbody>
     </table>
+      </div>
+    </div>
   </div>
 
   <!-- 根因矩阵 -->
   <div class="section" id="sec-root">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">🔍 积压库存根因结构矩阵<button class="ai-prompt-btn" data-prompt="请分析全球库存积压的根因结构，按正常品和EOL品分层，分别诊断各根因（预测偏高、季节性错配、早期入库沉淀等）对应的积压量、占比，并给出治疗建议。">🤖 AI问数提示词</button></h2>
+      <h2 style="margin-bottom:0;">🔍 已积压库存根因结构矩阵<button class="ai-prompt-btn" data-prompt="请分析全球库存积压的根因结构，按正常品和EOL品分层，分别诊断各根因（预测偏高、季节性错配、早期入库沉淀等）对应的积压量、占比，并给出治疗建议。">🤖 AI问数提示词</button></h2>
       <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按正常品 / EOL品分层诊断根因</div>
     </div>
     <div class="insight-box" style="margin-bottom:16px;">
@@ -814,7 +812,7 @@
               <th class="num">总库存</th><th class="num">6-9m库龄</th>
               <th class="num">9-12m库龄</th>
               <th class="num">超12m库龄</th>
-              <th class="num">超6m合计</th>
+              
               <th class="num">占比</th>
             </tr>
           </thead>
@@ -824,23 +822,16 @@
               <td class="num">250万</td><td class="num">30.0万</td>
               <td class="num">15.0万</td>
               <td class="num">5.0万</td>
-              <td class="num"><strong>50.0万</strong></td>
+              
               <td class="num">28.25%</td>
             </tr>
-            <tr>
-              <td><strong style="color:#8b5cf6;">12M+之前入库</strong></td>
-              <td class="num">100万</td><td class="num">0.0万</td>
-              <td class="num">5.0万</td>
-              <td class="num">15.0万</td>
-              <td class="num"><strong>20.0万</strong></td>
-              <td class="num">11.30%</td>
-            </tr>
+            
             <tr>
               <td><strong style="color:#06b6d4;">非重点skc</strong></td>
               <td class="num">99.0万</td><td class="num">10.0万</td>
               <td class="num">5.0万</td>
               <td class="num">4.8万</td>
-              <td class="num"><strong>19.8万</strong></td>
+              
               <td class="num">11.19%</td>
             </tr>
             <tr>
@@ -848,7 +839,7 @@
               <td class="num">34.5万</td><td class="num">4.1万</td>
               <td class="num">1.8万</td>
               <td class="num">1.0万</td>
-              <td class="num"><strong>6.9万</strong></td>
+              
               <td class="num">3.90%</td>
             </tr>
             <tr>
@@ -856,16 +847,16 @@
               <td class="num">16.0万</td><td class="num">1.5万</td>
               <td class="num">1.0万</td>
               <td class="num">0.7万</td>
-              <td class="num"><strong>3.2万</strong></td>
+              
               <td class="num">1.80%</td>
             </tr>
             <tr style="background:rgba(59,130,246,0.1);">
               <td><strong>正常品合计</strong></td>
-              <td class="num">504万</td><td class="num"><strong>46.6万</strong></td>
-              <td class="num"><strong>27.8万</strong></td>
-              <td class="num"><strong>26.5万</strong></td>
-              <td class="num"><strong style="color:#3b82f6;">100.9万</strong></td>
-              <td class="num"><strong style="color:#3b82f6;">56.80%</strong></td>
+              <td class="num">404万</td><td class="num"><strong>46.6万</strong></td>
+              <td class="num"><strong>22.8万</strong></td>
+              <td class="num"><strong>11.5万</strong></td>
+              
+              <td class="num"><strong style="color:#3b82f6;">45.5%</strong></td>
             </tr>
           </tbody>
         </table>
@@ -885,7 +876,7 @@
               <th class="num">总库存</th><th class="num">6-9m库龄</th>
               <th class="num">9-12m库龄</th>
               <th class="num">超12m库龄</th>
-              <th class="num">超6m合计</th>
+              
               <th class="num">占比</th>
             </tr>
           </thead>
@@ -895,7 +886,7 @@
               <td class="num">150万</td><td class="num">15.0万</td>
               <td class="num">12.0万</td>
               <td class="num">3.0万</td>
-              <td class="num"><strong>30.0万</strong></td>
+              
               <td class="num">16.95%</td>
             </tr>
             <tr>
@@ -903,7 +894,7 @@
               <td class="num">120万</td><td class="num">17.0万</td>
               <td class="num">6.0万</td>
               <td class="num">1.0万</td>
-              <td class="num"><strong>24.0万</strong></td>
+              
               <td class="num">13.56%</td>
             </tr>
             <tr>
@@ -911,7 +902,7 @@
               <td class="num">90.0万</td><td class="num">14.0万</td>
               <td class="num">3.6万</td>
               <td class="num">0.4万</td>
-              <td class="num"><strong>18.0万</strong></td>
+              
               <td class="num">10.17%</td>
             </tr>
             <tr>
@@ -919,7 +910,7 @@
               <td class="num">25.5万</td><td class="num">2.1万</td>
               <td class="num">2.0万</td>
               <td class="num">1.0万</td>
-              <td class="num"><strong>5.1万</strong></td>
+              
               <td class="num">2.87%</td>
             </tr>
             <tr style="background:rgba(239,68,68,0.1);">
@@ -927,7 +918,7 @@
               <td class="num">384万</td><td class="num"><strong>47.8万</strong></td>
               <td class="num"><strong>23.6万</strong></td>
               <td class="num"><strong>5.4万</strong></td>
-              <td class="num"><strong style="color:#ef4444;">76.8万</strong></td>
+              
               <td class="num"><strong style="color:#ef4444;">43.20%</strong></td>
             </tr>
           </tbody>
@@ -941,12 +932,12 @@
   <!-- 趋势 -->
   <div class="section" id="sec-trend">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">📈 近 7 周 全球 积压趋势<button class="ai-prompt-btn" data-prompt="请查询近7周（W21-W27）全球各库龄段（6-9个月、9-12个月、12个月以上）的积压库存变化趋势，按周输出库存量及环比变化。">🤖 AI问数提示词</button></h2>
-      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">W21 - W27 · 6-9m / 9-12m / 12m+ 库存变化</div>
+      <h2 style="margin-bottom:0;">📈 近 7 周 全球 积压趋势<button class="ai-prompt-btn" data-prompt="请查询近7周（W21-W27）全球各库龄段（6-9个月、9-12个月、12个月以上）的积压库存变化趋势，按周输出库存量及环比变化，并预测至当季末、下季末的积压趋势。">🤖 AI问数提示词</button></h2>
+      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">W21 - W27 · 6-9m / 9-12m / 12m+ 库存变化 · 预测至当季末 / 下季末</div>
     </div>
     <div class="insight-box" style="margin-bottom:16px;">
       <div class="ititle">🤖 AI诊断与治疗方案</div>
-      <p>本周积压总量回升至 <span class="hl">177.7万件</span>，环比 +7.8%。主要驱动力为 6-9m 库龄库存激增 26.3%，表明前期关注库存正在加速向深度积压转化。<span class="hl">治疗建议：</span>立即启动 6-9m 库存的促销清仓计划，防止进一步恶化。</p>
+      <p>近7周积压总量呈<span class="hl">先降后升</span>态势：W21-W26持续优化至164.8万件（-5.0%），但W27急升至 <span class="hl">177.7万件</span>（环比+7.8%），已超过W21基线。<span class="hl">核心风险集中在12m+深度积压</span>——当前已达 <span class="hl">75.6万件</span>，且9-12m库龄（40.4万件）正持续向其转化，构成下一阶段积压增量主来源。预测显示该结构将延续：当季末12m+微增至 <span class="hl">75.9万件</span>、下季末达 <span class="hl">76.5万件</span>，整体合计将攀升至192.2万件。<span class="hl">治疗建议：</span>①优先处置12m+库龄（75.6万件）释放仓储与资金；②对9-12m库龄（40.4万件）加速清仓，阻断其向12m+劣化；③6-9m等较新库龄保持常规监控即可，避免过早促销稀释毛利。</p>
     </div>
     <div class="trend-wrap">
       <div id="trendChart"></div>
@@ -961,10 +952,8 @@
             <tr><td>W25</td><td class="num">835万</td><td>51.6万</td><td>43.9万</td><td>71.6万</td><td>167.1万</td><td class="num" style="color:#ef4444;">↑ +0.7%</td></tr>
             <tr><td>W26</td><td class="num">824万</td><td>48.8万</td><td>43.3万</td><td>72.7万</td><td>164.8万</td><td class="num" style="color:#10b981;">↓ -1.4%</td></tr>
             <tr class="current"><td>W27</td><td class="num">888万</td><td>61.7万</td><td>40.4万</td><td>75.6万</td><td>177.7万</td><td class="num" style="color:#ef4444;">↑ +7.8%</td></tr>
-            <tr style="background:rgba(245,158,11,0.08); border-top:2px solid rgba(245,158,11,0.3);"><td style="color:#f59e0b;">W28*</td><td class="num">893万</td><td style="color:#f59e0b;">64.8万</td><td>41.2万</td><td>75.9万</td><td style="color:#f59e0b;"><strong>181.9万</strong></td><td class="num" style="color:#ef4444;">↑ +2.4%</td></tr>
-            <tr style="background:rgba(245,158,11,0.08);"><td style="color:#f59e0b;">W29*</td><td class="num">898万</td><td style="color:#f59e0b;">67.5万</td><td>41.8万</td><td>76.1万</td><td style="color:#f59e0b;"><strong>185.4万</strong></td><td class="num" style="color:#ef4444;">↑ +1.9%</td></tr>
-            <tr style="background:rgba(245,158,11,0.08);"><td style="color:#f59e0b;">W30*</td><td class="num">905万</td><td style="color:#f59e0b;">70.2万</td><td>42.3万</td><td>76.3万</td><td style="color:#f59e0b;"><strong>188.8万</strong></td><td class="num" style="color:#ef4444;">↑ +1.8%</td></tr>
-            <tr style="background:rgba(245,158,11,0.08);"><td style="color:#f59e0b;">W31*</td><td class="num">912万</td><td style="color:#f59e0b;">72.9万</td><td>42.8万</td><td>76.5万</td><td style="color:#f59e0b;"><strong>192.2万</strong></td><td class="num" style="color:#ef4444;">↑ +1.8%</td></tr>
+            <tr style="background:rgba(245,158,11,0.08); border-top:2px solid rgba(245,158,11,0.3);"><td style="color:#f59e0b;">当季末*</td><td class="num">893万</td><td style="color:#f59e0b;">64.8万</td><td>41.2万</td><td>75.9万</td><td style="color:#f59e0b;"><strong>181.9万</strong></td><td class="num" style="color:#ef4444;">↑ +2.4%</td></tr>
+            <tr style="background:rgba(245,158,11,0.08);"><td style="color:#f59e0b;">下季末*</td><td class="num">912万</td><td style="color:#f59e0b;">72.9万</td><td>42.8万</td><td>76.5万</td><td style="color:#f59e0b;"><strong>192.2万</strong></td><td class="num" style="color:#ef4444;">↑ +5.7%</td></tr>
           </tbody>
         </table>
       </div>
@@ -995,7 +984,7 @@
           <th class="num">总库存</th><th class="num">6-9m</th>
           <th class="num">9-12m</th>
           <th class="num">12m+</th>
-          <th class="num">超6m合计</th>
+          
           <th class="num">占比</th>
         </tr>
       </thead>
@@ -1007,7 +996,7 @@
           <td class="num">300万</td><td class="num">19.9万</td>
           <td class="num">13.6万</td>
           <td class="num"><span class="tag red">26.5万</span></td>
-          <td class="num"><strong>59.9万</strong></td>
+          
           <td class="num"><strong style="color:#ef4444;">33.7%</strong></td>
         </tr>
         <tr>
@@ -1017,7 +1006,7 @@
           <td class="num">211万</td><td class="num">14.3万</td>
           <td class="num">9.5万</td>
           <td class="num"><span class="tag red">18.4万</span></td>
-          <td class="num"><strong>42.2万</strong></td>
+          
           <td class="num"><strong style="color:#f59e0b;">23.7%</strong></td>
         </tr>
         <tr>
@@ -1027,7 +1016,7 @@
           <td class="num">136万</td><td class="num">9.2万</td>
           <td class="num">6.2万</td>
           <td class="num"><span class="tag red">11.7万</span></td>
-          <td class="num"><strong>27.2万</strong></td>
+          
           <td class="num">15.3%</td>
         </tr>
         <tr>
@@ -1037,7 +1026,7 @@
           <td class="num">108万</td><td class="num">7.3万</td>
           <td class="num">5.0万</td>
           <td class="num"><span class="tag red">9.4万</span></td>
-          <td class="num"><strong>21.7万</strong></td>
+          
           <td class="num">12.2%</td>
         </tr>
         <tr>
@@ -1047,7 +1036,7 @@
           <td class="num">106万</td><td class="num">7.3万</td>
           <td class="num">4.9万</td>
           <td class="num"><span class="tag red">9.2万</span></td>
-          <td class="num"><strong>21.3万</strong></td>
+          
           <td class="num">12.0%</td>
         </tr>
         <tr>
@@ -1057,7 +1046,7 @@
           <td class="num">25.5万</td><td class="num">3.5万</td>
           <td class="num">1.2万</td>
           <td class="num">0.4万</td>
-          <td class="num"><strong>5.1万</strong></td>
+          
           <td class="num">2.9%</td>
         </tr>
         <tr>
@@ -1067,7 +1056,7 @@
           <td class="num">1.5万</td><td class="num">0.1万</td>
           <td class="num">0.1万</td>
           <td class="num">0.1万</td>
-          <td class="num"><strong>0.3万</strong></td>
+          
           <td class="num">0.2%</td>
         </tr>
         <tr>
@@ -1077,7 +1066,7 @@
           <td class="num">0.4万</td><td class="num">0.03万</td>
           <td class="num">0.02万</td>
           <td class="num">0.04万</td>
-          <td class="num"><strong>0.08万</strong></td>
+          
           <td class="num">0.05%</td>
         </tr>
         <tr style="background:rgba(59,130,246,0.1);">
@@ -1086,7 +1075,7 @@
           <td class="num"><strong>60.8万</strong></td>
           <td class="num">—</td><td class="num"><strong>40.4万</strong></td>
           <td class="num"><strong>76.5万</strong></td>
-          <td class="num"><strong style="color:#3b82f6;">177.7万</strong></td>
+          
           <td class="num"><strong style="color:#3b82f6;">100%</strong></td>
         </tr>
       </tbody>
@@ -1131,7 +1120,7 @@
                 <th class="num">6-9月库龄</th>
                 <th class="num">9-12月库龄</th>
                 <th class="num">超12月库龄</th>
-                <th class="num">超6月合计</th>
+                
                 <th class="num">占元余比</th>
               </tr>
             </thead>
@@ -1143,7 +1132,7 @@
                 <td class="num">55.4万</td>
                 <td class="num">28.7万</td>
                 <td class="num">15.5万</td>
-                <td class="num"><strong>99.6万</strong></td>
+                
                 <td class="num">56.30%</td>
               </tr>
               <tr>
@@ -1153,7 +1142,7 @@
                 <td class="num">38.8万</td>
                 <td class="num">22.6万</td>
                 <td class="num">16.0万</td>
-                <td class="num"><strong>77.3万</strong></td>
+                
                 <td class="num">43.70%</td>
               </tr>
               <tr style="background:rgba(59,130,246,0.1);">
@@ -1163,7 +1152,7 @@
                 <td class="num">94.2万</td>
                 <td class="num">51.3万</td>
                 <td class="num">31.5万</td>
-                <td class="num"><strong>177.0万</strong></td>
+                
                 <td class="num">100.00%</td>
               </tr>
             </tbody>
@@ -1198,7 +1187,7 @@
                 <th class="num">6-9月库龄</th>
                 <th class="num">9-12月库龄</th>
                 <th class="num">超12月库龄</th>
-                <th class="num">超6月合计</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -1208,7 +1197,7 @@
                 <td class="num">42.0万</td>
                 <td class="num">24.1万</td>
                 <td class="num">15.2万</td>
-                <td class="num"><strong>81.3万</strong></td>
+                
               </tr>
               <tr>
                 <td><strong>Shein</strong></td>
@@ -1216,7 +1205,7 @@
                 <td class="num">26.1万</td>
                 <td class="num">14.2万</td>
                 <td class="num">8.1万</td>
-                <td class="num"><strong>48.4万</strong></td>
+                
               </tr>
               <tr>
                 <td><strong>Standwebsite</strong></td>
@@ -1224,7 +1213,7 @@
                 <td class="num">15.0万</td>
                 <td class="num">7.2万</td>
                 <td class="num">5.2万</td>
-                <td class="num"><strong>27.4万</strong></td>
+                
               </tr>
               <tr>
                 <td><strong>其他渠道</strong></td>
@@ -1232,7 +1221,7 @@
                 <td class="num">11.1万</td>
                 <td class="num">5.8万</td>
                 <td class="num">3.0万</td>
-                <td class="num"><strong>19.9万</strong></td>
+                
               </tr>
               <tr style="background:rgba(59,130,246,0.1);">
                 <td><strong>合计</strong></td>
@@ -1240,7 +1229,7 @@
                 <td class="num">94.2万</td>
                 <td class="num">51.3万</td>
                 <td class="num">31.5万</td>
-                <td class="num"><strong>177.0万</strong></td>
+                
               </tr>
             </tbody>
           </table>
@@ -1274,7 +1263,7 @@
                 <th class="num">6-9月库龄</th>
                 <th class="num">9-12月库龄</th>
                 <th class="num">超12月库龄</th>
-                <th class="num">超6月合计</th>
+                
                 <th class="num">占总超龄比</th>
               </tr>
             </thead>
@@ -1286,7 +1275,7 @@
                 <td class="num">81.2万</td>
                 <td class="num">44.5万</td>
                 <td class="num">25.5万</td>
-                <td class="num"><strong>151.2万</strong></td>
+                
                 <td class="num">85.40%</td>
               </tr>
               <tr>
@@ -1296,7 +1285,7 @@
                 <td class="num">13.0万</td>
                 <td class="num">6.8万</td>
                 <td class="num">6.0万</td>
-                <td class="num"><strong>19.8万</strong></td>
+                
                 <td class="num">11.20%</td>
               </tr>
               <tr style="background:rgba(59,130,246,0.1);">
@@ -1306,7 +1295,7 @@
                 <td class="num">94.2万</td>
                 <td class="num">51.3万</td>
                 <td class="num">31.5万</td>
-                <td class="num"><strong>177.0万</strong></td>
+                
                 <td class="num">100.00%</td>
               </tr>
             </tbody>
@@ -1341,7 +1330,7 @@
                 <th class="num">6-9月库龄</th>
                 <th class="num">9-12月库龄</th>
                 <th class="num">超12月库龄</th>
-                <th class="num">超6月合计</th>
+                
                 <th class="num">占超龄比</th>
               </tr>
             </thead>
@@ -1352,7 +1341,7 @@
                 <td class="num">57.2万</td>
                 <td class="num">37.8万</td>
                 <td class="num">70.6万</td>
-                <td class="num"><strong>165.6万</strong></td>
+                
                 <td class="num">93.20%</td>
               </tr>
               <tr>
@@ -1361,7 +1350,7 @@
                 <td class="num">4.1万</td>
                 <td class="num">1.8万</td>
                 <td class="num">4.1万</td>
-                <td class="num"><strong>10.0万</strong></td>
+                
                 <td class="num">24.40%</td>
               </tr>
               <tr>
@@ -1370,7 +1359,7 @@
                 <td class="num">0.4万</td>
                 <td class="num">0.8万</td>
                 <td class="num">0.9万</td>
-                <td class="num"><strong>2.1万</strong></td>
+                
                 <td class="num">17.50%</td>
               </tr>
               <tr style="background:rgba(59,130,246,0.1);">
@@ -1379,7 +1368,7 @@
                 <td class="num">61.7万</td>
                 <td class="num">40.4万</td>
                 <td class="num">75.6万</td>
-                <td class="num"><strong>177.7万</strong></td>
+                
                 <td class="num">—</td>
               </tr>
             </tbody>
@@ -1418,7 +1407,7 @@
           <th class="num">总库存</th><th class="num">6-9m 数量</th>
           <th class="num">9-12m 数量</th>
           <th class="num">超12m 数量</th>
-          <th class="num">超6m 合计</th>
+          
           <th class="num">占总超龄比</th>
         </tr>
       </thead>
@@ -1429,7 +1418,7 @@
           <td class="num">322万</td><td class="num">35.2万</td>
           <td class="num">18.1万</td>
           <td class="num"><span class="tag red">11.2万</span></td>
-          <td class="num"><strong>64.5万</strong></td>
+          
           <td class="num"><strong style="color:#ef4444;">36.44%</strong></td>
         </tr>
         <tr>
@@ -1438,7 +1427,7 @@
           <td class="num">176万</td><td class="num">18.5万</td>
           <td class="num">10.2万</td>
           <td class="num"><span class="tag red">6.4万</span></td>
-          <td class="num"><strong>35.1万</strong></td>
+          
           <td class="num"><strong style="color:#ef4444;">19.83%</strong></td>
         </tr>
         <tr>
@@ -1447,7 +1436,7 @@
           <td class="num">112万</td><td class="num">12.1万</td>
           <td class="num">6.5万</td>
           <td class="num"><span class="tag red">3.9万</span></td>
-          <td class="num"><strong>22.5万</strong></td>
+          
           <td class="num"><strong style="color:#ef4444;">12.71%</strong></td>
         </tr>
         <tr>
@@ -1456,7 +1445,7 @@
           <td class="num">86.5万</td><td class="num">9.0万</td>
           <td class="num">5.2万</td>
           <td class="num">3.1万</td>
-          <td class="num"><strong>17.3万</strong></td>
+          
           <td class="num">9.77%</td>
         </tr>
         <tr>
@@ -1465,7 +1454,7 @@
           <td class="num">70.5万</td><td class="num">7.5万</td>
           <td class="num">4.1万</td>
           <td class="num">2.5万</td>
-          <td class="num"><strong>14.1万</strong></td>
+          
           <td class="num">7.97%</td>
         </tr>
         <tr>
@@ -1474,7 +1463,7 @@
           <td class="num">41.0万</td><td class="num">4.2万</td>
           <td class="num">2.5万</td>
           <td class="num">1.5万</td>
-          <td class="num"><strong>8.2万</strong></td>
+          
           <td class="num">4.63%</td>
         </tr>
         <tr>
@@ -1483,7 +1472,7 @@
           <td class="num">30.0万</td><td class="num">3.1万</td>
           <td class="num">1.8万</td>
           <td class="num">1.1万</td>
-          <td class="num"><strong>6.0万</strong></td>
+          
           <td class="num">3.39%</td>
         </tr>
         <tr>
@@ -1492,7 +1481,7 @@
           <td class="num">22.5万</td><td class="num">2.3万</td>
           <td class="num">1.4万</td>
           <td class="num">0.8万</td>
-          <td class="num"><strong>4.5万</strong></td>
+          
           <td class="num">2.54%</td>
         </tr>
         <tr>
@@ -1501,7 +1490,7 @@
           <td class="num">15.5万</td><td class="num">1.5万</td>
           <td class="num">1.0万</td>
           <td class="num">0.6万</td>
-          <td class="num"><strong>3.1万</strong></td>
+          
           <td class="num">1.75%</td>
         </tr>
         <tr>
@@ -1510,7 +1499,7 @@
           <td class="num">8.5万</td><td class="num">0.8万</td>
           <td class="num">0.5万</td>
           <td class="num">0.4万</td>
-          <td class="num"><strong>1.7万</strong></td>
+          
           <td class="num">0.96%</td>
         </tr>
         <tr style="background:rgba(59,130,246,0.1);">
@@ -1519,7 +1508,7 @@
           <td class="num">885万</td><td class="num"><strong>94.2万</strong></td>
           <td class="num"><strong>51.3万</strong></td>
           <td class="num"><strong>31.5万</strong></td>
-          <td class="num"><strong style="color:#3b82f6;">177.0万</strong></td>
+          
           <td class="num"><strong style="color:#3b82f6;">100.00%</strong></td>
         </tr>
       </tbody>
@@ -1548,7 +1537,7 @@
           <th class="num">总库存</th><th class="num">6-9m</th>
           <th class="num">9-12m</th>
           <th class="num">12m+</th>
-          <th class="num">超6m合计</th>
+          
         </tr>
       </thead>
       <tbody>
@@ -1561,7 +1550,7 @@
           <td class="num">19.5万</td><td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">3.9万</span></td>
-          <td class="num"><strong>3.9万</strong></td>
+          
         </tr>
         <tr>
           <td>2</td>
@@ -1572,7 +1561,7 @@
           <td class="num">10.5万</td><td class="num">0.3万</td>
           <td class="num">0.6万</td>
           <td class="num">1.2万</td>
-          <td class="num"><strong>2.1万</strong></td>
+          
         </tr>
         <tr>
           <td>3</td>
@@ -1583,7 +1572,7 @@
           <td class="num">8.0万</td><td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">1.6万</span></td>
-          <td class="num"><strong>1.6万</strong></td>
+          
         </tr>
         <tr>
           <td>4</td>
@@ -1594,7 +1583,7 @@
           <td class="num">7.5万</td><td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">1.5万</span></td>
-          <td class="num"><strong>1.5万</strong></td>
+          
         </tr>
         <tr>
           <td>5</td>
@@ -1605,7 +1594,7 @@
           <td class="num">7.5万</td><td class="num"><span class="tag orange">1.1万</span></td>
           <td class="num">0.3万</td>
           <td class="num">0.1万</td>
-          <td class="num"><strong>1.5万</strong></td>
+          
         </tr>
         <tr>
           <td>6</td>
@@ -1616,7 +1605,7 @@
           <td class="num">7.5万</td><td class="num"><span class="tag orange">1.2万</span></td>
           <td class="num">0.1万</td>
           <td class="num">0.2万</td>
-          <td class="num"><strong>1.5万</strong></td>
+          
         </tr>
         <tr>
           <td>7</td>
@@ -1627,7 +1616,7 @@
           <td class="num">7.0万</td><td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">1.4万</span></td>
-          <td class="num"><strong>1.4万</strong></td>
+          
         </tr>
         <tr>
           <td>8</td>
@@ -1638,7 +1627,7 @@
           <td class="num">6.5万</td><td class="num">0.1万</td>
           <td class="num">0.9万</td>
           <td class="num">0.4万</td>
-          <td class="num"><strong>1.3万</strong></td>
+          
         </tr>
         <tr>
           <td>9</td>
@@ -1649,7 +1638,7 @@
           <td class="num">6.5万</td><td class="num"><span class="tag orange">1.3万</span></td>
           <td class="num">0万</td>
           <td class="num">0万</td>
-          <td class="num"><strong>1.3万</strong></td>
+          
         </tr>
         <tr>
           <td>10</td>
@@ -1660,7 +1649,7 @@
           <td class="num">6.0万</td><td class="num">0.6万</td>
           <td class="num">0万</td>
           <td class="num">0.6万</td>
-          <td class="num"><strong>1.2万</strong></td>
+          
         </tr>
         <tr>
           <td>11</td>
@@ -1671,7 +1660,7 @@
           <td class="num">5.5万</td><td class="num">0.8万</td>
           <td class="num">0.2万</td>
           <td class="num">0.1万</td>
-          <td class="num"><strong>1.1万</strong></td>
+          
         </tr>
         <tr>
           <td>12</td>
@@ -1682,7 +1671,7 @@
           <td class="num">5.0万</td><td class="num">0万</td>
           <td class="num"><span class="tag orange">0.9万</span></td>
           <td class="num">0.1万</td>
-          <td class="num"><strong>1.0万</strong></td>
+          
         </tr>
         <tr>
           <td>13</td>
@@ -1693,7 +1682,7 @@
           <td class="num">4.5万</td><td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.9万</span></td>
-          <td class="num"><strong>0.9万</strong></td>
+          
         </tr>
         <tr>
           <td>14</td>
@@ -1704,7 +1693,7 @@
           <td class="num">4.5万</td><td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.9万</span></td>
-          <td class="num"><strong>0.9万</strong></td>
+          
         </tr>
         <tr>
           <td>15</td>
@@ -1715,7 +1704,7 @@
           <td class="num">4.0万</td><td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.8万</span></td>
-          <td class="num"><strong>0.8万</strong></td>
+          
         </tr>
         <tr>
           <td>16</td>
@@ -1726,7 +1715,7 @@
           <td class="num">4.0万</td><td class="num">0.7万</td>
           <td class="num">0.1万</td>
           <td class="num">0万</td>
-          <td class="num"><strong>0.8万</strong></td>
+          
         </tr>
         <tr>
           <td>17</td>
@@ -1737,7 +1726,7 @@
           <td class="num">4.0万</td><td class="num">0.7万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
-          <td class="num"><strong>0.8万</strong></td>
+          
         </tr>
         <tr>
           <td>18</td>
@@ -1748,7 +1737,7 @@
           <td class="num">4.0万</td><td class="num">0.8万</td>
           <td class="num">0万</td>
           <td class="num">0万</td>
-          <td class="num"><strong>0.8万</strong></td>
+          
         </tr>
         <tr>
           <td>19</td>
@@ -1759,7 +1748,7 @@
           <td class="num">3.5万</td><td class="num">0万</td>
           <td class="num">0万</td>
           <td class="num"><span class="tag red">0.7万</span></td>
-          <td class="num"><strong>0.7万</strong></td>
+          
         </tr>
         <tr>
           <td>20</td>
@@ -1770,7 +1759,7 @@
           <td class="num">3.5万</td><td class="num">0.3万</td>
           <td class="num">0.3万</td>
           <td class="num">0万</td>
-          <td class="num"><strong>0.7万</strong></td>
+          
         </tr>
       </tbody>
     </table>
@@ -1796,7 +1785,7 @@ trendChart.setOption({
     valueFormatter: function(v) { return v.toFixed(1) + '万'; }
   },
   legend: {
-    data: ['6-9m', '9-12m', '12m+', '预计超6m合计'],
+    data: ['6-9m', '9-12m', '12m+'],
     textStyle: { color: '#94a3b8' },
     top: 0, right: 0
   },
@@ -1804,7 +1793,7 @@ trendChart.setOption({
   xAxis: {
     type: 'category',
     boundaryGap: false,
-    data: ['W21','W22','W23','W24','W25','W26','W27','W28','W29','W30','W31'],
+    data: ['W21','W22','W23','W24','W25','W26','W27','当季末','下季末'],
     axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
     axisLabel: { color: '#64748b', fontSize: 11 }
   },
@@ -1821,7 +1810,7 @@ trendChart.setOption({
   series: [
     {
       name: '6-9m', type: 'line', smooth: true,
-      data: [58.4, 54.0, 55.2, 51.6, 51.6, 48.8, 61.7, null, null, null, null],
+      data: [58.4, 54.0, 55.2, 51.6, 51.6, 48.8, 61.7, 64.8, 72.9],
       itemStyle: { color: '#3b82f6' },
       areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
         { offset: 0, color: 'rgba(59,130,246,0.18)' },
@@ -1831,7 +1820,7 @@ trendChart.setOption({
     },
     {
       name: '9-12m', type: 'line', smooth: true,
-      data: [38.5, 39.9, 41.1, 42.1, 43.9, 43.3, 40.4, null, null, null, null],
+      data: [38.5, 39.9, 41.1, 42.1, 43.9, 43.3, 40.4, 41.2, 42.8],
       itemStyle: { color: '#f59e0b' },
       areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
         { offset: 0, color: 'rgba(245,158,11,0.2)' },
@@ -1841,23 +1830,13 @@ trendChart.setOption({
     },
     {
       name: '12m+', type: 'line', smooth: true,
-      data: [76.5, 74.7, 72.4, 72.3, 71.6, 72.7, 75.6, null, null, null, null],
+      data: [76.5, 74.7, 72.4, 72.3, 71.6, 72.7, 75.6, 75.9, 76.5],
       itemStyle: { color: '#ef4444' },
       areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
         { offset: 0, color: 'rgba(239,68,68,0.25)' },
         { offset: 1, color: 'rgba(239,68,68,0.02)' }
       ])},
-      lineStyle: { width: 2 }
-    },
-    {
-      name: '预计超6m合计', type: 'line', smooth: true,
-      data: [null, null, null, null, null, null, null, 186.8, 196.6, 207.5, 219.2],
-      itemStyle: { color: '#f97316' },
-      lineStyle: { width: 2, type: 'dashed' },
-      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-        { offset: 0, color: 'rgba(249,115,22,0.12)' },
-        { offset: 1, color: 'rgba(249,115,22,0.01)' }
-      ])},
+      lineStyle: { width: 2 },
       markLine: {
         symbol: 'none',
         data: [{ xAxis: 'W27' }],
@@ -1914,7 +1893,7 @@ tabCharts[0].setOption({
   ]
 });
 
-// Tab1 备货渠道库存结构分布 — 横向柱状图（超6月合计占比）
+// Tab1 备货渠道库存结构分布 — 横向柱状图
 tabCharts[1] = echarts.init(document.getElementById('chart1'));
 tabCharts[1].setOption({
   backgroundColor: chartBg,
@@ -2012,10 +1991,36 @@ ctChart.setOption({
   ]
 });
 
+// 预测冗余风险预警 — 分组柱状图(当季末 vs 下季末)
+var forecastChart = echarts.init(document.getElementById('forecastChart'));
+forecastChart.setOption({
+  backgroundColor: chartBg,
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, textStyle: { color: '#e2e8f0' }, valueFormatter: function(v) { return v.toFixed(1) + '万'; } },
+  legend: { data: ['当季末预计', '下季末预计'], textStyle: { color: chartTextColor }, top: 0 },
+  grid: { left: '3%', right: '4%', bottom: '3%', top: 36, containLabel: true },
+  xAxis: {
+    type: 'value', name: '万',
+    nameTextStyle: { color: chartTextColor },
+    axisLine: { show: false },
+    axisLabel: { color: chartTextColor },
+    splitLine: { lineStyle: { color: chartSplitLine } }
+  },
+  yAxis: {
+    type: 'category', data: ['运动组', 'Nortiv8', 'Bruno Marc', 'DP Kids', 'DP Comfort', 'DP Fashion'],
+    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+    axisLabel: { color: chartTextColor, fontSize: 11 }
+  },
+  series: [
+    { name: '当季末预计', type: 'bar', data: [10.7, 21.3, 41.2, 26.8, 49.0, 69.9], itemStyle: { color: '#3b82f6' }, barWidth: '35%' },
+    { name: '下季末预计', type: 'bar', data: [11.5, 22.6, 44.5, 28.5, 51.1, 74.6], itemStyle: { color: '#ef4444' }, barWidth: '35%' }
+  ]
+});
+
 window.addEventListener('resize', function() {
   trendChart.resize();
   ctChart.resize();
   tabCharts.forEach(function(c){ if (c) c.resize(); });
+  forecastChart.resize();
 });
 
 // 页内导航 scroll-spy 高亮
