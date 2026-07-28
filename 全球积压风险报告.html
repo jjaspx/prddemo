@@ -804,6 +804,25 @@
 
   .trend-table tr.forecast-row td { color: #fb923c; }
   .trend-table tr.forecast-row td:first-child { color: #f97316; }
+  /* 颜色×人群×CT 分面小图 */
+  .gc-cap { font-size: 13px; color: #94a3b8; margin-bottom: 12px; }
+  .gc-gender { margin-bottom: 22px; }
+  .gc-gender:last-child { margin-bottom: 0; }
+  .gc-gender-h { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .gc-gender-h .gc-gtot { font-size: 12px; color: #64748b; font-weight: 400; }
+  .gc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 14px; }
+  .gc-cell { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px; }
+  .gc-cell-h { font-size: 12.5px; font-weight: 700; color: #cbd5e1; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; }
+  .gc-cell-h .gc-ctot { font-size: 11.5px; color: #3b82f6; font-weight: 600; }
+  .gc-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; font-size: 11.5px; }
+  .gc-row:last-child { margin-bottom: 0; }
+  .gc-name { width: 94px; flex: none; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gc-barwrap { flex: 1; height: 14px; background: rgba(255,255,255,0.04); border-radius: 4px; overflow: hidden; }
+  .gc-bar { height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 4px; }
+  .gc-val { width: 88px; flex: none; text-align: right; color: #e2e8f0; font-variant-numeric: tabular-nums; }
+  .gc-sub { font-size: 11px; font-weight: 700; color: #f59e0b; margin: 9px 0 6px; letter-spacing: .3px; border-left: 3px solid #f59e0b; padding-left: 6px; }
+  .gc-sub:first-of-type { margin-top: 0; }
+
 </style>
 </head>
 <body>
@@ -913,7 +932,7 @@
   <div class="section" id="sec-ct">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
       <h2 style="margin-bottom:0;">🏢 CT积压分布</h2>
-      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按CT分组 · 各库龄段库存明细</div>
+      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按CT分组 · 各库龄段库存明细（柱内数字=该段占该CT总库存比例）</div>
       <span style="margin-left:auto; display:inline-flex; align-items:center; gap:10px;">
         <button class="ai-prompt-btn" style="margin-left:0;" data-prompt="请按CT分组统计全球各库龄段积压库存明细，列出每个CT的总库存、6-9m、9-12m、12m+库存量和占比。">🤖 AI问数提示词</button>
         <a href="https://oms-plus.wangoon.cn/order-center/sales-order/add?timeType=2&amp;orderType=0" target="_blank" class="clearance-btn">🧹 去建清货单</a>
@@ -1337,11 +1356,12 @@
 
   <!-- 多维度分析 -->
   <div class="section" id="sec-multi">
-    <h2 style="margin-bottom:0;">🎯 多维度结构分析<button class="ai-prompt-btn" data-prompt="请从备货渠道、颜色SKC、尺码与楦型三个维度，分析全球积压库存的结构分布，输出各维度的积压量和占比。">🤖 AI问数提示词</button></h2>
+    <h2 style="margin-bottom:0;">🎯 多维度结构分析<button class="ai-prompt-btn" data-prompt="请从备货渠道、以及分人群(WOMEN/MEN/KIDS)的 CT×颜色×尺码 维度，分析全球积压库存的结构分布，输出各维度的超6m积压量和占比。">🤖 AI问数提示词</button></h2>
     <div class="tab-nav">
       <button class="tab-btn active" onclick="switchTab(0)">📦 备货渠道积压 Top5</button>
-      <button class="tab-btn" onclick="switchTab(1)">🎨 颜色积压 Top 5</button>
-      <button class="tab-btn" onclick="switchTab(2)">📐 尺码积压 Top5</button>
+      <button class="tab-btn" onclick="switchTab(1)">WOMEN分CT颜色尺码积压TOP5</button>
+      <button class="tab-btn" onclick="switchTab(2)">MEN分CT颜色尺码积压TOP5</button>
+      <button class="tab-btn" onclick="switchTab(3)">KIDS分CT颜色尺码积压TOP5</button>
     </div>
 
     <!-- Tab 0: 备货渠道积压 Top5 -->
@@ -1443,202 +1463,688 @@
     
     </div>
 
-    <!-- Tab 1: 颜色积压 Top 5 -->
+    <!-- Tab 1: WOMEN 颜色×CT 积压 Top5 -->
     <div class="tab-panel" id="tab1">
-      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
+      <div class="sec-sub" style="margin-top:0;margin-bottom:14px;">按 CT 拆分，每个格子分两块：上方「颜色 Top5」、下方「尺码 Top5」，均按超6m排序；柱长=该格内相对占比，标签「X.X万 (Y.Y%)」中 X.X万=超6m数量，Y.Y%=占该 CT 全部超6m合计的比例。</div>
+            <div class="gc-cap">人群超6m合计 <strong style="color:#cbd5e1;">156.7万</strong> · 共 5 个CT</div>
+      <div class="gc-grid">
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Dream Pairs Fashion</span><span class="gc-ctot">88.7万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">12.8万 (14.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK-PU">BLACK-PU</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:52.6%"></div></div>
+              <span class="gc-val">6.7万 (7.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="WHITE">WHITE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:37.5%"></div></div>
+              <span class="gc-val">4.8万 (5.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BROWN">BROWN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:31.0%"></div></div>
+              <span class="gc-val">4.0万 (4.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="RED">RED</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:25.3%"></div></div>
+              <span class="gc-val">3.2万 (3.7%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="8">8码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">12.8万 (14.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9">9码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:91.5%"></div></div>
+              <span class="gc-val">11.7万 (13.2%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="8.5">8.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:85.4%"></div></div>
+              <span class="gc-val">10.9万 (12.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7.5">7.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:75.0%"></div></div>
+              <span class="gc-val">9.6万 (10.8%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7">7码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:70.5%"></div></div>
+              <span class="gc-val">9.0万 (10.2%)</span>
+            </div>
         </div>
-        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
-         Top5 配色中 BLACK、WHITE、BROWN 三色 超6m 积压合计 <strong style="color:#fbbf24;">103.6万件</strong>（占全局超6m 38.8%），备货聚焦头部配色；BLACK 单一配色 超6m 达 48.9万件（18.3%），建议压缩长尾冷门色备货量。
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Dream Pairs Comfort</span><span class="gc-ctot">59.0万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="WHITE">WHITE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">8.9万 (15.0%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:93.8%"></div></div>
+              <span class="gc-val">8.3万 (14.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="CHESTNUT">CHESTNUT</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:80.3%"></div></div>
+              <span class="gc-val">7.1万 (12.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="GREY">GREY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:44.1%"></div></div>
+              <span class="gc-val">3.9万 (6.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BROWN">BROWN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:26.0%"></div></div>
+              <span class="gc-val">2.3万 (3.9%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="8">8码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">9.5万 (16.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9">9码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:94.9%"></div></div>
+              <span class="gc-val">9.0万 (15.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="8.5">8.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:74.9%"></div></div>
+              <span class="gc-val">7.1万 (12.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="10">10码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:65.8%"></div></div>
+              <span class="gc-val">6.3万 (10.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7">7码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:64.4%"></div></div>
+              <span class="gc-val">6.1万 (10.4%)</span>
+            </div>
+        </div>
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>运动组</span><span class="gc-ctot">5.0万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="BEIGE/KHAKI">BEIGE/KHAKI</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">1.5万 (30.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="WHITE">WHITE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:82.2%"></div></div>
+              <span class="gc-val">1.2万 (25.0%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="ALL BLACK">ALL BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:47.2%"></div></div>
+              <span class="gc-val">0.7万 (14.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="WHITE-NEW">WHITE-NEW</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:20.8%"></div></div>
+              <span class="gc-val">0.3万 (6.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:18.4%"></div></div>
+              <span class="gc-val">0.3万 (5.6%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="9">9码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.9万 (17.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="8.5">8.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:88.0%"></div></div>
+              <span class="gc-val">0.8万 (15.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7.5">7.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:78.6%"></div></div>
+              <span class="gc-val">0.7万 (13.9%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9.5">9.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:66.0%"></div></div>
+              <span class="gc-val">0.6万 (11.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="8">8码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:63.8%"></div></div>
+              <span class="gc-val">0.6万 (11.3%)</span>
+            </div>
+        </div>
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Nortiv8</span><span class="gc-ctot">3.4万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="DARK GREY">DARK GREY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.5万 (13.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="KHAKI">KHAKI</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:84.1%"></div></div>
+              <span class="gc-val">0.4万 (11.2%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:71.2%"></div></div>
+              <span class="gc-val">0.3万 (9.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="GREY PINK">GREY PINK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:63.7%"></div></div>
+              <span class="gc-val">0.3万 (8.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="LIGHT GREY">LIGHT GREY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:45.8%"></div></div>
+              <span class="gc-val">0.2万 (6.1%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="7.5">7.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.4万 (10.7%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="8">8码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:99.0%"></div></div>
+              <span class="gc-val">0.4万 (10.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="8.5">8.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:91.8%"></div></div>
+              <span class="gc-val">0.3万 (9.9%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9">9码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:85.5%"></div></div>
+              <span class="gc-val">0.3万 (9.2%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7">7码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:75.2%"></div></div>
+              <span class="gc-val">0.3万 (8.1%)</span>
+            </div>
+        </div>
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Bruno Marc</span><span class="gc-ctot">0.6万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="ALL BLACK">ALL BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.2万 (29.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="GREY">GREY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:71.4%"></div></div>
+              <span class="gc-val">0.1万 (20.8%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:66.6%"></div></div>
+              <span class="gc-val">0.1万 (19.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BROWN">BROWN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:34.9%"></div></div>
+              <span class="gc-val">0.1万 (10.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK LEOPARD PRINT">BLACK LEOPARD PRINT</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:16.8%"></div></div>
+              <span class="gc-val">0.0万 (4.9%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="8.5">8.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.1万 (16.0%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7.5">7.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:84.2%"></div></div>
+              <span class="gc-val">0.1万 (13.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7">7码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:70.1%"></div></div>
+              <span class="gc-val">0.1万 (11.2%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9">9码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:63.4%"></div></div>
+              <span class="gc-val">0.1万 (10.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9.5">9.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:46.1%"></div></div>
+              <span class="gc-val">0.0万 (7.4%)</span>
+            </div>
         </div>
       </div>
-      <div class="tab-grid">
-        <div class="tab-chart-wrap">
-          <div class="tab-chart" id="chart2"></div>
-        </div>
-        <div class="tab-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>指标名称</th>
-                <th class="num">总库存</th>
-                <th class="num">6-9月库龄</th>
-                <th class="num">9-12月库龄</th>
-                <th class="num">超12月库龄</th>
-                <th class="num">超6m合计</th>
-                <th class="num">超6m占比</th>
-              </tr>
-            </thead>
-                        <tbody>
-              <tr>
-                <td><strong>BLACK</strong></td>
-                <td class="num">315.7万</td>
-                <td class="num">19.0万</td>
-                <td class="num">12.5万</td>
-                <td class="num">17.4万</td>
-                <td class="num">48.9万</td>
-                <td class="num">18.3%</td>
-              </tr>
-              <tr>
-                <td><strong>WHITE</strong></td>
-                <td class="num">79.3万</td>
-                <td class="num">8.3万</td>
-                <td class="num">1.8万</td>
-                <td class="num">10.4万</td>
-                <td class="num">20.5万</td>
-                <td class="num">7.7%</td>
-              </tr>
-              <tr>
-                <td><strong>BROWN</strong></td>
-                <td class="num">95.0万</td>
-                <td class="num">7.3万</td>
-                <td class="num">3.1万</td>
-                <td class="num">6.9万</td>
-                <td class="num">17.3万</td>
-                <td class="num">6.5%</td>
-              </tr>
-              <tr>
-                <td><strong>GREY</strong></td>
-                <td class="num">22.9万</td>
-                <td class="num">1.3万</td>
-                <td class="num">1.4万</td>
-                <td class="num">5.8万</td>
-                <td class="num">8.6万</td>
-                <td class="num">3.2%</td>
-              </tr>
-              <tr>
-                <td><strong>BLACK-PU</strong></td>
-                <td class="num">48.7万</td>
-                <td class="num">2.6万</td>
-                <td class="num">2.0万</td>
-                <td class="num">3.7万</td>
-                <td class="num">8.3万</td>
-                <td class="num">3.1%</td>
-              </tr>
-              <tr style="color:#94a3b8;">
-                <td>其它配色</td>
-                <td class="num">783.4万</td>
-                <td class="num">53.3万</td>
-                <td class="num">29.5万</td>
-                <td class="num">80.6万</td>
-                <td class="num">163.4万</td>
-                <td class="num">61.2%</td>
-              </tr>
-              <tr style="background:rgba(59,130,246,0.1);">
-                <td><strong>合计</strong></td>
-                <td class="num"><strong>1264.5万</strong></td>
-                <td class="num">91.8万</td>
-                <td class="num">50.3万</td>
-                <td class="num">125.0万</td>
-                <td class="num"><strong>267.0万</strong></td>
-                <td class="num">100.00%</td>
-              </tr>
-      </tbody>
-          </table>
-        </div>
-      </div>
-    
     </div>
 
-    <!-- Tab 2: 尺码积压 Top5 -->
+    <!-- Tab 2: MEN 颜色×CT 积压 Top5 -->
     <div class="tab-panel" id="tab2">
-      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
+      <div class="sec-sub" style="margin-top:0;margin-bottom:14px;">按 CT 拆分，每个格子分两块：上方「颜色 Top5」、下方「尺码 Top5」，均按超6m排序；柱长=该格内相对占比，标签「X.X万 (Y.Y%)」中 X.X万=超6m数量，Y.Y%=占该 CT 全部超6m合计的比例。</div>
+            <div class="gc-cap">人群超6m合计 <strong style="color:#cbd5e1;">52.9万</strong> · 共 4 个CT</div>
+      <div class="gc-grid">
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Bruno Marc</span><span class="gc-ctot">32.1万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">13.1万 (40.9%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BROWN">BROWN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:53.2%"></div></div>
+              <span class="gc-val">7.0万 (21.8%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="GREY">GREY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:12.2%"></div></div>
+              <span class="gc-val">1.6万 (5.0%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="WHITE">WHITE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:7.9%"></div></div>
+              <span class="gc-val">1.0万 (3.2%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="ALL BLACK">ALL BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:7.9%"></div></div>
+              <span class="gc-val">1.0万 (3.2%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="11">11码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">4.4万 (13.7%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="12">12码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:95.8%"></div></div>
+              <span class="gc-val">4.2万 (13.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="10.5">10.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:92.0%"></div></div>
+              <span class="gc-val">4.0万 (12.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="10">10码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:82.7%"></div></div>
+              <span class="gc-val">3.6万 (11.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9.5">9.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:66.2%"></div></div>
+              <span class="gc-val">2.9万 (9.0%)</span>
+            </div>
         </div>
-        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
-         尺码积压 Top5 中 8码、9码、10码 三大尺码 超6m 积压合计 <strong style="color:#fbbf24;">81.3万件</strong>（占全局超6m 30.5%），供需脱节集中在头部标准码；建议对头部尺码做精准补单与促销去化，压缩长尾尺码备货。
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Nortiv8</span><span class="gc-ctot">17.7万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">4.2万 (24.0%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="COYOTE">COYOTE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:32.5%"></div></div>
+              <span class="gc-val">1.4万 (7.8%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="SAND">SAND</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:30.4%"></div></div>
+              <span class="gc-val">1.3万 (7.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BROWN">BROWN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:25.9%"></div></div>
+              <span class="gc-val">1.1万 (6.2%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="ARMY GREEN">ARMY GREEN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:16.2%"></div></div>
+              <span class="gc-val">0.7万 (3.9%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="11">11码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">1.7万 (9.8%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="10.5">10.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:96.6%"></div></div>
+              <span class="gc-val">1.7万 (9.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="12">12码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:95.2%"></div></div>
+              <span class="gc-val">1.6万 (9.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="10">10码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:86.3%"></div></div>
+              <span class="gc-val">1.5万 (8.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9.5">9.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:82.2%"></div></div>
+              <span class="gc-val">1.4万 (8.0%)</span>
+            </div>
+        </div>
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>运动组</span><span class="gc-ctot">1.6万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="ALL BLACK">ALL BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.5万 (28.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="APRICOT">APRICOT</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:49.0%"></div></div>
+              <span class="gc-val">0.2万 (13.9%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="GREY">GREY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:23.5%"></div></div>
+              <span class="gc-val">0.1万 (6.7%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLUE">BLUE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:23.5%"></div></div>
+              <span class="gc-val">0.1万 (6.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:22.0%"></div></div>
+              <span class="gc-val">0.1万 (6.2%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="8">8码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.2万 (15.0%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7.5">7.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:89.8%"></div></div>
+              <span class="gc-val">0.2万 (13.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="10.5">10.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:80.1%"></div></div>
+              <span class="gc-val">0.2万 (12.0%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="8.5">8.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:78.2%"></div></div>
+              <span class="gc-val">0.2万 (11.8%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9">9码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:72.3%"></div></div>
+              <span class="gc-val">0.2万 (10.9%)</span>
+            </div>
+        </div>
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Dream Pairs Comfort</span><span class="gc-ctot">1.5万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.4万 (24.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="CHESTNUT">CHESTNUT</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:74.1%"></div></div>
+              <span class="gc-val">0.3万 (17.9%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BROWN">BROWN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:68.7%"></div></div>
+              <span class="gc-val">0.3万 (16.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BROWN/GREY">BROWN/GREY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:26.1%"></div></div>
+              <span class="gc-val">0.1万 (6.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="LIGHT GREY">LIGHT GREY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:21.8%"></div></div>
+              <span class="gc-val">0.1万 (5.3%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="7-8">7-8码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.2万 (13.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="13-14">13-14码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:97.9%"></div></div>
+              <span class="gc-val">0.2万 (13.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="10">10码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:84.1%"></div></div>
+              <span class="gc-val">0.2万 (11.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9">9码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:70.1%"></div></div>
+              <span class="gc-val">0.1万 (9.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="12">12码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:57.6%"></div></div>
+              <span class="gc-val">0.1万 (7.8%)</span>
+            </div>
         </div>
       </div>
-      <div class="tab-grid">
-        <div class="tab-chart-wrap">
-          <div class="tab-chart" id="chart3"></div>
+    </div>
+
+    <!-- Tab 3: KIDS 颜色×CT 积压 Top5 -->
+    <div class="tab-panel" id="tab3">
+      <div class="sec-sub" style="margin-top:0;margin-bottom:14px;">按 CT 拆分，每个格子分两块：上方「颜色 Top5」、下方「尺码 Top5」，均按超6m排序；柱长=该格内相对占比，标签「X.X万 (Y.Y%)」中 X.X万=超6m数量，Y.Y%=占该 CT 全部超6m合计的比例。</div>
+            <div class="gc-cap">人群超6m合计 <strong style="color:#cbd5e1;">53.2万</strong> · 共 3 个CT</div>
+      <div class="gc-grid">
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Dream Pairs Kids</span><span class="gc-ctot">38.1万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">5.3万 (14.0%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="WHITE">WHITE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:68.0%"></div></div>
+              <span class="gc-val">3.6万 (9.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="PINK">PINK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:37.0%"></div></div>
+              <span class="gc-val">2.0万 (5.2%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="SILVER">SILVER</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:27.6%"></div></div>
+              <span class="gc-val">1.5万 (3.9%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BROWN">BROWN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:27.3%"></div></div>
+              <span class="gc-val">1.5万 (3.8%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="13">13码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">4.5万 (11.8%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="1">1码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:86.0%"></div></div>
+              <span class="gc-val">3.9万 (10.2%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="4">4码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:83.9%"></div></div>
+              <span class="gc-val">3.8万 (9.9%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="12">12码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:77.9%"></div></div>
+              <span class="gc-val">3.5万 (9.2%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="10">10码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:67.6%"></div></div>
+              <span class="gc-val">3.0万 (8.0%)</span>
+            </div>
         </div>
-        <div class="tab-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>指标名称</th>
-                <th class="num">总库存</th>
-                <th class="num">6-9月库龄</th>
-                <th class="num">9-12月库龄</th>
-                <th class="num">超12月库龄</th>
-                <th class="num">超6m合计</th>
-                <th class="num">超6m占比</th>
-              </tr>
-            </thead>
-                        <tbody>
-              <tr>
-                <td><strong>8码</strong></td>
-                <td class="num">139.8万</td>
-                <td class="num">7.9万</td>
-                <td class="num">5.4万</td>
-                <td class="num">14.6万</td>
-                <td class="num">27.9万</td>
-                <td class="num">10.5%</td>
-              </tr>
-              <tr>
-                <td><strong>9码</strong></td>
-                <td class="num">129.9万</td>
-                <td class="num">8.8万</td>
-                <td class="num">5.3万</td>
-                <td class="num">14.3万</td>
-                <td class="num">28.3万</td>
-                <td class="num">10.6%</td>
-              </tr>
-              <tr>
-                <td><strong>10码</strong></td>
-                <td class="num">109.7万</td>
-                <td class="num">8.4万</td>
-                <td class="num">5.0万</td>
-                <td class="num">11.7万</td>
-                <td class="num">25.1万</td>
-                <td class="num">9.4%</td>
-              </tr>
-              <tr>
-                <td><strong>8.5码</strong></td>
-                <td class="num">109.9万</td>
-                <td class="num">7.5万</td>
-                <td class="num">4.0万</td>
-                <td class="num">10.9万</td>
-                <td class="num">22.4万</td>
-                <td class="num">8.4%</td>
-              </tr>
-              <tr>
-                <td><strong>7码</strong></td>
-                <td class="num">95.0万</td>
-                <td class="num">5.3万</td>
-                <td class="num">3.4万</td>
-                <td class="num">9.7万</td>
-                <td class="num">18.4万</td>
-                <td class="num">6.9%</td>
-              </tr>
-              <tr style="color:#94a3b8;">
-                <td>其它码</td>
-                <td class="num">743.8万</td>
-                <td class="num">54.0万</td>
-                <td class="num">27.3万</td>
-                <td class="num">63.6万</td>
-                <td class="num">144.8万</td>
-                <td class="num">54.2%</td>
-              </tr>
-              <tr style="background:rgba(59,130,246,0.1);">
-                <td><strong>合计</strong></td>
-                <td class="num"><strong>1264.5万</strong></td>
-                <td class="num">91.8万</td>
-                <td class="num">50.3万</td>
-                <td class="num">125.0万</td>
-                <td class="num"><strong>267.0万</strong></td>
-                <td class="num">100.00%</td>
-              </tr>
-      </tbody>
-          </table>
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Nortiv8</span><span class="gc-ctot">8.7万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="PINK/PURPLE">PINK/PURPLE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">1.3万 (15.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="WHITE">WHITE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:22.7%"></div></div>
+              <span class="gc-val">0.3万 (3.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK/NEON/GREEN">BLACK/NEON/GREEN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:21.9%"></div></div>
+              <span class="gc-val">0.3万 (3.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK/RED">BLACK/RED</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:21.6%"></div></div>
+              <span class="gc-val">0.3万 (3.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="RED/BLACK">RED/BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:21.3%"></div></div>
+              <span class="gc-val">0.3万 (3.2%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="13">13码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">1.0万 (11.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="2">2码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">1.0万 (11.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="1">1码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:99.8%"></div></div>
+              <span class="gc-val">1.0万 (11.3%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="12">12码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:93.2%"></div></div>
+              <span class="gc-val">0.9万 (10.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="4">4码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:87.9%"></div></div>
+              <span class="gc-val">0.9万 (9.9%)</span>
+            </div>
+        </div>
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Bruno Marc</span><span class="gc-ctot">6.5万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">2.9万 (44.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BROWN">BROWN</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:37.7%"></div></div>
+              <span class="gc-val">1.1万 (16.7%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="ALL BLACK">ALL BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:13.2%"></div></div>
+              <span class="gc-val">0.4万 (5.9%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="NAVY">NAVY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:10.2%"></div></div>
+              <span class="gc-val">0.3万 (4.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="GREY">GREY</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:10.0%"></div></div>
+              <span class="gc-val">0.3万 (4.4%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="6">6码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.7万 (10.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="10">10码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:96.4%"></div></div>
+              <span class="gc-val">0.7万 (10.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="5">5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:91.1%"></div></div>
+              <span class="gc-val">0.6万 (9.6%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="4">4码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:90.6%"></div></div>
+              <span class="gc-val">0.6万 (9.5%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="13">13码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:84.5%"></div></div>
+              <span class="gc-val">0.6万 (8.9%)</span>
+            </div>
         </div>
       </div>
-     
     </div>
 
   </div>
@@ -2117,7 +2623,7 @@ trendChart.setOption({
 });
 
 // Tab切换
-var tabCharts = [null, null, null];
+var tabCharts = [null];
 function switchTab(idx) {
   var btns = document.querySelectorAll('.tab-btn');
   var panels = document.querySelectorAll('.tab-panel');
@@ -2156,59 +2662,9 @@ tabCharts[0].setOption({
     axisLabel: { color: chartTextColor, fontSize: 12 }
   },
   series: [
-    { name: '6-9月', type: 'bar', stack: 'total', data: [47.7, 8.7, 0.0, 5.7, 4.6, 23.9], itemStyle: { color: '#f59e0b' }, barWidth: '50%' },
-    { name: '9-12月', type: 'bar', stack: 'total', data: [23.7, 4.7, 0.0, 1.5, 3.8, 11.2], itemStyle: { color: '#f97316' } },
-    { name: '超12月', type: 'bar', stack: 'total', data: [51.5, 23.3, 14.1, 9.6, 9.0, 48.7], itemStyle: { color: '#ef4444' } }
-  ]
-});
-
-// Tab1 颜色积压 Top 5 — 饼图（Top5 配色 总库存分布）
-tabCharts[1] = echarts.init(document.getElementById('chart2'));
-tabCharts[1].setOption({
-  backgroundColor: chartBg,
-  tooltip: { trigger: 'item', formatter: '{b}: {c}万件 ({d}%)', textStyle: { color: '#e2e8f0' } },
-  legend: { orient: 'vertical', right: 10, top: 'center', textStyle: { color: chartTextColor } },
-  series: [{
-    type: 'pie',
-    radius: ['45%', '70%'],
-    center: ['40%', '50%'],
-    avoidLabelOverlap: true,
-    label: { color: chartTextColor, fontSize: 12 },
-    labelLine: { lineStyle: { color: 'rgba(255,255,255,0.2)' } },
-    data: [
-      { value: 315.7, name: 'BLACK', itemStyle: { color: '#3b82f6' } },
-      { value: 79.3, name: 'WHITE', itemStyle: { color: '#60a5fa' } },
-      { value: 95.0, name: 'BROWN', itemStyle: { color: '#22d3ee' } },
-      { value: 22.9, name: 'GREY', itemStyle: { color: '#a78bfa' } },
-      { value: 48.7, name: 'BLACK-PU', itemStyle: { color: '#f59e0b' } },
-      { value: 783.4, name: '其它', itemStyle: { color: '#64748b' } },
-    ]
-  }]
-});
-
-// Tab2 尺码积压 Top5 — 柱状图（尺码 Top5 库龄分布）
-tabCharts[2] = echarts.init(document.getElementById('chart3'));
-tabCharts[2].setOption({
-  backgroundColor: chartBg,
-  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, textStyle: { color: '#e2e8f0' } },
-  legend: { data: ['6-9月库龄', '9-12月库龄', '超12月库龄'], textStyle: { color: chartTextColor }, top: 0 },
-  grid: { left: '3%', right: '4%', bottom: '3%', top: 36, containLabel: true },
-  xAxis: {
-    type: 'category', data: ['8码', '9码', '10码', '8.5码', '7码', '其它码'],
-    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-    axisLabel: { color: chartTextColor, fontSize: 12 }
-  },
-  yAxis: {
-    type: 'value', name: '万件',
-    nameTextStyle: { color: chartTextColor },
-    axisLine: { show: false },
-    axisLabel: { color: chartTextColor },
-    splitLine: { lineStyle: { color: chartSplitLine } }
-  },
-  series: [
-    { name: '6-9月库龄', type: 'bar', stack: 'total', data: [7.9, 8.8, 8.4, 7.5, 5.3, 54.0], itemStyle: { color: '#f59e0b' }, barWidth: '40%' },
-    { name: '9-12月库龄', type: 'bar', stack: 'total', data: [5.4, 5.3, 5.0, 4.0, 3.4, 27.3], itemStyle: { color: '#f97316' } },
-    { name: '超12月库龄', type: 'bar', stack: 'total', data: [14.6, 14.3, 11.7, 10.9, 9.7, 63.6], itemStyle: { color: '#ef4444' } }
+    { name: '6-9月', type: 'bar', stack: 'total', data: [{ value: 47.7, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '7.0%' } }, { value: 8.7, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '6.7%' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 5.7, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '8.6%' } }, { value: 4.6, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '7.1%' } }, { value: 23.9, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '8.6%' } }], itemStyle: { color: '#f59e0b' }, barWidth: '50%' },
+    { name: '9-12月', type: 'bar', stack: 'total', data: [{ value: 23.7, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '3.5%' } }, { value: 4.7, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '3.6%' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 1.5, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '2.2%' } }, { value: 3.8, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '5.9%' } }, { value: 11.2, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '4.0%' } }], itemStyle: { color: '#f97316' } },
+    { name: '超12月', type: 'bar', stack: 'total', data: [{ value: 51.5, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '7.5%' } }, { value: 23.3, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '17.8%' } }, { value: 14.1, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '100.0%' } }, { value: 9.6, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '14.5%' } }, { value: 9.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '13.8%' } }, { value: 48.7, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '17.5%' } }], itemStyle: { color: '#ef4444' } }
   ]
 });
 
@@ -2232,9 +2688,9 @@ ctChart.setOption({
     axisLabel: { color: chartTextColor, fontSize: 11 }
   },
   series: [
-    { name: '6-9m', type: 'bar', stack: 'total', data: [23.5, 14.5, 12.2, 18.7, 17.8, 0.1, 5.1], itemStyle: { color: '#3b82f6' }, barWidth: '55%' },
-    { name: '9-12m', type: 'bar', stack: 'total', data: [19.9, 8.1, 9.2, 7.6, 4.9, 0.0, 0.6], itemStyle: { color: '#f59e0b' } },
-    { name: '12m+', type: 'bar', stack: 'total', data: [45.3, 38.0, 16.7, 12.8, 7.1, 4.1, 0.9], itemStyle: { color: '#ef4444' } }
+    { name: '6-9m', type: 'bar', stack: 'total', data: [{ value: 23.5, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '4.6%' } }, { value: 14.5, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '7.4%' } }, { value: 12.2, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '8.7%' } }, { value: 18.7, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '8.9%' } }, { value: 17.8, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '12.6%' } }, { value: 0.1, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 5.1, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '7.8%' } }], itemStyle: { color: '#3b82f6' }, barWidth: '55%' },
+    { name: '9-12m', type: 'bar', stack: 'total', data: [{ value: 19.9, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '3.9%' } }, { value: 8.1, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '4.2%' } }, { value: 9.2, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '6.6%' } }, { value: 7.6, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '3.6%' } }, { value: 4.9, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '3.4%' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.6, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }], itemStyle: { color: '#f59e0b' } },
+    { name: '12m+', type: 'bar', stack: 'total', data: [{ value: 45.3, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '8.9%' } }, { value: 38.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '19.5%' } }, { value: 16.7, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '12.0%' } }, { value: 12.8, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '6.1%' } }, { value: 7.1, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '5.0%' } }, { value: 4.1, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '96.7%' } }, { value: 0.9, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }], itemStyle: { color: '#ef4444' } }
   ]
 });
 
