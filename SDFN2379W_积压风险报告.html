@@ -18,6 +18,7 @@
   }
   .container { max-width: 1400px; margin: 0 auto; }
 
+  /* 头部 */
   .header {
     background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(15,23,42,0.8));
     border: 1px solid rgba(59,130,246,0.2);
@@ -38,110 +39,506 @@
   .header h1 { font-size: 30px; font-weight: 800; color: #fff; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
   .header h1 .title-text { display: flex; align-items: center; gap: 10px; }
   .header h1 .globe { color: #3b82f6; }
-  .header h1 .score-cluster { display: inline-flex; align-items: center; gap: 10px; }
-  .header h1 .score-num { font-size: 42px; font-weight: 900; line-height: 0.9; color: #FF4D4F; text-shadow: 0 2px 8px rgba(255,77,79,0.35); }
+  /* 参考 index.html 评分显示规则 */
+  .header h1 .score-cluster {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header h1 .score-num {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 0.9;
+    color: #FF4D4F;
+    text-shadow: 0 2px 8px rgba(255,77,79,0.35);
+  }
   .header h1 .score-num.good { color: #32D74B; text-shadow: 0 2px 8px rgba(50,215,75,0.35); }
   .header h1 .score-num.warning { color: #FFB020; text-shadow: 0 2px 8px rgba(255,176,32,0.35); }
-  .header h1 .score-num.danger { color: #FF4D4F; text-shadow: 0 2px 8px rgba(255,77,79,0.35); }
-  .header h1 .score-mom { display: inline-block; padding: 4px 12px; background: #fff; border-radius: 999px; font-size: 13px; font-weight: 700; color: #FF4D4F; line-height: 1.2; }
+  .header h1 .score-mom {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #fff;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #FF4D4F;
+    line-height: 1.2;
+  }
   .header h1 .score-mom.good { color: #32D74B; }
   .header h1 .score-mom.warning { color: #FFB020; }
-  .header h1 .score-tag { font-size: 12px; color: #94a3b8; font-weight: 500; padding: 3px 8px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; }
+  .header h1 .score-tag {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+    padding: 3px 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+  }
   .header .sub { font-size: 14px; color: #94a3b8; }
   .header .meta { font-size: 12px; color: #64748b; margin-top: 14px; }
-  .header .style-info { display: flex; gap: 20px; margin-top: 12px; font-size: 12.5px; color: #94a3b8; flex-wrap: wrap; }
-  .header .style-info span { display: flex; align-items: center; gap: 6px; }
-  .header .style-info .info-label { color: #64748b; }
-  .header .style-info .info-val { color: #e2e8f0; font-weight: 600; }
+  .header-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .header-stat .h-num { font-size: 24px; font-weight: 700; color: #fff; }
+  .header-stat .h-label { font-size: 12px; color: #64748b; }
+  .header-stat.danger .h-num { color: #ef4444; }
+  .header-stat.warning .h-num { color: #f59e0b; }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 20px; }
-  .kpi-card { background: rgba(30,41,59,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 20px; position: relative; overflow: hidden; transition: all 0.3s; }
+  /* KPI - 合并指标卡：每张卡含 当前 / 预估当季末 / 预估下季末 */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 1200px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 640px) { .kpi-grid { grid-template-columns: 1fr; } }
+  .kpi-card {
+    background: rgba(30,41,59,0.6);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 18px 18px 14px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
   .kpi-card:hover { transform: translateY(-2px); border-color: rgba(59,130,246,0.3); }
-  .kpi-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #3b82f6; }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: #3b82f6;
+  }
   .kpi-card.danger::before { background: #ef4444; }
   .kpi-card.warning::before { background: #f59e0b; }
   .kpi-card.success::before { background: #10b981; }
-  .kpi-card .kpi-label { font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
-  .kpi-card .kpi-value { font-size: 26px; font-weight: 800; color: #fff; }
-  .kpi-card .kpi-unit { font-size: 12px; color: #64748b; margin-left: 4px; font-weight: 400; }
-  .kpi-card .kpi-trend { font-size: 12px; margin-top: 6px; font-weight: 500; }
+  .kpi-card .kpi-label { font-size: 13px; color: #94a3b8; margin-bottom: 8px; }
+  .kpi-card .kpi-main { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .kpi-card .kpi-value { font-size: 32px; font-weight: 800; color: #fff; line-height: 1; }
+  .kpi-card .kpi-unit { font-size: 13px; color: #64748b; margin-left: 4px; font-weight: 400; }
+  .kpi-card .kpi-trend { font-size: 12px; margin-top: 0; font-weight: 500; white-space: nowrap; }
   .kpi-card .kpi-trend.up { color: #ef4444; }
   .kpi-card .kpi-trend.down { color: #10b981; }
-  .kpi-card .kpi-value-line { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 2px; }
-  .kpi-card .kpi-value-line .kpi-value { flex-shrink: 0; }
+  .kpi-card .kpi-subs {
+    margin-top: 13px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(255,255,255,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .kpi-card .kpi-sub {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: 12.5px;
+  }
+  .kpi-card .kpi-sub .sub-name { color: #94a3b8; }
+  .kpi-card .kpi-sub .sub-val { color: #cbd5e1; font-weight: 700; }
+  .kpi-card .kpi-sub .sub-val .sub-unit { font-size: 11px; color: #64748b; margin-left: 2px; font-weight: 400; }
+  .kpi-card .kpi-sub .sub-delta { font-size: 11px; font-weight: 600; margin-left: 7px; }
+  .kpi-card .kpi-sub .sub-delta.up { color: #ef4444; }
+  .kpi-card .kpi-sub .sub-delta.down { color: #10b981; }
 
-  .section { background: rgba(30,41,59,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 26px 30px; margin-bottom: 20px; }
-  .section h2 { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
-  .section h2::before { content: ''; width: 4px; height: 18px; background: #3b82f6; border-radius: 2px; }
+  /* Section */
+  .section {
+    background: rgba(30,41,59,0.6);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 18px;
+    padding: 26px 30px;
+    margin-bottom: 20px;
+  }
+  .section h2 {
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section h2::before {
+    content: '';
+    width: 4px; height: 18px;
+    background: #3b82f6;
+    border-radius: 2px;
+  }
   .section .sec-sub { font-size: 12.5px; color: #64748b; margin-top: -12px; margin-bottom: 16px; }
 
-  .trend-wrap { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-  #trendChart { width: 100%; height: 280px; }
+  /* 趋势 */
+  .trend-wrap {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+  }
+
   .trend-table { width: 100%; font-size: 12.5px; }
-  .trend-table th { padding: 10px 8px; text-align: right; color: #64748b; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 11.5px; }
+  .trend-table th {
+    padding: 10px 8px;
+    text-align: right;
+    color: #64748b;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 11.5px;
+  }
   .trend-table th:first-child { text-align: left; }
-  .trend-table td { padding: 8px; text-align: right; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.04); font-variant-numeric: tabular-nums; }
+  .trend-table td {
+    padding: 8px;
+    text-align: right;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-variant-numeric: tabular-nums;
+  }
   .trend-table td:first-child { text-align: left; color: #94a3b8; }
-  .trend-table tr.current td { background: rgba(59,130,246,0.08); color: #fff; font-weight: 600; }
+  .trend-table tr.current td {
+    background: rgba(59,130,246,0.08);
+    color: #fff;
+    font-weight: 600;
+  }
   .trend-table tr.current td:first-child { color: #3b82f6; }
 
+  /* 表格 */
   table { width: 100%; font-size: 12.5px; border-collapse: collapse; }
-  thead th { padding: 10px 12px; text-align: left; color: #64748b; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 11.5px; }
+  thead th {
+    padding: 10px 12px;
+    text-align: left;
+    color: #64748b;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 11.5px;
+  }
   thead th.num, tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  tbody td { padding: 9px 12px; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  tbody td {
+    padding: 9px 12px;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
   tbody tr:hover { background: rgba(255,255,255,0.02); }
 
+  /* 款式Top20表格 */
   .style-table { width: 100%; font-size: 12px; }
-  .style-table th { padding: 10px 8px; text-align: left; color: #64748b; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 11px; }
-  .style-table td { padding: 8px; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .style-table th {
+    padding: 10px 8px;
+    text-align: left;
+    color: #64748b;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 11px;
+  }
+  .style-table td {
+    padding: 8px;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
   .style-table .st { font-weight: 600; color: #e2e8f0; font-size: 12.5px; }
   .style-table .bg { font-size: 11px; color: #60a5fa; }
-  .tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10.5px; font-weight: 500; background: rgba(59,130,246,0.15); color: #93c5fd; }
+  .tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-weight: 500;
+    background: rgba(59,130,246,0.15);
+    color: #93c5fd;
+  }
   .tag.red { background: rgba(239,68,68,0.15); color: #fca5a5; }
   .tag.orange { background: rgba(245,158,11,0.15); color: #fcd34d; }
-  .tag.green { background: rgba(16,185,129,0.15); color: #6ee7b7; }
 
-  .insight-box { background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.2); border-radius: 14px; padding: 20px 24px; margin-bottom: 20px; }
-  .insight-box .ititle { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  /* 洞察 */
+  .insight-box {
+    background: rgba(59,130,246,0.06);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .insight-box .ititle {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
   .insight-box p { font-size: 13.5px; color: #cbd5e1; line-height: 1.9; }
   .insight-box .hl { color: #fbbf24; font-weight: 700; }
   .insight-box ul { padding-left: 18px; font-size: 13px; color: #cbd5e1; }
   .insight-box li { margin: 5px 0; line-height: 1.8; }
 
-  .page-nav { position: fixed; right: 24px; top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; gap: 6px; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 10px; }
-  .page-nav a { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 8px; font-size: 12px; color: #64748b; text-decoration: none; white-space: nowrap; transition: all 0.2s; cursor: pointer; }
-  .page-nav a:hover { background: rgba(59,130,246,0.12); color: #93c5fd; }
-  .page-nav a.active { background: rgba(59,130,246,0.15); color: #3b82f6; font-weight: 600; }
-  .page-nav .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: #334155; flex-shrink: 0; transition: all 0.2s; }
-  .page-nav a:hover .nav-dot, .page-nav a.active .nav-dot { background: #3b82f6; }
-
-  .tab-nav { display: flex; gap: 2px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-  .tab-btn { padding: 9px 18px; background: none; border: none; color: #64748b; font-size: 13.5px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; font-weight: 500; }
+  /* Tab */
+  .tab-nav {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .tab-btn {
+    padding: 9px 18px;
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 13.5px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
   .tab-btn:hover { color: #94a3b8; }
   .tab-btn.active { color: #3b82f6; border-bottom-color: #3b82f6; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  .tab-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; margin-bottom: 16px; }
-  .tab-chart-wrap { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px; }
+  /* 图表 */
+  #trendChart { width: 100%; height: 320px; }
+
+  /* 页内导航 */
+  .page-nav {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(15,23,42,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px 10px;
+  }
+  .page-nav a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #64748b;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .page-nav a:hover {
+    background: rgba(59,130,246,0.12);
+    color: #93c5fd;
+  }
+  .page-nav a.active {
+    background: rgba(59,130,246,0.15);
+    color: #3b82f6;
+    font-weight: 600;
+  }
+  .page-nav .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #334155;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .page-nav a:hover .nav-dot,
+  .page-nav a.active .nav-dot {
+    background: #3b82f6;
+  }
+
+  /* Tab图表容器 - 左右结构 */
+  .tab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+  .tab-chart-wrap {
+    background: rgba(15,23,42,0.5);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px;
+  }
   .tab-chart { width: 100%; height: 240px; }
-  .tab-table-wrap { background: rgba(15,23,42,0.4); border-radius: 12px; overflow: hidden; }
+  .tab-table-wrap {
+    background: rgba(15,23,42,0.4);
+    border-radius: 12px;
+    overflow: hidden;
+  }
 
-  .root-matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px; }
-  .root-matrix-card { background: rgba(15,23,42,0.6); border-radius: 14px; padding: 22px 26px; border-left: 4px solid #3b82f6; }
-  .root-matrix-card.eol { border-left-color: #ef4444; }
+  /* 根因矩阵 - 左右结构 */
+  .root-matrix-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+  .root-matrix-card {
+    background: rgba(15,23,42,0.6);
+    border-radius: 14px;
+    padding: 22px 26px;
+    border-left: 4px solid #3b82f6;
+  }
+  .root-matrix-card.eol {
+    border-left-color: #ef4444;
+  }
+  .root-logic {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 400;
+    line-height: 1.45;
+    margin-top: 5px;
+    max-width: 240px;
+  }
+  .logic-hint {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    border-radius: 50%;
+    background: rgba(148,163,184,0.18);
+    color: #cbd5e1;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 6px;
+    cursor: help;
+    vertical-align: middle;
+    position: relative;
+  }
+  .logic-hint:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 50%;
+    top: 130%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 260px;
+    white-space: normal;
+    background: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;
+    z-index: 20;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  }
+  .eol-link {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fca5a5;
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: 6px;
+    padding: 2px 8px;
+  }
+  .root-sub {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 400;
+  }
+  /* 四季款左列容器：四季款卡 + 冬/夏季款 + 仓库分布 */
+  .root-left {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .season-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .season-panel {
+    background: rgba(15,23,42,0.6);
+    border-radius: 14px;
+    padding: 18px 22px;
+    border-left: 4px solid #8b5cf6;
+  }
+  .season-panel.summer { border-left-color: #f59e0b; }
+  .season-panel.winter { border-left-color: #38bdf8; }
+  .wh-sub {
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8;
+    margin: 16px 0 2px;
+  }
+  .season-panel h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .season-panel h4 .tag {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 400;
+    margin-left: auto;
+  }
+  .season-table { width: 100%; border-collapse: collapse; }
+  .season-table thead th {
+    padding: 9px 12px;
+    text-align: right;
+    color: #64748b;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 11.5px;
+  }
+  .season-table thead th:first-child { text-align: left; }
+  .season-table tbody td {
+    padding: 11px 12px;
+    color: #e2e8f0;
+    text-align: right;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-variant-numeric: tabular-nums;
+  }
+  .season-table tbody td:first-child { text-align: left; color: #94a3b8; }
+  .season-table tbody tr:last-child td { border-bottom: none; }
+  .wh-panel {
+    background: rgba(15,23,42,0.6);
+    border-radius: 14px;
+    padding: 18px 22px;
+    border-left: 4px solid #10b981;
+  }
+  .wh-panel h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin: 0 0 6px;
+  }
+  .wh-chart { width: 100%; height: 280px; margin-top: 8px; }
+  .wh-note { font-size: 11px; color: #64748b; margin-top: 6px; }
 
-  .footer { text-align: center; padding: 24px; color: #475569; font-size: 12px; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 10px; }
+  .footer {
+    text-align: center;
+    padding: 24px;
+    color: #475569;
+    font-size: 12px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin-top: 10px;
+  }
 
   @media (max-width: 1200px) {
     .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+    .three-col { grid-template-columns: repeat(2, 1fr); }
     .tab-grid { grid-template-columns: 1fr; }
     .root-matrix-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 768px) {
     body { padding: 12px; }
     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-    .trend-wrap { grid-template-columns: 1fr; }
+    .two-col, .trend-wrap { grid-template-columns: 1fr; }
+    .three-col { grid-template-columns: 1fr; }
     .page-nav { display: none; }
   }
   /* AI问数提示词按钮 */
@@ -172,6 +569,31 @@
     color: #4ade80;
     background: rgba(34, 197, 94, 0.12);
     border-color: rgba(34, 197, 94, 0.3);
+  }
+  /* CT积压分布 - 去建清货单行动按钮 */
+  .clearance-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    background: #f97316;
+    border: 1px solid #ea580c;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: inherit;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(249, 115, 22, 0.3);
+  }
+  .clearance-btn:hover {
+    background: #ea580c;
+    border-color: #c2410c;
+    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.4);
   }
 
   /* ===== 可点击数字 ===== */
@@ -256,6 +678,9 @@
     line-height: 1;
   }
   .detail-modal-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .detail-modal-actions { display: flex; gap: 8px; align-items: center; }
+  .detail-modal-download { border: 1px solid rgba(59,130,246,0.5); background: rgba(59,130,246,0.12); color: #60a5fa; font-size: 13px; cursor: pointer; padding: 4px 12px; border-radius: 8px; transition: all 0.2s; line-height: 1; }
+  .detail-modal-download:hover { background: rgba(59,130,246,0.22); color: #fff; }
   .detail-modal-body {
     padding: 18px 26px;
     overflow-y: auto;
@@ -379,69 +804,290 @@
 
   .trend-table tr.forecast-row td { color: #fb923c; }
   .trend-table tr.forecast-row td:first-child { color: #f97316; }
+  /* 颜色×人群×CT 分面小图 */
+  .gc-cap { font-size: 13px; color: #94a3b8; margin-bottom: 12px; }
+  .gc-gender { margin-bottom: 22px; }
+  .gc-gender:last-child { margin-bottom: 0; }
+  .gc-gender-h { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .gc-gender-h .gc-gtot { font-size: 12px; color: #64748b; font-weight: 400; }
+  .gc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 14px; }
+  .gc-cell { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px; }
+  .gc-cell-h { font-size: 12.5px; font-weight: 700; color: #cbd5e1; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; }
+  .gc-cell-h .gc-ctot { font-size: 11.5px; color: #3b82f6; font-weight: 600; }
+  .gc-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; font-size: 11.5px; }
+  .gc-row:last-child { margin-bottom: 0; }
+  .gc-name { width: 94px; flex: none; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gc-barwrap { flex: 1; height: 14px; background: rgba(255,255,255,0.04); border-radius: 4px; overflow: hidden; }
+  .gc-bar { height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 4px; }
+  .gc-val { width: 88px; flex: none; text-align: right; color: #e2e8f0; font-variant-numeric: tabular-nums; }
+  .gc-sub { font-size: 11px; font-weight: 700; color: #f59e0b; margin: 9px 0 6px; letter-spacing: .3px; border-left: 3px solid #f59e0b; padding-left: 6px; }
+  .gc-sub:first-of-type { margin-top: 0; }
+
+  /* 处置决策按钮区 */
+  .dispose-bar { margin: 14px 0 4px; padding: 14px 16px; background: rgba(15,23,42,0.55); border: 1px solid rgba(148,163,184,0.16); border-radius: 12px; }
+  .dispose-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+  .dispose-h-title { font-size: 15px; font-weight: 700; color: #e2e8f0; }
+  .dispose-h-sub { font-size: 12px; color: #94a3b8; line-height: 1.6; }
+  .dispose-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .dispose-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 200px; padding: 12px 16px; border-radius: 12px; border: 1px solid transparent; cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s; text-align: left; }
+  .dispose-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
+  .dispose-btn .db-icon { font-size: 16px; }
+  .dispose-btn .db-main { display: flex; align-items: baseline; gap: 8px; }
+  .dispose-btn .db-label { font-size: 15px; font-weight: 700; color: #f1f5f9; }
+  .dispose-btn .db-num { font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .dispose-btn .db-sub { font-size: 11.5px; color: #cbd5e1; opacity: .85; }
+  .dispose-btn.promo { background: rgba(249,115,22,0.14); border-color: rgba(249,115,22,0.5); }
+  .dispose-btn.promo .db-num { color: #fb923c; }
+  .dispose-btn.liq { background: rgba(239,68,68,0.14); border-color: rgba(239,68,68,0.5); }
+  .dispose-btn.liq .db-num { color: #f87171; }
+  .dispose-btn.keep { background: rgba(34,197,94,0.14); border-color: rgba(34,197,94,0.5); }
+  .dispose-btn.keep .db-num { color: #4ade80; }
+  /* 处置明细弹窗 */
+  .dispose-modal-mask { display: none; position: fixed; inset: 0; background: rgba(2,6,23,0.72); z-index: 1000; align-items: center; justify-content: center; padding: 24px; }
+  .dispose-modal-mask.open { display: flex; }
+  .dispose-modal { width: min(960px, 96vw); max-height: 88vh; display: flex; flex-direction: column; background: #0f172a; border: 1px solid rgba(148,163,184,0.25); border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); overflow: hidden; }
+  .dm-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid rgba(148,163,184,0.18); background: rgba(30,41,59,0.6); flex: none; }
+  .dm-title { font-size: 15px; font-weight: 700; color: #e2e8f0; }
+  .dm-close { background: none; border: none; color: #94a3b8; font-size: 26px; line-height: 1; cursor: pointer; padding: 0 6px; transition: color .15s; }
+  .dm-close:hover { color: #fff; }
+  .dm-body { padding: 14px 18px; overflow-y: auto; }
+  .dm-foot { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-top: 1px solid rgba(148,163,184,0.18); background: rgba(30,41,59,0.4); flex: none; }
+  .dm-note { font-size: 11.5px; color: #94a3b8; }
+  .dd-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .dd-title { font-size: 14px; font-weight: 700; color: #e2e8f0; }
+  .dd-dl { border: 1px solid rgba(59,130,246,0.5); background: rgba(59,130,246,0.12); color: #60a5fa; font-size: 13px; cursor: pointer; padding: 6px 14px; border-radius: 8px; transition: all .2s; }
+  .dd-dl:hover { background: rgba(59,130,246,0.22); color: #fff; }
+  .dd-sub { font-size: 12px; font-weight: 700; color: #f59e0b; margin: 12px 0 6px; border-left: 3px solid #f59e0b; padding-left: 6px; }
+  .dd-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 6px; }
+  .dd-table th { text-align: left; padding: 6px 8px; color: #94a3b8; background: rgba(148,163,184,0.08); border-bottom: 1px solid rgba(148,163,184,0.18); font-weight: 600; }
+  .dd-table td { padding: 5px 8px; color: #cbd5e1; border-bottom: 1px solid rgba(148,163,184,0.08); }
+  .dd-table td.num, .dd-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .dd-summary-row { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 6px; }
+  .dd-chart-wrap { flex: 1 1 45%; min-width: 0; }
+  .dd-table-wrap { flex: 1 1 55%; min-width: 0; overflow-x: auto; }
+  @media (max-width: 720px) {
+    .dd-summary-row { flex-direction: column; }
+    .dd-chart-wrap, .dd-table-wrap { width: 100%; flex: none; }
+  }
+  .dd-scroll { overflow-x: auto; margin: 4px 0 8px; }
+  .dd-wide { width: auto; min-width: 1120px; }
+  .dd-foot { font-size: 11.5px; color: #64748b; margin-top: 8px; }
+
+
+  /* ===== 轻量版式（单款式 / 窄维度） ===== */
+  /* 点1：头部KPI保留全部原指标项（不再隐藏 6-9m / 9-12m 卡）；结构分析(备货渠道+颜色尺码)保留显示 */
+  /* 点2/3/5/6/7：删除对单款式退化的全局维度模块 */
+  .lite #sec-ct { display: none; }
+  .lite a[data-target="sec-ct"] { display: none; }
+  .lite #sec-forecast { display: none; }
+  .lite a[data-target="sec-forecast"] { display: none; }
+  .lite .season-grid { display: none; }
+  .lite #sec-cat { display: none; }
+  .lite a[data-target="sec-cat"] { display: none; }
+  .lite #sec-top20 { display: none; }
+  .lite a[data-target="sec-top20"] { display: none; }
+  .lite .dd-chart-wrap { min-height: 0; }
+  .lite-conclusion { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin:0 0 18px; padding:14px 18px; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); border-radius:12px; }
+  .lite-conclusion .lc-tag { background:#ef4444; color:#fff; font-size:12px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; }
+  .lite-conclusion .lc-main { font-size:14px; color:#e2e8f0; }
+  .lite-conclusion .lc-main strong { color:#fff; }
+  .lite-conclusion .lc-sub { font-size:12px; color:#94a3b8; margin-left:auto; white-space:nowrap; }
+  .lite-cs { margin:6px 0 18px; }
+  .lite-cs h3, .lite-wh h3 { font-size:15px; color:#fff; margin:0 0 10px; display:flex; align-items:center; gap:8px; }
+  .lite-cs table { border-collapse:collapse; font-size:12px; }
+  .lite-cs th, .lite-cs td { padding:5px 9px; text-align:center; border:1px solid rgba(148,163,184,0.12); color:#cbd5e1; }
+  .lite-cs th { background:rgba(148,163,184,0.12); color:#e2e8f0; font-weight:600; }
+  .lite-cs td.cs-cell { color:#0f172a; font-weight:700; font-variant-numeric:tabular-nums; }
+  .cs-note { font-size:11.5px; color:#64748b; margin-top:6px; }
+  .lite-wh .lite-wh-row { display:flex; align-items:stretch; gap:24px; margin:10px 0 4px; flex-wrap:nowrap; }
+  .lite-wh .lite-wh-chart { flex:0 0 42%; max-width:420px; min-width:300px; height:280px; }
+  .lite-wh .lite-wh-table { flex:1 1 0; min-width:260px; display:flex; flex-direction:column; justify-content:center; }
+  .lite-wh .lite-wh-table table { border-collapse:collapse; width:100%; font-size:13px; }
+  .lite-wh .lite-wh-table td { border-bottom:1px solid rgba(148,163,184,0.12); }
+  .lite-wh .wh-rec { margin-top:10px; font-size:13px; color:#fbbf24; }
+  @media (max-width: 860px) { .lite-wh .lite-wh-row { flex-wrap:wrap; } .lite-wh .lite-wh-chart { flex:1 1 100%; max-width:none; min-width:auto; height:260px; } }
+
 </style>
 </head>
-<body>
+<body class="lite">
+<!-- 页内导航 -->
 <nav class="page-nav" id="pageNav">
   <a href="#sec-insight" data-target="sec-insight"><span class="nav-dot"></span>AI洞察</a>
+  <a href="#sec-ct" data-target="sec-ct"><span class="nav-dot"></span>CT分布</a>
   <a href="#sec-forecast" data-target="sec-forecast"><span class="nav-dot"></span>风险预警</a>
-  <a href="#sec-root" data-target="sec-root"><span class="nav-dot"></span>根因矩阵</a>
   <a href="#sec-trend" data-target="sec-trend"><span class="nav-dot"></span>趋势</a>
+  <a href="#sec-root" data-target="sec-root"><span class="nav-dot"></span>根因矩阵</a>
   <a href="#sec-multi" data-target="sec-multi"><span class="nav-dot"></span>结构分析</a>
-  <a href="#sec-sku" data-target="sec-sku"><span class="nav-dot"></span>TOP SKU</a>
+  <a href="#sec-cat" data-target="sec-cat"><span class="nav-dot"></span>TOP类目</a>
+  <a href="#sec-top20" data-target="sec-top20"><span class="nav-dot"></span>TOP款式</a>
 </nav>
 
 <div class="container">
+
+  <!-- 头部 -->
   <div class="header">
-    <h1><span class="title-text"><span class="globe">👟</span> SDFN2379W 积压风险AI诊断报告</span><span class="score-cluster"><span class="score-num danger">42</span><span class="score-mom">↑ 环比 +5.3%</span></span></h1>
-    <div class="meta"><span class="sub">DP Fashion · Fashion Sneakers · 款式级积压详情</span> &nbsp;|&nbsp; 数据截止：2026-07-04（W27）&nbsp;|&nbsp; 数据来源：ads_inventory_health_backlog_risk_df</div>
-    <div class="style-info">
-      <span><span class="info-label">款式编号：</span><span class="info-val">SDFN2379W</span></span>
-      <span><span class="info-label">所属CT：</span><span class="info-val">DP Fashion</span></span>
-      <span><span class="info-label">所属类目：</span><span class="info-val">Fashion Sneakers</span></span>
-      <span><span class="info-label">季节：</span><span class="info-val">四季款</span></span>
-      <span><span class="info-label">上市时间：</span><span class="info-val">2025-03</span></span>
-      <span><span class="info-label">货品状态：</span><span class="info-val" style="color:#f87171;">EOL</span></span>
-    </div>
+    <h1><span class="title-text"><span class="globe">🌍</span> SDFN2379W 积压风险AI诊断报告</span><span class="score-cluster"><span class="score-num danger">48</span><span class="score-mom">↓ 环比 -2.1%</span></span></h1>
+    <div class="meta">数据截止：2026-07-18 &nbsp;|&nbsp; 数据来源：CT全渠道超库龄库存报表 &nbsp;|&nbsp; SDFN2379W</div>
   </div>
 
+  <!-- KPI -->
   <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-label">总库存数</div><div class="kpi-value-line"><span class="kpi-value">3.9<span class="kpi-unit">万</span></span><span class="kpi-trend down">↓ 3.2% 周环比</span></div></div>
-    <div class="kpi-card warning"><div class="kpi-label">9-12m 预警</div><div class="kpi-value-line"><span class="kpi-value">0<span class="kpi-unit">万</span></span><span class="kpi-trend down">—</span></div></div>
-    <div class="kpi-card danger"><div class="kpi-label">12m+ 深度积压</div><div class="kpi-value-line"><span class="kpi-value">3.9<span class="kpi-unit">万</span></span><span class="kpi-trend up">↑ 6.1% 周环比</span></div></div>
-    <div class="kpi-card forecast">
-      <div class="kpi-label">预估当季末12M+</div>
-      <div class="kpi-value-line"><span class="kpi-value">0<span class="kpi-unit">万</span></span><span class="kpi-trend down">↓ 预测 -3.9万</span></div>
+    <!-- 总库存 -->
+    <div class="kpi-card">
+      <div class="kpi-label">库存数量</div>
+      <div class="kpi-main">
+        <div class="kpi-value">4.4<span class="kpi-unit">万</span></div>
+        <div class="kpi-trend">周环比 -</div>
+      </div>
+      <div class="kpi-subs">
+        <div class="kpi-sub"><span class="sub-name">预估当季末</span><span><span class="sub-val">-</span></span></div>
+        <div class="kpi-sub"><span class="sub-name">预估下季末</span><span><span class="sub-val">-</span></span></div>
+      </div>
     </div>
-    <div class="kpi-card forecast">
-      <div class="kpi-label">预估下季末12m+</div>
-      <div class="kpi-value-line"><span class="kpi-value">1.1<span class="kpi-unit">万</span></span><span class="kpi-trend down">↓ 预测 -2.8万</span></div>
+    <!-- 12m+ -->
+    <div class="kpi-card danger">
+      <div class="kpi-label">12m+ 深度积压</div>
+      <div class="kpi-main">
+        <div class="kpi-value">4.4<span class="kpi-unit">万</span></div>
+        <div class="kpi-trend up">↑ 0.6% 周环比</div>
+      </div>
+      <div class="kpi-subs">
+        <div class="kpi-sub"><span class="sub-name">预估当季末</span><span><span class="sub-val">4.1<span class="sub-unit">万</span></span><span class="sub-delta down">-0.3万</span></span></div>
+        <div class="kpi-sub"><span class="sub-name">预估下季末</span><span><span class="sub-val">3.8<span class="sub-unit">万</span></span><span class="sub-delta down">-0.6万</span></span></div>
+      </div>
     </div>
+    <!-- 9-12m -->
+    <div class="kpi-card warning">
+      <div class="kpi-label">9-12m 预警</div>
+      <div class="kpi-main">
+        <div class="kpi-value">0.0<span class="kpi-unit">万</span></div>
+        <div class="kpi-trend up">↑ 0.0% 周环比</div>
+      </div>
+      <div class="kpi-subs">
+        <div class="kpi-sub"><span class="sub-name">预估当季末</span><span><span class="sub-val">0.0<span class="sub-unit">万</span></span><span class="sub-delta up">+0.0万</span></span></div>
+        <div class="kpi-sub"><span class="sub-name">预估下季末</span><span><span class="sub-val">0.0<span class="sub-unit">万</span></span><span class="sub-delta up">+0.0万</span></span></div>
+      </div>
+    </div>
+    <!-- 6-9m -->
+    <div class="kpi-card" id="kpi-b69">
+      <div class="kpi-label">6-9m 轻度积压</div>
+      <div class="kpi-main">
+        <div class="kpi-value">0.0<span class="kpi-unit">万</span></div>
+        <div class="kpi-trend up">↑ 0.0% 周环比</div>
+      </div>
+      <div class="kpi-subs">
+        <div class="kpi-sub"><span class="sub-name">预估当季末</span><span><span class="sub-val">0.0<span class="sub-unit">万</span></span><span class="sub-delta up">+0.0万</span></span></div>
+        <div class="kpi-sub"><span class="sub-name">预估下季末</span><span><span class="sub-val">0.0<span class="sub-unit">万</span></span><span class="sub-delta up">+0.0万</span></span></div>
+      </div>
+    </div>
+    <!-- 超6m合计（占位值，构建时替换为最新数据） -->
+    <div class="kpi-card danger">
+      <div class="kpi-label">超6m合计</div>
+      <div class="kpi-main">
+        <div class="kpi-value">4.4<span class="kpi-unit">万</span></div>
+        <div class="kpi-trend up">↑ 0.6% 周环比</div>
+      </div>
+      <div class="kpi-subs">
+        <div class="kpi-sub"><span class="sub-name">预估当季末</span><span><span class="sub-val">4.1<span class="sub-unit">万</span></span><span class="sub-delta down">-0.3万</span></span></div>
+        <div class="kpi-sub"><span class="sub-name">预估下季末</span><span><span class="sub-val">3.8<span class="sub-unit">万</span></span><span class="sub-delta down">-0.6万</span></span></div>
+      </div>
+    </div>
+  </div><div class="lite-conclusion"><span class="lc-tag">单款式诊断</span><span class="lc-main"><strong>SDFN2379W</strong>：超6月积压 <strong>4.4万件</strong>，其中 <strong style="color:#ef4444;">12m+ 深度积压 4.4万件（占 100.0%）</strong>。建议 <strong style="color:#fbbf24;">立即清货（站外）</strong>。</span><span class="lc-sub">近6月入仓 0.0万 / 出仓 0.0万（动销率 0.0%）</span></div>
 
-  </div>
-
+  <!-- AI洞察 -->
   <div class="insight-box" id="sec-insight">
     <div class="ititle">🤖 AI诊断与治疗方案</div>
-    <p>近7周积压量稳定在 <span class="hl">3.6-3.9万件</span>，12m+ 库龄占比达100%，去化完全停滞。预测显示当季末维持 <span class="hl">3.93万件</span>（+0.8%），下季末进一步增至 <span class="hl">4.1万件</span>（+4.3%），12m+持续累积无去化迹象。<span class="hl">治疗建议：</span>①常规促销已无效，立即启动深度折价清仓或批量处置方案；②根据下季末预测，提前联系站外清仓渠道承接4.1万件积压；③对所有SKU启动退仓评估，避免FBA长期仓储费持续累积。</p>
+    <p>
+      本报告聚焦 <span class="hl">SDFN2379W</span>，超6月积压合计 <span class="hl">4.4 万件</span>，其中 <span class="hl">12m+ 深度积压</span>达 <span class="hl">4.4 万件</span>（占超6月 100.0%）；<span class="hl">6-9m 库龄</span>（0.0 万件，周环比 ↑ 0.0%）基本持平。
+      CT高度集中：单一 CT <span class="hl">Dream Pairs Comfort</span> 即占本范围 12m+ 的 <span class="hl">100.0%</span>（4.4万件），是本范围积压治理的核心。
+    </p>
     <ul>
-      <li>🔴 <strong style="color:#ef4444;">紧急 — 全部为深度积压：</strong>100% 库存超过 12 个月，已进入成本倒挂区间（仓储费 + 资金成本 &gt; 残值）</li>
-      <li>🔴 <strong style="color:#ef4444;">紧急 — 渠道高度集中：</strong>AmazonUS 占 <span class="hl">92%</span>，FBA 仓储费持续侵蚀利润，建议优先清仓</li>
-      <li>🟡 <strong style="color:#f59e0b;">重点 — 尺码分布极端：</strong>US9 / US10 黄金码占积压 68%，非标准码占比低但同样去化困难</li>
-      <li>🟢 <strong style="color:#10b981;">关注 — 建议方案：</strong>立即启动站外清仓 + 捆绑销售 + 线下奥莱多渠道并行，目标 90 天去化 70%</li>
+      <li>🔴 <strong style="color:#ef4444;">紧急 — 12m+ 深度积压：</strong>4.4万件占本范围超6月 100.0%，清仓资源应立即聚焦 Dream Pairs Comfort 的 EOL 与滞销款</li>
+      <li>🔴 <strong style="color:#ef4444;">紧急 — EOL品需清仓：</strong>本范围 EOL 品超6月积压 0.0万件，需立即启动站外清仓+捆绑销售加速去化</li>
+      <li>🟡 <strong style="color:#f59e0b;">重点 — 四季款积压严重：</strong>四季款超6月积压 4.4万件（占本范围超6月 100.0%），其中 12m+/9-12m/6-9m 分别沉淀 4.4万/0.0万/0.0万件</li>
+      <li>🟡 <strong style="color:#f59e0b;">重点 — 6-9m 库龄恶化：</strong>6-9m 周环比 ↑ 0.0%，需加速促销阻断向 12m+ 劣化</li>
     </ul>
 
+  <div class="dispose-bar">
+    <div class="dispose-head">
+      <span class="dispose-h-title">📋 积压处置决策清单</span>
+      <span class="dispose-h-sub">基于超6m库存，按 预测 / GMV / 现金流 / 渠道利润 自动分组（激进清货口径：预测覆盖+双盈利→保留；有正向动销信号→去促销；无信号→去清货）。点击按钮弹窗查看按CT汇总与 Top50 明细，并可下载 Top50 明细CSV。</span>
+    </div>
+    <div class="dispose-btns">
+      <button class="dispose-btn promo" onclick="openDisposeModal('promo')"><span class="db-icon">🟠</span><span class="db-main"><span class="db-label">去促销</span><span class="db-num">2.6万双</span></span><span class="db-sub">占积压 57.9% · 45 行</span></button><button class="dispose-btn liq" onclick="openDisposeModal('liquidate')"><span class="db-icon">🔴</span><span class="db-main"><span class="db-label">去清货</span><span class="db-num">1.9万双</span></span><span class="db-sub">占积压 42.1% · 149 行</span></button><button class="dispose-btn keep" onclick="openDisposeModal('keep')"><span class="db-icon">🟢</span><span class="db-main"><span class="db-label">保留</span><span class="db-num">0.0万双</span></span><span class="db-sub">占积压 0.0% · 0 行</span></button>
+    </div>
+  </div>
 
 </div>
 
-  <!-- 未来风险预警 -->
-  <div class="section" id="sec-forecast">
+  
+<!-- CT积压 -->
+  <div class="section" id="sec-ct">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">🔮 当季末/下季度末冗余风险预警<button class="ai-prompt-btn" data-prompt="请预测至当季末和下季度末SDFN2379W各SKU（尺码维度）将新增的冗余量，按预计进入积压时间排序，重点标注已积压的紧急SKU，并给出治疗建议。">🤖 AI问数提示词</button></h2>
-      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">SKU维度 · 滚动看当季末/下季末超库龄 · 提前发现风险</div>
+      <h2 style="margin-bottom:0;">🏢 CT积压分布</h2>
+      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按CT分组 · 各库龄段库存明细（柱内数字=该段占该CT总库存比例）</div>
+      <span style="margin-left:auto; display:inline-flex; align-items:center; gap:10px;">
+        <button class="ai-prompt-btn" style="margin-left:0;" data-prompt="请按CT分组统计全球各库龄段积压库存明细，列出每个CT的总库存、6-9m、9-12m、12m+库存量和占比。">🤖 AI问数提示词</button>
+        <a href="https://oms-plus.wangoon.cn/order-center/sales-order/add?timeType=2&amp;orderType=0" target="_blank" class="clearance-btn">🧹 去建清货单</a>
+      </span>
     </div>
     <div class="insight-box" style="margin-bottom:16px;">
       <div class="ititle">🤖 AI诊断与治疗方案</div>
-      <p>当前 SDFN2379W 全部 SKU 已沉淀于 9-12m 库龄（约 1.1 万双），预估至下季末将 100% 劣化为 12m+ 深度积压（约 1.1 万双），期间零去化。月均去化率不足 2%，仓储费已超残值 1.8 倍，建议 30 天内启动站外清仓与捆绑销售回笼仓位。</p>
+      <p>Dream Pairs Comfort 以 4.4万件库存、其中 12m+ 高达 4.4万件（占本范围12m+ 100.0%）居首，是本范围绝对的风险核心。<span class="hl">治疗建议：</span>优先处置 Dream Pairs Comfort 的 EOL 与滞销款，并通过促销与渠道调整加速去化。</p>
+    </div>
+    <div class="tab-grid">
+      <div class="tab-chart-wrap">
+        <div class="tab-chart" id="ctChart"></div>
+      </div>
+      <div class="tab-table-wrap">
+        <table>
+      <thead>
+        <tr>
+          <th>排名</th>
+          <th>CT</th>
+          <th class="num">SKU数</th>
+          <th class="num">总库存</th><th class="num">6-9m</th>
+          <th class="num">9-12m</th>
+          <th class="num">12m+</th>
+          <th class="num">超6m合计</th>
+          <th class="num">超6m占比</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>Dream Pairs Comfort</strong></td>
+          <td class="num">176</td>
+          <td class="num">4.4万</td><td class="num">0.0万</td>
+          <td class="num">0.0万</td>
+          <td class="num"><span class="tag red">4.4万</span></td>
+          <td class="num">4.4万</td>
+          <td class="num"><strong style="color:#ef4444;">100.0%</strong></td>
+        </tr>
+        <tr style="background:rgba(59,130,246,0.1);">
+          <td colspan="2"><strong>合计</strong></td>
+          <td class="num"><strong>176</strong></td>
+          <td class="num"><strong>4.4万</strong></td>
+          <td class="num"><strong>0.0万</strong></td><td class="num"><strong>0.0万</strong></td>
+          <td class="num"><strong>4.4万</strong></td>
+          <td class="num"><strong>4.4万</strong></td>
+          <td class="num"><strong style="color:#3b82f6;">100%</strong></td>
+        </tr>
+      </tbody>
+    </table>
+      </div>
+    </div>
+  </div>
+
+<!-- 未来风险预警 -->
+  <div class="section" id="sec-forecast">
+    <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
+      <h2 style="margin-bottom:0;">🔮 当季末/下季度末冗余风险预警<button class="ai-prompt-btn" data-prompt="请预测至当季末和下季度末全球各CT将新增的冗余量，按预计进入积压时间排序，重点标注2周内即将进入积压区的紧急CT，并给出治疗建议（拦截在途/暂停采购/调拨/清仓）。">🤖 AI问数提示词</button></h2>
+      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">CT维度 · 滚动看当季末/下季末超库龄 · 提前发现风险</div>
+    </div>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>本范围 12m+ 深度积压将从当前 4.4 万微减至预估当季末 4.1 万（-0.3万），随后回落至预估下季末 3.8 万（-0.6万）。需优先制定专项清仓与在途拦截方案。</p>
     </div>
 
 <div class="tab-grid">
@@ -452,105 +1098,28 @@
     <table class="forecast-table">
       <thead>
         <tr>
-          <th>SKU编码</th>
-          <th>尺码</th>
+          <th>CT名称</th>
           <th class="num">当季末6-9</th>
           <th class="num">当季末9-12</th>
           <th class="num">当季末12m+</th>
           <th class="num">下季末6-9</th>
           <th class="num">下季末9-12</th>
           <th class="num">下季末12m+</th>
+          <th class="num">下季末超6m合计</th>
           <th class="num">占比<span style="font-weight:400;font-size:11px;color:#94a3b8;"> (下季末)</span></th>
         </tr>
       </thead>
       <tbody>
             <tr>
-              <td>SDFN2379W-US9</td>
-              <td>US 9</td>
-              <td class="num">0</td>
-              <td class="num">2,880双</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">2,590双</td>
-              <td class="num"><strong style="color:#f59e0b;">22.7%</strong></td>
-            </tr>
-            <tr>
-              <td>SDFN2379W-US10</td>
-              <td>US 10</td>
-              <td class="num">0</td>
-              <td class="num">2,520双</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">2,270双</td>
-              <td class="num"><strong style="color:#f59e0b;">19.9%</strong></td>
-            </tr>
-            <tr>
-              <td>SDFN2379W-US8</td>
-              <td>US 8</td>
-              <td class="num">0</td>
-              <td class="num">1,890双</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">1,700双</td>
-              <td class="num"><strong style="color:#94a3b8;">14.9%</strong></td>
-            </tr>
-            <tr>
-              <td>SDFN2379W-US11</td>
-              <td>US 11</td>
-              <td class="num">0</td>
-              <td class="num">1,710双</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">1,540双</td>
-              <td class="num"><strong style="color:#94a3b8;">13.5%</strong></td>
-            </tr>
-            <tr>
-              <td>SDFN2379W-US7</td>
-              <td>US 7</td>
-              <td class="num">0</td>
-              <td class="num">1,350双</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">1,215双</td>
-              <td class="num"><strong style="color:#94a3b8;">10.6%</strong></td>
-            </tr>
-            <tr>
-              <td>SDFN2379W-US12</td>
-              <td>US 12</td>
-              <td class="num">0</td>
-              <td class="num">1,080双</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">972双</td>
-              <td class="num"><strong style="color:#94a3b8;">8.5%</strong></td>
-            </tr>
-            <tr>
-              <td>SDFN2379W-US6</td>
-              <td>US 6</td>
-              <td class="num">0</td>
-              <td class="num">720双</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">648双</td>
-              <td class="num"><strong style="color:#94a3b8;">5.7%</strong></td>
-            </tr>
-            <tr>
-              <td>SDFN2379W-US13</td>
-              <td>US 13</td>
-              <td class="num">0</td>
-              <td class="num">540双</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">0</td>
-              <td class="num">486双</td>
-              <td class="num"><strong style="color:#94a3b8;">4.3%</strong></td>
+              <td>Dream Pairs Comfort</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">4.1万</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">3.8万</td>
+              <td class="num">3.8万</td>
+              <td class="num"><strong style="color:#ef4444;">100.0%</strong></td>
             </tr>
       </tbody>
     </table>
@@ -558,37 +1127,101 @@
     </div>
   </div>
 
-  <!-- 根因矩阵 -->
-  <div class="section" id="sec-root">
+  
+<!-- 趋势 -->
+  <div class="section" id="sec-trend">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">🔍 已积压库存根因结构矩阵<button class="ai-prompt-btn" data-prompt="请分析SDFN2379W库存积压的根因结构，按正常品和EOL品分层，分别诊断各根因（预测偏高、季节性错配、早期入库沉淀等）对应的积压量、占比，并给出治疗建议。">🤖 AI问数提示词</button></h2>
-      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按正常品 / EOL品分层诊断根因</div>
+      <h2 style="margin-bottom:0;">📈 近 4 周 SDFN2379W 积压趋势<button class="ai-prompt-btn" data-prompt="请查询近4周（3周前-本周）SDFN2379W各库龄段（6-9个月、9-12个月、12个月以上）的积压库存变化趋势，按周输出库存量及环比变化，并预测至当季末、下季末的积压趋势。">🤖 AI问数提示词</button></h2>
+      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">3周前 - 本周 · 6-9m / 9-12m / 12m+ 库存变化 · 预测至当季末 / 下季末</div>
     </div>
     <div class="insight-box" style="margin-bottom:16px;">
       <div class="ititle">🤖 AI诊断与治疗方案</div>
-      <p>该款式已全部进入 EOL 状态，积压 <span class="hl">3.9万件</span>全部为 12m+ 库龄。<span class="hl">治疗建议：</span>立即启动站外清仓和捆绑销售，避免长期仓储费持续累积。</p>
+      <p>近4周超6月积压总量呈<span class="hl">整体下降</span>态势：3周前 4.4万件 → 本周 <span class="hl">4.4万件</span>（累计 -0.1%），主要驱动来自 <span class="hl">6-9m 库龄</span>的回落（0.0万 → 0.0万）。<span class="hl">核心风险</span>仍为 12m+ 深度积压（4.4万件，占超6月 100.0%）且居高不下。预测显示 12m+ 当季末微减至 4.1万件、下季末回落至 3.8万件。<span class="hl">治疗建议：</span>①立即处置 12m+（4.4万件）释放仓储资金；②对 6-9m（0.0万件，周环比 ↑ 0.0%）保持常规监控即可，避免过早促销稀释毛利；③9-12m（0.0万件）定向促销+常规监控。</p>
     </div>
+    <div class="trend-wrap">
+      <div id="trendChart"></div>
+      <div>
+        <table class="trend-table">
+          <thead><tr><th>周次</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>超6月合计</th><th class="num">环比</th></tr></thead>
+          <tbody>
+            <tr><td>3周前</td><td>0.0万</td><td>0.0万</td><td>4.4万</td><td><strong>4.4万</strong></td><td class="num">—</td></tr>
+            <tr><td>2周前</td><td>0.0万</td><td>0.0万</td><td>4.4万</td><td><strong>4.4万</strong></td><td class="num" style="color:#10b981;">↓ -0.6%</td></tr>
+            <tr><td>上周</td><td>0.0万</td><td>0.0万</td><td>4.4万</td><td><strong>4.4万</strong></td><td class="num" style="color:#10b981;">↓ -0.1%</td></tr>
+            <tr class="current"><td>本周</td><td>0.0万</td><td>0.0万</td><td>4.4万</td><td><strong>4.4万</strong></td><td class="num" style="color:#ef4444;">↑ +0.6%</td></tr>
+            <tr style="background:rgba(245,158,11,0.08); border-top:2px solid rgba(245,158,11,0.3);"><td style="color:#f59e0b;">当季末*</td><td>0.0万</td><td>0.0万</td><td>4.1万</td><td style="color:#f59e0b;"><strong>4.1万</strong></td><td class="num" style="color:#10b981;">↓ -6.6%</td></tr>
+            <tr style="background:rgba(245,158,11,0.08);"><td style="color:#f59e0b;">下季末*</td><td>0.0万</td><td>0.0万</td><td>3.8万</td><td style="color:#f59e0b;"><strong>3.8万</strong></td><td class="num" style="color:#10b981;">↓ -7.4%</td></tr>
+      </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
+<!-- 根因矩阵 -->
+  <div class="section" id="sec-root">
+    <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
+      <h2 style="margin-bottom:0;">🔍 已积压库存根因结构矩阵<button class="ai-prompt-btn" data-prompt="请分析全球库存积压的根因结构，按 根因 和 EOL品 分层，分别诊断各根因（销量下滑、26年新品、eol、其它）对应的积压量、占比，并给出治疗建议。">🤖 AI问数提示词</button></h2>
+      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按 根因 / EOL品 分层诊断</div>
+    </div>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>本报告即聚焦单款式 <span class="hl">SDFN2379W</span>。该款超6月积压 <span class="hl">4.4万件</span>，且 <span class="hl">100% 为 12m+ 深度积压</span>（4.4万件），几乎无 6-9m/9-12m 过渡库龄，属典型深度滞销款。<span class="hl">治疗建议：</span>直接启动站外清仓 + 捆绑销售加速去化，避免继续占用仓储与资金。</p>
+    </div>
     <div class="root-matrix-grid">
-      <!-- 正常产品积压根因矩阵 -->
+      <!-- 四季款积压根因矩阵 -->
       <div class="root-matrix-card">
         <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
           <span style="display:inline-block;width:8px;height:8px;background:#3b82f6;border-radius:50%;"></span>
-          1. 正常产品积压根因矩阵
-          <span style="font-size:13px;color:#94a3b8;font-weight:400;margin-left:auto;">正常品总冗余: 0万双</span>
+          1. 积压根因矩阵
+          <span style="font-size:13px;color:#94a3b8;font-weight:400;margin-left:auto;">总冗余: 4.4万双</span>
         </h3>
-        <div style="padding:24px;text-align:center;color:#64748b;font-size:13px;background:rgba(15,23,42,0.4);border-radius:10px;">
-          该款式已全部进入 EOL 状态，无正常品积压数据
-        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>指标名称 (根因)</th>
+              <th class="num">总库存</th><th class="num">6-9m库龄</th>
+              <th class="num">9-12m库龄</th>
+              <th class="num">超12m库龄</th>
+              <th class="num">超6m合计</th>
+              <th class="num">超6m占比</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:#f59e0b;">销量下滑</strong><span class="logic-hint" data-tip="排除26年新品和EOL的，截止当前今年对比去年同期销量增长未达公司增长120%且有积压的" title="排除26年新品和EOL的，截止当前今年对比去年同期销量增长未达公司增长120%且有积压的">!</span></td>
+              <td class="num">4.4万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">4.4万</td><td class="num">4.4万</td><td class="num">99.8%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#06b6d4;">26年新品</strong><span class="logic-hint" data-tip="26年新品且未打EOL标签的" title="26年新品且未打EOL标签的">!</span></td>
+              <td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#a855f7;">EOL</strong><span class="logic-hint" data-tip="所有打了EOL标签的" title="所有打了EOL标签的">!</span></td>
+              <td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#64748b;">其它</strong><span class="logic-hint" data-tip="排除以上（销量下滑 / 26年新品 / EOL）后的剩余" title="排除以上（销量下滑 / 26年新品 / EOL）后的剩余">!</span></td>
+              <td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.2%</td>
+            </tr>
+            <tr style="background:rgba(59,130,246,0.1);">
+              <td><strong>合计</strong></td>
+              <td class="num">4.4万</td>              <td class="num"><strong>0.0万</strong></td>
+              <td class="num"><strong>0.0万</strong></td>
+              <td class="num"><strong>4.4万</strong></td>
+              <td class="num"><strong>4.4万</strong></td>
+              <td class="num"><strong style="color:#3b82f6;">100%</strong></td>
+            </tr>
+      </tbody>
+        </table>
       </div>
 
-      <!-- EOL产品积压根因矩阵 -->
+      <!-- 四季款EOL产品积压根因矩阵 -->
       <div class="root-matrix-card eol">
         <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
           <span style="display:inline-block;width:8px;height:8px;background:#ef4444;border-radius:50%;"></span>
           2. EOL产品积压根因矩阵
-          <span style="font-size:13px;color:#94a3b8;font-weight:400;margin-left:auto;">EOL产品总冗余: 3.9万双</span>
+          <span style="font-size:13px;color:#94a3b8;font-weight:400;margin-left:auto;">EOL总冗余: 0.0万双</span>
         </h3>
+        <div class="root-sub" style="margin:-8px 0 16px;">（左侧「EOL」行的细分）</div>
         <table>
           <thead>
             <tr>
@@ -596,96 +1229,110 @@
               <th class="num">总库存</th><th class="num">6-9m库龄</th>
               <th class="num">9-12m库龄</th>
               <th class="num">超12m库龄</th>
-              
-              <th class="num">占比</th>
+              <th class="num">超6m合计</th>
+              <th class="num">超6m占比</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td><strong style="color:#60a5fa;">24年新品</strong></td>
+              <td class="num">0.0万</td><td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0%</td>
+            </tr>
+            <tr>
               <td><strong style="color:#f59e0b;">25年新品</strong></td>
-              <td class="num">12.5万</td><td class="num">0.0万</td>
+              <td class="num">0.0万</td><td class="num">0.0万</td>
               <td class="num">0.0万</td>
-              <td class="num">2.5万</td>
-              
-              <td class="num">64.1%</td>
-            </tr>
-            
-            <tr>
-              <td><strong style="color:#06b6d4;">非重点skc</strong></td>
-              <td class="num">2.0万</td><td class="num">0.0万</td>
               <td class="num">0.0万</td>
-              <td class="num">0.4万</td>
-              
-              <td class="num">10.3%</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0%</td>
             </tr>
             <tr>
-              <td><strong style="color:#ef4444;">高风险（侵权）</strong></td>
-              <td class="num">1.0万</td><td class="num">0.0万</td>
+              <td><strong style="color:#34d399;">26年新品</strong></td>
+              <td class="num">0.0万</td><td class="num">0.0万</td>
               <td class="num">0.0万</td>
-              <td class="num">0.2万</td>
-              
-              <td class="num">5.1%</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0%</td>
             </tr>
             <tr>
-              <td><strong style="color:#64748b;">其它</strong></td>
-              <td class="num">1.0万</td><td class="num">0.0万</td>
+              <td><strong style="color:#94a3b8;">其它年份</strong></td>
+              <td class="num">0.0万</td><td class="num">0.0万</td>
               <td class="num">0.0万</td>
-              <td class="num">0.2万</td>
-              
-              <td class="num">5.1%</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0%</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#ef4444;">高风险(侵权)</strong></td>
+              <td class="num">0.0万</td><td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0万</td>
+              <td class="num">0.0%</td>
             </tr>
             <tr style="background:rgba(239,68,68,0.1);">
               <td><strong>EOL品合计</strong></td>
-              <td class="num">19.5万</td><td class="num"><strong>0.0万</strong></td>
+              <td class="num">0.0万</td><td class="num"><strong>0.0万</strong></td>
               <td class="num"><strong>0.0万</strong></td>
-              <td class="num"><strong>3.9万</strong></td>
-              
+              <td class="num"><strong>0.0万</strong></td>
+              <td class="num"><strong>0.0万</strong></td>
               <td class="num"><strong style="color:#ef4444;">100%</strong></td>
             </tr>
-          </tbody>
+      </tbody>
         </table>
       </div>
     </div>
+
+    <!-- 季节款积压：左夏季(对齐矩阵1) / 右冬季(对齐矩阵2) -->
+    <div class="season-grid">
+      <!-- 夏季款积压（左） -->
+      <div class="season-panel summer">
+        <h4>☀️ 夏季款积压<span class="tag">仅当前积压</span></h4>
+        <table class="season-table">
+          <thead><tr><th>指标</th><th>总库存</th><th>6-9m库龄</th><th>9-12m库龄</th><th>超12m库龄</th><th class="num">超6m合计</th><th>超6m占比</th></tr></thead>
+          <tbody><tr><td>-</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0%</td></tr></tbody>
+        </table>
+        <div class="wh-sub">🏬 仓库库存分布</div>
+        <div class="wh-chart" id="summerWarehouseChart"></div>
+        <div class="wh-note">* 数据来源：CT超期库存（按季节汇总仓库库存）</div>
+      </div>
+
+      <!-- 冬季款积压（右） -->
+      <div class="season-panel winter">
+        <h4>❄️ 冬季款积压<span class="tag">仅当前积压</span></h4>
+        <table class="season-table">
+          <thead><tr><th>指标</th><th>总库存</th><th>6-9m库龄</th><th>9-12m库龄</th><th>超12m库龄</th><th class="num">超6m合计</th><th>超6m占比</th></tr></thead>
+          <tbody><tr><td>-</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0万</td><td class="num">0.0%</td></tr></tbody>
+        </table>
+        <div class="wh-sub">🏬 仓库库存分布</div>
+        <div class="wh-chart" id="winterWarehouseChart"></div>
+        <div class="wh-note">* 数据来源：CT超期库存（按季节汇总仓库库存）</div>
+      </div>
+    </div>
+
+
+<div class="lite-wh"><h3>🏬 仓库库存分布（超6月）</h3><div class="lite-wh-row"><div id="liteWhChart" class="lite-wh-chart"></div><div class="lite-wh-table"><table><tbody><tr style="background:rgba(251,191,36,0.16);"><td style="text-align:left;padding:6px 10px;color:#e2e8f0;">国内自有</td><td style="padding:6px 10px;color:#e2e8f0;font-variant-numeric:tabular-nums;text-align:right;">40,732</td><td style="padding:6px 10px;color:#94a3b8;text-align:right;">91.8%</td></tr><tr><td style="text-align:left;padding:6px 10px;color:#e2e8f0;">海外自有</td><td style="padding:6px 10px;color:#e2e8f0;font-variant-numeric:tabular-nums;text-align:right;">1,443</td><td style="padding:6px 10px;color:#94a3b8;text-align:right;">3.3%</td></tr><tr><td style="text-align:left;padding:6px 10px;color:#e2e8f0;">海外第三方</td><td style="padding:6px 10px;color:#e2e8f0;font-variant-numeric:tabular-nums;text-align:right;">419</td><td style="padding:6px 10px;color:#94a3b8;text-align:right;">0.9%</td></tr><tr><td style="text-align:left;padding:6px 10px;color:#e2e8f0;">平台</td><td style="padding:6px 10px;color:#e2e8f0;font-variant-numeric:tabular-nums;text-align:right;">1,774</td><td style="padding:6px 10px;color:#94a3b8;text-align:right;">4.0%</td></tr><tr><td style="text-align:left;padding:6px 10px;color:#e2e8f0;">平台前置</td><td style="padding:6px 10px;color:#e2e8f0;font-variant-numeric:tabular-nums;text-align:right;">0</td><td style="padding:6px 10px;color:#94a3b8;text-align:right;">0.0%</td></tr><tr><td style="text-align:left;padding:6px 10px;color:#e2e8f0;">门店</td><td style="padding:6px 10px;color:#e2e8f0;font-variant-numeric:tabular-nums;text-align:right;">26</td><td style="padding:6px 10px;color:#94a3b8;text-align:right;">0.1%</td></tr></tbody></table></div></div><script id="liteWhData" type="application/json">{"国内自有": 40732, "海外自有": 1443, "海外第三方": 419, "平台": 1774, "平台前置": 0, "门店": 26}</script><div class="wh-rec">💡 建议优先从「<strong>国内自有</strong>」仓（占比最高 91.8%）启动站外清货，释放占用仓储。</div></div>
   </div>
 
-  <div class="section" id="sec-trend">
-    <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">📈 近7周 SDFN2379W 积压趋势<button class="ai-prompt-btn" data-prompt="请查询近7周（W21-W27）SDFN2379W各库龄段（6-9m、9-12m、12m+）的积压库存变化趋势，按周输出库存量及环比变化，并预测至当季末、下季末的积压趋势。">🤖 AI问数提示词</button></h2>
-      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">W21 - W27 · 6-9m / 9-12m / 12m+ 库存变化 · 预测至当季末 / 下季末</div>
-    </div>
-    <div class="insight-box" style="margin-bottom:16px;">
-      <div class="ititle">🤖 AI诊断与治疗方案</div>
-      <p>近7周积压量稳定在 <span class="hl">3.6-3.7万件</span>，但 12m+ 库龄占比持续上升至 100%，去化完全停滞。<span class="hl">治疗建议：</span>常规促销已无效，需启动深度折价清仓或批量处置方案。</p>
-    </div>
-    <div class="trend-wrap">
-      <div id="trendChart"></div>
-      <table class="trend-table">
-        <thead><tr><th>周</th><th class="num">总库存</th><th>6-9m</th><th>9-12m</th><th>12m+</th><th>超6月合计</th><th class="num">环比</th></tr></thead>
-        <tbody>
-          <tr><td>W21</td><td class="num">18.5万</td><td>0万</td><td>0.8万</td><td>2.9万</td><td>3.7万</td><td class="num">—</td></tr>
-          <tr><td>W22</td><td class="num">18.5万</td><td>0万</td><td>0.6万</td><td>3.1万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
-          <tr><td>W23</td><td class="num">18.5万</td><td>0万</td><td>0.4万</td><td>3.3万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
-          <tr><td>W24</td><td class="num">18.5万</td><td>0万</td><td>0.2万</td><td>3.5万</td><td>3.7万</td><td class="num" style="color:#10b981;">→ 0.0%</td></tr>
-          <tr><td>W25</td><td class="num">18.0万</td><td>0万</td><td>0万</td><td>3.6万</td><td>3.6万</td><td class="num" style="color:#10b981;">↓ -2.7%</td></tr>
-          <tr><td>W26</td><td class="num">18.5万</td><td>0万</td><td>0万</td><td>3.7万</td><td>3.7万</td><td class="num" style="color:#ef4444;">↑ +2.8%</td></tr>
-          <tr class="current"><td>W27</td><td class="num">19.5万</td><td>0万</td><td>0万</td><td>3.9万</td><td>3.9万</td><td class="num" style="color:#ef4444;">↑ +5.4%</td></tr>
-            <tr style="background:rgba(245,158,11,0.08); border-top:2px solid rgba(245,158,11,0.3);"><td style="color:#f59e0b;">当季末*</td><td class="num">3.93万</td><td>0万</td><td>0万</td><td>0万</td><td style="color:#f59e0b;"><strong>0万</strong></td><td class="num" style="color:#ef4444;">↑ +0.8%</td></tr>
-            <tr style="background:rgba(245,158,11,0.08);"><td style="color:#f59e0b;">下季末*</td><td class="num">4.1万</td><td>0万</td><td>0万</td><td>1.1万</td><td style="color:#f59e0b;"><strong>1.1万</strong></td><td class="num" style="color:#ef4444;">↑ +4.3%</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  
+
+  
 
   <!-- 多维度分析 -->
   <div class="section" id="sec-multi">
-    <h2 style="margin-bottom:0;">🎯 多维度结构分析<button class="ai-prompt-btn" data-prompt="请从货品属性、备货渠道、颜色SKC、尺码与椥型四个维度，分析SDFN2379W积压库存的结构分布，输出各维度的积压量和占比。">🤖 AI问数提示词</button></h2>
+    <h2 style="margin-bottom:0;">🎯 多维度结构分析<button class="ai-prompt-btn" data-prompt="请从备货渠道、以及分人群(WOMEN/MEN/KIDS)的 CT×颜色×尺码 维度，分析全球积压库存的结构分布，输出各维度的超6m积压量和占比。">🤖 AI问数提示词</button></h2>
     <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab(0)">📦 备货渠道库存结构</button>
-      <button class="tab-btn" onclick="switchTab(1)">🎨 颜色 SKC 库存结构</button>
-      <button class="tab-btn" onclick="switchTab(2)">📐 尺码结构分布</button>
+      <button class="tab-btn active" onclick="switchTab(0)">📦 备货渠道积压 Top5</button>
+      <button class="tab-btn" onclick="switchTab(1)">WOMEN分CT颜色尺码积压TOP5</button>
+      <button class="tab-btn" onclick="switchTab(2)">MEN分CT颜色尺码积压TOP5</button>
+      <button class="tab-btn" onclick="switchTab(3)">KIDS分CT颜色尺码积压TOP5</button>
     </div>
 
-    <!-- Tab 0: 备货渠道库存结构 -->
+    <!-- Tab 0: 备货渠道积压 Top5 -->
     <div class="tab-panel active" id="tab0">
       <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
@@ -693,37 +1340,7 @@
           <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
         </div>
         <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
-          该款式 92% 的积压集中在 AmazonUS，FBA 长期仓储费持续累积，需优先制定亚马逊专属清仓方案。
-        </div>
-      </div>
-      <div class="tab-grid">
-        <div class="tab-chart-wrap">
-          <div class="tab-chart" id="chart0"></div>
-        </div>
-        <div class="tab-table-wrap">
-          <table>
-            <thead><tr><th>渠道</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">占比</th></tr></thead>
-            <tbody>
-              <tr><td><strong>AmazonUS</strong></td><td class="num">18.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">3.6万</td><td class="num"><strong style="color:#ef4444;">92.3%</strong></td></tr>
-              <tr><td><strong>Shein</strong></td><td class="num">1.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.2万</td><td class="num">5.1%</td></tr>
-              <tr><td><strong>Standwebsite</strong></td><td class="num">0.4万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.08万</td><td class="num">2.1%</td></tr>
-              <tr><td><strong>其他渠道</strong></td><td class="num">0.1万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.02万</td><td class="num">0.5%</td></tr>
-              <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num">100%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 1: 颜色 SKC 库存结构 -->
-    <div class="tab-panel" id="tab1">
-      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
-        </div>
-        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
-          白色为该款式主力配色，积压量最大；灰色和蓝色为测试色，虽然量小但去化率更低，建议优先处理测试色回笼仓位。
+         Top3 渠道中 QH-US + Amazon US + Shein US 超6月积压合计 4.4万件（占渠道超6月 98.1%），库存治理重点应聚焦前三大渠道，尤其是 QH-US 的 3.8 万件冗余（超6月库龄）
         </div>
       </div>
       <div class="tab-grid">
@@ -732,208 +1349,285 @@
         </div>
         <div class="tab-table-wrap">
           <table>
-            <thead><tr><th>颜色</th><th>SKC</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">占比</th></tr></thead>
-            <tbody>
-              <tr><td><strong>白色 White</strong></td><td>主色</td><td class="num">11.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">2.2万</td><td class="num"><strong style="color:#ef4444;">56.4%</strong></td></tr>
-              <tr><td><strong>黑色 Black</strong></td><td>主色</td><td class="num">6.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">1.2万</td><td class="num"><strong style="color:#ef4444;">30.8%</strong></td></tr>
-              <tr><td><strong style="color:#f59e0b;">灰色 Grey</strong></td><td>测试色</td><td class="num">1.7万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.35万</td><td class="num">9.0%</td></tr>
-              <tr><td><strong style="color:#f59e0b;">蓝色 Blue</strong></td><td>测试色</td><td class="num">0.7万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.15万</td><td class="num">3.8%</td></tr>
-              <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td><strong>4 SKC</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num">100%</td></tr>
-            </tbody>
+            <thead>
+              <tr>
+                <th>指标名称</th>
+                <th class="num">总库存</th>
+                <th class="num">6-9月库龄</th>
+                <th class="num">9-12月库龄</th>
+                <th class="num">超12月库龄</th>
+                <th class="num">超6m合计</th>
+                <th class="num">超6m占比</th>
+              </tr>
+            </thead>
+                        <tbody>
+              <tr>
+                <td><strong>QH-US</strong></td>
+                <td class="num">3.8万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">3.8万</td>
+                <td class="num">3.8万</td>
+                <td class="num">84.8%</td>
+              </tr>
+              <tr>
+                <td><strong>Amazon US</strong></td>
+                <td class="num">0.5万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.5万</td>
+                <td class="num">0.5万</td>
+                <td class="num">10.2%</td>
+              </tr>
+              <tr>
+                <td><strong>Shein US</strong></td>
+                <td class="num">0.1万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.1万</td>
+                <td class="num">0.1万</td>
+                <td class="num">3.2%</td>
+              </tr>
+              <tr>
+                <td><strong>TikTok US</strong></td>
+                <td class="num">0.1万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.1万</td>
+                <td class="num">0.1万</td>
+                <td class="num">1.2%</td>
+              </tr>
+              <tr>
+                <td><strong>Amazon CA</strong></td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.3%</td>
+              </tr>
+              <tr style="color:#94a3b8;">
+                <td>其它渠道</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">0.4%</td>
+              </tr>
+              <tr style="background:rgba(59,130,246,0.1);">
+                <td><strong>合计</strong></td>
+                <td class="num"><strong>4.4万</strong></td>
+                <td class="num">0.0万</td>
+                <td class="num">0.0万</td>
+                <td class="num">4.4万</td>
+                <td class="num"><strong>4.4万</strong></td>
+                <td class="num"><strong style="color:#3b82f6;">100%</strong></td>
+              </tr>
+      </tbody>
           </table>
+        </div>
+      </div>
+    
+    </div>
+
+    <!-- Tab 1: WOMEN 颜色×CT 积压 Top5 -->
+    <div class="tab-panel" id="tab1">
+      <div class="sec-sub" style="margin-top:0;margin-bottom:14px;">按 CT 拆分，每个格子分两块：上方「颜色 Top5」、下方「尺码 Top5」，均按超6m排序；柱长=该格内相对占比，标签「X.X万 (Y.Y%)」中 X.X万=超6m数量，Y.Y%=占该 CT 全部超6m合计的比例。</div>
+            <div class="gc-cap">人群超6m合计 <strong style="color:#cbd5e1;">4.4万</strong> · 共 1 个CT</div>
+      <div class="gc-grid">
+        <div class="gc-cell">
+          <div class="gc-cell-h"><span>Dream Pairs Comfort</span><span class="gc-ctot">4.4万</span></div>
+          <div class="gc-sub">颜色 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="WHITE">WHITE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">2.8万 (63.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK/WHITE">BLACK/WHITE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:29.6%"></div></div>
+              <span class="gc-val">0.8万 (18.7%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="PINK-KNIT">PINK-KNIT</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:5.3%"></div></div>
+              <span class="gc-val">0.1万 (3.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="BLACK">BLACK</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:4.9%"></div></div>
+              <span class="gc-val">0.1万 (3.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="WHITE/PURPLE">WHITE/PURPLE</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:2.5%"></div></div>
+              <span class="gc-val">0.1万 (1.6%)</span>
+            </div>
+          <div class="gc-sub">尺码 Top5</div>
+            <div class="gc-row">
+              <span class="gc-name" title="8">8码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:100.0%"></div></div>
+              <span class="gc-val">0.8万 (18.8%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7.5">7.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:87.4%"></div></div>
+              <span class="gc-val">0.7万 (16.4%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="8.5">8.5码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:80.0%"></div></div>
+              <span class="gc-val">0.7万 (15.1%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="9">9码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:77.9%"></div></div>
+              <span class="gc-val">0.7万 (14.7%)</span>
+            </div>
+            <div class="gc-row">
+              <span class="gc-name" title="7">7码</span>
+              <div class="gc-barwrap"><div class="gc-bar" style="width:76.2%"></div></div>
+              <span class="gc-val">0.6万 (14.3%)</span>
+            </div>
         </div>
       </div>
     </div>
 
-    <!-- Tab 2: 尺码结构分布 -->
+    <!-- Tab 2: MEN 颜色×CT 积压 Top5 -->
     <div class="tab-panel" id="tab2">
-      <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <span style="font-size:18px;">🤖</span>
-          <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
-        </div>
-        <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
-          US9 / US10 黄金码占积压总量 68%，是清仓重点。大码 US12 和小码 US6 占比虽低但去化极度困难，建议折价处理。
-        </div>
-      </div>
-      <div class="tab-grid">
-        <div class="tab-chart-wrap">
-          <div class="tab-chart" id="chart2"></div>
-        </div>
-        <div class="tab-table-wrap">
-          <table>
-            <thead><tr><th>尺码 (US)</th><th class="num">总库存</th><th class="num">6-9月</th><th class="num">9-12月</th><th class="num">12月+</th><th class="num">占比</th></tr></thead>
-            <tbody>
-              <tr><td><strong>US6</strong></td><td class="num">0.6万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.12万</td><td class="num">3.1%</td></tr>
-              <tr><td><strong>US7</strong></td><td class="num">1.4万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.28万</td><td class="num">7.2%</td></tr>
-              <tr><td><strong>US8</strong></td><td class="num">2.4万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.48万</td><td class="num">12.3%</td></tr>
-              <tr><td><strong>US9</strong></td><td class="num">3.8万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.75万</td><td class="num">19.2%</td></tr>
-              <tr><td><strong>US10</strong></td><td class="num">4.0万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.8万</td><td class="num"><strong style="color:#f59e0b;">20.5%</strong></td></tr>
-              <tr><td><strong>US11</strong></td><td class="num">3.1万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.62万</td><td class="num">15.9%</td></tr>
-              <tr><td><strong>US12</strong></td><td class="num">2.2万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.45万</td><td class="num">11.5%</td></tr>
-              <tr><td><strong>US13</strong></td><td class="num">1.1万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.22万</td><td class="num">5.6%</td></tr>
-              <tr><td><strong>US14</strong></td><td class="num">0.9万</td><td class="num">0万</td><td class="num">0万</td><td class="num">0.18万</td><td class="num">4.6%</td></tr>
-              <tr style="background:rgba(59,130,246,0.1);"><td><strong>合计</strong></td><td class="num"><strong>4.95万</strong></td><td class="num">0万</td><td class="num">0万</td><td class="num">3.9万</td><td class="num">100%</td></tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="sec-sub" style="margin-top:0;margin-bottom:14px;">按 CT 拆分，每个格子分两块：上方「颜色 Top5」、下方「尺码 Top5」，均按超6m排序；柱长=该格内相对占比，标签「X.X万 (Y.Y%)」中 X.X万=超6m数量，Y.Y%=占该 CT 全部超6m合计的比例。</div>
+            <div class="gc-cap">人群超6m合计 <strong style="color:#cbd5e1;">0.0万</strong> · 共 0 个CT</div>
+      <div class="gc-grid">
       </div>
     </div>
 
+    <!-- Tab 3: KIDS 颜色×CT 积压 Top5 -->
+    <div class="tab-panel" id="tab3">
+      <div class="sec-sub" style="margin-top:0;margin-bottom:14px;">按 CT 拆分，每个格子分两块：上方「颜色 Top5」、下方「尺码 Top5」，均按超6m排序；柱长=该格内相对占比，标签「X.X万 (Y.Y%)」中 X.X万=超6m数量，Y.Y%=占该 CT 全部超6m合计的比例。</div>
+            <div class="gc-cap">人群超6m合计 <strong style="color:#cbd5e1;">0.0万</strong> · 共 0 个CT</div>
+      <div class="gc-grid">
+      </div>
+    </div>
 
   </div>
 
-  <!-- SKU TOP10 -->
 
-
-      <!-- SKU TOP10 -->
-  <div class="section" id="sec-sku">
+      <!-- 类目TOP10 -->
+  <div class="section" id="sec-cat">
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
-      <h2 style="margin-bottom:0;">🔝 SDFN2379W 积压 SKU Top 10<button class="ai-prompt-btn" data-prompt="请按超6个月积压量排序，列出SDFN2379W积压SKU TOP 10，包含SKU编码、总库存、各库龄段库存量和积压天数。">🤖 AI问数提示词</button></h2>
+      <h2 style="margin-bottom:0;">📦 全球 TOP 10 积压类目<button class="ai-prompt-btn" data-prompt="请按超6个月积压量排序，列出全球TOP 10积压类目，包含类目名称、总库存、各库龄段库存量和占比。">🤖 AI问数提示词</button></h2>
       <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按超6个月积压量排序</div>
 
 
     </div>
-    <div class="insight-box" style="margin-bottom:16px;">
-      <div class="ititle">🤖 AI诊断与治疗方案</div>
-      <p>积压集中在白色和黑色主色 SKU，黄金码 US9/US10 占比最高。<span class="hl">治疗建议：</span>优先清仓大码和测试色 SKU，主色主码通过亚马逊 Outlet 和站外渠道快速去化。</p>
+    <div style="background:rgba(15,23,42,0.6);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <span style="font-size:18px;">🤖</span>
+        <span style="font-size:14px;font-weight:700;color:#fff;">AI诊断与治疗方案</span>
+      </div>
+      <div style="font-size:13px;color:#cbd5e1;line-height:1.7;padding-left:30px;">
+       Top3 类目（FASHION SNEAKERS）合计占本范围超6m的 <strong style="color:#fbbf24;">100.0%</strong>，
+      建议优先启动清仓策略。
+      </div>
     </div>
-    <table class="style-table">
+    <table>
       <thead>
         <tr>
-          <th>#</th>
-          <th>SKU</th>
-          <th>颜色</th>
-          <th>尺码 (US)</th>
-          <th class="num">总库存</th>
-          <th class="num">6-9m</th>
-          <th class="num">9-12m</th>
-          <th class="num">12m+</th>
-          
+          <th>排名</th>
+          <th>类目名称 (Category)</th>
+          <th class="num">总库存</th><th class="num">6-9m 数量</th>
+          <th class="num">9-12m 数量</th>
+          <th class="num">超12m 数量</th>
+          <th class="num">超6m合计</th>
+          <th class="num">超6m占比</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>1</td>
-          <td class="st">SDFN2379W-WT-US10</td>
-          <td><span class="tag">白色</span></td>
-          <td>US10</td>
-          <td class="num">2.1万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.42万</span></td>
-          
+          <td><strong>WOMEN/ATHLETIC/FASHION SNEAKERS</strong></td>
+          <td class="num">4.4万</td><td class="num">0.0万</td>
+          <td class="num">0.0万</td>
+          <td class="num"><span class="tag red">4.4万</span></td>
+          <td class="num">4.4万</td>
+          <td class="num"><strong style="color:#ef4444;">100.0%</strong></td>
         </tr>
-        <tr>
-          <td>2</td>
-          <td class="st">SDFN2379W-WT-US9</td>
-          <td><span class="tag">白色</span></td>
-          <td>US9</td>
-          <td class="num">1.9万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.38万</span></td>
-          
-        </tr>
-        <tr>
-          <td>3</td>
-          <td class="st">SDFN2379W-WT-US11</td>
-          <td><span class="tag">白色</span></td>
-          <td>US11</td>
-          <td class="num">1.7万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.35万</span></td>
-          
-        </tr>
-        <tr>
-          <td>4</td>
-          <td class="st">SDFN2379W-BK-US10</td>
-          <td><span class="tag">黑色</span></td>
-          <td>US10</td>
-          <td class="num">1.4万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.28万</span></td>
-          
-        </tr>
-        <tr>
-          <td>5</td>
-          <td class="st">SDFN2379W-BK-US9</td>
-          <td><span class="tag">黑色</span></td>
-          <td>US9</td>
-          <td class="num">1.2万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.25万</span></td>
-          
-        </tr>
-        <tr>
-          <td>6</td>
-          <td class="st">SDFN2379W-WT-US8</td>
-          <td><span class="tag">白色</span></td>
-          <td>US8</td>
-          <td class="num">1.2万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.24万</span></td>
-          
-        </tr>
-        <tr>
-          <td>7</td>
-          <td class="st">SDFN2379W-BK-US11</td>
-          <td><span class="tag">黑色</span></td>
-          <td>US11</td>
-          <td class="num">1.1万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.22万</span></td>
-          
-        </tr>
-        <tr>
-          <td>8</td>
-          <td class="st">SDFN2379W-WT-US12</td>
-          <td><span class="tag">白色</span></td>
-          <td>US12</td>
-          <td class="num">0.9万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.18万</span></td>
-          
-        </tr>
-        <tr>
-          <td>9</td>
-          <td class="st">SDFN2379W-GR-US10</td>
-          <td><span class="tag orange">灰色</span></td>
-          <td>US10</td>
-          <td class="num">0.7万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.15万</span></td>
-          
-        </tr>
-        <tr>
-          <td>10</td>
-          <td class="st">SDFN2379W-WT-US7</td>
-          <td><span class="tag">白色</span></td>
-          <td>US7</td>
-          <td class="num">0.7万</td>
-          <td class="num">0万</td>
-          <td class="num">0万</td>
-          <td class="num"><span class="tag red">0.14万</span></td>
-          
+        <tr style="background:rgba(59,130,246,0.1);">
+          <td>-</td>
+          <td><strong>TOP 10 类目合计</strong></td>
+          <td class="num">4.4万</td><td class="num"><strong>0.0万</strong></td>
+          <td class="num"><strong>0.0万</strong></td>
+          <td class="num"><strong>4.4万</strong></td>
+          <td class="num"><strong>4.4万</strong></td>
+          <td class="num"><strong style="color:#3b82f6;">100.0%</strong></td>
         </tr>
       </tbody>
     </table>
+   
   </div>
 
-  <div class="footer">👟 SDFN2379W 积压风险AI诊断报告 · 数据截止 2026-07-04 · 仅供内部参考</div>
+  <!-- 款式Top20 -->
+  <div class="section" id="sec-top20">
+    <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
+      <h2 style="margin-bottom:0;">🔝 全球积压款式 Top 20<button class="ai-prompt-btn" data-prompt="请按超6个月积压量排序，列出全球积压款式TOP 20，包含款式编码、类目、总库存、各库龄段库存量和积压天数。">🤖 AI问数提示词</button></h2>
+      <div class="sec-sub" style="margin-top:0; margin-bottom:0;">按超6个月积压量排序</div>
+    </div>
+    <div class="insight-box" style="margin-bottom:16px;">
+      <div class="ititle">🤖 AI诊断与治疗方案</div>
+      <p>本报告即聚焦单款式 <span class="hl">SDFN2379W</span>，其超6月积压合计 <span class="hl">4.4万件</span>（其中 12m+ 深度积压 4.4万件），已属高度沉淀。<span class="hl">治疗建议：</span>直接启动站外清仓 + 捆绑销售加速去化，避免继续占用仓储与资金。</p>
+    </div>
+    <table class="style-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>款式</th>
+          <th>品牌</th>
+          <th>类目</th>
+          <th class="num">SKU</th>
+          <th class="num">总库存</th><th class="num">6-9m</th>
+          <th class="num">9-12m</th>
+          <th class="num">12m+</th>
+          <th class="num">超6m合计</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td class="st">SDFN2379W</td>
+          <td><span class="tag">DREAM PAIRS</span></td>
+          <td><span class="cat-name-short">WOMEN/ATHLETIC/FASHION SNEAKERS</span></td>
+          <td class="num">176</td>
+          <td class="num">4.4万</td><td class="num">0.0万</td>
+          <td class="num">0.0万</td>
+          <td class="num"><span class="tag red">4.4万</span></td>
+          <td class="num">4.4万</td>
+        </tr>
+        <tr style="background:rgba(59,130,246,0.1);">
+          <td>-</td>
+          <td><strong>TOP 20 款式合计</strong></td>
+          <td></td>
+          <td></td>
+          <td class="num"><strong>176</strong></td>
+          <td class="num"><strong>4.4万</strong></td><td class="num"><strong>0.0万</strong></td>
+          <td class="num"><strong>0.0万</strong></td>
+          <td class="num"><strong>4.4万</strong></td>
+          <td class="num"><strong>4.4万</strong></td>
+        </tr>
+      </tbody>
+    </table>
+   
+  </div>
+
+  <div class="footer">
+    🌍 SDFN2379W 积压风险AI诊断报告 · 数据截止 2026-07-18 · 1 个CT · 176 SKU · 仅供内部参考
+  </div>
+
 </div>
 
 <script>
-var chartBg = 'transparent';
-var chartTextColor = '#94a3b8';
-var chartSplitLine = 'rgba(255,255,255,0.05)';
+var LITE = true;
+// 趋势图
 var trendChart = echarts.init(document.getElementById('trendChart'));
 trendChart.setOption({
   backgroundColor: 'transparent',
@@ -953,7 +1647,7 @@ trendChart.setOption({
   xAxis: {
     type: 'category',
     boundaryGap: false,
-    data: ['W21','W22','W23','W24','W25','W26','W27','当季末','下季末'],
+    data: ['3周前','2周前','上周','本周','当季末*','下季末*'],
     axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
     axisLabel: { color: '#64748b', fontSize: 11 }
   },
@@ -962,7 +1656,7 @@ trendChart.setOption({
     axisLabel: {
       color: '#64748b',
       fontSize: 11,
-      formatter: function(v) { return v.toFixed(1) + '万'; }
+      formatter: function(v) { return v.toFixed(0) + '万'; }
     },
     axisLine: { show: false },
     splitLine: { lineStyle: { color: 'rgba(255,255,255,0.04)' } }
@@ -970,7 +1664,7 @@ trendChart.setOption({
   series: [
     {
       name: '6-9m', type: 'line', smooth: true,
-      data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
       itemStyle: { color: '#3b82f6' },
       areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
         { offset: 0, color: 'rgba(59,130,246,0.18)' },
@@ -980,7 +1674,7 @@ trendChart.setOption({
     },
     {
       name: '9-12m', type: 'line', smooth: true,
-      data: [0.8, 0.6, 0.4, 0.2, 0, 0, 0, 0, 0],
+      data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
       itemStyle: { color: '#f59e0b' },
       areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
         { offset: 0, color: 'rgba(245,158,11,0.2)' },
@@ -990,20 +1684,95 @@ trendChart.setOption({
     },
     {
       name: '12m+', type: 'line', smooth: true,
-      data: [2.9, 3.1, 3.3, 3.5, 3.6, 3.7, 3.9, 0, 1.1],
+      data: [4.4, 4.4, 4.4, 4.4, 4.1, 3.8],
       itemStyle: { color: '#ef4444' },
       areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
         { offset: 0, color: 'rgba(239,68,68,0.25)' },
         { offset: 1, color: 'rgba(239,68,68,0.02)' }
       ])},
       lineStyle: { width: 2 },
-      markLine: {
-        symbol: 'none',
-        data: [{ xAxis: 'W27' }],
-        lineStyle: { color: 'rgba(255,255,255,0.15)', type: 'dashed', width: 1 },
-        label: { formatter: '预测起点', color: '#64748b', fontSize: 10 }
-      }
+
     }
+  ]
+});
+
+// 轻量版式：单款式仅保留 12m+ 一条趋势线
+if (LITE) {
+  try {
+    var _to = trendChart.getOption();
+    var _s12 = _to.series.filter(function(s){ return s.name === '12m+'; });
+    trendChart.setOption({ legend: { data: ['12m+'] }, series: _s12 }, true);
+  } catch(e) {}
+}
+// Tab切换
+var tabCharts = [null];
+function switchTab(idx) {
+  var btns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  btns.forEach(function(b, i) {
+    b.classList.toggle('active', i === idx);
+    panels[i].classList.toggle('active', i === idx);
+  });
+  // 切换后重新resize当前Tab图表
+  if (tabCharts[idx]) {
+    setTimeout(function(){ tabCharts[idx].resize(); }, 50);
+  }
+}
+
+// 通用配色（深色主题）
+var chartBg = 'transparent';
+var chartTextColor = '#94a3b8';
+var chartSplitLine = 'rgba(255,255,255,0.05)';
+
+// Tab0 备货渠道库存结构分布 — 横向柱状图
+tabCharts[0] = echarts.init(document.getElementById('chart1'));
+tabCharts[0].setOption({
+  backgroundColor: chartBg,
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, textStyle: { color: '#e2e8f0' } },
+  legend: { data: ['6-9月', '9-12月', '超12月'], textStyle: { color: chartTextColor }, top: 0 },
+  grid: { left: '3%', right: '8%', bottom: '3%', top: 36, containLabel: true },
+  xAxis: {
+    type: 'value', name: '万件',
+    nameTextStyle: { color: chartTextColor },
+    axisLine: { show: false },
+    axisLabel: { color: chartTextColor },
+    splitLine: { lineStyle: { color: chartSplitLine } }
+  },
+  yAxis: {
+    type: 'category', data: ['QH-US', 'Amazon US', 'Shein US', 'TikTok US', 'Amazon CA', '其它渠道'],
+    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+    axisLabel: { color: chartTextColor, fontSize: 12 }
+  },
+  series: [
+    { name: '6-9月', type: 'bar', stack: 'total', data: [{ value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }], itemStyle: { color: '#f59e0b' }, barWidth: '50%' },
+    { name: '9-12月', type: 'bar', stack: 'total', data: [{ value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }], itemStyle: { color: '#f97316' } },
+    { name: '超12月', type: 'bar', stack: 'total', data: [{ value: 3.8, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '100.0%' } }, { value: 0.5, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '100.0%' } }, { value: 0.1, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '100.0%' } }, { value: 0.1, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '100.0%' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '100.0%' } }, { value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '100.0%' } }], itemStyle: { color: '#ef4444' } }
+  ]
+});
+
+// CT积压分布 — 横向堆叠柱状图
+var ctChart = echarts.init(document.getElementById('ctChart'));
+ctChart.setOption({
+  backgroundColor: chartBg,
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, textStyle: { color: '#e2e8f0' }, valueFormatter: function(v) { return v.toFixed(1) + '万'; } },
+  legend: { data: ['6-9m', '9-12m', '12m+'], textStyle: { color: chartTextColor }, top: 0 },
+  grid: { left: '3%', right: '4%', bottom: '3%', top: 36, containLabel: true },
+  xAxis: {
+    type: 'value', name: '万件',
+    nameTextStyle: { color: chartTextColor },
+    axisLine: { show: false },
+    axisLabel: { color: chartTextColor },
+    splitLine: { lineStyle: { color: chartSplitLine } }
+  },
+  yAxis: {
+    type: 'category', data: ['Dream Pairs Comfort'],
+    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+    axisLabel: { color: chartTextColor, fontSize: 11 }
+  },
+  series: [
+    { name: '6-9m', type: 'bar', stack: 'total', data: [{ value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }], itemStyle: { color: '#3b82f6' }, barWidth: '55%' },
+    { name: '9-12m', type: 'bar', stack: 'total', data: [{ value: 0.0, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '' } }], itemStyle: { color: '#f59e0b' } },
+    { name: '12m+', type: 'bar', stack: 'total', data: [{ value: 4.4, label: { show: true, position: 'inside', color: '#fff', fontSize: 9, fontWeight: 'bold', formatter: '100.0%' } }], itemStyle: { color: '#ef4444' } }
   ]
 });
 
@@ -1011,108 +1780,134 @@ trendChart.setOption({
 var forecastChart = echarts.init(document.getElementById('forecastChart'));
 forecastChart.setOption({
   backgroundColor: chartBg,
-  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, textStyle: { color: '#e2e8f0' }, valueFormatter: function(v) { return v.toLocaleString() + '双'; } },
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, textStyle: { color: '#e2e8f0' }, valueFormatter: function(v) { return v.toFixed(1) + '万'; } },
   legend: { data: ['当季末预计', '下季末预计'], textStyle: { color: chartTextColor }, top: 0 },
   grid: { left: '3%', right: '4%', bottom: '3%', top: 36, containLabel: true },
   xAxis: {
-    type: 'value', name: '双',
+    type: 'value', name: '万',
     nameTextStyle: { color: chartTextColor },
     axisLine: { show: false },
     axisLabel: { color: chartTextColor },
     splitLine: { lineStyle: { color: chartSplitLine } }
   },
   yAxis: {
-    type: 'category', data: ['US13', 'US6', 'US12', 'US7', 'US11', 'US8', 'US10', 'US9'],
+    type: 'category', data: ['Dream Pairs Comfort'],
     axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
     axisLabel: { color: chartTextColor, fontSize: 11 }
   },
   series: [
-    { name: '当季末预计', type: 'bar', data: [540, 720, 1080, 1350, 1710, 1890, 2520, 2880], itemStyle: { color: '#3b82f6' }, barWidth: '35%' },
-    { name: '下季末预计', type: 'bar', data: [486, 648, 972, 1215, 1540, 1700, 2270, 2590], itemStyle: { color: '#ef4444' }, barWidth: '35%' }
+    { name: '当季末预计', type: 'bar', data: [4.1], itemStyle: { color: '#3b82f6' }, barWidth: '35%' },
+    { name: '下季末预计', type: 'bar', data: [3.8], itemStyle: { color: '#ef4444' }, barWidth: '35%' }
   ]
 });
 
-window.addEventListener('resize', function() { trendChart.resize(); chart0.resize(); chart1.resize(); chart2.resize();
-  forecastChart.resize();});
+// 季节款仓库库存分布图（饼图）
+function initSeasonPie(id, data) {
+  var names = ['国内自有仓库存', '海外自有仓库存', '海外第三方仓库存', '平台仓库存', '平台前置仓库存', '门店仓库存'];
+  var palette = ['#3b82f6', '#60a5fa', '#22d3ee', '#a78bfa', '#f59e0b', '#10b981'];
+  var pieData = data.map(function(v, i) {
+    return { name: names[i], value: v, itemStyle: { color: palette[i] } };
+  });
+  var c = echarts.init(document.getElementById(id));
+  c.setOption({
+    backgroundColor: chartBg,
+    tooltip: {
+      trigger: 'item',
+      textStyle: { color: '#e2e8f0' },
+      formatter: function(p) { return p.name + '：' + p.value.toFixed(0) + '万 (' + p.percent + '%)'; }
+    },
+    legend: {
+      orient: 'vertical',
+      left: 6,
+      top: 'center',
+      textStyle: { color: '#cbd5e1', fontSize: 11 },
+      itemWidth: 10,
+      itemHeight: 10,
+      itemGap: 8
+    },
+    series: [{
+      type: 'pie',
+      radius: ['40%', '70%'],
+      center: ['64%', '50%'],
+      data: pieData,
+      label: { color: '#e2e8f0', fontSize: 11, formatter: '{b}\n{c}万' },
+      labelLine: { length: 8, length2: 10 }
+    }]
+  });
+  return c;
+}
+var summerWarehouseChart = initSeasonPie('summerWarehouseChart', [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+var winterWarehouseChart = initSeasonPie('winterWarehouseChart', [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
 
-function switchTab(idx) {
-  var btns = document.querySelectorAll('.tab-btn');
-  var panels = document.querySelectorAll('.tab-panel');
-  btns.forEach(function(b, i) { b.classList.toggle('active', i === idx); panels[i].classList.toggle('active', i === idx); });
-  setTimeout(function() {
-    if(idx === 0) chart0.resize();
-    if(idx === 1) chart1.resize();
-    if(idx === 2) chart2.resize();
-  }, 50);
+// 轻量版式 — 仓库库存分布（超6月）环型图
+if (LITE) {
+  var liteWhEl = document.getElementById('liteWhChart');
+  if (liteWhEl) {
+    var liteWhRaw = JSON.parse(document.getElementById('liteWhData').textContent);
+    var liteWhPalette = ['#3b82f6', '#60a5fa', '#22d3ee', '#a78bfa', '#f59e0b', '#10b981'];
+    var liteWhData = Object.keys(liteWhRaw).map(function(k, i) {
+      return { name: k, value: liteWhRaw[k], itemStyle: { color: liteWhPalette[i % liteWhPalette.length] } };
+    });
+    var liteWhChart = echarts.init(liteWhEl);
+    liteWhChart.setOption({
+      backgroundColor: chartBg,
+      tooltip: { trigger: 'item', textStyle: { color: '#e2e8f0' }, formatter: function(p) { return p.name + '：' + Math.round(p.value).toLocaleString() + '双 (' + p.percent + '%)'; } },
+      legend: { orient: 'vertical', right: 6, top: 'center', textStyle: { color: '#cbd5e1', fontSize: 11 }, itemWidth: 10, itemHeight: 10, itemGap: 8 },
+      series: [{
+        type: 'pie',
+        radius: ['46%', '72%'],
+        center: ['40%', '50%'],
+        data: liteWhData,
+        label: { color: '#e2e8f0', fontSize: 11, formatter: '{b}\n{c}双' },
+        labelLine: { length: 8, length2: 10 },
+        itemStyle: { borderColor: chartBg, borderWidth: 2 }
+      }]
+    });
+    window.addEventListener('resize', function() { liteWhChart.resize(); });
+  }
 }
 
-var chart0 = echarts.init(document.getElementById('chart0'));
-chart0.setOption({
-  backgroundColor: 'transparent',
-  tooltip: { trigger: 'item', textStyle: { color: '#e2e8f0' }, formatter: '{b}: {c}万 ({d}%)' },
-  legend: { orient: 'horizontal', bottom: 0, textStyle: { color: '#94a3b8', fontSize: 11 } },
-  series: [{
-    type: 'pie', radius: ['40%', '70%'], center: ['50%', '42%'],
-    label: { color: '#94a3b8', formatter: '{b}\n{d}%', fontSize: 11 },
-    data: [
-      { value: 3.6, name: 'AmazonUS', itemStyle: { color: '#3b82f6' } },
-      { value: 0.2, name: 'Shein', itemStyle: { color: '#f59e0b' } },
-      { value: 0.08, name: 'Standwebsite', itemStyle: { color: '#10b981' } },
-      { value: 0.02, name: '其他渠道', itemStyle: { color: '#64748b' } }
-    ]
-  }]
+window.addEventListener('resize', function() {
+  trendChart.resize();
+  ctChart.resize();
+  tabCharts.forEach(function(c){ if (c) c.resize(); });
+  forecastChart.resize();
+  summerWarehouseChart.resize();
+  winterWarehouseChart.resize();
 });
 
-var chart1 = echarts.init(document.getElementById('chart1'));
-chart1.setOption({
-  backgroundColor: 'transparent',
-  tooltip: { trigger: 'item', textStyle: { color: '#e2e8f0' }, formatter: '{b}: {c}万 ({d}%)' },
-  legend: { orient: 'horizontal', bottom: 0, textStyle: { color: '#94a3b8', fontSize: 11 } },
-  series: [{
-    type: 'pie', radius: ['40%', '70%'], center: ['50%', '42%'],
-    label: { color: '#94a3b8', formatter: '{b}\n{d}%', fontSize: 11 },
-    data: [
-      { value: 2.2, name: '白色', itemStyle: { color: '#e2e8f0' } },
-      { value: 1.2, name: '黑色', itemStyle: { color: '#334155' } },
-      { value: 0.35, name: '灰色', itemStyle: { color: '#64748b' } },
-      { value: 0.15, name: '蓝色', itemStyle: { color: '#3b82f6' } }
-    ]
-  }]
-});
-
-var chart2 = echarts.init(document.getElementById('chart2'));
-chart2.setOption({
-  backgroundColor: 'transparent',
-  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, textStyle: { color: '#e2e8f0' }, valueFormatter: function(v) { return v.toFixed(2) + '万'; } },
-  legend: { data: ['12m+'], textStyle: { color: '#94a3b8' }, top: 0 },
-  grid: { left: '3%', right: '4%', bottom: '3%', top: 36, containLabel: true },
-  xAxis: { type: 'category', data: ['US6','US7','US8','US9','US10','US11','US12','US13','US14'], axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#94a3b8', fontSize: 10 } },
-  yAxis: { type: 'value', axisLabel: { color: '#94a3b8' }, axisLine: { show: false }, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } } },
-  series: [
-    { name: '12m+', type: 'bar', data: [0.12,0.28,0.48,0.75,0.8,0.62,0.45,0.22,0.18], itemStyle: { color: function(params) { var v = params.value; if(v >= 0.7) return '#ef4444'; if(v >= 0.4) return '#f59e0b'; return '#3b82f6'; } }, barWidth: '55%' }
-  ]
-});
-
-// 滚动导航高亮
+// 页内导航 scroll-spy 高亮
 (function() {
   var navLinks = document.querySelectorAll('.page-nav a');
-  var sections = ['sec-insight', 'sec-forecast', 'sec-root', 'sec-trend', 'sec-multi', 'sec-sku'].map(function(id){ return document.getElementById(id); });
+  var sections = ['sec-insight', 'sec-forecast', 'sec-root', 'sec-trend', 'sec-ct', 'sec-multi', 'sec-cat', 'sec-top20']
+    .map(function(id){ return document.getElementById(id); });
+
+  // 平滑滚动 + 锚点点击处理
   navLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       var target = document.getElementById(this.getAttribute('data-target'));
-      if (target) { window.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' }); }
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+      }
     });
   });
+
+  // 滚动监听高亮当前section
   function updateActive() {
     var scrollY = window.scrollY + 100;
     var activeIdx = 0;
     for (var i = 0; i < sections.length; i++) {
-      if (sections[i] && sections[i].offsetTop <= scrollY) { activeIdx = i; }
+      if (sections[i] && sections[i].offsetTop <= scrollY) {
+        activeIdx = i;
+      }
     }
-    navLinks.forEach(function(l, i) { l.classList.toggle('active', i === activeIdx); });
+    navLinks.forEach(function(l, i) {
+      l.classList.toggle('active', i === activeIdx);
+    });
   }
-  window.addEventListener('scroll', updateActive); updateActive();
+  window.addEventListener('scroll', updateActive);
+  updateActive();
 })();
 </script>
 <script>
@@ -1147,7 +1942,10 @@ document.addEventListener('click', function(e) {
   <div class="detail-modal">
     <div class="detail-modal-header">
       <div class="detail-modal-title" id="detailTitle">📋 SKU级明细清单</div>
-      <button class="detail-modal-close" onclick="closeDetail()">✕</button>
+      <div class="detail-modal-actions">
+        <button class="detail-modal-download" onclick="downloadDetailCsv()">⬇ 下载CSV</button>
+        <button class="detail-modal-close" onclick="closeDetail()">✕</button>
+      </div>
     </div>
     <div class="detail-modal-body" id="detailBody"></div>
   </div>
@@ -1195,48 +1993,42 @@ document.addEventListener('click', function(e) {
   }
 
   function generateMockRows(ctx, count) {
-    var cats = ['Fashion Sneakers', 'Ankle Boots', 'Dress Oxfords', 'Loafers', 'Sandals', 'Running Shoes', 'Snow Boots', 'Pumps'];
-    var cts = ['Dream Pairs Fashion', 'Dream Pairs Comfort', 'Dream Pairs Kids', 'Bruno Marc', 'Dream Pairs'];
-    var ages = ['6-9m', '9-12m', '12m+'];
-    var roots = ['25年新品', '非重点skc', '高风险（侵权）', '其它'];
-    var html = '<table class="detail-table"><thead><tr>';
-    html += '<th>SKU编码</th><th>款式</th><th>类目</th><th>CT</th>';
-    html += '<th>库龄段</th><th>根因</th><th class="num">库存量</th><th>入库日期</th><th class="num">积压天数</th><th>状态</th>';
-    html += '</tr></thead><tbody>';
-    var letters = 'ABCDEFGHJKLMNPQRST';
-    for (var i = 0; i < count; i++) {
-      var li = i % letters.length;
-      var skuCode = 'SD' + letters[li] + (1000 + Math.floor(Math.random() * 8999));
-      var style = 'SDFN' + (2370 + i) + 'W';
-      var cat = cats[Math.floor(Math.random() * cats.length)];
-      var ct = cts[Math.floor(Math.random() * cts.length)];
-      var age = ages[Math.floor(Math.random() * ages.length)];
-      var root = roots[Math.floor(Math.random() * roots.length)];
-      var qty = Math.floor(Math.random() * 4800 + 200);
-      var mo = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-      var dy = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
-      var dt = '2025-' + mo + '-' + dy;
-      var days = Math.floor(Math.random() * 280) + 180;
-      var isEol = Math.random() < 0.35;
-      var stCls = isEol ? 'status-eol' : 'status-normal';
-      var stTxt = isEol ? 'EOL品' : '正常品';
-      html += '<tr>';
-      html += '<td>' + skuCode + '</td>';
-      html += '<td>' + style + '</td>';
-      html += '<td>' + cat + '</td>';
-      html += '<td>' + ct + '</td>';
-      html += '<td>' + age + '</td>';
-      html += '<td>' + root + '</td>';
-      html += '<td class="num">' + qty.toLocaleString() + '</td>';
-      html += '<td>' + dt + '</td>';
-      html += '<td class="num">' + days + '</td>';
-      html += '<td><span class="' + stCls + '">' + stTxt + '</span></td>';
-      html += '</tr>';
+  var data = (typeof SKU_DETAIL_DATA !== 'undefined') ? SKU_DETAIL_DATA : [];
+  var cts = {};
+  data.forEach(function(r){ cts[r[1]] = 1; });
+  var filtered = data;
+    if (ctx && (cts[ctx.row] || cts[ctx.value])) {
+      var key = cts[ctx.row] ? ctx.row : ctx.value;
+      filtered = data.filter(function(r){ return r[1] === key; });
     }
-    html += '</tbody></table>';
-    html += '<div class="detail-footer">💡 以上为模拟数据，实际接入后将展示真实SKU级明细。点击任意统计数字可下钻查看构成该指标的所有SKU详情。</div>';
-    return html;
-  }
+    if (!filtered.length) filtered = data;
+  var html = '<div class="dd-scroll"><table class="detail-table dd-wide"><thead><tr>';
+  html += '<th>SKU</th><th>CT</th><th>颜色</th><th>尺码</th>';
+  html += '<th class="num">总库存</th><th class="num">6-9m</th><th class="num">9-12m</th><th class="num">12m+</th><th class="num">超6m</th>';
+  html += '<th class="num">当季末超6m</th>';
+  html += '<th class="num">国内自有</th><th class="num">海外自有</th><th class="num">海外第三方</th><th class="num">平台</th><th class="num">平台前置</th><th class="num">门店</th>';
+  html += '</tr></thead><tbody>';
+  filtered.forEach(function(r){
+    html += '<tr>';
+    html += '<td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td>';
+    html += '<td class="num">'+(+r[4]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[5]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[6]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[7]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[8]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[9]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[10]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[11]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[12]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[13]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[14]).toLocaleString()+'</td>';
+    html += '<td class="num">'+(+r[15]).toLocaleString()+'</td>';
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  html += '<div class="detail-footer">💡 展示真实SKU级明细（超6m Top ' + filtered.length + ' 行，按点击维度过滤）。点击右上角下载CSV可导出当前明细。</div>';
+  return html;
+}
 
   function showDetail(ctx) {
     var overlay = document.getElementById('detailOverlay');
@@ -1256,21 +2048,31 @@ document.addEventListener('click', function(e) {
   window.closeDetail = function() {
     document.getElementById('detailOverlay').classList.remove('active');
   };
+  window.downloadDetailCsv = function() {
+    var tbl = document.querySelector('#detailBody table.detail-table');
+    if (!tbl) return;
+    var rowsArr = Array.from(tbl.querySelectorAll('tr'));
+    var csv = '﻿';
+    rowsArr.forEach(function(tr) {
+      var cells = Array.from(tr.querySelectorAll('th,td')).map(function(c){
+        var t = (c.textContent||'').replace(/\n/g,'').replace(/\s+/g,' ').trim();
+        if (/[\",\n]/.test(t)) t = '\"' + t.replace(/\"/g,'\"\"') + '\"';
+        return t;
+      });
+      csv += cells.join(',') + '\n';
+    });
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'SKU级明细清单.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   function init() {
     // 1. td.num cells with numbers
     document.querySelectorAll('td.num').forEach(function(td) {
       if (!hasNumber(td)) return;
-      td.classList.add('clickable-num');
-      td.addEventListener('click', function() { showDetail(buildContext(td)); });
-    });
-
-    // 2. td without class=num but containing numbers (trend table etc.)
-    document.querySelectorAll('td:not(.num)').forEach(function(td) {
-      if (!hasNumber(td)) return;
-      var t = td.textContent.trim();
-      if (isPureRankOrWeek(t)) return;
-      if (td.querySelector('a, button')) return;
       td.classList.add('clickable-num');
       td.addEventListener('click', function() { showDetail(buildContext(td)); });
     });
@@ -1283,25 +2085,6 @@ document.addEventListener('click', function(e) {
         var card = el.closest('.kpi-card');
         var label = card ? (card.querySelector('.kpi-label') || {}).textContent || '' : '';
         showDetail({ section: 'KPI指标卡', row: label, column: '数值', value: el.textContent.trim() });
-      });
-    });
-
-    // 4. Highlighted numbers in insight boxes
-    document.querySelectorAll('.hl').forEach(function(el) {
-      if (!hasNumber(el)) return;
-      el.classList.add('clickable-num');
-      el.addEventListener('click', function() {
-        showDetail({ section: 'AI诊断洞察', row: '高亮数据', column: '数值', value: el.textContent.trim() });
-      });
-    });
-
-    // 5. H3 header numbers (e.g. "正常品总冗余: 99.6万双")
-    document.querySelectorAll('.root-matrix-card h3 span').forEach(function(el) {
-      if (!hasNumber(el)) return;
-      el.classList.add('clickable-num');
-      el.style.cursor = 'pointer';
-      el.addEventListener('click', function() {
-        showDetail({ section: '根因矩阵', row: el.textContent.trim(), column: '汇总值', value: el.textContent.trim() });
       });
     });
 
@@ -1320,5 +2103,233 @@ document.addEventListener('click', function(e) {
     init();
   }
 })();
-</script></body>
+</script>
+<!-- 处置明细弹窗 -->
+<div class="dispose-modal-mask" id="disposeModalMask">
+  <div class="dispose-modal">
+    <div class="dm-head">
+      <span class="dm-title" id="disposeModalTitle"></span>
+      <button class="dm-close" onclick="closeDisposeModal()" aria-label="关闭">×</button>
+    </div>
+    <div class="dm-body" id="disposeModalBody"></div>
+    <div class="dm-foot">
+      <button class="dd-dl" onclick="downloadDispose()">⬇ 下载 Top50 明细CSV</button>
+      <span class="dm-note" id="disposeModalNote"></span>
+    </div>
+  </div>
+</div>
+
+<script id="disposeData" type="text/plain">D235-AT1FS3DX26-AA22WG-467583856647|Dream Pairs Comfort|WHITE|8|5582|309|126|-18|61|5582|0|0|5582|5411|5439|99|8|36|0|0|0|promo
+D235-AT1FS3DX26-AA22WF-467583856647|Dream Pairs Comfort|WHITE|7.5|4786|249|51|-8|18|4786|0|0|4786|4647|4586|55|7|138|0|0|0|promo
+D235-AT1FS3DX26-AA22WE-467583856647|Dream Pairs Comfort|WHITE|7|3952|240|88|-16|39|3952|0|0|3952|3819|3834|58|3|57|0|0|0|promo
+D235-AT1FS3DX26-AA22WJ-467583856647|Dream Pairs Comfort|WHITE|9.5|2302|144|145|10|77|2302|0|0|2302|2223|2224|41|3|34|0|0|0|promo
+D235-AT1FS3DX26-AA22WK-467583856647|Dream Pairs Comfort|WHITE|10|1993|148|22|-6|-6|1993|0|0|1993|1911|1895|52|2|44|0|0|0|promo
+D235-AT1FS3DX26-AA09WF-467583856647|Dream Pairs Comfort|BLACK/WHITE|7.5|1334|85|36|-8|18|1334|0|0|1334|1290|1126|24|162|22|0|0|0|promo
+D235-AT1FS3DX26-AA09WE-467583856647|Dream Pairs Comfort|BLACK/WHITE|7|1236|78|25|0|14|1236|0|0|1236|1197|1199|21|13|3|0|0|0|promo
+D235-AT1FS3DX26-AA09WI-467583856647|Dream Pairs Comfort|BLACK/WHITE|9|999|84|31|-38|-26|999|0|0|999|956|829|40|112|18|0|0|0|promo
+D235-AT1FS3DX26-AA09WD-467583856647|Dream Pairs Comfort|BLACK/WHITE|6.5|549|39|25|-10|13|549|0|0|549|530|518|16|1|14|0|0|0|promo
+D235-AT1FS3DX26-AA09WJ-467583856647|Dream Pairs Comfort|BLACK/WHITE|9.5|527|49|42|-12|15|527|0|0|527|502|497|23|2|5|0|0|0|promo
+D235-AT1FS3DX26-AA22WD-467583856647|Dream Pairs Comfort|WHITE|6.5|382|119|25|-11|13|382|0|0|382|316|322|23|3|34|0|0|0|promo
+D235-AT1FS3DX26-AA02WE-467583856647|Dream Pairs Comfort|BLACK|7|213|156|21|-4|9|213|0|0|213|153|162|20|2|29|0|0|0|promo
+DWUMFN2301-PI04-TX14-WU09|Dream Pairs Comfort|PINK-KNIT|9|210|4|135|-25|67|210|0|0|210|205|198|0|1|11|0|0|0|promo
+D235-AT1FS3DX26-AA02WG-467583856647|Dream Pairs Comfort|BLACK|8|210|187|21|-15|-15|210|0|0|210|139|159|14|2|35|0|0|0|promo
+DWUMFN2301-PI04-TX14-WU08|Dream Pairs Comfort|PINK-KNIT|8.5|207|4|50|-6|21|207|0|0|207|202|198|0|0|9|0|0|0|promo
+DWUMFN2301-NU01-TX14-WU06|Dream Pairs Comfort|APRICOT-KNIT|7.5|117|50|21|-3|10|117|0|0|117|93|96|0|0|21|0|0|0|promo
+D235-AT1FS3DX36-AA96WG-a90a50856295|Dream Pairs Comfort|GOLD|8|105|165|42|-18|-4|105|0|0|105|37|47|30|2|26|0|0|0|promo
+DWUMFN2301-BU01-TX14-WU07|Dream Pairs Comfort|BLUE-KNIT|8|101|4|32|-17|9|101|0|0|101|99|90|0|0|11|0|0|0|promo
+DWUMFN2301-1336-TX14-WU08|Dream Pairs Comfort|BLUE/RAINBOW-KNIT|8.5|98|40|11|-15|-2|98|0|0|98|80|64|8|0|26|0|0|0|promo
+D235-AT1FS3DX40-dd167WF-467a50856272|Dream Pairs Comfort|WHITE/RAINBOW|7.5|85|55|42|-11|2|85|0|0|85|62|42|32|0|11|0|0|0|promo
+D235-AT1FS3DX34-AA09WB-467583856647|Dream Pairs Comfort|BLACK/WHITE|5.5|78|0|63|-7|33|78|0|0|78|78|75|0|0|3|0|0|0|promo
+D235-AT1FS3DX26-AA02WK-467583856647|Dream Pairs Comfort|BLACK|10|76|88|4|-7|3|76|0|0|76|43|50|8|0|18|0|0|0|promo
+DWUMFN2301-NU01-TX14-WU07|Dream Pairs Comfort|APRICOT-KNIT|8|73|60|126|-19|43|73|0|0|73|44|47|0|0|26|0|0|0|promo
+DWUMFN2301-NU01-TX14-WU05|Dream Pairs Comfort|APRICOT-KNIT|7|71|47|58|-11|28|71|0|0|71|49|47|0|0|24|0|0|0|promo
+DWUMFN2301-BU05-TX14-WU07|Dream Pairs Comfort|NAVY|8|61|32|46|-17|20|61|0|0|61|49|51|0|0|10|0|0|0|promo
+DWUMFN2301-BR07-TX11-WU06|Dream Pairs Comfort|KHAKI-KNIT|7.5|52|19|19|-4|9|52|0|0|52|44|42|0|0|10|0|0|0|promo
+D235-AT1FS3DX34-AA09WM-467583856647|Dream Pairs Comfort|BLACK/WHITE|11|49|28|189|-29|84|49|0|0|49|36|25|16|0|8|0|0|0|promo
+DWUMFN2301-2503-TX11-WU03|Dream Pairs Comfort|WHITE/PURPLE|6|38|13|4|-7|3|38|0|0|38|31|26|9|3|0|0|0|0|promo
+D235-AT1FS3DX40-dd167WH-467a50856272|Dream Pairs Comfort|WHITE/RAINBOW|8.5|37|52|79|-18|35|37|0|0|37|14|1|17|0|19|0|0|0|promo
+D235-AT1FS3DX40-dd167WC-467a50856272|Dream Pairs Comfort|WHITE/RAINBOW|6|34|20|13|-15|10|34|0|0|34|26|16|18|0|0|0|0|0|promo
+DWUMFN2301-BR07-TX11-WU08|Dream Pairs Comfort|KHAKI-KNIT|8.5|31|19|99|-10|42|31|0|0|31|23|17|0|0|14|0|0|0|promo
+DWUMFN2301-BR07-TX11-WU07|Dream Pairs Comfort|KHAKI-KNIT|8|30|20|82|-38|13|30|0|0|30|21|5|0|0|25|0|0|0|promo
+D235-AT1FS3DX36-dd143WJ-a93a50856295|Dream Pairs Comfort|SANDSTONE-KNIT|9.5|25|20|82|-12|38|25|0|0|25|17|0|2|0|23|0|0|0|promo
+DWUMFN2301-1336-TX14-WU03|Dream Pairs Comfort|BLUE/RAINBOW-KNIT|6|18|20|4|-7|3|18|0|0|18|9|9|4|0|5|0|0|0|promo
+DWUMFN2301-NU01-TX14-WU11|Dream Pairs Comfort|APRICOT-KNIT|10|18|25|4|-7|3|18|0|0|18|6|5|1|0|12|0|0|0|promo
+DWUMFN2301-1336-TX14-WU04|Dream Pairs Comfort|BLUE/RAINBOW-KNIT|6.5|14|20|4|-7|3|14|0|0|14|5|1|4|0|9|0|0|0|promo
+D235-AT1FS3DX53-dd227WE-485a117856344|Dream Pairs Comfort|BROWN BEIGE|7|8|15|133|-20|63|8|0|0|8|2|2|0|0|6|0|0|0|promo
+D235-AT1FS3DX53-AA27WK-485a117856344|Dream Pairs Comfort|SILVER|10|5|0|9|-12|2|5|0|0|5|5|3|1|0|1|0|0|0|promo
+DWUMFN2301-NU01-TX14-WU03|Dream Pairs Comfort|APRICOT-KNIT|6|5|20|116|-27|51|5|0|0|5|0|0|0|0|5|0|0|0|promo
+DWUMFN2301-BU05-TX14-WU13|Dream Pairs Comfort|NAVY|11|4|0|4|-7|3|4|0|0|4|4|4|0|0|0|0|0|0|promo
+D235-AT1FS3DX36-dd143WF-a93a50856295|Dream Pairs Comfort|SANDSTONE-KNIT|7.5|3|45|21|-2|10|3|0|0|3|0|0|3|0|0|0|0|0|promo
+D235-AT1FS3DX36-dd143WI-a93a50856295|Dream Pairs Comfort|SANDSTONE-KNIT|9|3|45|168|-32|63|3|0|0|3|0|0|2|0|1|0|0|0|promo
+D235-AT1FS3DX36-dd143WH-a93a50856295|Dream Pairs Comfort|SANDSTONE-KNIT|8.5|2|50|126|-21|54|2|0|0|2|0|0|0|0|2|0|0|0|promo
+DWUMFN2301-BU01-TX14-WU01|Dream Pairs Comfort|BLUE-KNIT|5|2|0|4|-7|3|2|0|0|2|2|2|0|0|0|0|0|0|promo
+D235-AT1FS3DX53-dd227WN-485a117856344|Dream Pairs Comfort|BROWN BEIGE|12|1|0|48|8|22|1|0|0|1|1|0|1|0|0|0|0|0|promo
+D235-AT1FS3DX26-AA22WH-467583856647|Dream Pairs Comfort|WHITE|8.5|4445|257|0|-2|-2|4445|0|0|4445|4303|4274|59|3|109|0|0|0|liquidate
+D235-AT1FS3DX26-AA22WI-467583856647|Dream Pairs Comfort|WHITE|9|4282|253|0|-20|-27|4282|0|0|4282|4141|4059|63|6|154|0|0|0|liquidate
+D235-AT1FS3DX26-AA09WG-467583856647|Dream Pairs Comfort|BLACK/WHITE|8|1456|94|0|-33|-33|1456|0|0|1456|1407|1407|30|2|17|0|0|0|liquidate
+D235-AT1FS3DX26-AA09WH-467583856647|Dream Pairs Comfort|BLACK/WHITE|8.5|1088|84|0|-1|-1|1088|0|0|1088|1045|1024|30|2|32|0|0|0|liquidate
+D235-AT1FS3DX26-AA09WC-467583856647|Dream Pairs Comfort|BLACK/WHITE|6|519|37|0|0|0|519|0|0|519|501|489|19|7|4|0|0|0|liquidate
+D235-AT1FS3DX26-AA09WK-467583856647|Dream Pairs Comfort|BLACK/WHITE|10|407|49|0|0|0|407|0|0|407|382|373|21|1|12|0|0|0|liquidate
+D235-AT1FS3DX26-AA22WC-467583856647|Dream Pairs Comfort|WHITE|6|284|108|0|-1|-1|284|0|0|284|222|224|20|6|34|0|0|0|liquidate
+DWUMFN2301-PI04-TX14-WU07|Dream Pairs Comfort|PINK-KNIT|8|263|8|0|0|0|263|0|0|263|257|257|0|0|6|0|0|0|liquidate
+D235-AT1FS3DX26-AA02WI-467583856647|Dream Pairs Comfort|BLACK|9|220|162|0|-1|-1|220|0|0|220|157|166|22|2|30|0|0|0|liquidate
+DWUMFN2301-PI04-TX14-WU06|Dream Pairs Comfort|PINK-KNIT|7.5|215|4|0|0|0|215|0|0|215|210|210|0|0|5|0|0|0|liquidate
+D235-AT1FS3DX26-AA02WF-467583856647|Dream Pairs Comfort|BLACK|7.5|198|172|0|-3|-3|198|0|0|198|131|139|29|1|29|0|0|0|liquidate
+DWUMFN2301-PI04-TX14-WU05|Dream Pairs Comfort|PINK-KNIT|7|192|3|0|0|0|192|0|0|192|188|186|0|0|6|0|0|0|liquidate
+D235-AT1FS3DX26-AA02WH-467583856647|Dream Pairs Comfort|BLACK|8.5|190|160|0|-1|-1|190|0|0|190|129|146|18|0|26|0|0|0|liquidate
+DWUMFN2301-2503-TX11-WU07|Dream Pairs Comfort|WHITE/PURPLE|8|145|33|0|0|0|145|0|0|145|129|125|12|8|0|0|0|0|liquidate
+DWUMFN2301-NU01-TX14-WU08|Dream Pairs Comfort|APRICOT-KNIT|8.5|125|50|0|-1|-1|125|0|0|125|101|101|1|0|23|0|0|0|liquidate
+DWUMFN2301-1336-TX14-WU07|Dream Pairs Comfort|BLUE/RAINBOW-KNIT|8|123|49|0|0|0|123|0|0|123|101|100|8|0|15|0|0|0|liquidate
+D235-AT1FS3DX34-AA22WM-467583856647|Dream Pairs Comfort|WHITE|11|120|68|0|0|0|120|0|0|120|84|73|30|1|16|0|0|0|liquidate
+D235-AT1FS3DX26-AA02WJ-467583856647|Dream Pairs Comfort|BLACK|9.5|120|89|0|0|0|120|0|0|120|86|80|11|18|11|0|0|0|liquidate
+DWUMFN2301-NU01-TX14-WU09|Dream Pairs Comfort|APRICOT-KNIT|9|120|50|0|-1|-1|120|0|0|120|96|96|0|0|24|0|0|0|liquidate
+D235-AT1FS3DX36-AA96WE-a90a50856295|Dream Pairs Comfort|GOLD|7|116|133|0|-1|-1|116|0|0|116|61|63|31|2|20|0|0|0|liquidate
+DWUMFN2301-PI04-TX14-WU11|Dream Pairs Comfort|PINK-KNIT|10|114|1|0|0|0|114|0|0|114|113|114|0|0|0|0|0|0|liquidate
+DWUMFN2301-1336-TX14-WU05|Dream Pairs Comfort|BLUE/RAINBOW-KNIT|7|113|40|0|0|0|113|0|0|113|95|88|8|0|17|0|0|0|liquidate
+D235-AT1FS3DX53-AA30WG-485a117856344|Dream Pairs Comfort|BEIGE|8|104|0|0|0|0|104|0|0|104|104|103|1|0|0|0|0|0|liquidate
+D235-AT1FS3DX36-AA96WH-a90a50856295|Dream Pairs Comfort|GOLD|8.5|103|141|0|-1|-1|103|0|0|103|44|41|35|1|26|0|0|0|liquidate
+D235-AT1FS3DX40-dd167WE-467a50856272|Dream Pairs Comfort|WHITE/RAINBOW|7|98|50|0|0|0|98|0|0|98|76|63|30|0|5|0|0|0|liquidate
+DWUMFN2301-2503-TX11-WU09|Dream Pairs Comfort|WHITE/PURPLE|9|98|28|0|0|0|98|0|0|98|84|79|15|4|0|0|0|0|liquidate
+DWUMFN2301-2503-TX11-WU06|Dream Pairs Comfort|WHITE/PURPLE|7.5|98|30|0|0|0|98|0|0|98|84|79|16|3|0|0|0|0|liquidate
+DWUMFN2301-1336-TX14-WU06|Dream Pairs Comfort|BLUE/RAINBOW-KNIT|7.5|96|40|0|0|0|96|0|0|96|78|70|8|1|17|0|0|0|liquidate
+DWUMFN2301-2503-TX11-WU05|Dream Pairs Comfort|WHITE/PURPLE|7|96|28|0|0|0|96|0|0|96|82|79|13|4|0|0|0|0|liquidate
+DWUMFN2301-PI04-TX14-WU10|Dream Pairs Comfort|PINK-KNIT|9.5|96|1|0|0|0|96|0|0|96|95|96|0|0|0|0|0|0|liquidate
+DWUMFN2301-2503-TX11-WU08|Dream Pairs Comfort|WHITE/PURPLE|8.5|95|33|0|0|0|95|0|0|95|79|75|15|5|0|0|0|0|liquidate
+DWUMFN2301-BU01-TX14-WU05|Dream Pairs Comfort|BLUE-KNIT|7|94|0|0|0|0|94|0|0|94|94|93|1|0|0|0|0|0|liquidate
+DWUMFN2301-1336-TX14-WU09|Dream Pairs Comfort|BLUE/RAINBOW-KNIT|9|92|39|0|0|0|92|0|0|92|75|68|7|0|17|0|0|0|liquidate
+DWUMFN2301-PI04-TX14-WU03|Dream Pairs Comfort|PINK-KNIT|6|90|0|0|0|0|90|0|0|90|90|80|0|0|10|0|0|0|liquidate
+D235-AT1FS3DX36-AA96WI-a90a50856295|Dream Pairs Comfort|GOLD|9|87|137|0|-1|-1|87|0|0|87|30|36|22|0|29|0|0|0|liquidate
+DWUMFN2301-PI04-TX14-WU04|Dream Pairs Comfort|PINK-KNIT|6.5|87|1|0|0|0|87|0|0|87|86|87|0|0|0|0|0|0|liquidate
+DWUMFN2301-BU05-TX14-WU09|Dream Pairs Comfort|NAVY|9|86|25|0|0|0|86|0|0|86|77|84|1|0|1|0|0|0|liquidate
+DWUMFN2301-BU05-TX14-WU06|Dream Pairs Comfort|NAVY|7.5|81|25|0|0|0|81|0|0|81|72|77|0|0|4|0|0|0|liquidate
+DWUMFN2301-BU05-TX14-WU08|Dream Pairs Comfort|NAVY|8.5|79|25|0|0|0|79|0|0|79|70|76|0|0|3|0|0|0|liquidate
+DWUMFN2301-BU01-TX14-WU09|Dream Pairs Comfort|BLUE-KNIT|9|78|0|0|0|0|78|0|0|78|78|78|0|0|0|0|0|0|liquidate
+D235-AT1FS3DX36-AA96WD-a90a50856295|Dream Pairs Comfort|GOLD|6.5|77|67|0|0|0|77|0|0|77|49|44|16|1|16|0|0|0|liquidate
+D235-AT1FS3DX53-AA30WH-485a117856344|Dream Pairs Comfort|BEIGE|8.5|75|0|0|0|0|75|0|0|75|75|75|0|0|0|0|0|0|liquidate
+D235-AT1FS3DX26-AA02WC-467583856647|Dream Pairs Comfort|BLACK|6|73|71|0|-1|-1|73|0|0|73|47|42|7|1|23|0|0|0|liquidate
+DWUMFN2301-BU01-TX14-WU06|Dream Pairs Comfort|BLUE-KNIT|7.5|72|0|0|0|0|72|0|0|72|72|72|0|0|0|0|0|0|liquidate
+D235-AT1FS3DX53-AA30WI-485a117856344|Dream Pairs Comfort|BEIGE|9|69|0|0|0|0|69|0|0|69|69|69|0|0|0|0|0|0|liquidate
+DWUMFN2301-BU01-TX14-WU08|Dream Pairs Comfort|BLUE-KNIT|8.5|66|0|0|0|0|66|0|0|66|66|66|0|0|0|0|0|0|liquidate
+D235-AT1FS3DX26-AA02WD-467583856647|Dream Pairs Comfort|BLACK|6.5|66|75|0|-1|-1|66|0|0|66|37|40|1|0|25|0|0|0|liquidate
+D235-AT1FS3DX53-dd227WI-485a117856344|Dream Pairs Comfort|BROWN BEIGE|9|65|10|0|0|0|65|0|0|65|61|54|11|0|0|0|0|0|liquidate
+D235-AT1FS3DX53-AA30WF-485a117856344|Dream Pairs Comfort|BEIGE|7.5|58|0|0|0|0|58|0|0|58|58|58|0|0|0|0|0|0|liquidate
+D235-AT1FS3DX53-dd227WF-485a117856344|Dream Pairs Comfort|BROWN BEIGE|7.5|56|10|0|0|0|56|0|0|56|52|45|10|1|0|0|0|0|liquidate</script>
+<script id="skuDetailData" type="text/plain">[["D235-AT1FS3DX26-AA22WG-467583856647", "Dream Pairs Comfort", "WHITE", "8", 5582, 0, 0, 5582, 5582, 5411, 5439, 99, 8, 36, 0, 0, 0], ["D235-AT1FS3DX26-AA22WF-467583856647", "Dream Pairs Comfort", "WHITE", "7.5", 4786, 0, 0, 4786, 4786, 4647, 4586, 55, 7, 138, 0, 0, 0], ["D235-AT1FS3DX26-AA22WH-467583856647", "Dream Pairs Comfort", "WHITE", "8.5", 4445, 0, 0, 4445, 4445, 4303, 4274, 59, 3, 109, 0, 0, 0], ["D235-AT1FS3DX26-AA22WI-467583856647", "Dream Pairs Comfort", "WHITE", "9", 4282, 0, 0, 4282, 4282, 4141, 4059, 63, 6, 154, 0, 0, 0], ["D235-AT1FS3DX26-AA22WE-467583856647", "Dream Pairs Comfort", "WHITE", "7", 3952, 0, 0, 3952, 3952, 3819, 3834, 58, 3, 57, 0, 0, 0], ["D235-AT1FS3DX26-AA22WJ-467583856647", "Dream Pairs Comfort", "WHITE", "9.5", 2302, 0, 0, 2302, 2302, 2223, 2224, 41, 3, 34, 0, 0, 0], ["D235-AT1FS3DX26-AA22WK-467583856647", "Dream Pairs Comfort", "WHITE", "10", 1993, 0, 0, 1993, 1993, 1911, 1895, 52, 2, 44, 0, 0, 0], ["D235-AT1FS3DX26-AA09WG-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "8", 1456, 0, 0, 1456, 1456, 1407, 1407, 30, 2, 17, 0, 0, 0], ["D235-AT1FS3DX26-AA09WF-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "7.5", 1334, 0, 0, 1334, 1334, 1290, 1126, 24, 162, 22, 0, 0, 0], ["D235-AT1FS3DX26-AA09WE-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "7", 1236, 0, 0, 1236, 1236, 1197, 1199, 21, 13, 3, 0, 0, 0], ["D235-AT1FS3DX26-AA09WH-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "8.5", 1088, 0, 0, 1088, 1088, 1045, 1024, 30, 2, 32, 0, 0, 0], ["D235-AT1FS3DX26-AA09WI-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "9", 999, 0, 0, 999, 999, 956, 829, 40, 112, 18, 0, 0, 0], ["D235-AT1FS3DX26-AA09WD-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "6.5", 549, 0, 0, 549, 549, 530, 518, 16, 1, 14, 0, 0, 0], ["D235-AT1FS3DX26-AA09WJ-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "9.5", 527, 0, 0, 527, 527, 502, 497, 23, 2, 5, 0, 0, 0], ["D235-AT1FS3DX26-AA09WC-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "6", 519, 0, 0, 519, 519, 501, 489, 19, 7, 4, 0, 0, 0], ["D235-AT1FS3DX26-AA09WK-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "10", 407, 0, 0, 407, 407, 382, 373, 21, 1, 12, 0, 0, 0], ["D235-AT1FS3DX26-AA22WD-467583856647", "Dream Pairs Comfort", "WHITE", "6.5", 382, 0, 0, 382, 382, 316, 322, 23, 3, 34, 0, 0, 0], ["D235-AT1FS3DX26-AA22WC-467583856647", "Dream Pairs Comfort", "WHITE", "6", 284, 0, 0, 284, 284, 222, 224, 20, 6, 34, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU07", "Dream Pairs Comfort", "PINK-KNIT", "8", 263, 0, 0, 263, 263, 257, 257, 0, 0, 6, 0, 0, 0], ["D235-AT1FS3DX26-AA02WI-467583856647", "Dream Pairs Comfort", "BLACK", "9", 220, 0, 0, 220, 220, 157, 166, 22, 2, 30, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU06", "Dream Pairs Comfort", "PINK-KNIT", "7.5", 215, 0, 0, 215, 215, 210, 210, 0, 0, 5, 0, 0, 0], ["D235-AT1FS3DX26-AA02WE-467583856647", "Dream Pairs Comfort", "BLACK", "7", 213, 0, 0, 213, 213, 153, 162, 20, 2, 29, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU09", "Dream Pairs Comfort", "PINK-KNIT", "9", 210, 0, 0, 210, 210, 205, 198, 0, 1, 11, 0, 0, 0], ["D235-AT1FS3DX26-AA02WG-467583856647", "Dream Pairs Comfort", "BLACK", "8", 210, 0, 0, 210, 210, 139, 159, 14, 2, 35, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU08", "Dream Pairs Comfort", "PINK-KNIT", "8.5", 207, 0, 0, 207, 207, 202, 198, 0, 0, 9, 0, 0, 0], ["D235-AT1FS3DX26-AA02WF-467583856647", "Dream Pairs Comfort", "BLACK", "7.5", 198, 0, 0, 198, 198, 131, 139, 29, 1, 29, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU05", "Dream Pairs Comfort", "PINK-KNIT", "7", 192, 0, 0, 192, 192, 188, 186, 0, 0, 6, 0, 0, 0], ["D235-AT1FS3DX26-AA02WH-467583856647", "Dream Pairs Comfort", "BLACK", "8.5", 190, 0, 0, 190, 190, 129, 146, 18, 0, 26, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU07", "Dream Pairs Comfort", "WHITE/PURPLE", "8", 145, 0, 0, 145, 145, 129, 125, 12, 8, 0, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU08", "Dream Pairs Comfort", "APRICOT-KNIT", "8.5", 125, 0, 0, 125, 125, 101, 101, 1, 0, 23, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU07", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "8", 123, 0, 0, 123, 123, 101, 100, 8, 0, 15, 0, 0, 0], ["D235-AT1FS3DX34-AA22WM-467583856647", "Dream Pairs Comfort", "WHITE", "11", 120, 0, 0, 120, 120, 84, 73, 30, 1, 16, 0, 0, 0], ["D235-AT1FS3DX26-AA02WJ-467583856647", "Dream Pairs Comfort", "BLACK", "9.5", 120, 0, 0, 120, 120, 86, 80, 11, 18, 11, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU09", "Dream Pairs Comfort", "APRICOT-KNIT", "9", 120, 0, 0, 120, 120, 96, 96, 0, 0, 24, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU06", "Dream Pairs Comfort", "APRICOT-KNIT", "7.5", 117, 0, 0, 117, 117, 93, 96, 0, 0, 21, 0, 0, 0], ["D235-AT1FS3DX36-AA96WE-a90a50856295", "Dream Pairs Comfort", "GOLD", "7", 116, 0, 0, 116, 116, 61, 63, 31, 2, 20, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU11", "Dream Pairs Comfort", "PINK-KNIT", "10", 114, 0, 0, 114, 114, 113, 114, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU05", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "7", 113, 0, 0, 113, 113, 95, 88, 8, 0, 17, 0, 0, 0], ["D235-AT1FS3DX36-AA96WG-a90a50856295", "Dream Pairs Comfort", "GOLD", "8", 105, 0, 0, 105, 105, 37, 47, 30, 2, 26, 0, 0, 0], ["D235-AT1FS3DX53-AA30WG-485a117856344", "Dream Pairs Comfort", "BEIGE", "8", 104, 0, 0, 104, 104, 104, 103, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-AA96WH-a90a50856295", "Dream Pairs Comfort", "GOLD", "8.5", 103, 0, 0, 103, 103, 44, 41, 35, 1, 26, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU07", "Dream Pairs Comfort", "BLUE-KNIT", "8", 101, 0, 0, 101, 101, 99, 90, 0, 0, 11, 0, 0, 0], ["D235-AT1FS3DX40-dd167WE-467a50856272", "Dream Pairs Comfort", "WHITE/RAINBOW", "7", 98, 0, 0, 98, 98, 76, 63, 30, 0, 5, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU08", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "8.5", 98, 0, 0, 98, 98, 80, 64, 8, 0, 26, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU09", "Dream Pairs Comfort", "WHITE/PURPLE", "9", 98, 0, 0, 98, 98, 84, 79, 15, 4, 0, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU06", "Dream Pairs Comfort", "WHITE/PURPLE", "7.5", 98, 0, 0, 98, 98, 84, 79, 16, 3, 0, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU06", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "7.5", 96, 0, 0, 96, 96, 78, 70, 8, 1, 17, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU05", "Dream Pairs Comfort", "WHITE/PURPLE", "7", 96, 0, 0, 96, 96, 82, 79, 13, 4, 0, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU10", "Dream Pairs Comfort", "PINK-KNIT", "9.5", 96, 0, 0, 96, 96, 95, 96, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU08", "Dream Pairs Comfort", "WHITE/PURPLE", "8.5", 95, 0, 0, 95, 95, 79, 75, 15, 5, 0, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU05", "Dream Pairs Comfort", "BLUE-KNIT", "7", 94, 0, 0, 94, 94, 94, 93, 1, 0, 0, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU09", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "9", 92, 0, 0, 92, 92, 75, 68, 7, 0, 17, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU03", "Dream Pairs Comfort", "PINK-KNIT", "6", 90, 0, 0, 90, 90, 90, 80, 0, 0, 10, 0, 0, 0], ["D235-AT1FS3DX36-AA96WI-a90a50856295", "Dream Pairs Comfort", "GOLD", "9", 87, 0, 0, 87, 87, 30, 36, 22, 0, 29, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU04", "Dream Pairs Comfort", "PINK-KNIT", "6.5", 87, 0, 0, 87, 87, 86, 87, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-BU05-TX14-WU09", "Dream Pairs Comfort", "NAVY", "9", 86, 0, 0, 86, 86, 77, 84, 1, 0, 1, 0, 0, 0], ["D235-AT1FS3DX40-dd167WF-467a50856272", "Dream Pairs Comfort", "WHITE/RAINBOW", "7.5", 85, 0, 0, 85, 85, 62, 42, 32, 0, 11, 0, 0, 0], ["DWUMFN2301-BU05-TX14-WU06", "Dream Pairs Comfort", "NAVY", "7.5", 81, 0, 0, 81, 81, 72, 77, 0, 0, 4, 0, 0, 0], ["DWUMFN2301-BU05-TX14-WU08", "Dream Pairs Comfort", "NAVY", "8.5", 79, 0, 0, 79, 79, 70, 76, 0, 0, 3, 0, 0, 0], ["D235-AT1FS3DX34-AA09WB-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "5.5", 78, 0, 0, 78, 78, 78, 75, 0, 0, 3, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU09", "Dream Pairs Comfort", "BLUE-KNIT", "9", 78, 0, 0, 78, 78, 78, 78, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-AA96WD-a90a50856295", "Dream Pairs Comfort", "GOLD", "6.5", 77, 0, 0, 77, 77, 49, 44, 16, 1, 16, 0, 0, 0], ["D235-AT1FS3DX26-AA02WK-467583856647", "Dream Pairs Comfort", "BLACK", "10", 76, 0, 0, 76, 76, 43, 50, 8, 0, 18, 0, 0, 0], ["D235-AT1FS3DX53-AA30WH-485a117856344", "Dream Pairs Comfort", "BEIGE", "8.5", 75, 0, 0, 75, 75, 75, 75, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX26-AA02WC-467583856647", "Dream Pairs Comfort", "BLACK", "6", 73, 0, 0, 73, 73, 47, 42, 7, 1, 23, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU07", "Dream Pairs Comfort", "APRICOT-KNIT", "8", 73, 0, 0, 73, 73, 44, 47, 0, 0, 26, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU06", "Dream Pairs Comfort", "BLUE-KNIT", "7.5", 72, 0, 0, 72, 72, 72, 72, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU05", "Dream Pairs Comfort", "APRICOT-KNIT", "7", 71, 0, 0, 71, 71, 49, 47, 0, 0, 24, 0, 0, 0], ["D235-AT1FS3DX53-AA30WI-485a117856344", "Dream Pairs Comfort", "BEIGE", "9", 69, 0, 0, 69, 69, 69, 69, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU08", "Dream Pairs Comfort", "BLUE-KNIT", "8.5", 66, 0, 0, 66, 66, 66, 66, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX26-AA02WD-467583856647", "Dream Pairs Comfort", "BLACK", "6.5", 66, 0, 0, 66, 66, 37, 40, 1, 0, 25, 0, 0, 0], ["D235-AT1FS3DX53-dd227WI-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "9", 65, 0, 0, 65, 65, 61, 54, 11, 0, 0, 0, 0, 0], ["DWUMFN2301-BU05-TX14-WU07", "Dream Pairs Comfort", "NAVY", "8", 61, 0, 0, 61, 61, 49, 51, 0, 0, 10, 0, 0, 0], ["D235-AT1FS3DX53-AA30WF-485a117856344", "Dream Pairs Comfort", "BEIGE", "7.5", 58, 0, 0, 58, 58, 58, 58, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WF-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "7.5", 56, 0, 0, 56, 56, 52, 45, 10, 1, 0, 0, 0, 0], ["D235-AT1FS3DX34-AA09WA-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "5", 54, 0, 0, 54, 54, 52, 50, 4, 0, 0, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU10", "Dream Pairs Comfort", "APRICOT-KNIT", "9.5", 53, 0, 0, 53, 53, 41, 36, 0, 0, 17, 0, 0, 0], ["DWUMFN2301-BR07-TX11-WU06", "Dream Pairs Comfort", "KHAKI-KNIT", "7.5", 52, 0, 0, 52, 52, 44, 42, 0, 0, 10, 0, 0, 0], ["DWUMFN2301-BR07-TX11-WU09", "Dream Pairs Comfort", "KHAKI-KNIT", "9", 52, 0, 0, 52, 52, 44, 42, 0, 0, 10, 0, 0, 0], ["D235-AT1FS3DX36-AA96WJ-a90a50856295", "Dream Pairs Comfort", "GOLD", "9.5", 51, 0, 0, 51, 51, 16, 17, 14, 1, 19, 0, 0, 0], ["D235-AT1FS3DX34-AA09WM-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "11", 49, 0, 0, 49, 49, 36, 25, 16, 0, 8, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU11", "Dream Pairs Comfort", "WHITE/PURPLE", "10", 49, 0, 0, 49, 49, 40, 35, 14, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA30WE-485a117856344", "Dream Pairs Comfort", "BEIGE", "7", 48, 0, 0, 48, 48, 48, 47, 1, 0, 0, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU10", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "9.5", 47, 0, 0, 47, 47, 38, 32, 4, 0, 11, 0, 0, 0], ["D235-AT1FS3DX36-AA96WF-a90a50856295", "Dream Pairs Comfort", "GOLD", "7.5", 46, 0, 0, 46, 46, 0, 20, 1, 0, 25, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU04", "Dream Pairs Comfort", "WHITE/PURPLE", "6.5", 46, 0, 0, 46, 46, 39, 35, 9, 2, 0, 0, 0, 0], ["D235-AT1FS3DX40-dd167WG-467a50856272", "Dream Pairs Comfort", "WHITE/RAINBOW", "8", 45, 0, 0, 45, 45, 15, 5, 30, 0, 10, 0, 0, 0], ["D235-AT1FS3DX53-AA27WE-485a117856344", "Dream Pairs Comfort", "SILVER", "7", 44, 0, 0, 44, 44, 44, 44, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-BU05-TX14-WU05", "Dream Pairs Comfort", "NAVY", "7", 44, 0, 0, 44, 44, 35, 40, 1, 0, 3, 0, 0, 0], ["D235-AT1FS3DX36-AA96WK-a90a50856295", "Dream Pairs Comfort", "GOLD", "10", 42, 0, 0, 42, 42, 6, 13, 10, 1, 18, 0, 0, 0], ["DWUMFN2301-BU05-TX14-WU10", "Dream Pairs Comfort", "NAVY", "9.5", 40, 0, 0, 40, 40, 35, 35, 0, 0, 5, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU04", "Dream Pairs Comfort", "BLUE-KNIT", "6.5", 39, 0, 0, 39, 39, 39, 39, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU03", "Dream Pairs Comfort", "WHITE/PURPLE", "6", 38, 0, 0, 38, 38, 31, 26, 9, 3, 0, 0, 0, 0], ["D235-AT1FS3DX40-dd167WH-467a50856272", "Dream Pairs Comfort", "WHITE/RAINBOW", "8.5", 37, 0, 0, 37, 37, 14, 1, 17, 0, 19, 0, 0, 0], ["D235-AT1FS3DX53-AA30WJ-485a117856344", "Dream Pairs Comfort", "BEIGE", "9.5", 37, 0, 0, 37, 37, 37, 37, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA30WK-485a117856344", "Dream Pairs Comfort", "BEIGE", "10", 37, 0, 0, 37, 37, 37, 36, 1, 0, 0, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU10", "Dream Pairs Comfort", "BLUE-KNIT", "9.5", 36, 0, 0, 36, 36, 36, 36, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU11", "Dream Pairs Comfort", "BLUE-KNIT", "10", 36, 0, 0, 36, 36, 36, 24, 0, 0, 12, 0, 0, 0], ["DWUMFN2301-BR07-TX11-WU05", "Dream Pairs Comfort", "KHAKI-KNIT", "7", 36, 0, 0, 36, 36, 29, 29, 1, 0, 6, 0, 0, 0], ["D235-AT1FS3DX40-dd167WC-467a50856272", "Dream Pairs Comfort", "WHITE/RAINBOW", "6", 34, 0, 0, 34, 34, 26, 16, 18, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA30WC-485a117856344", "Dream Pairs Comfort", "BEIGE", "6", 33, 0, 0, 33, 33, 33, 33, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-BU05-TX14-WU11", "Dream Pairs Comfort", "NAVY", "10", 32, 0, 0, 32, 32, 26, 27, 0, 0, 5, 0, 0, 0], ["DWUMFN2301-BR07-TX11-WU08", "Dream Pairs Comfort", "KHAKI-KNIT", "8.5", 31, 0, 0, 31, 31, 23, 17, 0, 0, 14, 0, 0, 0], ["D235-AT1FS3DX36-AA96WC-a90a50856295", "Dream Pairs Comfort", "GOLD", "6", 30, 0, 0, 30, 30, 6, 9, 4, 0, 17, 0, 0, 0], ["DWUMFN2301-BR07-TX11-WU07", "Dream Pairs Comfort", "KHAKI-KNIT", "8", 30, 0, 0, 30, 30, 21, 5, 0, 0, 25, 0, 0, 0], ["D235-AT1FS3DX53-AA30WD-485a117856344", "Dream Pairs Comfort", "BEIGE", "6.5", 27, 0, 0, 27, 27, 27, 27, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU11", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "10", 27, 0, 0, 27, 27, 18, 13, 4, 0, 10, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU10", "Dream Pairs Comfort", "WHITE/PURPLE", "9.5", 26, 0, 0, 26, 26, 17, 14, 10, 2, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WG-485a117856344", "Dream Pairs Comfort", "SILVER", "8", 25, 0, 0, 25, 25, 25, 24, 1, 0, 0, 0, 0, 0], ["DWUMFN2301-BU05-TX14-WU03", "Dream Pairs Comfort", "NAVY", "6", 25, 0, 0, 25, 25, 22, 20, 0, 0, 5, 0, 0, 0], ["D235-AT1FS3DX36-dd143WJ-a93a50856295", "Dream Pairs Comfort", "SANDSTONE-KNIT", "9.5", 25, 0, 0, 25, 25, 17, 0, 2, 0, 23, 0, 0, 0], ["D235-AT1FS3DX34-AA09WN-467583856647", "Dream Pairs Comfort", "BLACK/WHITE", "12", 24, 0, 0, 24, 24, 22, 18, 6, 0, 0, 0, 0, 0], ["DWUMFN2301-BU05-TX14-WU04", "Dream Pairs Comfort", "NAVY", "6.5", 23, 0, 0, 23, 23, 18, 19, 0, 0, 4, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU03", "Dream Pairs Comfort", "BLUE-KNIT", "6", 23, 0, 0, 23, 23, 23, 23, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WG-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "8", 20, 0, 0, 20, 20, 20, 20, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU13", "Dream Pairs Comfort", "PINK-KNIT", "11", 18, 0, 0, 18, 18, 18, 12, 0, 0, 6, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU03", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "6", 18, 0, 0, 18, 18, 9, 9, 4, 0, 5, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU11", "Dream Pairs Comfort", "APRICOT-KNIT", "10", 18, 0, 0, 18, 18, 6, 5, 1, 0, 12, 0, 0, 0], ["D235-AT1FS3DX36-CC76WH-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "8.5", 16, 0, 0, 16, 16, 16, 16, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX40-dd167WI-467a50856272", "Dream Pairs Comfort", "WHITE/RAINBOW", "9", 16, 0, 0, 16, 16, 0, 0, 5, 0, 11, 0, 0, 0], ["D235-AT1FS3DX53-AA27WH-485a117856344", "Dream Pairs Comfort", "SILVER", "8.5", 15, 0, 0, 15, 15, 15, 15, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU04", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "6.5", 14, 0, 0, 14, 14, 5, 1, 4, 0, 9, 0, 0, 0], ["D235-AT1FS3DX36-CC76WK-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "10", 12, 0, 0, 12, 12, 12, 12, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WI-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "9", 11, 0, 0, 11, 11, 11, 11, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-AA96WM-a90a50856295", "Dream Pairs Comfort", "GOLD", "11", 10, 0, 0, 10, 10, 0, 6, 0, 0, 4, 0, 0, 0], ["D235-AT1FS3DX53-AA30WM-485a117856344", "Dream Pairs Comfort", "BEIGE", "11", 10, 0, 0, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WI-485a117856344", "Dream Pairs Comfort", "SILVER", "9", 9, 0, 0, 9, 9, 9, 9, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WJ-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "9.5", 8, 0, 0, 8, 8, 8, 8, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WM-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "11", 8, 0, 0, 8, 8, 8, 6, 2, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WE-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "7", 8, 0, 0, 8, 8, 2, 2, 0, 0, 6, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU02", "Dream Pairs Comfort", "WHITE/PURPLE", "5.5", 8, 0, 0, 8, 8, 8, 0, 6, 2, 0, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU15", "Dream Pairs Comfort", "APRICOT-KNIT", "12", 8, 0, 0, 8, 8, 8, 8, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU13", "Dream Pairs Comfort", "BLUE-KNIT", "11", 6, 0, 0, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU15", "Dream Pairs Comfort", "PINK-KNIT", "12", 6, 0, 0, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU15", "Dream Pairs Comfort", "BLUE-KNIT", "12", 6, 0, 0, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WI-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "9", 6, 0, 0, 6, 6, 6, 0, 2, 0, 0, 0, 4, 0], ["D235-AT1FS3DX53-AA27WJ-485a117856344", "Dream Pairs Comfort", "SILVER", "9.5", 5, 0, 0, 5, 5, 5, 4, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WK-485a117856344", "Dream Pairs Comfort", "SILVER", "10", 5, 0, 0, 5, 5, 5, 3, 1, 0, 1, 0, 0, 0], ["D235-AT1FS3DX53-AA27WN-485a117856344", "Dream Pairs Comfort", "SILVER", "12", 5, 0, 0, 5, 5, 5, 4, 1, 0, 0, 0, 0, 0], ["DWUMFN2301-BR07-TX11-WU10", "Dream Pairs Comfort", "KHAKI-KNIT", "9.5", 5, 0, 0, 5, 5, 3, 0, 0, 0, 5, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU03", "Dream Pairs Comfort", "APRICOT-KNIT", "6", 5, 0, 0, 5, 5, 0, 0, 0, 0, 5, 0, 0, 0], ["D235-AT1FS3DX53-AA27WC-485a117856344", "Dream Pairs Comfort", "SILVER", "6", 5, 0, 0, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WM-485a117856344", "Dream Pairs Comfort", "SILVER", "11", 5, 0, 0, 5, 5, 5, 3, 2, 0, 0, 0, 0, 0], ["DWUMFN2301-BR07-TX11-WU04", "Dream Pairs Comfort", "KHAKI-KNIT", "6.5", 5, 0, 0, 5, 5, 3, 4, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WH-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "8.5", 5, 0, 0, 5, 5, 5, 0, 3, 0, 0, 0, 2, 0], ["DWUMFN2301-BU05-TX14-WU13", "Dream Pairs Comfort", "NAVY", "11", 4, 0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WH-485a117856344", "Dream Pairs Comfort", "SILVER", "8.5", 4, 0, 0, 4, 4, 4, 0, 2, 0, 0, 0, 2, 0], ["D235-AT1FS3DX53-AA27WI-485a117856344", "Dream Pairs Comfort", "SILVER", "9", 4, 0, 0, 4, 4, 4, 0, 2, 0, 0, 0, 2, 0], ["D235-AT1FS3DX53-dd227WN-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "12", 4, 0, 0, 4, 4, 4, 0, 2, 0, 0, 0, 2, 0], ["D235-AT1FS3DX36-dd143WC-a93a50856295", "Dream Pairs Comfort", "SANDSTONE-KNIT", "6", 4, 0, 0, 4, 4, 0, 2, 2, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WG-485a117856344", "Dream Pairs Comfort", "SILVER", "8", 4, 0, 0, 4, 4, 4, 0, 2, 0, 0, 0, 2, 0], ["D235-AT1FS3DX36-dd143WF-a93a50856295", "Dream Pairs Comfort", "SANDSTONE-KNIT", "7.5", 3, 0, 0, 3, 3, 0, 0, 3, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-dd143WI-a93a50856295", "Dream Pairs Comfort", "SANDSTONE-KNIT", "9", 3, 0, 0, 3, 3, 0, 0, 2, 0, 1, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU01", "Dream Pairs Comfort", "WHITE/PURPLE", "5", 3, 0, 0, 3, 3, 3, 0, 1, 2, 0, 0, 0, 0], ["DWUMFN2301-NU01-TX14-WU04", "Dream Pairs Comfort", "APRICOT-KNIT", "6.5", 3, 0, 0, 3, 3, 0, 3, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WJ-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "9.5", 3, 0, 0, 3, 3, 3, 0, 1, 0, 0, 0, 2, 0], ["D235-AT1FS3DX36-CC76WA-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "5", 2, 0, 0, 2, 2, 2, 0, 2, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-dd143WG-a93a50856295", "Dream Pairs Comfort", "SANDSTONE-KNIT", "8", 2, 0, 0, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-dd143WH-a93a50856295", "Dream Pairs Comfort", "SANDSTONE-KNIT", "8.5", 2, 0, 0, 2, 2, 0, 0, 0, 0, 2, 0, 0, 0], ["DWUMFN2301-BU01-TX14-WU01", "Dream Pairs Comfort", "BLUE-KNIT", "5", 2, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WJ-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "9.5", 2, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 2, 0], ["D235-AT1FS3DX53-AA27WB-485a117856344", "Dream Pairs Comfort", "SILVER", "5.5", 2, 0, 0, 2, 2, 2, 0, 1, 0, 0, 0, 1, 0], ["D235-AT1FS3DX53-AA27WJ-485a117856344", "Dream Pairs Comfort", "SILVER", "9.5", 2, 0, 0, 2, 2, 2, 0, 1, 0, 0, 0, 1, 0], ["D235-AT1FS3DX53-AA27WK-485a117856344", "Dream Pairs Comfort", "SILVER", "10", 2, 0, 0, 2, 2, 2, 0, 1, 0, 0, 0, 1, 0], ["D235-AT1FS3DX53-AA30WF-485a117856344", "Dream Pairs Comfort", "BEIGE", "7.5", 2, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 2, 0], ["D235-AT1FS3DX36-AA96WB-a90a50856295", "Dream Pairs Comfort", "GOLD", "5.5", 2, 0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 0, 0], ["DWUMFN2301-2503-TX11-WU13", "Dream Pairs Comfort", "WHITE/PURPLE", "11", 2, 0, 0, 2, 2, 0, 0, 0, 2, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WC-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "6", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WD-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "6.5", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-dd143WE-a93a50856295", "Dream Pairs Comfort", "SANDSTONE-KNIT", "7", 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX40-dd167WN-467a50856272", "Dream Pairs Comfort", "WHITE/RAINBOW", "12", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WD-485a117856344", "Dream Pairs Comfort", "SILVER", "6.5", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA30WA-485a117856344", "Dream Pairs Comfort", "BEIGE", "5", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA30WN-485a117856344", "Dream Pairs Comfort", "BEIGE", "12", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WH-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "8.5", 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WM-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "11", 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WN-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "12", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["DWUMFN2301-1336-TX14-WU13", "Dream Pairs Comfort", "BLUE/RAINBOW-KNIT", "11", 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0], ["DWUMFN2301-PI04-TX14-WU02", "Dream Pairs Comfort", "PINK-KNIT", "5.5", 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-CC76WF-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "7.5", 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0], ["D235-AT1FS3DX36-CC76WG-a78a50856295", "Dream Pairs Comfort", "WHITE-RHINESTONE", "8", 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0], ["D235-AT1FS3DX53-AA27WC-485a117856344", "Dream Pairs Comfort", "SILVER", "6", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WE-485a117856344", "Dream Pairs Comfort", "SILVER", "7", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WF-485a117856344", "Dream Pairs Comfort", "SILVER", "7.5", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WM-485a117856344", "Dream Pairs Comfort", "SILVER", "11", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WF-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "7.5", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WI-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "9", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX36-dd143WM-a93a50856295", "Dream Pairs Comfort", "SANDSTONE-KNIT", "11", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX40-dd167WJ-467a50856272", "Dream Pairs Comfort", "WHITE/RAINBOW", "9.5", 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX40-dd167WM-467a50856272", "Dream Pairs Comfort", "WHITE/RAINBOW", "11", 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-AA27WB-485a117856344", "Dream Pairs Comfort", "SILVER", "5.5", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX75-352WC-TX/14TX/07OS/17TX/07", "Dream Pairs Comfort", "NUDE-APRICOT/KNITTING", "6", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WE-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "7", 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], ["D235-AT1FS3DX53-dd227WG-485a117856344", "Dream Pairs Comfort", "BROWN BEIGE", "8", 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0]]</script>
+<script>var SKU_DETAIL_DATA = JSON.parse((document.getElementById('skuDetailData').textContent || '[]'));</script>
+<script>
+  var DISPOSE_TOTALS = {promo:{qty:2.6,cnt:45},liquidate:{qty:1.9,cnt:149},keep:{qty:0.0,cnt:0}};
+  var DISPOSE_META = { promo:{label:'去促销',icon:'🟠'}, liquidate:{label:'去清货',icon:'🔴'}, keep:{label:'保留',icon:'🟢'} };
+  function getDisposeRows(){
+    var el = document.getElementById('disposeData');
+    if (!el) return [];
+    var txt = el.textContent || '';
+    return txt.split('\n').filter(function(l){ return l.trim(); }).map(function(l){
+      var a = l.split('|');
+      return { sku:a[0], ct:a[1], color:a[2], size:a[3], o6:+a[4], pred:+a[5], gmv:+a[6], profit:+a[7], cf:+a[8], total:+a[9], b69:+a[10], b912:+a[11], b12:+a[12], dq:+a[13], in_own:+a[14], ov_own:+a[15], ov_third:+a[16], plat:+a[17], plat_front:+a[18], store:+a[19], ov_virt:+a[20], bucket:a[21] };
+    });
+  }
+  var disposeCtChartInst = null;
+  function openDisposeModal(bucket){
+    var rows = getDisposeRows().filter(function(r){ return r.bucket===bucket; });
+    var ctMap={}, ctSku={};
+    rows.forEach(function(r){ ctMap[r.ct]=(ctMap[r.ct]||0)+r.o6; (ctSku[r.ct]=ctSku[r.ct]||{}); ctSku[r.ct][r.sku]=1; });
+    var ctArr = Object.keys(ctMap).map(function(c){ return {ct:c,o6:ctMap[c],sku:Object.keys(ctSku[c]).length}; })
+                    .sort(function(a,b){ return b.o6-a.o6; });
+    var totalO6 = rows.reduce(function(s,r){ return s+r.o6; },0);
+    var m = DISPOSE_TOTALS[bucket] || {qty:'0',cnt:0};
+    var top = rows.slice().sort(function(a,b){ return b.o6-a.o6; }).slice(0,50);
+    var chartH = Math.max(200, Math.min(260, ctArr.length*30));
+    var h = '<div class="dd-sub">按CT汇总（Top50 内）</div>'
+          + '<div class="dd-summary-row">'
+          + (ctArr.length <= 1
+              ? '<div class="dd-chart-wrap" style="display:flex;align-items:center;justify-content:center;color:#cbd5e1;font-size:13px;">归属 CT：<strong style="color:#fff;margin:0 4px;">'+ctArr[0].ct+'</strong>（占 100%）</div>'
+              : '<div class="dd-chart-wrap"><div id="disposeCtChart" style="width:100%;height:'+chartH+'px;"></div></div>')
+          + '<div class="dd-table-wrap"><table class="dd-table"><thead><tr><th>CT</th><th class="num">超6m(双)</th><th class="num">占比</th><th class="num">SKU数</th></tr></thead><tbody>';
+    ctArr.forEach(function(c){ h += '<tr><td>'+c.ct+'</td><td class="num">'+c.o6.toLocaleString()+'</td><td class="num">'+(c.o6/totalO6*100).toFixed(1)+'%</td><td class="num">'+c.sku.toLocaleString()+'</td></tr>'; });
+    h += '</tbody></table></div></div>';
+    h += '<div class="dd-sub">Top50 SKU（按超6m降序）</div><div class="dd-scroll"><table class="dd-table dd-wide"><thead><tr>'
+       + '<th>SKU</th><th>CT</th><th>颜色</th><th>尺码</th><th class="num">超6m</th>'
+       + '<th class="num">总库存</th><th class="num">6-9m</th><th class="num">9-12m</th><th class="num">12m+</th><th class="num">当季末超6m</th>'
+       + '<th class="num">预测14月</th><th class="num">GMV</th><th class="num">利润</th><th class="num">现金流</th>'
+       + '<th class="num">国内自有</th><th class="num">海外自有</th><th class="num">海外第三方</th><th class="num">平台</th><th class="num">平台前置</th><th class="num">门店</th>'
+       + '</tr></thead><tbody>';
+    top.forEach(function(r){ h += '<tr>'
+       + '<td>'+r.sku+'</td><td>'+r.ct+'</td><td>'+r.color+'</td><td>'+r.size+'</td>'
+       + '<td class="num">'+r.o6.toLocaleString()+'</td>'
+       + '<td class="num">'+r.total.toLocaleString()+'</td>'
+       + '<td class="num">'+r.b69.toLocaleString()+'</td>'
+       + '<td class="num">'+r.b912.toLocaleString()+'</td>'
+       + '<td class="num">'+r.b12.toLocaleString()+'</td>'
+       + '<td class="num">'+r.dq.toLocaleString()+'</td>'
+       + '<td class="num">'+r.pred.toLocaleString()+'</td>'
+       + '<td class="num">'+r.gmv.toLocaleString()+'</td>'
+       + '<td class="num">'+r.profit.toLocaleString()+'</td>'
+       + '<td class="num">'+r.cf.toLocaleString()+'</td>'
+       + '<td class="num">'+r.in_own.toLocaleString()+'</td>'
+       + '<td class="num">'+r.ov_own.toLocaleString()+'</td>'
+       + '<td class="num">'+r.ov_third.toLocaleString()+'</td>'
+       + '<td class="num">'+r.plat.toLocaleString()+'</td>'
+       + '<td class="num">'+r.plat_front.toLocaleString()+'</td>'
+       + '<td class="num">'+r.store.toLocaleString()+'</td>'
+       + '</tr>'; });
+    h += '</tbody></table></div>';
+    document.getElementById('disposeModalBody').innerHTML = h;
+    document.getElementById('disposeModalTitle').innerHTML = DISPOSE_META[bucket].icon + ' ' + DISPOSE_META[bucket].label + ' · Top50 明细（全量共 ' + (+m.cnt).toLocaleString() + ' 行 / ' + m.qty + '万双）';
+    document.getElementById('disposeModalNote').textContent = '展示该桶 Top50 SKU；下载亦为 Top50。全量处置口径基于超6m共 ' + (+m.cnt).toLocaleString() + ' 行。';
+    document.getElementById('disposeModalMask').setAttribute('data-bucket', bucket);
+    document.getElementById('disposeModalMask').classList.add('open');
+
+    if (ctArr.length > 1) {
+    if (disposeCtChartInst) { try { disposeCtChartInst.dispose(); } catch(e){} }
+    var dcEl = document.getElementById('disposeCtChart');
+    if (dcEl) {
+      disposeCtChartInst = echarts.init(dcEl);
+      var _palette = ['#3b82f6','#f59e0b','#ef4444','#22c55e','#a855f7','#06b6d4','#ec4899','#84cc16','#f97316','#14b8a6'];
+      disposeCtChartInst.setOption({
+        tooltip: { trigger:'item', backgroundColor:'rgba(15,23,42,0.92)', borderColor:'rgba(148,163,184,0.3)', textStyle:{ color:'#e2e8f0' }, formatter: function(p){ return p.name + '<br/>超6m: ' + p.value.toLocaleString() + ' 双<br/>占比: ' + p.percent + '%'; } },
+        series: [{
+          type:'pie',
+          radius: ['42%', '70%'],
+          center: ['42%', '50%'],
+          minAngle: 3,
+          avoidLabelOverlap: true,
+          itemStyle: { borderColor:'#0f172a', borderWidth: 1.5 },
+          label: { show:true, color:'#e2e8f0', fontSize:11, formatter:'{b}\n{d}%' },
+          labelLine: { length: 6, length2: 8 },
+          data: ctArr.map(function(c, i){ return { name:c.ct, value:c.o6, itemStyle:{ color:_palette[i % _palette.length] } }; })
+        }]
+      });
+      disposeCtChartInst.resize();
+    }
+    }
+  }
+  function downloadDispose(){
+    var mask = document.getElementById('disposeModalMask');
+    var bucket = mask.getAttribute('data-bucket');
+    if (!bucket) return;
+    var rows = getDisposeRows().filter(function(r){ return r.bucket===bucket; }).slice(0,50);
+    var header = ['SKU','CT','颜色','尺码','超6m','总库存','6-9m','9-12m','12m+','当季末超6m','预测14月','GMV','利润','现金流','国内自有','海外自有','海外第三方','平台','平台前置','门店'];
+    var csv = '﻿' + header.join(',') + '\n';
+    rows.forEach(function(r){
+      var rec = [r.sku,r.ct,r.color,r.size,r.o6,r.total,r.b69,r.b912,r.b12,r.dq,r.pred,r.gmv,r.profit,r.cf,r.in_own,r.ov_own,r.ov_third,r.plat,r.plat_front,r.store];
+      csv += rec.map(function(v){ var t=String(v); if(/[",\n]/.test(t)) t='"'+t.replace(/"/g,'""')+'"'; return t; }).join(',') + '\n';
+    });
+    var blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = '积压处置_'+DISPOSE_META[bucket].label+'_Top50.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  function closeDisposeModal(){ document.getElementById('disposeModalMask').classList.remove('open'); }
+  (function(){
+    var mask = document.getElementById('disposeModalMask');
+    if (mask){
+      mask.addEventListener('click', function(e){ if (e.target === this) closeDisposeModal(); });
+      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeDisposeModal(); });
+    }
+    window.addEventListener('resize', function(){ if (disposeCtChartInst) disposeCtChartInst.resize(); });
+  })();
+</script>
+</body>
 </html>
