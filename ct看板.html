@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美迈智驾 · CT大屏看板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+:root{
+  --grid-gap:12px;
+  --card-padding:14px 18px;
+  --bg-card:rgba(22,22,26,0.72);
+  --border-glass:rgba(255,255,255,0.06);
+  --text-main:#F5F5F7;
+  --text-muted:#AEAEB2;
+  --text-dim:#6b7189;
+  --color-success:#30D158;
+  --color-warning:#FF9F0A;
+  --color-danger:#FF453A;
+  --color-stale:#BF5AF2;
+  --color-blue:#0A84FF;
+  --r-card:24px;
+  --r-inner:14px;
+  --shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif;
+  background:#0A0A0C;color:var(--text-main);
+  overflow:hidden;height:100vh;width:100vw;padding-top:32px;
+}
+
+/* 顶部状态栏（固定） */
+.status-bar{position:fixed;top:0;left:0;right:0;z-index:9999;height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:11px;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;background:rgba(10,10,12,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06);color:#AEAEB2}
+.status-bar .status-left{display:flex;align-items:center;gap:8px;font-weight:510}
+.status-bar .status-right{display:flex;align-items:center;gap:10px}
+.status-bar .status-dot{width:7px;height:7px;border-radius:50%}
+.status-dot.status-green{background:#30D158;box-shadow:0 0 6px rgba(48,209,88,0.6)}
+.status-dot.status-blue{background:#0A84FF;box-shadow:0 0 6px rgba(10,132,255,0.6)}
+.status-dot.status-orange{background:#FF9F0A;box-shadow:0 0 6px rgba(255,159,10,0.6)}
+.status-dot.status-grey{background:#8E8E93}
+.status-bar .status-ver{display:flex;align-items:center;gap:4px}
+.status-bar .status-label{font-size:10px;color:#8E8E93;font-weight:510;padding:1px 5px;border-radius:4px;background:rgba(255,255,255,0.05)}
+.status-bar .status-divider{width:1px;height:12px;background:rgba(255,255,255,0.1)}
+.status-bar .status-modified{font-size:10px;color:#6b7189;padding-left:4px;margin-left:4px;border-left:1px solid rgba(255,255,255,0.08)}
+body.light-theme .status-bar{background:rgba(248,250,252,0.95);border-bottom-color:rgba(15,23,42,0.08);color:#64748B}
+body.light-theme .status-bar .status-label{color:#64748B;background:rgba(15,23,42,0.05)}
+body.light-theme .status-bar .status-divider{background:rgba(15,23,42,0.1)}
+body.light-theme .status-bar .status-modified{color:#94A3B8;border-left-color:rgba(15,23,42,0.08)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;grid-template-rows:auto auto auto 1fr 1fr;gap:var(--grid-gap);height:calc(100vh - 32px);padding:14px;grid-template-areas:
+  "top top top top"
+  "k1 k2 k3 k4"
+  "ai ai ai ai"
+  "m1 m1 m2 m2"
+  "m3 m3 m4 m4"}
+@media(max-width:1400px){.grid{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto auto auto auto;grid-template-areas:"top top" "k1 k2" "k3 k4" "ai ai" "m1 m2" "m3 m4"}}
+
+/* 玻璃态卡片基类（对齐 index.html apple-card）*/
+.glass{background:var(--bg-card);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid var(--border-glass);border-radius:var(--r-card);box-shadow:var(--shadow)}
+
+.top{grid-area:top;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.top .ct-name{font-size:20px;font-weight:590;letter-spacing:-0.2px;background:linear-gradient(135deg,#FFFFFF 0%,#A1A1AA 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.top .ct-name small{font-size:11px;color:var(--text-dim);margin-left:8px;font-weight:400;-webkit-text-fill-color:var(--text-dim)}
+.top .meta{display:flex;gap:18px;font-size:12px;color:var(--text-muted);align-items:center}
+.top .meta .val{color:#fff;font-weight:590}
+.top .ihi{display:flex;align-items:center;gap:12px}
+.top .ihi .circle{width:68px;height:68px;border-radius:50%;border:4px solid var(--color-warning);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:var(--color-warning);flex-shrink:0;box-shadow:0 0 20px rgba(255,159,10,0.2)}
+.top .ihi .label{font-size:11px;color:var(--text-dim);line-height:1.2}
+.top .ihi .ihi-rh{display:flex;flex-direction:column;gap:2px}
+.top .ihi .ihi-tag{font-size:10px;color:var(--color-danger);background:rgba(255,69,58,0.1);padding:2px 8px;border-radius:6px;font-weight:590;white-space:nowrap}
+
+/* 四类分小卡（头部 IHI 右侧） */
+.ihi-cards{display:flex;align-items:center;gap:8px}
+.ihi-card{min-width:96px;padding:6px 10px;border-radius:12px;border:1px solid var(--border-glass);background:rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:1px}
+.ihi-card .ih-hd{display:flex;align-items:center;gap:4px}
+.ihi-card .ih-hd .ih-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.ihi-card .ih-hd .ih-name{font-size:9.5px;color:var(--text-muted);font-weight:510;letter-spacing:0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:72px}
+.ihi-card .ih-val{font-size:20px;font-weight:700;line-height:1.15}
+.ihi-card .ih-sub{font-size:9px;color:var(--text-dim);display:flex;gap:4px;flex-wrap:wrap;line-height:1.3}
+.ihi-card .ih-sub .up{color:var(--color-success)} .ihi-card .ih-sub .down{color:var(--color-danger)}
+.ihi-card.oos .ih-val{color:var(--color-warning)} .ihi-card.oos .ih-dot{background:var(--color-warning)}
+.ihi-card.bl .ih-val{color:var(--color-danger)} .ihi-card.bl .ih-dot{background:var(--color-danger)}
+.ihi-card.sa .ih-val{color:var(--color-warning)} .ihi-card.sa .ih-dot{background:var(--color-warning)}
+.ihi-card.tu .ih-val{color:var(--color-success)} .ihi-card.tu .ih-dot{background:var(--color-success)}
+
+/* KPI 占位卡 */
+.kpi.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--text-dim);text-align:center}
+.kpi.ph .ph-ic{font-size:22px;opacity:0.5}
+.kpi.ph .ph-t{font-size:12px;font-weight:510;color:var(--text-muted)}
+.kpi.ph .ph-d{font-size:10px;color:var(--text-dim)}
+
+.kpi{padding:var(--card-padding);display:flex;flex-direction:column;justify-content:space-between}
+.kpi .hd{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.kpi .hd .dot{width:8px;height:8px;border-radius:50%}
+.kpi .hd .t{font-size:12px;color:var(--text-muted);font-weight:510;letter-spacing:0.3px}
+.kpi .val{font-size:32px;font-weight:700;line-height:1}
+.kpi .sub{font-size:11px;color:var(--text-dim);margin-top:4px;display:flex;gap:10px}
+.kpi .sub .up{color:var(--color-success)} .kpi .sub .down{color:var(--color-danger)}
+.k1{grid-area:k1} .k2{grid-area:k2} .k3{grid-area:k3} .k4{grid-area:k4}
+.kpi.danger .val{color:var(--color-danger)} .kpi.danger .dot{background:var(--color-danger)}
+.kpi.warning .val{color:var(--color-warning)} .kpi.warning .dot{background:var(--color-warning)}
+.kpi.success .val{color:var(--color-success)} .kpi.success .dot{background:var(--color-success)}
+.kpi.blue .val{color:var(--color-blue)} .kpi.blue .dot{background:var(--color-blue)}
+
+.ai-bar{grid-area:ai;padding:10px 16px;display:flex;align-items:center;gap:24px;overflow:hidden}
+.ai-bar .ai-label{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.ai-bar .ai-label .ai-icon{width:32px;height:32px;background:linear-gradient(135deg,#0A84FF,#BF5AF2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ai-bar .ai-label .ai-text{font-size:12px;font-weight:590;color:#D8B4FE;white-space:nowrap}
+.ai-bar .ai-dx{display:flex;align-items:center;gap:8px;flex:1;overflow-x:auto;scrollbar-width:none}
+.ai-bar .ai-dx::-webkit-scrollbar{display:none}
+.ai-item{display:flex;align-items:center;gap:4px;flex-shrink:0;padding:4px 10px;border-radius:8px;font-size:11px;white-space:nowrap}
+.ai-item.critical{background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.25)}
+.ai-item.warning{background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.25)}
+.ai-item.info{background:rgba(48,209,88,0.08);border:1px solid rgba(48,209,88,0.25)}
+.ai-item .ai-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ai-item .ai-dot.red{background:var(--color-danger)} .ai-item .ai-dot.yellow{background:var(--color-warning)} .ai-item .ai-dot.green{background:var(--color-success)}
+.ai-item .ai-tag{font-size:9px;padding:1px 6px;border-radius:6px;font-weight:700;flex-shrink:0}
+.ai-item .ai-tag.r{background:rgba(255,69,58,0.2);color:var(--color-danger)} .ai-item .ai-tag.y{background:rgba(255,159,10,0.2);color:var(--color-warning)} .ai-item .ai-tag.g{background:rgba(48,209,88,0.2);color:var(--color-success)}
+.ai-divider{width:1px;height:20px;background:var(--border-glass);flex-shrink:0}
+
+.panel{padding:var(--card-padding);display:flex;flex-direction:column;overflow:hidden}
+.panel .ph{font-size:12px;font-weight:510;color:var(--text-muted);letter-spacing:0.3px;margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-shrink:0}
+.panel .ph .ph-more{margin-left:auto;font-size:10px;font-weight:510;color:var(--color-blue);text-decoration:none;opacity:0.7;transition:opacity 0.18s}
+.panel .ph .ph-more:hover{opacity:1}
+.panel .ph .ph-more.disabled{color:var(--text-dim);cursor:not-allowed;opacity:0.5}
+.panel .ph .ph-more.disabled:hover{opacity:0.5}
+.panel .ph .icon{font-size:14px}
+.panel .body{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0}
+.m1{grid-area:m1} .m2{grid-area:m2} .m3{grid-area:m3} .m4{grid-area:m4}
+
+/* m1 告急品类表 */
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{text-align:left;color:var(--text-muted);font-weight:510;padding:6px 6px;border-bottom:1px solid var(--border-glass);font-size:10px;white-space:nowrap}
+.tbl td{padding:6px 6px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.tbl tr:hover td{background:rgba(255,255,255,0.03)}
+.tbl .num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl .r{color:var(--color-danger);font-weight:700}
+.tbl .g{color:var(--color-success);font-weight:700}
+
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:600}
+.tag.r{background:rgba(255,69,58,0.15);color:var(--color-danger)}
+.tag.o{background:rgba(255,159,10,0.15);color:var(--color-warning)}
+.tag.y{background:rgba(255,159,10,0.15);color:var(--color-warning)}
+
+.chart-wrap{flex:1;position:relative;min-height:0}
+canvas{width:100%!important;height:100%!important}
+
+/* m4 周转明细 */
+.gauge-item{text-align:center;flex:1}
+.gauge-item .gval{font-size:22px;font-weight:700}
+.gauge-item .glbl{font-size:10px;color:var(--text-dim)}
+
+/* m2 库龄 & 预估 */
+.aging-card{padding:8px 10px;border-radius:var(--r-inner);background:rgba(255,255,255,0.03);border:1px solid var(--border-glass)}
+.aging-card .ac-title{font-size:10px;color:var(--text-muted);font-weight:510}
+.aging-card .ac-val{font-size:18px;font-weight:700;margin:2px 0;font-variant-numeric:tabular-nums}
+.aging-card .ac-meta{font-size:9px;color:var(--text-dim)}
+.aging-card.warning .ac-val{color:var(--color-warning)}
+.aging-card.danger .ac-val{color:var(--color-danger)}
+.aging-card.stale .ac-val{color:var(--color-stale)}
+.forecast-card{flex:1;display:flex;flex-direction:column;gap:5px;background:rgba(255,255,255,0.03);border:1px solid var(--border-glass);border-radius:16px;padding:10px 12px;min-height:0}
+.fc-row{display:flex;justify-content:space-between;align-items:center}
+.fc-label{font-size:11px;color:var(--text-muted)}
+.fc-date{font-size:10px;color:var(--text-dim)}
+.fc-val{font-size:14px;font-weight:700;color:var(--text-main);font-variant-numeric:tabular-nums}
+.fc-val.warning{color:var(--color-warning)}
+.fc-val.stale{color:var(--color-stale)}
+.fc-delta{font-size:10px;color:var(--color-danger)}
+.fc-row.current .fc-val{font-size:18px;color:var(--color-stale)}
+.fc-divider{height:1px;background:var(--border-glass)}
+.fc-note{font-size:9px;color:var(--text-dim);margin-top:auto}
+
+/* === 主题切换按钮（对齐 index.html）=== */
+.theme-toggle-button{
+  position:fixed;right:18px;top:calc(50% - 42px);z-index:850;
+  width:54px;height:54px;
+  border:1px solid rgba(255,255,255,0.16);border-radius:18px;
+  background:rgba(22,22,26,0.82);color:#F5F5F7;
+  box-shadow:0 12px 32px rgba(0,0,0,0.38);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  transition:all 0.18s ease;
+}
+.theme-toggle-button:hover{border-color:rgba(255,159,10,0.58);transform:translateY(-1px)}
+.theme-toggle-icon{font-size:17px;line-height:1}
+.theme-toggle-text{font-size:10px;font-weight:760;line-height:1}
+
+/* === 白色主题（light-theme）=== */
+body.light-theme{
+  --bg-card:rgba(255,255,255,0.88);
+  --border-glass:rgba(15,23,42,0.09);
+  --text-main:#111827;
+  --text-muted:#64748B;
+  --text-dim:#94A3B8;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255,159,10,0.12), transparent 30%),
+    linear-gradient(180deg, #F8FAFC 0%, #EEF2F7 100%);
+  color:var(--text-main);
+}
+body.light-theme .theme-toggle-button{
+  background:#FFFFFF;color:#111827;border-color:rgba(15,23,42,0.1);
+  box-shadow:0 12px 28px rgba(15,23,42,0.12);
+}
+body.light-theme .top .ct-name{
+  background:linear-gradient(135deg,#111827 0%,#64748B 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+body.light-theme .top .ct-name small{-webkit-text-fill-color:var(--text-dim)}
+body.light-theme .top .meta .val{color:#111827}
+body.light-theme .top .ihi .circle{box-shadow:0 0 20px rgba(255,159,10,0.25)}
+body.light-theme .top .ihi .ihi-tag{background:rgba(255,69,58,0.08)}
+body.light-theme .ihi-card{background:rgba(248,250,252,0.92);border-color:rgba(15,23,42,0.09)}
+body.light-theme .kpi .val{color:var(--text-main)}
+body.light-theme .kpi.danger .val{color:var(--color-danger)}
+body.light-theme .kpi.warning .val{color:var(--color-warning)}
+body.light-theme .kpi.success .val{color:var(--color-success)}
+body.light-theme .kpi.blue .val{color:var(--color-blue)}
+body.light-theme .ai-bar .ai-text{color:#7C3AED}
+body.light-theme .ai-item.critical{background:rgba(255,69,58,0.06);border-color:rgba(255,69,58,0.2)}
+body.light-theme .ai-item.warning{background:rgba(255,159,10,0.06);border-color:rgba(255,159,10,0.2)}
+body.light-theme .ai-item.info{background:rgba(48,209,88,0.06);border-color:rgba(48,209,88,0.2)}
+body.light-theme .tbl td{border-bottom-color:rgba(15,23,42,0.05)}
+body.light-theme .tbl tr:hover td{background:rgba(15,23,42,0.03)}
+body.light-theme .aging-card,
+body.light-theme .forecast-card{background:rgba(248,250,252,0.92);border-color:rgba(15,23,42,0.09)}
+body.light-theme .gauge-item .gval{color:var(--text-main)}
+body.light-theme .panel .ph{color:var(--text-muted)}
+</style>
+</head>
+<body>
+
+<button id="themeToggle" class="theme-toggle-button" onclick="toggleTheme()" aria-label="切换白色主题">
+  <span id="themeToggleIcon" class="theme-toggle-icon">白</span>
+  <span id="themeToggleText" class="theme-toggle-text">主题</span>
+</button>
+
+<!-- 顶部状态栏（固定） -->
+<div class="status-bar">
+  <span class="status-left"><span class="status-dot status-blue"></span> CT看板 · Dream Pairs Comfort</span>
+  <span class="status-right"><span class="status-ver"><span class="status-label">PRD</span>:V1.0</span><span class="status-divider"></span><span class="status-ver"><span class="status-label">Prototype</span>:V3.5.0</span><span class="status-modified">创建者/变更者: Zero skill</span></span>
+</div>
+
+<div class="grid">
+
+<div class="top glass">
+  <div style="display:flex;align-items:center;gap:24px;flex:1;min-width:0;">
+    <div class="ct-name">Dream Pairs Comfort</div>
+    <div class="ihi">
+      <div class="circle">62</div>
+      <div class="ihi-rh">
+        <div class="label">IHI<br>健康指数</div>
+        <div class="ihi-tag">W29 ▼ -1.5%</div>
+      </div>
+    </div>
+    <div class="ihi-cards">
+      <div class="ihi-card oos">
+        <div class="ih-hd"><span class="ih-dot"></span><span class="ih-name">缺货风险 OOS</span></div>
+        <div class="ih-val">68</div>
+        <div class="ih-sub"><span>DTS 132.9天</span><span class="down">▼2.1天</span><span>告急 1,215</span></div>
+      </div>
+      <div class="ihi-card bl">
+        <div class="ih-hd"><span class="ih-dot"></span><span class="ih-name">积压风险 BL</span></div>
+        <div class="ih-val">42</div>
+        <div class="ih-sub"><span>积压 44.1万</span><span>僵死 23.6万</span><span>占比 53.5%</span></div>
+      </div>
+      <div class="ihi-card sa">
+        <div class="ih-hd"><span class="ih-dot"></span><span class="ih-name">产品结构 SABCD</span></div>
+        <div class="ih-val">60</div>
+        <div class="ih-sub"><span>A类 8.6%</span><span class="down">目标 -11.4%</span><span>B类 15.7%</span></div>
+      </div>
+      <div class="ihi-card tu">
+        <div class="ih-hd"><span class="ih-dot"></span><span class="ih-name">周转效率 DOI</span></div>
+        <div class="ih-val">88</div>
+        <div class="ih-sub"><span>DOI 16.9天</span><span class="up">极优</span><span>在库 105.5万</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="meta">
+    <span>📅 <span class="val">2026-07-25</span> W30</span>
+    <span>🔄 环比 <span class="val">W29</span></span>
+    <span>📦 SKU <span class="val">12,423</span></span>
+    <span>💰 周收入 <span class="val" style="color:var(--color-success)">$190.6万</span></span>
+    <span style="color:var(--color-warning);font-weight:590;">🟡 黄灯 · 关注</span>
+  </div>
+</div>
+
+<!-- k1 总库存（周环比）· 口径=在库 -->
+<div class="kpi glass k1 warning">
+  <div class="hd"><span class="dot"></span><span class="t">总库存</span></div>
+  <div class="val">105.5万双</div>
+  <div class="sub"><span class="up">▲ +2.6%</span><span>环比 W29</span></div>
+</div>
+<!-- k2 超6月积压 -->
+<div class="kpi glass k2 danger">
+  <div class="hd"><span class="dot"></span><span class="t">超6月积压</span></div>
+  <div class="val">44.1万双</div>
+  <div class="sub"><span>占比 53.5%</span><span class="down">僵死 23.6万</span></div>
+</div>
+<!-- k3 S&A级占比（⚠当前值取自销量占比） -->
+<div class="kpi glass k3 warning">
+  <div class="hd"><span class="dot"></span><span class="t">S&A级库存占比</span></div>
+  <div class="val">43.9%</div>
+  <div class="sub"><span>S 35.3% · A 8.6%</span><span class="down">低于战略 50%</span></div>
+</div>
+<!-- k4 S&A级有货率（⚠代理值，待真实源） -->
+<div class="kpi glass k4 blue">
+  <div class="hd"><span class="dot"></span><span class="t">S&A级有货率</span></div>
+  <div class="val">90.2%</div>
+  <div class="sub"><span class="down">≈全网代理</span><span>待 S&A 源</span></div>
+</div>
+
+<!-- AI 诊断与治疗方案 -->
+<div class="ai-bar glass">
+  <div class="ai-label">
+    <div class="ai-icon">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+        <circle cx="16" cy="16" r="12" stroke="white" stroke-opacity="0.4" stroke-width="1"/>
+        <path d="M10.5 13.5C10.5 11.015 12.515 9 15 9h2c2.485 0 4.5 2.015 4.5 4.5v2.5c0 2.485-2.015 4.5-4.5 4.5h-2c-2.485 0-4.5-2.015-4.5-4.5v-2.5z" stroke="white" stroke-opacity="0.85" stroke-width="1.3" stroke-linejoin="round"/>
+        <circle cx="13.2" cy="14.5" r="0.9" fill="white"/>
+        <circle cx="18.8" cy="14.5" r="0.9" fill="white"/>
+        <path d="M13.2 18.2c.7.7 1.8.7 2.8 0" stroke="white" stroke-opacity="0.85" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M22.5 15.5h1.4c.6 0 1.1.5 1.1 1.1v0c0 .6-.5 1.1-1.1 1.1H22.5" stroke="white" stroke-opacity="0.7" stroke-width="1" stroke-linecap="round"/>
+        <path d="M7 15.5H5.6c-.6 0-1.1.5-1.1 1.1v0c0 .6.5 1.1 1.1 1.1H7" stroke="white" stroke-opacity="0.7" stroke-width="1" stroke-linecap="round"/>
+        <path d="M16 6.5V5" stroke="white" stroke-opacity="0.7" stroke-width="1" stroke-linecap="round"/>
+        <circle cx="16" cy="4" r="1" fill="white" fill-opacity="0.85"/>
+      </svg>
+    </div>
+    <div class="ai-text">AI 诊断与治疗方案</div>
+  </div>
+  <div class="ai-divider"></div>
+  <div class="ai-dx">
+    <div class="ai-item critical">
+      <span class="ai-dot red"></span>
+      <span class="ai-tag r">P0</span>
+      <span style="color:#FF8A80;">积压：剥离23.6万僵死→Temu/TikTok全托管</span>
+    </div>
+    <div class="ai-item critical">
+      <span class="ai-dot red"></span>
+      <span class="ai-tag r">P0</span>
+      <span style="color:#FF8A80;">缺货：DWUMFS2501三色+HOBOO-NEW 24h紧急空运</span>
+    </div>
+    <div class="ai-item warning">
+      <span class="ai-dot yellow"></span>
+      <span class="ai-tag y">P1</span>
+      <span style="color:#FFD60A;">结构：C→B提拔1300 SKU，D类80%转移清仓</span>
+    </div>
+    <div class="ai-item warning">
+      <span class="ai-dot yellow"></span>
+      <span class="ai-tag y">P1</span>
+      <span style="color:#FFD60A;">缺货：1215告急SKU广告限流，延缓消耗至补货到</span>
+    </div>
+    <div class="ai-item info">
+      <span class="ai-dot green"></span>
+      <span class="ai-tag g">P2</span>
+      <span style="color:#7EE3A0;">周转：双轨DOI监控·滞销品仓储物理分离</span>
+    </div>
+    <div class="ai-item info">
+      <span class="ai-dot green"></span>
+      <span class="ai-tag g">P2</span>
+      <span style="color:#7EE3A0;">预测：当季末超6月库存将达88万，需前置拦截</span>
+    </div>
+  </div>
+</div>
+
+<div class="panel glass m1">
+  <div class="ph"><span class="icon">📉</span> 缺货风险 · DTS 近4周趋势 & S级核心款式 Top10<a class="ph-more" href="全球缺货风险AI诊断报告.html">查看更多 →</a></div>
+  <div class="body" style="flex-direction:row;gap:8px;min-height:0;">
+    <div class="chart-wrap" style="flex:1;min-height:0"><canvas id="chartDts"></canvas></div>
+    <div style="flex:1.5;overflow:auto;font-size:10px;min-height:0">
+      <table class="tbl" style="font-size:10px">
+        <thead><tr>
+          <th style="width:24px">#</th>
+          <th>款式</th>
+          <th>等级</th>
+          <th class="num">总库存</th>
+          <th class="num">总日需</th>
+          <th class="num">整体DTS</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>NINI-8</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">S</span></td><td class="num">716</td><td class="num">59.7</td><td class="num">12.0天</td></tr>
+          <tr><td class="num">2</td><td>BREEZE-1</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">S</span></td><td class="num">249</td><td class="num">18.5</td><td class="num">13.4天</td></tr>
+          <tr><td class="num">3</td><td>DWUMWS2503</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">S</span></td><td class="num">83</td><td class="num">6.0</td><td class="num">13.8天</td></tr>
+          <tr><td class="num">4</td><td>BREEZE-2</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">S</span></td><td class="num">138</td><td class="num">8.7</td><td class="num">15.8天</td></tr>
+          <tr><td class="num">5</td><td>SDFA2409W</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">S</span></td><td class="num">50</td><td class="num">3.1</td><td class="num">16.2天</td></tr>
+          <tr><td class="num">6</td><td>DWUWFA2502</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">S</span></td><td class="num">132</td><td class="num">7.3</td><td class="num">18.1天</td></tr>
+          <tr><td class="num">7</td><td>SDSL2412W</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">S</span></td><td class="num">10</td><td class="num">0.5</td><td class="num">20.6天</td></tr>
+          <tr><td class="num">8</td><td>SDSA228M</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">S</span></td><td class="num">14</td><td class="num">0.7</td><td class="num">20.7天</td></tr>
+          <tr><td class="num">9</td><td>SDSL2413W</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">S</span></td><td class="num">13</td><td class="num">0.6</td><td class="num">21.1天</td></tr>
+          <tr><td class="num">10</td><td>SDSB2405W</td><td><span class="tag o">A</span></td><td class="num">4</td><td class="num">0.2</td><td class="num">21.4天</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="panel glass m2">
+  <div class="ph"><span class="icon">🗄️</span> 积压风险 · 库龄结构 & 演进预估<a class="ph-more" href="DP%20Fashion_积压风险报告.html">查看更多 →</a></div>
+  <div class="body" style="flex-direction:row;gap:12px;align-items:stretch;min-height:0;">
+    <div class="chart-wrap" style="flex:1.1;min-height:0"><canvas id="chartAging"></canvas></div>
+    <div style="flex:1.3;display:flex;flex-direction:column;gap:8px;min-height:0;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;flex-shrink:0;">
+        <div class="aging-card warning">
+          <div class="ac-title">6-9 月</div>
+          <div class="ac-val">12.6万</div>
+          <div class="ac-meta">28.5% · 观察期</div>
+        </div>
+        <div class="aging-card danger">
+          <div class="ac-title">9-12 月</div>
+          <div class="ac-val">7.9万</div>
+          <div class="ac-meta">18.0% · 高危</div>
+        </div>
+        <div class="aging-card stale">
+          <div class="ac-title">12 月+</div>
+          <div class="ac-val">23.6万</div>
+          <div class="ac-meta">53.5% · 僵死</div>
+        </div>
+      </div>
+      <div class="forecast-card">
+        <div class="fc-row current">
+          <span class="fc-label">当前超6月合计</span>
+          <span class="fc-val">44.1万</span>
+        </div>
+        <div class="fc-divider"></div>
+        <div class="fc-row">
+          <span class="fc-label">预估当季末超6月 <span class="fc-date">(9/30)</span></span>
+          <span class="fc-val warning">88万 <span class="fc-delta">▲ +44万</span></span>
+        </div>
+        <div class="fc-row">
+          <span class="fc-label">预估下季末超6月 <span class="fc-date">(12/31)</span></span>
+          <span class="fc-val stale">125万 <span class="fc-delta">▲ +81万</span></span>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel glass m3">
+  <div class="ph"><span class="icon">📊</span> 产品结构 · SABCD 销量占比 vs 战略目标<a class="ph-more disabled" title="报告待生成">查看更多 →</a></div>
+  <div class="body" style="flex-direction:row;gap:12px;min-height:0;">
+    <div class="chart-wrap" style="flex:1.2;min-height:0"><canvas id="chartSabcd"></canvas></div>
+    <div style="flex:1;overflow:auto;min-height:0">
+      <table class="tbl">
+        <thead><tr><th>等级</th><th class="num">实际</th><th class="num">目标</th><th class="num">偏差</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--color-success);font-weight:700">S</td><td class="num">35.3%</td><td class="num">30%</td><td class="num g">+5.3%</td><td><span class="tag" style="background:rgba(48,209,88,0.15);color:var(--color-success)">优秀</span></td></tr>
+          <tr><td style="color:var(--color-danger);font-weight:700">A</td><td class="num">8.6%</td><td class="num">20%</td><td class="num r">-11.4%</td><td><span class="tag r">告急</span></td></tr>
+          <tr><td style="color:var(--color-warning);font-weight:700">B</td><td class="num">15.7%</td><td class="num">30%</td><td class="num r">-14.3%</td><td><span class="tag y">偏低</span></td></tr>
+          <tr><td style="color:var(--color-warning);font-weight:700">C</td><td class="num">23.5%</td><td class="num">10%</td><td class="num">+13.5%</td><td><span class="tag o">超目标</span></td></tr>
+          <tr><td style="color:var(--color-danger);font-weight:700">D</td><td class="num">16.9%</td><td class="num">10%</td><td class="num">+6.9%</td><td><span class="tag r">需清退</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="panel glass m4">
+  <div class="ph"><span class="icon">⚡</span> 周转效率 · DOI 近4周趋势 & 明细<a class="ph-more disabled" title="报告待生成">查看更多 →</a></div>
+  <div class="body" style="flex-direction:row;gap:12px;min-height:0;">
+    <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-height:0">
+      <div class="chart-wrap" style="flex:1;min-height:0"><canvas id="chartDoi"></canvas></div>
+      <div style="display:flex;gap:8px;flex-shrink:0;">
+        <div class="gauge-item" style="flex:1"><div class="glbl">在库库存</div><div class="gval" style="color:var(--text-main);font-size:16px">105.5万</div></div>
+        <div class="gauge-item" style="flex:1"><div class="glbl">周净销量</div><div class="gval" style="color:var(--text-main);font-size:16px">6.2万</div></div>
+        <div class="gauge-item" style="flex:1"><div class="glbl">DOI</div><div class="gval" style="color:var(--color-success);font-size:16px">16.9天</div></div>
+      </div>
+    </div>
+    <div style="flex:1;overflow:auto;min-height:0">
+      <table class="tbl">
+        <thead><tr><th>周次</th><th>日期</th><th class="num">DOI</th><th class="num">在库库存</th><th class="num">周净销量</th></tr></thead>
+        <tbody>
+          <tr><td>W27</td><td>2026-07-04</td><td class="num">15.5天</td><td class="num">954,749</td><td class="num">61,497</td></tr>
+          <tr><td>W28</td><td>2026-07-11</td><td class="num">16.2天</td><td class="num">1,006,752</td><td class="num">61,968</td></tr>
+          <tr><td>W29</td><td>2026-07-18</td><td class="num" style="color:var(--color-success);font-weight:700">11.7天 ⚡</td><td class="num">1,028,655</td><td class="num">87,786</td></tr>
+          <tr><td>W30</td><td>2026-07-25</td><td class="num" style="color:var(--color-success);font-weight:700">16.9天</td><td class="num">1,055,358</td><td class="num">62,400</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+var C={success:'#30D158',warning:'#FF9F0A',danger:'#FF453A',stale:'#BF5AF2',blue:'#0A84FF'};
+Chart.defaults.font.family='-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif';
+
+// 主题配色
+function themeColors(){
+  var light=document.body.classList.contains('light-theme');
+  return {
+    text:light?'#64748B':'#AEAEB2',
+    grid:light?'rgba(15,23,42,0.06)':'rgba(255,255,255,0.06)',
+    doughnutBorder:light?'rgba(255,255,255,0.88)':'rgba(22,22,26,0.72)'
+  };
+}
+
+// 保存图表实例
+var charts={};
+
+function buildCharts(){
+  var tc=themeColors();
+  Chart.defaults.color=tc.text;
+  Chart.defaults.borderColor=tc.grid;
+
+  // 销毁旧实例
+  Object.keys(charts).forEach(function(k){if(charts[k])charts[k].destroy();});
+
+  charts.dts=new Chart(document.getElementById('chartDts'),{
+    type:'line',
+    data:{labels:['W27','W28','W29','W30'],datasets:[{label:'DTS',data:[134.0,137.0,135.0,132.9],borderColor:C.warning,backgroundColor:'rgba(255,159,10,0.1)',borderWidth:2.5,tension:0.3,fill:true,pointRadius:5,pointBackgroundColor:C.warning}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:tc.grid},ticks:{callback:v=>v+'天'},min:125},x:{grid:{display:false}}}},
+    plugins:[{
+      id:'dtsLabel',
+      afterDatasetsDraw:function(chart){
+        var ctx=chart.ctx,meta=chart.getDatasetMeta(0);
+        ctx.save();
+        ctx.font='600 11px -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
+        ctx.fillStyle=tc.text;
+        ctx.textAlign='center';
+        ctx.textBaseline='bottom';
+        meta.data.forEach(function(pt,i){
+          ctx.fillText(chart.data.datasets[0].data[i]+'天',pt.x,pt.y-8);
+        });
+        ctx.restore();
+      }
+    }]
+  });
+
+  charts.aging=new Chart(document.getElementById('chartAging'),{
+    type:'doughnut',
+    data:{labels:['6-9月','9-12月','12月+'],datasets:[{data:[125716,79194,235977],backgroundColor:[C.warning,C.danger,C.stale],borderColor:tc.doughnutBorder,borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:10},color:tc.text}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+(ctx.raw/1000).toFixed(0)+'k 双'}}}},
+    plugins:[{
+      id:'agingLabel',
+      afterDatasetsDraw:function(chart){
+        var ctx=chart.ctx,meta=chart.getDatasetMeta(0),total=0;
+        chart.data.datasets[0].data.forEach(function(v){total+=v;});
+        ctx.save();
+        // 扇区百分比
+        ctx.font='700 11px -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        meta.data.forEach(function(arc,i){
+          var val=chart.data.datasets[0].data[i];
+          var pct=(val/total*100).toFixed(1)+'%';
+          var pos=arc.tooltipPosition();
+          ctx.fillStyle='#FFFFFF';
+          ctx.fillText(pct,pos.x,pos.y);
+        });
+        // 中心总计
+        var cx=chart.width/2,cy=(chart.chartArea.top+chart.chartArea.bottom)/2-10;
+        ctx.font='510 10px -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
+        ctx.fillStyle=tc.text;
+        ctx.fillText('超6月合计',cx,cy-14);
+        ctx.font='700 18px -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
+        ctx.fillStyle=C.stale;
+        ctx.fillText('44.1万',cx,cy+6);
+        ctx.restore();
+      }
+    }]
+  });
+
+  charts.sabcd=new Chart(document.getElementById('chartSabcd'),{
+    type:'bar',
+    data:{labels:['S','A','B','C','D'],datasets:[
+      {label:'战略目标',data:[30,20,30,10,10],type:'line',borderColor:C.blue,borderWidth:2,borderDash:[6,4],fill:false,tension:0.3,pointRadius:4,pointBackgroundColor:C.blue},
+      {label:'实际占比',data:[35.3,8.6,15.7,23.5,16.9],backgroundColor:[C.success,C.danger,C.warning,C.warning,C.danger],borderRadius:6}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10,font:{size:10},color:tc.text}}},scales:{y:{grid:{color:tc.grid},max:45,ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}},
+    plugins:[{
+      id:'sabcdLabel',
+      afterDatasetsDraw:function(chart){
+        var ctx=chart.ctx;
+        ctx.save();
+        ctx.font='700 11px -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
+        ctx.textAlign='center';
+        ctx.textBaseline='bottom';
+        // 柱子顶部实际占比
+        var barMeta=chart.getDatasetMeta(1);
+        barMeta.data.forEach(function(bar,i){
+          var val=chart.data.datasets[1].data[i];
+          ctx.fillStyle=tc.text;
+          ctx.fillText(val+'%',bar.x,bar.y-4);
+        });
+        // 战略目标点旁数值
+        var lineMeta=chart.getDatasetMeta(0);
+        ctx.font='510 9px -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
+        ctx.fillStyle=C.blue;
+        ctx.textBaseline='bottom';
+        lineMeta.data.forEach(function(pt,i){
+          ctx.fillText(chart.data.datasets[0].data[i]+'%',pt.x+8,pt.y-2);
+        });
+        ctx.restore();
+      }
+    }]
+  });
+
+  // DOI 近4周趋势（含行业黄金线 30天）
+  charts.doi=new Chart(document.getElementById('chartDoi'),{
+    type:'line',
+    data:{labels:['W27','W28','W29','W30'],datasets:[
+      {label:'DOI',data:[15.5,16.2,11.7,16.9],borderColor:C.success,backgroundColor:'rgba(48,209,88,0.1)',borderWidth:2.5,tension:0.3,fill:true,pointRadius:5,pointBackgroundColor:C.success},
+      {label:'行业黄金线',data:[30,30,30,30],borderColor:C.warning,borderWidth:1.5,borderDash:[6,4],fill:false,tension:0,pointRadius:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:tc.grid},ticks:{callback:v=>v+'天'},min:0,max:35},x:{grid:{display:false}}}},
+    plugins:[{
+      id:'doiLabel',
+      afterDatasetsDraw:function(chart){
+        var ctx=chart.ctx,meta=chart.getDatasetMeta(0);
+        ctx.save();
+        ctx.font='700 11px -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif';
+        ctx.fillStyle=tc.text;
+        ctx.textAlign='center';
+        ctx.textBaseline='bottom';
+        meta.data.forEach(function(pt,i){
+          var val=chart.data.datasets[0].data[i];
+          // W29 低点 11.7 加闪电标记
+          ctx.fillText(val+'天'+(val===11.7?' ⚡':''),pt.x,pt.y-8);
+        });
+        ctx.restore();
+      }
+    }]
+  });
+}
+
+function applyTheme(theme){
+  var isLight=theme==='light';
+  document.documentElement.dataset.theme=isLight?'light':'dark';
+  document.body.classList.toggle('light-theme',isLight);
+  var icon=document.getElementById('themeToggleIcon');
+  var text=document.getElementById('themeToggleText');
+  if(icon&&text){
+    icon.textContent=isLight?'深':'白';
+    text.textContent=isLight?'深色':'主题';
+  }
+  // 重建图表以应用新配色
+  if(typeof Chart!=='undefined')buildCharts();
+}
+
+function toggleTheme(){
+  var next=document.body.classList.contains('light-theme')?'dark':'light';
+  try{localStorage.setItem('ct-dashboard-theme',next);}catch(e){}
+  applyTheme(next);
+}
+
+// 初始化主题（默认深色，与原设计一致）
+try{
+  applyTheme(localStorage.getItem('ct-dashboard-theme')||'dark');
+}catch(e){
+  applyTheme('dark');
+}
+</script>
+
+</body>
+</html>
