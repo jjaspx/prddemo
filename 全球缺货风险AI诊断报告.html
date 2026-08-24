@@ -2341,14 +2341,14 @@
       <div class="kpi-card danger supply-card-type">
         <div class="kpi-label">缺货根因占比</div>
         <div class="kpi-value" id="rcHead">-<span class="kpi-unit">%</span></div>
-        <div class="kpi-trend" style="margin-top:6px" id="rcTrend">需求侧（预测/新品/突增）</div>
+        <div class="kpi-trend" style="margin-top:6px" id="rcTrend">需求侧（预测/突增）</div>
         <div class="kpi-subs">
           <div class="kpi-sub"><span class="sub-name" id="rc1n">—</span><span><span class="sub-val bad" id="rc1v">—</span></span></div>
           <div class="kpi-sub"><span class="sub-name" id="rc2n">—</span><span><span class="sub-val bad" id="rc2v">—</span></span></div>
           <div class="kpi-sub"><span class="sub-name" id="rc3n">—</span><span><span class="sub-val bad" id="rc3v">—</span></span></div>
           <div class="kpi-sub"><span class="sub-name" id="rc4n">—</span><span><span class="sub-val bad" id="rc4v">—</span></span></div>
         </div>
-        <div class="kpi-foot" style="font-size:11px;color:#64748b;margin-top:8px;line-height:1.4;">需求侧=新品上架/预测偏低/销售突增 · 供应侧=供应商延期/VOC/物流/品质 · 数据源 SKU+备货渠道 W30-W34</div>
+        <div class="kpi-foot" style="font-size:11px;color:#64748b;margin-top:8px;line-height:1.4;">已排除新品类（未上架误判）· 需求侧=预测偏低/销售突增 · 供应侧=供应商延期/VOC/物流/品质 · 数据源 SKU+备货渠道 W30-W34</div>
       </div>
       <div class="kpi-card warning global-card-type">
         <div class="kpi-label">快船有货率</div>
@@ -2366,12 +2366,12 @@
     <!-- AI 一句话战报 -->
     <div class="insight-box">
       <div class="ititle">AI诊断与治疗方案</div>
-      <p><b>诊断（风险等级：橙色·高，但属结构性而非全局断货）：</b>快船官方有货率 <span class="hl">99.5%</span>，全局供应健康；风险集中于<b>少数爆款 + 低有货率 CT</b>。连续缺货≥15天 <span class="hl">115款</span>（占在售 <span class="hl">46.2%</span>，其中≥90天 <span class="hl">5款</span>）；预估缺货损失(GMV) <span class="hl">$62.9万</span>（未来120天 · 4×30天窗口 · 全供应链链条口径）。CT 维度：<span class="hl">Dream Pairs Fashion</span> 缺口最大 <span class="hl">410万双</span>（占主导），<span class="hl">Bruno Marc / Nortiv8</span> 有货率仅 <span class="hl">13.8% / 16.8%</span> 为重灾区。</p>
-      <p><b>根因：</b>约 <span class="hl">70%</span> 缺口来自可优化项——<span class="hl">新品/新配色首单月中上架 40.9%</span> + <span class="hl">销售预测偏低/供应周期内超卖 29.3%</span>；其余为销售突增14.1%、供应商延期7.6%、物流/VOC等。</p>
+      <p><b>诊断（风险等级：橙色·高，但属结构性而非全局断货）：</b>快船官方有货率 <span class="hl">98.3%</span>，全局供应基本健康，缺货呈<b>结构性集中</b>（少数爆款 + 特定 CT）而非全局断货。曾连续缺货 <span class="hl">249 款</span>（≤30天 197款最集中）；预估缺货损失(GMV) <span class="hl">$62.9万</span>（未来120天 · 4×30天窗口 · 全供应链链条口径）。CT 维度：<span class="hl">Dream Pairs Fashion</span> 缺口最大 <span class="hl">3.82万双</span>（W30-W34 实际）占主导，其余 CT 有货率均 ≈98%，无低有货率重灾区。</p>
+      <p><b>根因（已排除新品误判）：</b>约 <span class="hl">72%</span> 缺口来自需求侧——<span class="hl">销售预测偏低/超卖 48.6%</span> + <span class="hl">销售突增 23.3%</span>；其余为供应商延期15.4%、VOC 6.4%、物流/品质等。</p>
       <p style="margin-top:8px;"><b>治疗方案（数据已考虑补货周期，动作收敛为翻单）：</b></p>
       <p>① <b>翻单生产</b>（翻单队列）：S/A/B 国内无货且90天维度缺货 → 翻单生产（60天周期+前置），按90天缺口降序排产，点「去翻单」。<br>
-② <b>断货倒计时分级止血</b>：&lt;15天 置灰（已来不及）；15–30天 紧急下单·空运加急（旺21天）；30–45天 紧急下单·快船（旺39天）；45天+ 紧急下单·普船（旺52天）。</p>
-      <p style="font-size:12px;color:#64748b;margin-top:10px;">数据口径：热力矩阵 W34–W51前瞻（仅缺货Style）· 断货倒计时 8/19快照（全量Style 1635款）· 根因/KPI SKU+备货渠道 <span class="hl">397,992行</span> / 1,269款 · 时效按旺季（空运21 / 快船39 / 普船52天）· 热力矩阵+倒计时为Style前瞻口径，根因/KPI为缺货子集实际口径，两套口径独立不可相加。</p>
+② <b>断货倒计时分级止血</b>：≤30天 紧急下单（部分已来不及）；30–60天 紧急下单·空运加急（旺21天）；60–90天 紧急下单·快船（旺39天）；90–120天 紧急下单·普船（旺52天）。</p>
+      <p style="font-size:12px;color:#64748b;margin-top:10px;">数据口径：热力矩阵 W34–W51前瞻（仅缺货Style）· 断货倒计时/GMV/有货率 8/19快照前瞻（全量Style 1635款 · 4×30天窗口）· 根因（已排除新品误判）/KPI SKU+备货渠道 <span class="hl">397,992行</span> / 1,269款 · 时效按旺季（空运21 / 快船39 / 普船52天）· Style 前瞻口径与 SKU 实际口径独立不可相加。</p>
     </div>
   </div>
 
@@ -2566,7 +2566,7 @@
       <div class="node-table"><table>
         <caption>缺货主因（实际样本 190,217 条）</caption>
         <thead><tr><th>一级分类(缺货主因)</th><th class="num">缺货记录数</th><th class="num">占比</th><th class="num">预测销量(万)</th><th class="num">实际销量(万)</th></tr></thead>
-        <tbody id="rcBody"><tr><td class="">销售预测偏低/供应周期内超卖</td><td class="num">190,755</td><td class="num">66.56%</td><td class="num">464.1万</td><td class="num">—</td></tr><tr><td class="">新品/新配色首单月中上架</td><td class="num">43,080</td><td class="num">15.03%</td><td class="num">79.4万</td><td class="num">—</td></tr><tr><td class="">销售突增-临时增加供应周期内预测</td><td class="num">34,440</td><td class="num">12.02%</td><td class="num">73.5万</td><td class="num">—</td></tr><tr><td class="">供应商延期送货</td><td class="num">10,756</td><td class="num">3.75%</td><td class="num">24.1万</td><td class="num">—</td></tr><tr><td class="">VOC改善影响交期</td><td class="num">3,975</td><td class="num">1.39%</td><td class="num">7.6万</td><td class="num">—</td></tr><tr><td class="">海外物流运输超出时效</td><td class="num">3,346</td><td class="num">1.17%</td><td class="num">9.8万</td><td class="num">—</td></tr><tr><td class="">平台仓退仓</td><td class="num">160</td><td class="num">0.06%</td><td class="num">0.5万</td><td class="num">—</td></tr><tr><td class="">销售策略—EOL转P</td><td class="num">84</td><td class="num">0.03%</td><td class="num">0.4万</td><td class="num">—</td></tr><tr><td class="">缺货主因</td><td class="num">1</td><td class="num">0%</td><td class="num">0万</td><td class="num">—</td></tr></tbody>
+        <tbody id="rcBody"><tr><td class="">销售预测偏低/供应周期内超卖</td><td class="num">190,755</td><td class="num">66.56%</td><td class="num">464.1万</td><td class="num">—</td></tr><tr><td class="">销售突增-临时增加供应周期内预测</td><td class="num">34,440</td><td class="num">12.02%</td><td class="num">73.5万</td><td class="num">—</td></tr><tr><td class="">供应商延期送货</td><td class="num">10,756</td><td class="num">3.75%</td><td class="num">24.1万</td><td class="num">—</td></tr><tr><td class="">VOC改善影响交期</td><td class="num">3,975</td><td class="num">1.39%</td><td class="num">7.6万</td><td class="num">—</td></tr><tr><td class="">海外物流运输超出时效</td><td class="num">3,346</td><td class="num">1.17%</td><td class="num">9.8万</td><td class="num">—</td></tr><tr><td class="">平台仓退仓</td><td class="num">160</td><td class="num">0.06%</td><td class="num">0.5万</td><td class="num">—</td></tr><tr><td class="">销售策略—EOL转P</td><td class="num">84</td><td class="num">0.03%</td><td class="num">0.4万</td><td class="num">—</td></tr><tr><td class="">缺货主因</td><td class="num">1</td><td class="num">0%</td><td class="num">0万</td><td class="num">—</td></tr></tbody>
       </table></div>
     </div>
     <p class="prompt-mini" style="margin-top:10px;">数据源为 8/19 导出 SKU+备货渠道缺货子集（W30–W34 实际）· "实际销量"列暂无（源数据仅含预测销量）。</p>
@@ -2603,24 +2603,27 @@ const C = {blue:'#3b82f6',red:'#ef4444',amber:'#f59e0b',green:'#10b981',purple:'
   if(typeof DATA === 'undefined') return;
   const D = DATA;
 
-  // 1) 派生 rc（用于根因图表，按占比从大到小排序）
+  // 1) 派生 rc（用于根因图表，按占比从大到小排序；排除新品类并归一化）
   if(!D.rc && D.rootcause_l1){
-    const sorted = D.rootcause_l1.slice().sort((a,b)=>(b.pct||0)-(a.pct||0));
-    D.rc = sorted.map(x=>({cause:x.cause, count:x.count, pct:x.pct}));
+    const src = D.rootcause_l1.filter(x=>!(x.cause||'').includes('新品'));
+    const total = src.reduce((s,x)=>s+(x.pct||0),0) || 1;
+    const sorted = src.slice().sort((a,b)=>(b.pct||0)-(a.pct||0));
+    D.rc = sorted.map(x=>({cause:x.cause, count:x.count, pct:Number(((x.pct||0)/total*100).toFixed(1))}));
   }
 
-  // 2) 派生 rc_tbl（用于根因表格，字段：label/count/pct/forecast_w/actual_w）
+  // 2) 派生 rc_tbl（用于根因表格，字段：label/count/pct/forecast_w/actual_w；排除新品类并归一化）
   if(!D.rc_tbl && D.rootcause_l1){
-    const totalCount = D.rootcause_l1.reduce((s,x)=>s+(x.count||0),0) || 1;
+    const src = D.rootcause_l1.filter(x=>!(x.cause||'').includes('新品'));
+    const totalCount = src.reduce((s,x)=>s+(x.count||0),0) || 1;
     // 估算预测销量（万）：按 count 权重 × 总缺口 fg_w(万) 粗略分摊
     const totalForecastW = D.fg_w || 0;
-    D.rc_tbl = D.rootcause_l1.slice().sort((a,b)=>(b.count||0)-(a.count||0)).map(x=>{
+    D.rc_tbl = src.slice().sort((a,b)=>(b.count||0)-(a.count||0)).map(x=>{
       const weight = (x.count||0)/totalCount;
       const forecastW = Number((totalForecastW*weight).toFixed(1));
       return {
         label: x.cause,
         count: x.count,
-        pct: x.pct,
+        pct: Number((weight*100).toFixed(1)),
         forecast_w: forecastW,
         actual_w: null // 未来周无实际发生，显示为 —
       };
@@ -2630,16 +2633,14 @@ const C = {blue:'#3b82f6',red:'#ef4444',amber:'#f59e0b',green:'#10b981',purple:'
   // 3) 派生 sku（用于SKU明细弹窗，取 shortage_120 Top 80 款式）
   if(!D.sku && D.phaseA && D.phaseA.style_rows){
     const rows = D.phaseA.style_rows || [];
-    const causeOrder = D.rootcause_l1 ? D.rootcause_l1.slice().sort((a,b)=>(b.pct||0)-(a.pct||0)).map(x=>x.cause) : [];
+    // 主因按定级/可售天数语义分配（不依赖 rootcause_l1 排序，已排除新品类）
     const pickCause = (styleRow) => {
-      // 按定级粗略分配主因
       const g = styleRow.grade_group || styleRow.grade || '';
       const pd = styleRow.platform_days;
-      if(g.indexOf('EOL')>=0) return causeOrder[7] || '销售策略—EOL转P';
-      if(pd!=null && pd>0 && pd<=7) return causeOrder[2] || '销售突增-临时增加供应周期内预测';
-      if(pd!=null && pd>7 && pd<=30) return causeOrder[1] || '销售预测偏低/供应周期内超卖';
-      if(g.indexOf('S')===0 || g.indexOf('A')===0) return causeOrder[0] || '新品/新配色首单月中上架';
-      return causeOrder[0] || '销售预测偏低/供应周期内超卖';
+      if(g.indexOf('EOL')>=0) return '销售策略—EOL转P';
+      if(pd!=null && pd>0 && pd<=7) return '销售突增-临时增加供应周期内预测';
+      if(pd!=null && pd>7 && pd<=30) return '销售预测偏低/供应周期内超卖';
+      return '销售预测偏低/供应周期内超卖';
     };
     const top80 = rows.slice()
       .filter(r=>(r.shortage_120||0)>0)
@@ -2719,7 +2720,7 @@ const STYLE_COLS=[ // TOP20 款式表（单位：双，与节点图表一致）
 // 根因（图 + 表）
 (function(){
   try {
-    const r=DATA.rc || (DATA.rootcause_l1||[]).slice().sort((a,b)=>(b.pct||0)-(a.pct||0));
+    const r=DATA.rc || (DATA.rootcause_l1||[]).filter(x=>!(x.cause||'').includes('新品')).slice().sort((a,b)=>(b.pct||0)-(a.pct||0));
     if(!r || r.length===0){
       const el=document.getElementById('rcBody');
       if(el) el.innerHTML='<tr><td colspan="5" style="text-align:center;color:#64748b;padding:24px">暂无根因数据</td></tr>';
@@ -2737,14 +2738,15 @@ const STYLE_COLS=[ // TOP20 款式表（单位：双，与节点图表一致）
     series:[{type:'bar',data:vals.slice().reverse(),itemStyle:{color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#f59e0b'},{offset:1,color:'#ef4444'}]),borderRadius:[0,4,4,0]},label:{show:true,position:'right',color:C.txt,fontSize:11,formatter:p=>p.value+'%'}}]
   });
   // 现场从 rootcause_l1 构造表格数据（不依赖派生IIFE是否生效）
+  // 口径：排除新品类根因（未上架误判）后按剩余 count 归一化
   const rcTableData = DATA.rc_tbl && DATA.rc_tbl.length ? DATA.rc_tbl : (function(){
-    const src = DATA.rootcause_l1 || [];
+    const src = (DATA.rootcause_l1 || []).filter(x=>!(x.cause||'').includes('新品'));
     if(!src.length) return [];
     const totalCount = src.reduce((s,x)=>s+(x.count||0),0) || 1;
     const fg = DATA.fg_w || 0;
     return src.slice().sort((a,b)=>(b.count||0)-(a.count||0)).map(x=>{
       const w = (x.count||0)/totalCount;
-      return {label:x.cause, count:x.count, pct:x.pct, forecast_w:Number((fg*w).toFixed(1)), actual_w:null};
+      return {label:x.cause, count:x.count, pct:Number((w*100).toFixed(1)), forecast_w:Number((fg*w).toFixed(1)), actual_w:null};
     });
   })();
   if(!rcTableData.length){
@@ -3054,18 +3056,20 @@ function closeDetail(){document.getElementById('detailOverlay').classList.remove
     });
   })();
 
-  // 缺货根因占比 KPI（数据源 DATA.rootcause_l1：需求侧=新品/预测偏低/销售突增）
+  // 缺货根因占比 KPI（数据源 DATA.rootcause_l1，排除新品类后归一化；需求侧=预测偏低/销售突增）
   (function renderRcKpi(){
-    const rc=DATA.rootcause_l1||[];
-    if(!rc.length) return;
+    const src=(DATA.rootcause_l1||[]).filter(x=>!(x.cause||'').includes('新品'));
+    if(!src.length) return;
     const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-    const DEMAND_KEYS=['新品','预测','突增'];
-    const demandPct=rc.reduce((s,x)=>s+(DEMAND_KEYS.some(k=>(x.cause||'').includes(k))?(x.pct||0):0),0);
+    const total=src.reduce((s,x)=>s+(x.pct||0),0)||1;
+    const norm=src.map(x=>({cause:x.cause, pct:(x.pct||0)/total*100}));
+    const DEMAND_KEYS=['预测','突增'];
+    const demandPct=norm.reduce((s,x)=>s+(DEMAND_KEYS.some(k=>x.cause.includes(k))?x.pct:0),0);
     set('rcHead', demandPct.toFixed(1));
-    set('rcTrend',`需求侧（预测/新品/突增）${demandPct.toFixed(1)}% · 供应侧 ${(100-demandPct).toFixed(1)}%`);
-    rc.slice().sort((a,b)=>(b.pct||0)-(a.pct||0)).slice(0,4).forEach((x,i)=>{
+    set('rcTrend',`需求侧（预测/突增）${demandPct.toFixed(1)}% · 供应侧 ${(100-demandPct).toFixed(1)}%`);
+    norm.sort((a,b)=>b.pct-a.pct).slice(0,4).forEach((x,i)=>{
       set('rc'+(i+1)+'n', (x.cause||'').length>8?(x.cause.slice(0,8)+'…'):(x.cause||'—'));
-      set('rc'+(i+1)+'v', (x.pct||0)+'%');
+      set('rc'+(i+1)+'v', x.pct.toFixed(1)+'%');
     });
   })();
 
