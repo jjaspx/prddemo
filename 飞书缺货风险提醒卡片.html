@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飞书缺货风险提醒卡片</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #f5f6f7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1960px;
+            width: 100%;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 360px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 20px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .header .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35);
+        }
+
+        .header .week {
+            margin-left: auto;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        .card-red .header { background: linear-gradient(135deg, #f74e4e, #ef3a3a); }
+        .card-green .header { background: linear-gradient(135deg, #36d26d, #22c55e); }
+
+        /* 常态化每周通知（信息色，非预警/非解除） */
+        .card-blue .header { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .card-blue .hero-cell:first-child { background: #eaf2ff; }
+        .card-blue .hero-cell:nth-child(2) { background: #f0f6ff; }
+        .card-blue .hero-cell:nth-child(3) { background: #f0f6ff; }
+        .card-blue .hero-cell:last-child { background: #eaf2ff; }
+        .card-blue .score-line .tag { background: #dbeafe; color: #1d4ed8; }
+        .card-blue .summary { border-left-color: #2563eb; }
+
+        /* Body */
+        .body { padding: 20px; }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .brand-icon {
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .brand-meta {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        /* Hero metrics */
+        .hero-title {
+            margin-top: 18px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .hero {
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: #f0f0f0;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
+        }
+
+        .hero-cell {
+            background: #f8f9fa;
+            padding: 18px 4px;
+            text-align: center;
+        }
+
+        .hero-cell.is-now {
+            position: relative;
+        }
+
+        .hero-label {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+
+        .hero-value {
+            font-size: 21px;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1;
+        }
+
+        .hero-delta {
+            margin-top: 7px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .hero-delta.pct { color: #6b7280; }
+        .hero-delta .arrow {
+            font-size: 12px;
+            margin-right: 2px;
+        }
+
+        .hero-note {
+            margin-top: 10px;
+            font-size: 11px;
+            color: #9ca3af;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .hero-value span {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            margin-left: 2px;
+        }
+
+        .card-red .hero-cell:first-child { background: #ffecec; }
+        .card-red .hero-cell:nth-child(2) { background: #fff5f5; }
+        .card-red .hero-cell:nth-child(3) { background: #fff5f5; }
+        .card-red .hero-cell:last-child { background: #fff2f2; }
+        .card-red .hero-value { color: #1f2937; }
+
+        .card-green .hero-cell:first-child { background: #dcfce7; }
+        .card-green .hero-cell:nth-child(2) { background: #f0fdf4; }
+        .card-green .hero-cell:nth-child(3) { background: #f0fdf4; }
+        .card-green .hero-cell:last-child { background: #dcfce7; }
+
+        /* Compact score line (weakened) */
+        .score-line {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 14px;
+            background: #fafbfc;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .score-line .left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .score-line .score-name {
+            color: #4b5563;
+        }
+
+        .score-line .score-num {
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .score-line .tag {
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .card-red .score-line .tag { background: #fde2e2; color: #d12929; }
+        .card-green .score-line .tag { background: #dcfce7; color: #15803d; }
+
+        /* Summary */
+        .summary {
+            margin-top: 16px;
+            background: #fafbfc;
+            border-left: 3px solid #e5e7eb;
+            border-radius: 0 12px 12px 0;
+            padding: 14px 16px;
+            font-size: 13.5px;
+            line-height: 1.85;
+            color: #4b5563;
+        }
+
+        .summary strong { color: #1f2937; font-weight: 700; }
+
+        .card-red .summary { border-left-color: #ef4444; }
+        .card-green .summary { border-left-color: #22c55e; }
+
+        /* 预估缺货损失（4 窗口：数量 + 预估损失金额） */
+        .loss-break {
+            margin-top: 16px;
+            background: #fafbfc;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+        }
+
+        .loss-head {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .loss-head .tick {
+            width: 3px;
+            height: 12px;
+            border-radius: 2px;
+            background: #9ca3af;
+        }
+
+        .loss-grid {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 0;
+        }
+
+        .loss-colhead {
+            padding-bottom: 6px;
+            margin-bottom: 2px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .loss-colhead span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #9ca3af;
+        }
+
+        .loss-colhead .lc-qty,
+        .loss-colhead .lc-amt { text-align: right; }
+
+        .loss-row { border-top: 1px solid #f3f4f6; }
+        .loss-row:first-of-type { border-top: none; }
+
+        .loss-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .loss-qty {
+            text-align: right;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            min-width: 76px;
+        }
+
+        .loss-amt {
+            text-align: right;
+            font-size: 13px;
+            font-weight: 700;
+            color: #ef4444;
+            min-width: 76px;
+        }
+
+        .loss-amt span {
+            font-size: 11px;
+            font-weight: 500;
+            color: #f08a8a;
+            margin-left: 1px;
+        }
+
+        .loss-total {
+            border-top: 1px solid #e5e7eb;
+            margin-top: 2px;
+            padding-top: 11px;
+        }
+
+        .loss-total .loss-name { color: #1f2937; }
+        .loss-total .loss-qty,
+        .loss-total .loss-amt { font-size: 15px; }
+
+        /* Actions */
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+
+        .btn:active { transform: translateY(1px); }
+
+        .btn-red {
+            background: #ef4444;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+        }
+
+        .btn-blue {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .btn-blue-solid {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 14px 20px;
+            font-size: 12px;
+            color: #9ca3af;
+            text-align: center;
+            border-top: 1px solid #f3f4f6;
+            background: #fafafa;
+        }
+
+        @media (max-width: 780px) {
+            .container { flex-direction: column; align-items: center; }
+            .card { width: 100%; max-width: 400px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 设计原型：飞书实际推送需转为 Message Card JSON（header / div / column 结构），本页仅作视觉稿与评审用 -->
+    <div class="container">
+        <!-- 每周例行通知（信息色，非预警） -->
+        <div class="card card-blue">
+            <div class="header">
+                <span class="dot"></span>
+                <span>缺货风险周报</span>
+                <span class="week">W51</span>
+            </div>
+            <div class="body">
+                <div class="brand">
+                    <div class="brand-icon">🔥</div>
+                    <div>
+                        <div class="brand-name">全局 CT 维度</div>
+                        <div class="brand-meta">249款连续缺货周度监测 · 数据截止 2026-12-19</div>
+                    </div>
+                </div>
+
+                <div class="hero-title">快船有货率 · %（全局口径）</div>
+                <div class="hero">
+                    <div class="hero-cell is-now">
+                        <div class="hero-label">30天</div>
+                        <div class="hero-value">99.6<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.4%</div>
+                    </div>
+                    <div class="hero-cell">
+                        <div class="hero-label">30-60天</div>
+                        <div class="hero-value">99.4<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.6%</div>
+                    </div>
+                    <div class="hero-cell">
+                        <div class="hero-label">60-90天</div>
+                        <div class="hero-value">99.3<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.7%</div>
+                    </div>
+                    <div class="hero-cell">
+                        <div class="hero-label">90-120天</div>
+                        <div class="hero-value">99.0<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 1.0%</div>
+                    </div>
+                </div>
+                <div class="hero-note">口径：快船有货率=1−Σ缺货量/Σ预测销量；缺货量=Σ快船库存缺口(col36)&lt;0(仅负值) · 全局口径（全 CT 合计）</div>
+
+                <div class="loss-break">
+                    <div class="loss-head"><span class="tick"></span>预估缺货损失 · 4 窗口（全局口径）</div>
+                    <div class="loss-grid loss-colhead">
+                        <span class="lc-name">窗口</span>
+                        <span class="lc-qty">数量·万双</span>
+                        <span class="lc-amt">预估损失·万$</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">30天</span>
+                        <span class="loss-qty">1.20</span>
+                        <span class="loss-amt">$8.28</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">30-60天</span>
+                        <span class="loss-qty">2.14</span>
+                        <span class="loss-amt">$14.77</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">60-90天</span>
+                        <span class="loss-qty">2.43</span>
+                        <span class="loss-amt">$16.77</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">90-120天</span>
+                        <span class="loss-qty">3.35</span>
+                        <span class="loss-amt">$23.12</span>
+                    </div>
+                    <div class="loss-grid loss-total">
+                        <span class="loss-name">合计</span>
+                        <span class="loss-qty">9.12</span>
+                        <span class="loss-amt">$62.9</span>
+                    </div>
+                </div>
+
+                <div class="score-line">
+                    <div class="left">
+                        <span class="score-name">缺货风险评分</span>
+                        <span class="score-num">61/100</span>
+                    </div>
+                    <span class="tag">≥60 正常监控</span>
+                </div>
+
+                <div class="summary">
+                    <strong>本周整体：</strong>全局连续缺货款式 <strong>249款</strong>，其中 ≥60天长期缺货 <strong>20款（8.0%）</strong>；预估120天缺口约 <strong>9.7万双</strong>、GMV损失约 <strong>$62.9万</strong>。CT维度 <strong>Dream Pairs Comfort</strong> 缺口居首（3.36万双），未触发全局红灯，维持每周滚动监控即可。
+                </div>
+
+                <div class="actions">
+                    <a href="#" class="btn btn-blue-solid">📊 查看诊断报告</a>
+                </div>
+            </div>
+            <div class="footer">IMS 库存健康指数 · 每周例行推送</div>
+        </div>
+
+        <!-- 红灯预警 -->
+        <div class="card card-red">
+            <div class="header">
+                <span class="dot"></span>
+                <span>缺货风险红灯预警</span>
+                <span class="week">W51</span>
+            </div>
+            <div class="body">
+                <div class="brand">
+                    <div class="brand-icon">👟</div>
+                    <div>
+                        <div class="brand-name">Dream Pairs Comfort</div>
+                        <div class="brand-meta">CT 维度 · 数据截止 2026-12-19</div>
+                    </div>
+                </div>
+
+                <div class="hero-title">快船有货率 · %（Dream Pairs Comfort 口径）</div>
+                <div class="hero">
+                    <div class="hero-cell is-now">
+                        <div class="hero-label">30天</div>
+                        <div class="hero-value">99.6<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.4%</div>
+                    </div>
+                    <div class="hero-cell">
+                        <div class="hero-label">30-60天</div>
+                        <div class="hero-value">98.8<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 1.2%</div>
+                    </div>
+                    <div class="hero-cell">
+                        <div class="hero-label">60-90天</div>
+                        <div class="hero-value">98.1<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 1.9%</div>
+                    </div>
+                    <div class="hero-cell">
+                        <div class="hero-label">90-120天</div>
+                        <div class="hero-value">96.7<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 3.3%</div>
+                    </div>
+                </div>
+                <div class="hero-note">口径：快船有货率=1−Σ缺货量/Σ预测销量；缺货量=Σ快船库存缺口(col36)&lt;0(仅负值) · Dream Pairs Comfort 口径（按 CT 拆分自 Style 全量）</div>
+
+                <div class="loss-break">
+                    <div class="loss-head"><span class="tick"></span>预估缺货损失 · 4 窗口（Dream Pairs Comfort 口径）</div>
+                    <div class="loss-grid loss-colhead">
+                        <span class="lc-name">窗口</span>
+                        <span class="lc-qty">数量·万双</span>
+                        <span class="lc-amt">预估损失·万$</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">30天</span>
+                        <span class="loss-qty">0.14</span>
+                        <span class="loss-amt">$0.97</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">30-60天</span>
+                        <span class="loss-qty">0.54</span>
+                        <span class="loss-amt">$3.73</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">60-90天</span>
+                        <span class="loss-qty">0.99</span>
+                        <span class="loss-amt">$6.83</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">90-120天</span>
+                        <span class="loss-qty">1.69</span>
+                        <span class="loss-amt">$11.66</span>
+                    </div>
+                    <div class="loss-grid loss-total">
+                        <span class="loss-name">合计</span>
+                        <span class="loss-qty">3.36</span>
+                        <span class="loss-amt">$23.19</span>
+                    </div>
+                </div>
+
+                <div class="score-line">
+                    <div class="left">
+                        <span class="score-name">缺货风险评分</span>
+                        <span class="score-num">42/100</span>
+                    </div>
+                    <span class="tag">＜60 触发红灯</span>
+                </div>
+
+                <div class="summary">
+                    <strong>核心风险：</strong>Dream Pairs Comfort 连续缺货款式 <strong>59款</strong>，≥60天长期缺货 <strong>6款（10.2%）</strong>；120天累计缺口 <strong>3.36万双</strong>、预估 GMV 损失 <strong>$23.19万</strong> 均为全局最高，90-120天有货率跌至 96.7%。建议优先紧急下单并复核需求预测，避免排名衰减与广告沉没。
+                </div>
+
+                <div class="actions">
+                    <a href="#" class="btn btn-red">🔖 查看诊断报告</a>
+                </div>
+            </div>
+            <div class="footer">IMS 库存健康指数 · 自动触发</div>
+        </div>
+
+        <!-- 预警解除 -->
+        <div class="card card-green">
+            <div class="header">
+                <span class="dot"></span>
+                <span>缺货风险预警解除</span>
+                <span class="week">W51</span>
+            </div>
+            <div class="body">
+                <div class="brand">
+                    <div class="brand-icon">🥾</div>
+                    <div>
+                        <div class="brand-name">运动组</div>
+                        <div class="brand-meta">CT 维度 · 数据截止 2026-12-19</div>
+                    </div>
+                </div>
+
+                <div class="hero-title">快船有货率 · %（运动组 口径）</div>
+                <div class="hero">
+                    <div class="hero-cell is-now">
+                        <div class="hero-label">30天</div>
+                        <div class="hero-value">99.9<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.1%</div>
+                    </div>
+                    <div class="hero-cell">
+                        <div class="hero-label">30-60天</div>
+                        <div class="hero-value">99.9<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.1%</div>
+                    </div>
+                    <div class="hero-cell">
+                        <div class="hero-label">60-90天</div>
+                        <div class="hero-value">100.0<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.0%</div>
+                    </div>
+                    <div class="hero-cell">
+                        <div class="hero-label">90-120天</div>
+                        <div class="hero-value">99.8<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.2%</div>
+                    </div>
+                </div>
+                <div class="hero-note">口径：快船有货率=1−Σ缺货量/Σ预测销量；缺货量=Σ快船库存缺口(col36)&lt;0(仅负值) · 运动组 口径（按 CT 拆分自 Style 全量）</div>
+
+                <div class="loss-break">
+                    <div class="loss-head"><span class="tick"></span>预估缺货损失 · 4 窗口（运动组 口径）</div>
+                    <div class="loss-grid loss-colhead">
+                        <span class="lc-name">窗口</span>
+                        <span class="lc-qty">数量·万双</span>
+                        <span class="lc-amt">预估损失·万$</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">30天</span>
+                        <span class="loss-qty">0.01</span>
+                        <span class="loss-amt">$0.07</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">30-60天</span>
+                        <span class="loss-qty">0.02</span>
+                        <span class="loss-amt">$0.14</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">60-90天</span>
+                        <span class="loss-qty">0.00</span>
+                        <span class="loss-amt">$0.0</span>
+                    </div>
+                    <div class="loss-grid loss-row">
+                        <span class="loss-name">90-120天</span>
+                        <span class="loss-qty">0.04</span>
+                        <span class="loss-amt">$0.28</span>
+                    </div>
+                    <div class="loss-grid loss-total">
+                        <span class="loss-name">合计</span>
+                        <span class="loss-qty">0.07</span>
+                        <span class="loss-amt">$0.49</span>
+                    </div>
+                </div>
+
+                <div class="score-line">
+                    <div class="left">
+                        <span class="score-name">缺货风险评分</span>
+                        <span class="score-num">67/100</span>
+                    </div>
+                    <span class="tag">≥60 已解除</span>
+                </div>
+
+                <div class="summary">
+                    <strong>恢复情况：</strong>运动组缺货风险评分回升至 <strong>67</strong>（≥60 安全线），预警解除；连续缺货仅 <strong>4款</strong> 且均为短期（≥15天 3款），120天累计缺口 <strong>0.07万双</strong>、GMV 损失 <strong>$0.49万</strong> 可忽略，维持滚动监控即可。
+                </div>
+
+                <div class="actions">
+                    <a href="#" class="btn btn-blue-solid">📊 查看诊断报告</a>
+                </div>
+            </div>
+            <div class="footer">IMS 库存健康指数 · 评分回升自动解除</div>
+        </div>
+    </div>
+
+</body>
+</html>
