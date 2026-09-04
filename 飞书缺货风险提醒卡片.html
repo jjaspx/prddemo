@@ -181,6 +181,24 @@
         .card-green .hero-cell:nth-child(3) { background: #f0fdf4; }
         .card-green .hero-cell:last-child { background: #dcfce7; }
 
+        /* 汇总格突出强调（结论格） */
+        .hero-cell.is-total { position: relative; }
+
+        .card-blue .hero-cell.is-total { background: #dbeafe; box-shadow: inset 0 0 0 1.5px #2563eb; }
+        .card-blue .hero-cell.is-total .hero-label { color: #1d4ed8; font-weight: 700; }
+        .card-blue .hero-cell.is-total .hero-value { color: #1d4ed8; }
+        .card-blue .hero-cell.is-total .hero-delta.pct { color: #1d4ed8; }
+
+        .card-red .hero-cell.is-total { background: #fee2e2; box-shadow: inset 0 0 0 1.5px #ef4444; }
+        .card-red .hero-cell.is-total .hero-label { color: #dc2626; font-weight: 700; }
+        .card-red .hero-cell.is-total .hero-value { color: #dc2626; }
+        .card-red .hero-cell.is-total .hero-delta.pct { color: #dc2626; }
+
+        .card-green .hero-cell.is-total { background: #bbf7d0; box-shadow: inset 0 0 0 1.5px #22c55e; }
+        .card-green .hero-cell.is-total .hero-label { color: #16a34a; font-weight: 700; }
+        .card-green .hero-cell.is-total .hero-value { color: #16a34a; }
+        .card-green .hero-cell.is-total .hero-delta.pct { color: #16a34a; }
+
         /* Compact score line (weakened) */
         .score-line {
             margin-top: 6px;
@@ -422,10 +440,10 @@
                         <div class="hero-value">99.3<span>%</span></div>
                         <div class="hero-delta pct">缺货率 0.7%</div>
                     </div>
-                    <div class="hero-cell">
-                        <div class="hero-label">90-120天</div>
-                        <div class="hero-value">99.0<span>%</span></div>
-                        <div class="hero-delta pct">缺货率 1.0%</div>
+                    <div class="hero-cell is-total">
+                        <div class="hero-label">汇总</div>
+                        <div class="hero-value">99.4<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.6%</div>
                     </div>
                 </div>
                 <div class="hero-note">口径：快船有货率=1−Σ缺货量/Σ预测销量；缺货量=Σ快船库存缺口(col36)&lt;0(仅负值) · 全局口径（全 CT 合计）</div>
@@ -516,10 +534,10 @@
                         <div class="hero-value">98.1<span>%</span></div>
                         <div class="hero-delta pct">缺货率 1.9%</div>
                     </div>
-                    <div class="hero-cell">
-                        <div class="hero-label">90-120天</div>
-                        <div class="hero-value">96.7<span>%</span></div>
-                        <div class="hero-delta pct">缺货率 3.3%</div>
+                    <div class="hero-cell is-total">
+                        <div class="hero-label">汇总</div>
+                        <div class="hero-value">98.8<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 1.2%</div>
                     </div>
                 </div>
                 <div class="hero-note">口径：快船有货率=1−Σ缺货量/Σ预测销量；缺货量=Σ快船库存缺口(col36)&lt;0(仅负值) · Dream Pairs Comfort 口径（按 CT 拆分自 Style 全量）</div>
@@ -610,10 +628,10 @@
                         <div class="hero-value">100.0<span>%</span></div>
                         <div class="hero-delta pct">缺货率 0.0%</div>
                     </div>
-                    <div class="hero-cell">
-                        <div class="hero-label">90-120天</div>
-                        <div class="hero-value">99.8<span>%</span></div>
-                        <div class="hero-delta pct">缺货率 0.2%</div>
+                    <div class="hero-cell is-total">
+                        <div class="hero-label">汇总</div>
+                        <div class="hero-value">99.9<span>%</span></div>
+                        <div class="hero-delta pct">缺货率 0.1%</div>
                     </div>
                 </div>
                 <div class="hero-note">口径：快船有货率=1−Σ缺货量/Σ预测销量；缺货量=Σ快船库存缺口(col36)&lt;0(仅负值) · 运动组 口径（按 CT 拆分自 Style 全量）</div>
