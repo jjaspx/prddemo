@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小渠道合并报表 - Prototype V1.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <style>
+    :root {
+      --bp-primary: #409EFF;
+      --bp-primary-hover: #66B1FF;
+      --bp-primary-active: #3A8EE6;
+      --bp-success: #67C23A;
+      --bp-warning: #E6A23C;
+      --bp-danger: #F56C6C;
+      --bp-info: #909399;
+      --bp-text-primary: #303133;
+      --bp-text-regular: #606266;
+      --bp-text-secondary: #909399;
+      --bp-text-placeholder: #C0C4CC;
+      --bp-border: #DCDFE6;
+      --bp-border-light: #E4E7ED;
+      --bp-border-lighter: #EBEEF5;
+      --bp-bg-page: #F2F6FC;
+      --bp-bg-table-header: #FAFAFA;
+      --bp-bg-hover: #F5F7FA;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bp-bg-page);
+      color: var(--bp-text-primary);
+      font-size: 14px;
+      margin: 0;
+      min-width: 1440px;
+    }
+    /* 滚动条 */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-thumb { background: #C0C4CC; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #909399; }
+    ::-webkit-scrollbar-track { background: transparent; }
+
+    /* 状态栏 */
+    .status-bar {
+      height: 32px;
+      background: #1F2D3D;
+      color: #C0C4CC;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 24px;
+    }
+    .status-bar .tag-prd { color: #67C23A; }
+    .status-bar .tag-proto { color: #409EFF; }
+    .status-bar .divider { color: #4C5D6A; }
+
+    /* 卡片 */
+    .bp-card {
+      background: #fff;
+      border: 1px solid var(--bp-border-lighter);
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    /* 表单控件 */
+    .bp-input, .bp-select {
+      height: 32px;
+      padding: 0 12px;
+      border: 1px solid var(--bp-border);
+      border-radius: 4px;
+      font-size: 14px;
+      color: var(--bp-text-primary);
+      background: #fff;
+      transition: border-color .2s;
+      outline: none;
+      width: 100%;
+    }
+    .bp-input:hover, .bp-select:hover { border-color: var(--bp-text-placeholder); }
+    .bp-input:focus, .bp-select:focus { border-color: var(--bp-primary); }
+    .bp-input::placeholder { color: var(--bp-text-placeholder); }
+    .bp-select { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%23909399' d='M6 8L1.5 3.5h9z'/></svg>"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
+
+    /* 按钮 */
+    .bp-btn {
+      height: 32px;
+      padding: 0 16px;
+      border: 1px solid var(--bp-border);
+      background: #fff;
+      color: var(--bp-text-regular);
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1;
+    }
+    .bp-btn:hover { color: var(--bp-primary); border-color: #C6E2FF; background: #ECF5FF; }
+    .bp-btn-primary {
+      background: var(--bp-primary);
+      border-color: var(--bp-primary);
+      color: #fff;
+    }
+    .bp-btn-primary:hover { background: var(--bp-primary-hover); border-color: var(--bp-primary-hover); color: #fff; }
+    .bp-btn-success { background: var(--bp-success); border-color: var(--bp-success); color: #fff; }
+    .bp-btn-success:hover { background: #85CE61; border-color: #85CE61; color: #fff; }
+    .bp-btn-danger { background: var(--bp-danger); border-color: var(--bp-danger); color: #fff; }
+    .bp-btn-danger:hover { background: #F78989; border-color: #F78989; color: #fff; }
+    .bp-btn-text { border: none; background: transparent; color: var(--bp-primary); padding: 0 8px; height: auto; }
+    .bp-btn-text:hover { background: #ECF5FF; color: var(--bp-primary-hover); }
+    .bp-btn:disabled { background: #F5F7FA; border-color: var(--bp-border-lighter); color: var(--bp-text-placeholder); cursor: not-allowed; }
+    .bp-btn:disabled:hover { background: #F5F7FA; border-color: var(--bp-border-lighter); color: var(--bp-text-placeholder); }
+
+    /* 查询条件 label */
+    .bp-label {
+      font-size: 14px;
+      color: var(--bp-text-regular);
+      width: 80px;
+      text-align: right;
+      padding-right: 12px;
+      flex-shrink: 0;
+    }
+
+    /* 表格 */
+    .bp-table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; }
+    .bp-table thead th {
+      background: var(--bp-bg-table-header);
+      color: var(--bp-text-regular);
+      font-weight: 500;
+      padding: 10px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--bp-border-lighter);
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .bp-table tbody td {
+      padding: 10px 8px;
+      color: var(--bp-text-primary);
+      border-bottom: 1px solid var(--bp-border-lighter);
+      white-space: nowrap;
+    }
+    .bp-table tbody tr:hover { background: var(--bp-bg-hover); }
+    .bp-table .row-num { color: var(--bp-text-secondary); width: 56px; text-align: center; }
+    .bp-table .num-cell { text-align: right; font-variant-numeric: tabular-nums; }
+    .bp-table tfoot td {
+      background: #FAFAFA;
+      font-weight: 600;
+      color: var(--bp-text-primary);
+      padding: 10px 8px;
+      border-top: 1px solid var(--bp-border-light);
+      border-bottom: 1px solid var(--bp-border-lighter);
+      white-space: nowrap;
+    }
+    .bp-table tfoot td.num-cell { text-align: right; font-variant-numeric: tabular-nums; }
+
+    /* 状态标签 */
+    .bp-tag { display: inline-block; padding: 2px 8px; font-size: 12px; border-radius: 4px; line-height: 18px; }
+    .bp-tag-success { background: #F0F9EB; color: #67C23A; border: 1px solid #E1F3D8; }
+    .bp-tag-info { background: #F4F4F5; color: #909399; border: 1px solid #E9E9EB; }
+    .bp-tag-warning { background: #FDF6EC; color: #E6A23C; border: 1px solid #FAECD8; }
+
+    /* 列配置面板 */
+    .col-group-title {
+      font-size: 12px;
+      color: var(--bp-text-secondary);
+      padding: 8px 12px;
+      background: var(--bp-bg-table-header);
+      border-top: 1px solid var(--bp-border-lighter);
+      border-bottom: 1px solid var(--bp-border-lighter);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .col-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      gap: 8px;
+      cursor: pointer;
+      transition: background .15s;
+      border-bottom: 1px solid var(--bp-border-lighter);
+    }
+    .col-item:hover { background: var(--bp-bg-hover); }
+    .col-item.dragging { opacity: 0.4; background: #ECF5FF; }
+    .col-item.drag-over { border-top: 2px solid var(--bp-primary); }
+    .col-item .drag-handle { color: var(--bp-text-placeholder); cursor: grab; flex-shrink: 0; }
+    .col-item .drag-handle:hover { color: var(--bp-primary); }
+    .col-item .col-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--bp-text-primary); }
+
+    /* 自定义复选框 */
+    .bp-checkbox {
+      width: 16px; height: 16px;
+      border: 1px solid var(--bp-border);
+      border-radius: 2px;
+      background: #fff;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      transition: all .2s;
+    }
+    .bp-checkbox:hover { border-color: var(--bp-primary); }
+    .bp-checkbox.checked {
+      background: var(--bp-primary);
+      border-color: var(--bp-primary);
+    }
+    .bp-checkbox.checked::after {
+      content: '';
+      position: absolute;
+      left: 4px; top: 1px;
+      width: 5px; height: 9px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    .bp-checkbox.indeterminate {
+      background: var(--bp-primary);
+      border-color: var(--bp-primary);
+    }
+    .bp-checkbox.indeterminate::after {
+      content: '';
+      position: absolute;
+      left: 3px; top: 6px;
+      width: 8px; height: 2px;
+      background: #fff;
+    }
+
+    /* 分页 */
+    .bp-pagination { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--bp-text-regular); }
+    .bp-pagination .page-item {
+      min-width: 32px; height: 32px;
+      border: 1px solid var(--bp-border);
+      background: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0 8px;
+      transition: all .2s;
+    }
+    .bp-pagination .page-item:hover { color: var(--bp-primary); border-color: var(--bp-primary); }
+    .bp-pagination .page-item.active { background: var(--bp-primary); border-color: var(--bp-primary); color: #fff; }
+    .bp-pagination .page-jump { width: 48px; }
+
+    /* 弹窗 */
+    .bp-mask {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100;
+    }
+    .bp-modal {
+      background: #fff;
+      border-radius: 8px;
+      width: 560px;
+      max-height: 80vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .bp-modal.bp-modal-lg { width: 880px; max-height: 86vh; }
+    .bp-modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--bp-border-lighter);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .bp-modal-body { padding: 20px; flex: 1; overflow-y: auto; }
+    .bp-modal-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--bp-border-lighter);
+      display: flex; justify-content: flex-end; gap: 8px;
+    }
+
+    /* 提示 */
+    .bp-message {
+      position: fixed;
+      top: 56px; left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 16px;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      display: flex; align-items: center; gap: 8px;
+      z-index: 200;
+      font-size: 14px;
+      animation: bp-msg-in .3s;
+    }
+    @keyframes bp-msg-in { from { opacity: 0; transform: translate(-50%, -10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+    .bp-message.success { color: var(--bp-success); }
+    .bp-message.warning { color: var(--bp-warning); }
+    .bp-message.error { color: var(--bp-danger); }
+    .bp-message .msg-link { color: var(--bp-primary); text-decoration: underline; cursor: pointer; margin: 0 2px; font-weight: 500; }
+    .bp-message .msg-link:hover { color: #66b1ff; }
+    .bp-message .msg-close { margin-left: 8px; cursor: pointer; color: var(--bp-text-placeholder); }
+    .bp-message .msg-close:hover { color: var(--bp-text-primary); }
+
+    /* 空态/加载态 */
+    .empty-state, .loading-state {
+      padding: 64px 0;
+      text-align: center;
+      color: var(--bp-text-secondary);
+    }
+    .empty-state i, .loading-state i { font-size: 48px; color: var(--bp-text-placeholder); margin-bottom: 12px; display: block; }
+    .loading-state i { animation: bp-spin 1.2s linear infinite; }
+    @keyframes bp-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
+    /* 折叠/展开过渡 */
+    .collapsible { transition: max-height .3s ease, opacity .2s; overflow: hidden; }
+    .collapsible.collapsed { max-height: 0; opacity: 0; }
+    .collapsible.expanded { max-height: 500px; opacity: 1; }
+
+    /* Tag 多选输入组件 */
+    .tag-select {
+      position: relative;
+      flex: 1;
+      min-height: 32px;
+      padding: 2px 6px;
+      border: 1px solid var(--bp-border);
+      border-radius: 4px;
+      background: #fff;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      cursor: text;
+      transition: border-color .2s;
+    }
+    .tag-select:hover { border-color: var(--bp-text-placeholder); }
+    .tag-select.focus { border-color: var(--bp-primary); }
+    .tag-select-tags { display: contents; }
+    .tag-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 6px 2px 8px;
+      background: #ECF5FF;
+      color: var(--bp-primary);
+      border: 1px solid #D9ECFF;
+      border-radius: 4px;
+      font-size: 12px;
+      line-height: 18px;
+      max-width: 200px;
+    }
+    .tag-item .tag-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .tag-item .tag-close {
+      cursor: pointer;
+      color: var(--bp-primary);
+      opacity: .7;
+      font-size: 12px;
+      line-height: 1;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    .tag-item .tag-close:hover { opacity: 1; background: rgba(64,158,255,.15); }
+    .tag-select-input {
+      flex: 1;
+      min-width: 80px;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      color: var(--bp-text-primary);
+      height: 26px;
+      padding: 0 4px;
+    }
+    .tag-select-input::placeholder { color: var(--bp-text-placeholder); }
+    .tag-select-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid var(--bp-border-light);
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      max-height: 240px;
+      overflow-y: auto;
+      z-index: 50;
+      display: none;
+    }
+    .tag-select-dropdown.show { display: block; }
+    .tag-option {
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--bp-text-regular);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .tag-option:hover, .tag-option.active {
+      background: var(--bp-bg-hover);
+      color: var(--bp-primary);
+    }
+    .tag-option .opt-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tag-option .opt-tag { font-size: 11px; color: var(--bp-text-placeholder); }
+    .tag-option.selected { color: var(--bp-text-placeholder); cursor: not-allowed; background: #fff; }
+    .tag-option.selected .opt-tag { color: var(--bp-success); }
+    .tag-select-empty {
+      padding: 16px 12px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--bp-text-secondary);
+    }
+
+    /* 右侧面板折叠按钮 */
+    .panel-toggle {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 20px; height: 48px;
+      background: #fff;
+      border: 1px solid var(--bp-border-lighter);
+      border-left: none;
+      border-radius: 0 4px 4px 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--bp-text-secondary);
+      z-index: 5;
+    }
+    .panel-toggle:hover { color: var(--bp-primary); }
+
+    /* 列配置面板内嵌统计 */
+    .col-stat {
+      padding: 8px 12px;
+      background: #F5F7FA;
+      font-size: 12px;
+      color: var(--bp-text-secondary);
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--bp-border-lighter);
+    }
+    .col-stat .count { color: var(--bp-primary); font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<!-- 顶部状态栏 -->
+<div class="status-bar">
+  <span><i class="fa fa-cube" style="margin-right:6px;color:#409EFF"></i>小渠道合并报表</span>
+  <span class="divider">|</span>
+  <span>PRD:<span class="tag-prd">V0.1</span></span>
+  <span>Prototype:<span class="tag-proto">V1.0</span></span>
+  <span class="divider">|</span>
+  <span>创建者：Zero skill</span>
+  <span class="divider">|</span>
+  <span style="margin-left:auto">2026-10-08</span>
+</div>
+
+<!-- 主容器 -->
+<div class="px-6 py-4" style="min-width:1440px;">
+
+  <!-- 面包屑 -->
+  <div class="flex items-center gap-2 text-sm mb-3" style="color:var(--bp-text-secondary)">
+    <span><i class="fa fa-home" style="margin-right:4px"></i>首页</span>
+    <span style="color:var(--bp-text-placeholder)">/</span>
+    <span>报表管理</span>
+    <span style="color:var(--bp-text-placeholder)">/</span>
+    <span style="color:var(--bp-text-primary)">小渠道合并报表</span>
+  </div>
+
+  <!-- 查询条件卡片 -->
+  <div class="bp-card mb-3">
+    <div class="p-4 pb-2">
+      <div class="grid grid-cols-4 gap-x-6 gap-y-3" id="filterGrid">
+        <!-- CT -->
+        <div class="flex items-center">
+          <span class="bp-label">CT</span>
+          <select class="bp-select" id="filterCT">
+            <option value="">请选择</option>
+            <option value="/">/</option>
+            <option value="Bruno Marc">Bruno Marc</option>
+            <option value="Dream Pairs Boots">Dream Pairs Boots</option>
+            <option value="Dream Pairs Comfort">Dream Pairs Comfort</option>
+            <option value="Dream Pairs Flats &amp; Pumps">Dream Pairs Flats &amp; Pumps</option>
+            <option value="Dream Pairs Kids">Dream Pairs Kids</option>
+            <option value="Dream Pairs Sandals">Dream Pairs Sandals</option>
+            <option value="Justfab">Justfab</option>
+            <option value="Nortiv8">Nortiv8</option>
+            <option value="运动组">运动组</option>
+          </select>
+        </div>
+        <!-- 类目 -->
+        <div class="flex items-center">
+          <span class="bp-label">类目</span>
+          <select class="bp-select" id="filterCategory">
+            <option value="">请选择</option>
+            <option value="BAGS>Bags &amp; Accessories>Accessories">BAGS &gt; Bags &amp; Accessories &gt; Accessories</option>
+            <option value="BAGS>Bags &amp; Accessories>Bags &amp; Handbags">BAGS &gt; Bags &amp; Accessories &gt; Bags &amp; Handbags</option>
+            <option value="BAGS>CLOTHING>Activewear">BAGS &gt; CLOTHING &gt; Activewear</option>
+            <option value="Health Care>Foot Health>Inserts &amp; Insoles">Health Care &gt; Foot Health &gt; Inserts &amp; Insoles</option>
+            <option value="KIDS>ATHLETIC>FASHION SNEAKERS">KIDS &gt; ATHLETIC &gt; FASHION SNEAKERS</option>
+            <option value="KIDS>ATHLETIC>RUNNING SHOES">KIDS &gt; ATHLETIC &gt; RUNNING SHOES</option>
+            <option value="KIDS>ATHLETIC>SPORT SANDALS &amp; SLIDES">KIDS &gt; ATHLETIC &gt; SPORT SANDALS &amp; SLIDES</option>
+            <option value="KIDS>ATHLETIC>SPORTS SHOES>BASKETBALL SHOES">KIDS &gt; ATHLETIC &gt; SPORTS SHOES &gt; BASKETBALL SHOES</option>
+            <option value="KIDS>ATHLETIC>SPORTS SHOES>SOCCER SHOES">KIDS &gt; ATHLETIC &gt; SPORTS SHOES &gt; SOCCER SHOES</option>
+            <option value="KIDS>FASHION>BOOTS">KIDS &gt; FASHION &gt; BOOTS</option>
+            <option value="KIDS>FASHION>BOYS BOOTS">KIDS &gt; FASHION &gt; BOYS BOOTS</option>
+          </select>
+        </div>
+        <!-- 备货渠道：输入自动匹配多选 -->
+        <div class="flex items-center">
+          <span class="bp-label">备货渠道</span>
+          <div class="tag-select" id="channelTagSelect">
+            <div class="tag-select-tags" id="channelTags"></div>
+            <input type="text" class="tag-select-input" id="channelInput" placeholder="请输入，自动匹配" autocomplete="off" />
+            <div class="tag-select-dropdown" id="channelDropdown"></div>
+          </div>
+        </div>
+        <!-- Style：输入自动匹配多选 -->
+        <div class="flex items-center">
+          <span class="bp-label">Style</span>
+          <div class="tag-select" id="styleTagSelect">
+            <div class="tag-select-tags" id="styleTags"></div>
+            <input type="text" class="tag-select-input" id="styleInput" placeholder="请输入，自动匹配" autocomplete="off" />
+            <div class="tag-select-dropdown" id="styleDropdown"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 隐藏的高级筛选（演示用，默认折叠） -->
+      <div class="collapsible collapsed" id="advancedFilter">
+        <div class="grid grid-cols-4 gap-x-6 gap-y-3 mt-3 pt-3" style="border-top:1px dashed var(--bp-border-lighter)">
+          <div class="flex items-center">
+            <span class="bp-label">销售季节</span>
+            <select class="bp-select" id="filterSeason"><option value="">请选择</option><option value="冬季">冬季</option><option value="四季">四季</option><option value="夏季">夏季</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="px-4 pb-4 pt-2 flex items-center" style="border-top:1px solid var(--bp-border-lighter)">
+      <div class="flex items-center gap-2">
+        <button class="bp-btn bp-btn-primary" onclick="handleQuery()"><i class="fa fa-search"></i>查询</button>
+        <button class="bp-btn" onclick="handleReset()"><i class="fa fa-refresh"></i>重置</button>
+        <button class="bp-btn bp-btn-text" id="advancedToggle" onclick="toggleAdvanced()">
+          <span>展开更多</span><i class="fa fa-chevron-down" id="advancedIcon"></i>
+        </button>
+      </div>
+      <div class="ml-auto text-xs" style="color:var(--bp-text-secondary)">
+        查询条件已选择 <span id="filterActiveCount" style="color:var(--bp-primary);font-weight:600">0</span> 项
+      </div>
+    </div>
+  </div>
+
+  <!-- 工具栏 + 表格 + 右侧列配置 -->
+  <div class="bp-card relative" style="min-height:520px;">
+
+    <!-- 工具栏 -->
+    <div class="px-4 py-3 flex items-center gap-2" style="border-bottom:1px solid var(--bp-border-lighter)">
+      <button class="bp-btn bp-btn-success" onclick="handleExport()"><i class="fa fa-download"></i>导出</button>
+      <div class="ml-auto text-xs" style="color:var(--bp-text-secondary)">
+        <i class="fa fa-info-circle" style="margin-right:4px"></i>
+        查询结果按您勾选的列显示，点击「导出」可调整列并自动保存为个人方案
+      </div>
+    </div>
+
+    <!-- 主体：表格（全宽） -->
+    <div style="min-height:480px;">
+      <div class="overflow-auto" id="tableWrap">
+        <!-- 表格渲染 -->
+        <table class="bp-table" id="dataTable">
+          <thead><tr id="tableHead"></tr></thead>
+          <tbody id="tableBody"></tbody>
+          <tfoot id="tableFoot" style="display:none"></tfoot>
+        </table>
+        <!-- 空态/加载态 -->
+        <div id="tableState" class="empty-state" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- 分页 -->
+    <div class="px-4 py-3 flex items-center justify-between" style="border-top:1px solid var(--bp-border-lighter)">
+      <div class="text-xs" style="color:var(--bp-text-secondary)">
+        <i class="fa fa-info-circle" style="margin-right:4px"></i>
+        共 <span id="totalCount" style="color:var(--bp-primary);font-weight:600">0</span> 条记录
+      </div>
+      <div class="bp-pagination">
+        <span class="text-xs mr-2" style="color:var(--bp-text-secondary)">共 <span id="totalPage">1</span> 页</span>
+        <span class="page-item" onclick="goPage(1)"><i class="fa fa-angle-double-left"></i></span>
+        <span class="page-item" onclick="prevPage()"><i class="fa fa-angle-left"></i></span>
+        <span id="pageNumbers"></span>
+        <span class="page-item" onclick="nextPage()"><i class="fa fa-angle-right"></i></span>
+        <span class="page-item" onclick="goPage(-1)"><i class="fa fa-angle-double-right"></i></span>
+        <span class="ml-2 text-xs">前往</span>
+        <input type="number" class="bp-input page-jump mx-1" id="pageJump" min="1" />
+        <span class="text-xs">页</span>
+        <select class="bp-select ml-3" style="width:90px;height:32px" id="pageSizeSelect">
+          <option value="10">10条/页</option>
+          <option value="20" selected>20条/页</option>
+          <option value="50">50条/页</option>
+          <option value="100">100条/页</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- 操作日志/版本说明 -->
+  <div class="mt-4 text-xs" style="color:var(--bp-text-secondary)">
+    <div class="flex items-center gap-3">
+      <span><i class="fa fa-clock-o"></i> 最后更新：2026-10-08</span>
+      <span><i class="fa fa-user"></i> 创建者：Zero skill</span>
+      <span><i class="fa fa-tag"></i> 版本：V1.0（移除图钉固定列与列顺序预览，精简交互）</span>
+    </div>
+  </div>
+</div>
+
+<!-- 导出弹窗：含列配置 -->
+<div class="bp-mask" id="exportModal" style="display:none">
+  <div class="bp-modal bp-modal-lg">
+    <div class="bp-modal-header">
+      <span class="font-medium">导出 - 配置导出列</span>
+      <i class="fa fa-close" style="cursor:pointer;color:var(--bp-text-secondary)" onclick="cancelExport()"></i>
+    </div>
+    <div class="bp-modal-body" style="padding:0;">
+      <!-- 顶部信息条 -->
+      <div class="flex items-start gap-2 p-3" style="background:#FDF6EC;border-bottom:1px solid #FAECD8">
+        <i class="fa fa-exclamation-circle" style="color:var(--bp-warning);margin-top:2px"></i>
+        <div class="text-sm">
+          <span style="color:var(--bp-text-primary);font-weight:500">导出范围：</span>
+          <span style="color:var(--bp-text-regular)">全部数据（<span id="exportScopeCount" style="color:var(--bp-primary);font-weight:600">0</span> 条）</span>
+          <span style="color:var(--bp-text-secondary);margin-left:12px">·</span>
+          <span style="color:var(--bp-text-primary);margin-left:12px;font-weight:500">导出列：</span>
+          <span style="color:var(--bp-text-regular)"><span id="exportColCount" style="color:var(--bp-primary);font-weight:600">0</span> / 27</span>
+          <span style="color:var(--bp-text-secondary);margin-left:12px">·</span>
+          <span style="color:var(--bp-text-primary);margin-left:12px;font-weight:500">文件格式：</span>
+          <span style="color:var(--bp-text-regular)">XLSX</span>
+        </div>
+      </div>
+
+      <!-- 列配置工具条 -->
+      <div class="flex items-center p-3" style="border-bottom:1px solid var(--bp-border-lighter)">
+        <div class="flex items-center gap-1 cursor-pointer" onclick="toggleAllCols(true)">
+          <div class="bp-checkbox" id="checkAllBox"></div>
+          <span class="text-xs" style="color:var(--bp-text-regular)">全选</span>
+        </div>
+        <span class="text-xs cursor-pointer ml-3" style="color:var(--bp-primary)" onclick="toggleAllCols(false)">清空</span>
+        <span class="text-xs ml-3" style="color:var(--bp-text-secondary)">方案：</span>
+        <select class="bp-select" id="schemeSelect" style="height:28px;width:150px;font-size:12px;margin-left:4px" onchange="applyScheme(this.value===''?-1:parseInt(this.value))">
+          <option value="">选择方案</option>
+          <option value="0">默认方案1（15列）</option>
+          <option value="1">默认方案2（19列）</option>
+        </select>
+        <span class="text-xs ml-auto" style="color:var(--bp-text-secondary)">
+          <i class="fa fa-info-circle"></i> 勾选要导出的列，列顺序固定不可调
+        </span>
+      </div>
+
+      <!-- 列列表（分组） -->
+      <div id="colList" style="max-height:380px;overflow-y:auto;"></div>
+    </div>
+    <div class="bp-modal-footer">
+      <div class="text-xs mr-auto flex items-center gap-2" style="color:var(--bp-text-secondary)">
+        <i class="fa fa-user-circle"></i>
+        <span>当前用户：<span id="currentUserName" style="color:var(--bp-text-regular);font-weight:500">Zero</span></span>
+        <span style="color:var(--bp-text-placeholder)">·</span>
+        <span id="configStatus">未保存</span>
+      </div>
+      <button class="bp-btn" onclick="saveColConfig(true)"><i class="fa fa-save"></i>保存为我的方案</button>
+      <button class="bp-btn" onclick="cancelExport()">取消</button>
+      <button class="bp-btn bp-btn-primary" onclick="confirmExport()">确认导出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===================== 列定义（27列，顺序固定不可变） =====================
+  // 顺序：发运扣减/广东仓/高盾仓(*)/高盾临时1仓/福州连江1仓/东南亚仓/翻单扣减/备货渠道/CT/商品类目/销售季节/sku/style/color/size/国内可补/东南亚可补/其他锁定/未发锁定/海外在途/平台仓在途/海外自有仓在途/海外第三方仓在途/海外在库总计/平台仓在库/海外自有仓在库/海外第三方仓在库
+  const ALL_COLUMNS = [
+    { key:'shipDeduct',      label:'发运扣减',          fixedDefault:false },
+    { key:'wh_gd',           label:'广东仓',            fixedDefault:false },
+    { key:'wh_gd_shield',    label:'高盾仓(*)',         fixedDefault:false },
+    { key:'wh_gd_tmp1',      label:'高盾临时1仓',        fixedDefault:false },
+    { key:'wh_fzlj1',        label:'福州连江1仓',        fixedDefault:true  },
+    { key:'wh_sea',          label:'东南亚仓',          fixedDefault:false },
+    { key:'turnDeduct',      label:'翻单扣减',          fixedDefault:false },
+    { key:'stockChannel',    label:'备货渠道',          fixedDefault:true  },
+    { key:'ct',              label:'CT',               fixedDefault:true  },
+    { key:'category',        label:'商品类目',          fixedDefault:false },
+    { key:'season',          label:'销售季节',          fixedDefault:false },
+    { key:'sku',             label:'sku',              fixedDefault:true  },
+    { key:'style',           label:'style',            fixedDefault:true  },
+    { key:'color',           label:'color',            fixedDefault:true  },
+    { key:'size',            label:'size',             fixedDefault:true  },
+    { key:'cn_supply',       label:'国内可补',          fixedDefault:false },
+    { key:'sea_supply',      label:'东南亚可补',        fixedDefault:false },
+    { key:'lock_other',      label:'其他锁定',          fixedDefault:false },
+    { key:'lock_unshipped',  label:'未发锁定',          fixedDefault:false },
+    { key:'trans_total',     label:'海外在途',          fixedDefault:false },
+    { key:'trans_platform',  label:'平台仓在途',        fixedDefault:false },
+    { key:'trans_own',       label:'海外自有仓在途',    fixedDefault:false },
+    { key:'trans_3rd',       label:'海外第三方仓在途',  fixedDefault:false },
+    { key:'stock_total',     label:'海外在库总计',      fixedDefault:true  },
+    { key:'stock_platform',   label:'平台仓在库',        fixedDefault:false },
+    { key:'stock_own',        label:'海外自有仓在库',    fixedDefault:false },
+    { key:'stock_3rd',       label:'海外第三方仓在库',  fixedDefault:false }
+  ];
+
+  // ===================== 预设方案（顺序固定，仅控制勾选） =====================
+  const DEFAULT_SCHEMES = [
+    {
+      name: '默认方案1',
+      desc: '扣减 + 国内仓 + 基础信息（15列）',
+      keys: ['shipDeduct','wh_gd','wh_gd_shield','wh_gd_tmp1','wh_fzlj1','wh_sea','turnDeduct','stockChannel','ct','category','season','sku','style','color','size']
+    },
+    {
+      name: '默认方案2',
+      desc: '基础信息 + 可补/锁定/海外在途/海外在库（19列）',
+      keys: ['stockChannel','ct','category','season','sku','style','color','size','cn_supply','sea_supply','lock_other','lock_unshipped','trans_total','trans_platform','trans_own','trans_3rd','stock_total','stock_platform','stock_own','stock_3rd']
+    }
+  ];
+
+  // 应用某个预设方案：保持 ALL_COLUMNS 固定顺序，仅按方案 keys 设置勾选
+  // quiet=true 时不弹提示（用于初始化）
+  function applyScheme(schemeIdx, quiet) {
+    const scheme = DEFAULT_SCHEMES[schemeIdx];
+    if (!scheme) return;
+    STATE.columns.forEach(col => {
+      col.checked = scheme.keys.includes(col.key);
+      col.pinned = false;
+    });
+    renderColPanel();
+    markDirty();
+    if (!quiet) showMessage(`已应用「${scheme.name}」（${scheme.keys.length} 列）`, 'success');
+  }
+
+  // ===================== 状态 =====================
+  const STATE = {
+    columns: ALL_COLUMNS.map(c => ({ ...c, checked: false, pinned: false })),
+    page: 1,
+    pageSize: 20,
+    total: 0,
+    data: [],
+    loading: false,
+    panelCollapsed: false,
+    advancedCollapsed: true,
+    dragSrcIndex: null
+  };
+
+  // ===================== Mock 数据生成 =====================
+  function generateMockData(count = 28) {
+    const channels = ['AMAZON US','AMAZON EU','AMAZON CA','SHOPEE','TIKTOK'];
+    const cts = ['/','Bruno Marc','Dream Pairs Boots','Dream Pairs Comfort','Dream Pairs Flats & Pumps','Dream Pairs Kids','Dream Pairs Sandals','Justfab','Nortiv8','运动组'];
+    const categories = ['BAGS>Bags & Accessories>Accessories','BAGS>Bags & Accessories>Bags & Handbags','BAGS>CLOTHING>Activewear','Health Care>Foot Health>Inserts & Insoles','KIDS>ATHLETIC>FASHION SNEAKERS','KIDS>ATHLETIC>RUNNING SHOES','KIDS>ATHLETIC>SPORT SANDALS & SLIDES','KIDS>ATHLETIC>SPORTS SHOES>BASKETBALL SHOES','KIDS>ATHLETIC>SPORTS SHOES>SOCCER SHOES','KIDS>FASHION>BOOTS','KIDS>FASHION>BOYS BOOTS'];
+    const seasons = ['冬季','四季','夏季'];
+    const styles = ['151014-K','151015-A','151016-B'];
+    const colors = ['ALL/BLACK','WHITE','RED/BLUE'];
+    const sizes = ['S','M','L','2','3','007','008','009'];
+    const whNames = ['广东仓','高盾仓(*)','高盾临时1仓','福州连江1仓','东南亚仓'];
+    const data = [];
+    for (let i=1; i<=count; i++) {
+      data.push({
+        stockChannel: channels[i % channels.length],
+        ct: cts[i % cts.length],
+        category: categories[i % categories.length],
+        season: seasons[i % seasons.length],
+        sku: `${styles[i%styles.length]}-${colors[i%colors.length].split('/')[0]}-SZ-${String(100+i).slice(-3)}`,
+        style: styles[i % styles.length],
+        color: colors[i % colors.length],
+        size: sizes[i % sizes.length],
+        shipDeduct: Math.floor(Math.random()*200),
+        turnDeduct: Math.floor(Math.random()*100),
+        wh_gd: Math.floor(Math.random()*500),
+        wh_gd_shield: Math.floor(Math.random()*300),
+        wh_gd_tmp1: Math.floor(Math.random()*200),
+        wh_fzlj1: Math.floor(Math.random()*400),
+        wh_sea: Math.floor(Math.random()*150),
+        cn_supply: Math.floor(Math.random()*100),
+        sea_supply: Math.floor(Math.random()*80),
+        lock_other: Math.floor(Math.random()*50),
+        lock_unshipped: Math.floor(Math.random()*120),
+        trans_total: Math.floor(Math.random()*1000),
+        trans_platform: Math.floor(Math.random()*600),
+        trans_own: Math.floor(Math.random()*300),
+        trans_3rd: Math.floor(Math.random()*200),
+        stock_total: Math.floor(Math.random()*2000)+500,
+        stock_platform: Math.floor(Math.random()*1200),
+        stock_own: Math.floor(Math.random()*600),
+        stock_3rd: Math.floor(Math.random()*400)
+      });
+    }
+    return data;
+  }
+
+  // ===================== 渲染：列配置面板（平铺，顺序固定，不可拖拽） =====================
+  function renderColPanel() {
+    const list = document.getElementById('colList');
+    list.innerHTML = '';
+
+    // 按 ALL_COLUMNS 固定顺序平铺展示（不分组、不可拖拽）
+    STATE.columns.forEach((col, idx) => {
+      const item = document.createElement('div');
+      item.className = 'col-item';
+      item.setAttribute('data-idx', idx);
+      item.innerHTML = `
+        <span class="col-order" style="width:28px;color:var(--bp-text-placeholder);font-size:12px;text-align:right;flex-shrink:0">${idx+1}</span>
+        <div class="bp-checkbox ${col.checked?'checked':''}" data-check-idx="${idx}"></div>
+        <span class="col-label">${col.label}</span>
+      `;
+      // 勾选事件
+      item.querySelector('.bp-checkbox').addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleColCheck(idx);
+      });
+      // 行点击也勾选
+      item.addEventListener('click', () => toggleColCheck(idx));
+      list.appendChild(item);
+    });
+
+    updateColStat();
+    renderCheckAllBox();
+  }
+
+  function toggleColCheck(idx) {
+    STATE.columns[idx].checked = !STATE.columns[idx].checked;
+    renderColPanel();
+    markDirty();
+  }
+
+  function toggleAllCols(checkAll) {
+    STATE.columns.forEach(c => { c.checked = checkAll; });
+    renderColPanel();
+    markDirty();
+  }
+
+  function updateColStat() {
+    const checked = STATE.columns.filter(c => c.checked).length;
+    const el = document.getElementById('exportColCount');
+    if (el) el.textContent = checked;
+  }
+
+  function renderCheckAllBox() {
+    const checkedCount = STATE.columns.filter(c => c.checked).length;
+    const box = document.getElementById('checkAllBox');
+    box.classList.remove('checked','indeterminate');
+    if (checkedCount === STATE.columns.length) box.classList.add('checked');
+    else if (checkedCount > 0) box.classList.add('indeterminate');
+  }
+
+  // ===================== 渲染：数据表格（按用户列配置动态展示，顺序固定） =====================
+  function renderTable() {
+    const head = document.getElementById('tableHead');
+    const body = document.getElementById('tableBody');
+    const foot = document.getElementById('tableFoot');
+    const stateBox = document.getElementById('tableState');
+    const tableCols = STATE.columns.filter(c => c.checked);
+
+    head.innerHTML = '';
+    body.innerHTML = '';
+    foot.innerHTML = '';
+
+    // 未选列：展示空态
+    if (tableCols.length === 0) {
+      document.getElementById('dataTable').style.display = 'none';
+      stateBox.style.display = 'block';
+      stateBox.className = 'empty-state';
+      stateBox.innerHTML = `<i class="fa fa-table"></i><div>未选择任何展示列，请点击「导出」在弹窗中勾选列</div>`;
+      return;
+    }
+
+    document.getElementById('dataTable').style.display = 'table';
+
+    // 表头：序号 + 已勾选列（固定顺序）
+    let headHtml = '<th class="row-num">#</th>';
+    tableCols.forEach(col => {
+      headHtml += `<th>${col.label}</th>`;
+    });
+    head.innerHTML = headHtml;
+
+    // 加载态
+    if (STATE.loading) {
+      body.innerHTML = '';
+      foot.style.display = 'none';
+      stateBox.style.display = 'block';
+      stateBox.className = 'loading-state';
+      stateBox.innerHTML = `<i class="fa fa-spinner"></i><div>数据加载中...</div>`;
+      return;
+    }
+
+    // 空数据
+    if (STATE.data.length === 0) {
+      body.innerHTML = '';
+      foot.style.display = 'none';
+      stateBox.style.display = 'block';
+      stateBox.className = 'empty-state';
+      stateBox.innerHTML = `<i class="fa fa-inbox"></i><div>暂无数据，请调整查询条件后重试</div>`;
+      return;
+    }
+
+    stateBox.style.display = 'none';
+
+    // 数据行
+    const start = (STATE.page - 1) * STATE.pageSize;
+    const end = start + STATE.pageSize;
+    const pageData = STATE.data.slice(start, end);
+
+    pageData.forEach((row, i) => {
+      let rowHtml = `<tr><td class="row-num">${start + i + 1}</td>`;
+      tableCols.forEach(col => {
+        const val = row[col.key];
+        const isNum = typeof val === 'number';
+        rowHtml += `<td class="${isNum?'num-cell':''}">${isNum ? val.toLocaleString() : (val ?? '')}</td>`;
+      });
+      rowHtml += '</tr>';
+      body.innerHTML += rowHtml;
+    });
+
+    // 合计行
+    if (STATE.data.length > 0) {
+      let footHtml = `<td class="row-num">合计</td>`;
+      tableCols.forEach(col => {
+        let val = 0;
+        let hasNum = false;
+        STATE.data.forEach(row => {
+          if (typeof row[col.key] === 'number') { val += row[col.key]; hasNum = true; }
+        });
+        footHtml += `<td class="${hasNum?'num-cell':''}">${hasNum ? val.toLocaleString() : '—'}</td>`;
+      });
+      foot.innerHTML = `<tr>${footHtml}</tr>`;
+      foot.style.display = 'table-footer-group';
+    }
+  }
+
+  // ===================== 分页 =====================
+  function renderPagination() {
+    const total = STATE.total;
+    const totalPage = Math.max(1, Math.ceil(total / STATE.pageSize));
+    document.getElementById('totalPage').textContent = totalPage;
+    document.getElementById('totalCount').textContent = total;
+
+    const nums = document.getElementById('pageNumbers');
+    nums.innerHTML = '';
+    const cur = STATE.page;
+    let pages = [];
+    if (totalPage <= 7) {
+      for (let i=1; i<=totalPage; i++) pages.push(i);
+    } else {
+      pages = [1];
+      if (cur > 3) pages.push('...');
+      for (let i = Math.max(2, cur-1); i <= Math.min(totalPage-1, cur+1); i++) pages.push(i);
+      if (cur < totalPage-2) pages.push('...');
+      pages.push(totalPage);
+    }
+    pages.forEach(p => {
+      if (p === '...') {
+        nums.innerHTML += `<span class="page-item" style="border:none;cursor:default">...</span>`;
+      } else {
+        nums.innerHTML += `<span class="page-item ${p===cur?'active':''}" onclick="goPage(${p})">${p}</span>`;
+      }
+    });
+  }
+
+  function goPage(p) {
+    if (p === -1) p = Math.max(1, Math.ceil(STATE.total / STATE.pageSize));
+    if (p < 1 || p > Math.ceil(STATE.total / STATE.pageSize)) return;
+    STATE.page = p;
+    renderTable();
+    renderPagination();
+  }
+  function prevPage() { goPage(STATE.page - 1); }
+  function nextPage() { goPage(STATE.page + 1); }
+
+  document.getElementById('pageJump').addEventListener('change', (e) => {
+    const p = parseInt(e.target.value);
+    if (!isNaN(p)) goPage(p);
+    e.target.value = '';
+  });
+  document.getElementById('pageSizeSelect').addEventListener('change', (e) => {
+    STATE.pageSize = parseInt(e.target.value);
+    STATE.page = 1;
+    renderTable();
+    renderPagination();
+  });
+
+  // ===================== 查询/重置 =====================
+  function handleQuery() {
+    STATE.loading = true;
+    STATE.page = 1;
+    renderTable();
+    setTimeout(() => {
+      let data = generateMockData(28);
+      // 按CT过滤
+      const ctVal = document.getElementById('filterCT').value;
+      if (ctVal) data = data.filter(r => r.ct === ctVal);
+      // 按类目过滤
+      const catVal = document.getElementById('filterCategory').value;
+      if (catVal) data = data.filter(r => r.category === catVal);
+      // 按销售季节过滤
+      const seasonVal = document.getElementById('filterSeason').value;
+      if (seasonVal) data = data.filter(r => r.season === seasonVal);
+      // 按备货渠道多选过滤
+      if (channelState.selected.length > 0) {
+        data = data.filter(r => channelState.selected.includes(r.stockChannel));
+      }
+      // 按 Style 多选过滤
+      if (styleState.selected.length > 0) {
+        data = data.filter(r => styleState.selected.includes(r.style));
+      }
+      STATE.data = data;
+      STATE.total = data.length;
+      STATE.loading = false;
+      renderTable();
+      renderPagination();
+      const filters = [];
+      if (ctVal) filters.push(`CT: ${ctVal}`);
+      if (catVal) filters.push(`类目: ${catVal}`);
+      if (seasonVal) filters.push(`销售季节: ${seasonVal}`);
+      if (channelState.selected.length) filters.push(`渠道: ${channelState.selected.join(', ')}`);
+      if (styleState.selected.length) filters.push(`Style: ${styleState.selected.join(', ')}`);
+      const filterInfo = filters.length ? ` · ${filters.join(' · ')}` : '';
+      showMessage(`查询成功，共 ${STATE.total} 条记录${filterInfo}`, 'success');
+    }, 600);
+  }
+
+  function handleReset() {
+    // 主筛选
+    document.getElementById('filterCT').value = '';
+    document.getElementById('filterCategory').value = '';
+    // 清空 备货渠道 多选
+    channelState.selected = [];
+    channelInput.value = '';
+    renderChannelTags();
+    channelDropdown.classList.remove('show');
+    // 清空 Style 多选
+    styleState.selected = [];
+    styleInput.value = '';
+    renderStyleTags();
+    styleDropdown.classList.remove('show');
+    // 清空高级筛选（销售季节）
+    document.querySelectorAll('#advancedFilter input, #advancedFilter select').forEach(el => { el.value = ''; });
+    updateFilterActiveCount();
+    showMessage('所有查询条件已重置', 'success');
+  }
+
+  // 统计已选择的筛选条件数
+  function updateFilterActiveCount() {
+    let n = 0;
+    if (document.getElementById('filterCT').value) n++;
+    if (document.getElementById('filterCategory').value) n++;
+    if (channelState.selected.length) n++;
+    if (styleState.selected.length) n++;
+    document.querySelectorAll('#advancedFilter input, #advancedFilter select').forEach(el => { if (el.value) n++; });
+    const el = document.getElementById('filterActiveCount');
+    if (el) el.textContent = n;
+  }
+
+  function toggleAdvanced() {
+    STATE.advancedCollapsed = !STATE.advancedCollapsed;
+    const panel = document.getElementById('advancedFilter');
+    const icon = document.getElementById('advancedIcon');
+    const txt = document.getElementById('advancedToggle').querySelector('span');
+    if (STATE.advancedCollapsed) {
+      panel.classList.add('collapsed');
+      panel.classList.remove('expanded');
+      icon.className = 'fa fa-chevron-down';
+      txt.textContent = '展开更多';
+    } else {
+      panel.classList.remove('collapsed');
+      panel.classList.add('expanded');
+      icon.className = 'fa fa-chevron-up';
+      txt.textContent = '收起';
+    }
+  }
+
+  // ===================== 个人列配置持久化（按用户隔离） =====================
+  const CURRENT_USER = 'user_zero';
+  const STORAGE_KEY = `small_channel_report_col_config_${CURRENT_USER}`;
+
+  // 保存当前列配置到 localStorage（按用户隔离）
+  function saveColConfig(showMsg) {
+    const payload = {
+      user: CURRENT_USER,
+      savedAt: new Date().toISOString(),
+      columns: STATE.columns.map(c => ({ key: c.key, checked: c.checked, pinned: c.pinned }))
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      updateConfigStatus(true);
+      if (showMsg) {
+        STATE.exportSnapshot = JSON.stringify(STATE.columns); // 保存即生效，更新快照
+        renderTable(); // 表格按新列配置显示
+        showMessage('导出列配置已保存为您个人的方案', 'success');
+      }
+    } catch (e) {
+      if (showMsg) showMessage('配置保存失败，请检查浏览器存储权限', 'error');
+    }
+  }
+
+  // 从 localStorage 加载该用户的列配置（仅覆盖勾选/固定，列顺序保持 ALL_COLUMNS 固定顺序不变）
+  function loadColConfig() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      const payload = JSON.parse(raw);
+      if (!payload || !Array.isArray(payload.columns)) return false;
+      const savedMap = {};
+      payload.columns.forEach(c => { savedMap[c.key] = c; });
+      // 仅当全部 key 都存在且数量一致时才应用，避免脏数据
+      const allKeys = ALL_COLUMNS.map(c => c.key);
+      const savedKeys = payload.columns.map(c => c.key);
+      const valid = allKeys.length === savedKeys.length && allKeys.every(k => savedMap[k]);
+      if (!valid) return false;
+      // 保持 ALL_COLUMNS 固定顺序，仅覆盖勾选/固定状态
+      STATE.columns.forEach(col => {
+        const saved = savedMap[col.key];
+        if (saved) {
+          col.checked = !!saved.checked;
+          col.pinned = !!saved.pinned;
+        }
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // 标记配置为"已变更未保存"
+  function markDirty() {
+    const el = document.getElementById('configStatus');
+    if (el) {
+      el.textContent = '未保存';
+      el.style.color = 'var(--bp-warning)';
+    }
+  }
+
+  // 更新配置状态显示
+  function updateConfigStatus(saved) {
+    const el = document.getElementById('configStatus');
+    if (!el) return;
+    if (saved) {
+      el.textContent = '已保存';
+      el.style.color = 'var(--bp-success)';
+    } else {
+      el.textContent = '未保存';
+      el.style.color = 'var(--bp-warning)';
+    }
+  }
+
+  // ===================== 导出（点击「导出」弹出列配置，自动保存个人方案） =====================
+  function handleExport() {
+    if (STATE.data.length === 0) {
+      showMessage('当前无数据可导出，请先查询', 'warning');
+      return;
+    }
+    // 加载该用户的个人列配置
+    const loaded = loadColConfig();
+    // 重置方案下拉为占位项（个人配置不一定匹配某方案）
+    const schemeSel = document.getElementById('schemeSelect');
+    if (schemeSel) schemeSel.value = '';
+    // 快照当前配置，用于取消时恢复
+    STATE.exportSnapshot = JSON.stringify(STATE.columns);
+    // 渲染列配置 + 范围信息
+    renderColPanel();
+    document.getElementById('exportScopeCount').textContent = STATE.total;
+    updateConfigStatus(loaded);
+    document.getElementById('exportModal').style.display = 'flex';
+    if (loaded) {
+      setTimeout(() => showMessage('已加载您个人的导出列方案', 'success'), 0);
+    }
+  }
+
+  function confirmExport() {
+    const checkedCols = STATE.columns.filter(c => c.checked);
+    if (checkedCols.length === 0) {
+      showMessage('请至少勾选 1 个导出列', 'warning');
+      return;
+    }
+    // 确认导出时自动保存个人配置
+    saveColConfig(false);
+    STATE.exportSnapshot = JSON.stringify(STATE.columns); // 确认即生效，更新快照
+    // 写入导出任务到下载页任务列表（按用户隔离，与下载页共享）
+    addExportTask(checkedCols);
+    closeModal('exportModal');
+    renderTable(); // 表格按新列配置显示
+    showMessage(`导出任务已提交，请前往 <a class="msg-link" onclick="goDownloadPage()">导出文件下载页</a>查看进度并下载（共 ${STATE.total} 条 · ${checkedCols.length} 列 · 配置已保存）`, 'success', 6000);
+  }
+
+  // 写入导出任务到 localStorage（与下载页共享同一 key）
+  function addExportTask(checkedCols) {
+    const TASKS_KEY = `small_channel_export_tasks_${CURRENT_USER}`;
+    const d = new Date();
+    const p = n => String(n).padStart(2, '0');
+    const stamp = `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())} ${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+    const colKeys = checkedCols.map(c => c.key);
+    const colLabels = checkedCols.map(c => c.label);
+    // 导出当前查询结果数据（按勾选列取值，二维数组）
+    const dataRows = STATE.data.map(row => colKeys.map(k => (row[k] != null && row[k] !== '') ? row[k] : ''));
+    const task = {
+      id: 'task-' + Date.now(),
+      name: `小渠道合并报表-${stamp}`,
+      createTime: `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`,
+      finishTime: '',
+      totalRows: STATE.total,
+      colCount: checkedCols.length,
+      colKeys: colKeys,
+      colLabels: colLabels,
+      dataRows: dataRows,
+      fileSize: '-',
+      status: 'generating',
+      progress: 0,
+      error: ''
+    };
+    let tasks = [];
+    try {
+      const raw = localStorage.getItem(TASKS_KEY);
+      if (raw) tasks = JSON.parse(raw) || [];
+    } catch (e) {}
+    tasks.unshift(task); // 新任务置顶
+    try { localStorage.setItem(TASKS_KEY, JSON.stringify(tasks)); } catch (e) {}
+  }
+
+  // 跳转导出文件下载页
+  function goDownloadPage() {
+    location.href = 'export-download-page.html#new';
+  }
+
+  // 取消：恢复打开弹窗时的列配置快照（真正的放弃本次改动）
+  function cancelExport() {
+    if (STATE.exportSnapshot) {
+      STATE.columns = JSON.parse(STATE.exportSnapshot);
+      renderTable();
+    }
+    closeModal('exportModal');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  // ===================== 消息提示 =====================
+  // duration: 默认 2500ms；传 0 表示不自动消失（需点击关闭按钮）
+  function showMessage(text, type = 'success', duration = 2500) {
+    const icons = { success: 'fa-check-circle', warning: 'fa-exclamation-triangle', error: 'fa-times-circle' };
+    const msg = document.createElement('div');
+    msg.className = `bp-message ${type}`;
+    const closeBtn = duration === 0 ? `<i class="fa fa-close msg-close" onclick="this.parentElement.remove()"></i>` : '';
+    msg.innerHTML = `<i class="fa ${icons[type]||icons.success}"></i><span>${text}</span>${closeBtn}`;
+    document.body.appendChild(msg);
+    if (duration > 0) {
+      setTimeout(() => {
+        msg.style.opacity = '0';
+        msg.style.transition = 'opacity .3s';
+        setTimeout(() => msg.remove(), 300);
+      }, duration);
+    }
+  }
+
+  // ===================== 备货渠道 输入自动匹配多选 =====================
+  const CHANNEL_OPTIONS = ['AMAZON US','AMAZON EU','AMAZON CA','AMAZON JP','SHOPEE','TIKTOK','WALMART','EBAY'];
+  const channelState = { selected: [], activeIdx: -1 };
+
+  const channelInput = document.getElementById('channelInput');
+  const channelTags = document.getElementById('channelTags');
+  const channelDropdown = document.getElementById('channelDropdown');
+  const channelWrap = document.getElementById('channelTagSelect');
+
+  function renderChannelTags() {
+    channelTags.innerHTML = channelState.selected.map((s, i) => `
+      <span class="tag-item">
+        <span class="tag-text">${s}</span>
+        <i class="fa fa-close tag-close" data-idx="${i}"></i>
+      </span>
+    `).join('');
+    channelTags.querySelectorAll('.tag-close').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(el.getAttribute('data-idx'));
+        channelState.selected.splice(idx, 1);
+        renderChannelTags();
+        renderChannelDropdown(channelInput.value);
+      });
+    });
+    updateFilterActiveCount();
+  }
+
+  function renderChannelDropdown(keyword = '') {
+    const kw = (keyword || '').trim().toLowerCase();
+    let candidates = CHANNEL_OPTIONS.filter(s => !channelState.selected.includes(s));
+    if (kw) {
+      candidates = candidates.filter(s => s.toLowerCase().includes(kw));
+    }
+    channelState.activeIdx = -1;
+    if (candidates.length === 0) {
+      channelDropdown.innerHTML = `<div class="tag-select-empty">
+        ${kw ? `无匹配项，按回车将 "<span style="color:var(--bp-primary)">${escapeHtml(keyword.trim())}</span>" 作为新值添加` : '暂无可选备货渠道'}
+      </div>`;
+      channelDropdown.classList.add('show');
+      return;
+    }
+    channelDropdown.innerHTML = candidates.map((s, i) => `
+      <div class="tag-option" data-val="${escapeHtml(s)}" data-idx="${i}">
+        <span class="opt-label">${escapeHtml(s)}</span>
+        <span class="opt-tag">渠道</span>
+      </div>
+    `).join('');
+    channelDropdown.classList.add('show');
+    channelDropdown.querySelectorAll('.tag-option').forEach(el => {
+      el.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        addChannelTag(el.getAttribute('data-val'));
+      });
+    });
+  }
+
+  function addChannelTag(val) {
+    val = (val || '').trim();
+    if (!val) return;
+    if (channelState.selected.includes(val)) {
+      showMessage('该备货渠道已选择', 'warning');
+      return;
+    }
+    channelState.selected.push(val);
+    channelInput.value = '';
+    renderChannelTags();
+    renderChannelDropdown('');
+    channelInput.focus();
+  }
+
+  function getActiveChannelOption() {
+    return channelDropdown.querySelectorAll('.tag-option');
+  }
+
+  function updateActiveChannelOption() {
+    const opts = getActiveChannelOption();
+    opts.forEach((el, i) => {
+      el.classList.toggle('active', i === channelState.activeIdx);
+    });
+    if (channelState.activeIdx >= 0 && opts[channelState.activeIdx]) {
+      opts[channelState.activeIdx].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  channelWrap.addEventListener('click', () => channelInput.focus());
+  channelInput.addEventListener('focus', () => {
+    channelWrap.classList.add('focus');
+    renderChannelDropdown(channelInput.value);
+  });
+  channelInput.addEventListener('input', (e) => {
+    renderChannelDropdown(e.target.value);
+  });
+  channelInput.addEventListener('keydown', (e) => {
+    const opts = getActiveChannelOption();
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (opts.length === 0) return;
+      channelState.activeIdx = Math.min(channelState.activeIdx + 1, opts.length - 1);
+      updateActiveChannelOption();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (opts.length === 0) return;
+      channelState.activeIdx = Math.max(channelState.activeIdx - 1, 0);
+      updateActiveChannelOption();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (channelState.activeIdx >= 0 && opts[channelState.activeIdx]) {
+        addChannelTag(opts[channelState.activeIdx].getAttribute('data-val'));
+      } else {
+        const v = channelInput.value.trim();
+        if (v) addChannelTag(v);
+      }
+    } else if (e.key === 'Backspace') {
+      if (channelInput.value === '' && channelState.selected.length > 0) {
+        channelState.selected.pop();
+        renderChannelTags();
+        renderChannelDropdown('');
+      }
+    } else if (e.key === 'Escape') {
+      channelDropdown.classList.remove('show');
+      channelInput.blur();
+    } else if (e.key === ',') {
+      e.preventDefault();
+      const v = channelInput.value.trim();
+      if (v) addChannelTag(v);
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!channelWrap.contains(e.target)) {
+      channelDropdown.classList.remove('show');
+      channelWrap.classList.remove('focus');
+    }
+  });
+
+  // ===================== Style 输入自动匹配多选 =====================
+  const STYLE_OPTIONS = [
+    '151014-K','151015-A','151016-B','151017-C','151018-D',
+    '151019-E','151020-F','152021-G','152022-H','152023-J',
+    'DS-A001','DS-A002','DS-A003','DS-B001','DS-B002',
+    'YH-1001','YH-1002','YH-1003'
+  ];
+  const styleState = { selected: [], activeIdx: -1 };
+
+  const styleInput = document.getElementById('styleInput');
+  const styleTags = document.getElementById('styleTags');
+  const styleDropdown = document.getElementById('styleDropdown');
+  const styleWrap = document.getElementById('styleTagSelect');
+
+  function renderStyleTags() {
+    styleTags.innerHTML = styleState.selected.map((s, i) => `
+      <span class="tag-item">
+        <span class="tag-text">${s}</span>
+        <i class="fa fa-close tag-close" data-idx="${i}"></i>
+      </span>
+    `).join('');
+    styleTags.querySelectorAll('.tag-close').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(el.getAttribute('data-idx'));
+        styleState.selected.splice(idx, 1);
+        renderStyleTags();
+        renderStyleDropdown(styleInput.value);
+      });
+    });
+    updateFilterActiveCount();
+  }
+
+  function renderStyleDropdown(keyword = '') {
+    const kw = (keyword || '').trim().toLowerCase();
+    let candidates = STYLE_OPTIONS.filter(s => !styleState.selected.includes(s));
+    if (kw) {
+      candidates = candidates.filter(s => s.toLowerCase().includes(kw));
+    }
+    styleState.activeIdx = -1;
+    if (candidates.length === 0) {
+      styleDropdown.innerHTML = `<div class="tag-select-empty">
+        ${kw ? `无匹配项，按回车将 "<span style="color:var(--bp-primary)">${escapeHtml(keyword.trim())}</span>" 作为新值添加` : '暂无可选 Style'}
+      </div>`;
+      styleDropdown.classList.add('show');
+      return;
+    }
+    styleDropdown.innerHTML = candidates.map((s, i) => `
+      <div class="tag-option" data-val="${escapeHtml(s)}" data-idx="${i}">
+        <span class="opt-label">${escapeHtml(s)}</span>
+        <span class="opt-tag">Style</span>
+      </div>
+    `).join('');
+    styleDropdown.classList.add('show');
+    styleDropdown.querySelectorAll('.tag-option').forEach(el => {
+      el.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        addStyleTag(el.getAttribute('data-val'));
+      });
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function addStyleTag(val) {
+    val = (val || '').trim();
+    if (!val) return;
+    if (styleState.selected.includes(val)) {
+      showMessage('该 Style 已选择', 'warning');
+      return;
+    }
+    styleState.selected.push(val);
+    styleInput.value = '';
+    renderStyleTags();
+    renderStyleDropdown('');
+    styleInput.focus();
+  }
+
+  function getActiveStyleOption() {
+    return styleDropdown.querySelectorAll('.tag-option');
+  }
+
+  function updateActiveStyleOption() {
+    const opts = getActiveStyleOption();
+    opts.forEach((el, i) => {
+      el.classList.toggle('active', i === styleState.activeIdx);
+    });
+    if (styleState.activeIdx >= 0 && opts[styleState.activeIdx]) {
+      opts[styleState.activeIdx].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  styleWrap.addEventListener('click', () => styleInput.focus());
+  styleInput.addEventListener('focus', () => {
+    styleWrap.classList.add('focus');
+    renderStyleDropdown(styleInput.value);
+  });
+  styleInput.addEventListener('input', (e) => {
+    renderStyleDropdown(e.target.value);
+  });
+  styleInput.addEventListener('keydown', (e) => {
+    const opts = getActiveStyleOption();
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (opts.length === 0) return;
+      styleState.activeIdx = Math.min(styleState.activeIdx + 1, opts.length - 1);
+      updateActiveStyleOption();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (opts.length === 0) return;
+      styleState.activeIdx = Math.max(styleState.activeIdx - 1, 0);
+      updateActiveStyleOption();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (styleState.activeIdx >= 0 && opts[styleState.activeIdx]) {
+        addStyleTag(opts[styleState.activeIdx].getAttribute('data-val'));
+      } else {
+        // 无高亮候选：若输入值非空，按"自定义新值"添加；否则提示
+        const v = styleInput.value.trim();
+        if (v) addStyleTag(v);
+      }
+    } else if (e.key === 'Backspace') {
+      if (styleInput.value === '' && styleState.selected.length > 0) {
+        styleState.selected.pop();
+        renderStyleTags();
+        renderStyleDropdown('');
+      }
+    } else if (e.key === 'Escape') {
+      styleDropdown.classList.remove('show');
+      styleInput.blur();
+    } else if (e.key === ',') {
+      // 逗号也作为分隔符触发添加
+      e.preventDefault();
+      const v = styleInput.value.trim();
+      if (v) addStyleTag(v);
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!styleWrap.contains(e.target)) {
+      styleDropdown.classList.remove('show');
+      styleWrap.classList.remove('focus');
+    }
+  });
+
+  // ===================== 初始化 =====================
+  function init() {
+    // 页面初始化即加载该用户的个人列配置，无配置时默认应用方案1
+    const loaded = loadColConfig();
+    if (loaded) {
+      renderColPanel();
+    } else {
+      applyScheme(0, true); // 静默应用默认方案1
+    }
+    // 初始空表（显示空态）
+    STATE.data = [];
+    STATE.total = 0;
+    renderTable();
+    renderPagination();
+    // 主筛选 select 变化时实时更新计数
+    ['filterCT','filterCategory'].forEach(id => {
+      document.getElementById(id).addEventListener('change', updateFilterActiveCount);
+    });
+    // 高级筛选 input 变化时实时更新计数
+    document.querySelectorAll('#advancedFilter input, #advancedFilter select').forEach(el => {
+      el.addEventListener('input', updateFilterActiveCount);
+      el.addEventListener('change', updateFilterActiveCount);
+    });
+    updateFilterActiveCount();
+    // 自动执行一次查询（演示）
+    setTimeout(() => handleQuery(), 200);
+  }
+  init();
+</script>
+
+</body>
+</html>

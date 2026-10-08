@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>导出文件下载 - Prototype V1.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <style>
+    :root {
+      --bp-primary: #1890FF;
+      --bp-success: #52C41A;
+      --bp-warning: #FA8C16;
+      --bp-danger: #FF4D4F;
+      --bp-text-primary: rgba(0,0,0,0.85);
+      --bp-text-regular: rgba(0,0,0,0.65);
+      --bp-text-secondary: rgba(0,0,0,0.45);
+      --bp-text-placeholder: rgba(0,0,0,0.25);
+      --bp-border-lighter: #EBEEF5;
+      --bp-bg-hover: #F5F7FA;
+      --bp-header-bg: #FAFAFA;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; background:#F0F2F5; color:var(--bp-text-primary); font-size:14px; }
+    .status-bar { display:flex; align-items:center; gap:10px; padding:0 20px; height:48px; background:#001529; color:#fff; font-size:13px; }
+    .status-bar .divider { color:rgba(255,255,255,0.3); }
+    .tag-prd, .tag-proto { display:inline-block; padding:1px 6px; border-radius:3px; font-size:11px; margin-left:4px; }
+    .tag-prd { background:#FA8C16; color:#fff; }
+    .tag-proto { background:#52C41A; color:#fff; }
+    .bp-card { background:#fff; border-radius:4px; box-shadow:0 1px 4px rgba(0,0,0,0.08); }
+    .bp-btn { display:inline-flex; align-items:center; gap:4px; height:32px; padding:0 14px; border:1px solid var(--bp-border-lighter); background:#fff; border-radius:4px; cursor:pointer; font-size:13px; color:var(--bp-text-regular); transition:all .2s; }
+    .bp-btn:hover { color:var(--bp-primary); border-color:var(--bp-primary); }
+    .bp-btn-primary { background:var(--bp-primary); border-color:var(--bp-primary); color:#fff; }
+    .bp-btn-primary:hover { background:#40a9ff; color:#fff; border-color:#40a9ff; }
+    .bp-btn-success { background:var(--bp-success); border-color:var(--bp-success); color:#fff; }
+    .bp-btn-success:hover { background:#73d13d; color:#fff; border-color:#73d13d; }
+    .bp-btn-link { border:none; background:transparent; color:var(--bp-primary); cursor:pointer; font-size:13px; padding:0 4px; height:auto; }
+    .bp-btn-link:hover { color:#40a9ff; }
+    .bp-btn-link.disabled { color:var(--bp-text-placeholder); cursor:not-allowed; }
+    .bp-input, .bp-select { height:32px; padding:0 10px; border:1px solid var(--bp-border-lighter); border-radius:4px; font-size:13px; color:var(--bp-text-primary); background:#fff; }
+    .bp-input:focus, .bp-select:focus { border-color:var(--bp-primary); outline:none; }
+    .bp-label { display:inline-block; width:80px; text-align:right; color:var(--bp-text-secondary); font-size:13px; flex-shrink:0; }
+    .bp-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .bp-table th { background:var(--bp-header-bg); color:var(--bp-text-regular); font-weight:500; padding:10px 12px; text-align:left; border-bottom:1px solid var(--bp-border-lighter); white-space:nowrap; }
+    .bp-table td { padding:10px 12px; border-bottom:1px solid var(--bp-border-lighter); color:var(--bp-text-primary); }
+    .bp-table tbody tr:hover { background:var(--bp-bg-hover); }
+    .bp-table .col-num { width:60px; text-align:center; color:var(--bp-text-secondary); }
+    .bp-table .col-action { width:120px; text-align:center; white-space:nowrap; }
+    .status-tag { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:3px; font-size:12px; line-height:1.5; }
+    .status-generating { background:#E6F7FF; color:#1890FF; border:1px solid #91D5FF; }
+    .status-success { background:#F6FFED; color:#52C41A; border:1px solid #B7EB8F; }
+    .status-failed { background:#FFF2F0; color:#FF4D4F; border:1px solid #FFCCC7; }
+    .progress-bar { width:100%; height:6px; background:#EBEEF5; border-radius:3px; overflow:hidden; margin-top:4px; }
+    .progress-bar .bar { height:100%; background:var(--bp-primary); border-radius:3px; transition:width .3s; }
+    .empty-state { padding:80px 0; text-align:center; color:var(--bp-text-placeholder); }
+    .empty-state i { font-size:48px; margin-bottom:12px; display:block; }
+    .bp-message { position:fixed; top:60px; left:50%; transform:translateX(-50%); padding:10px 16px; border-radius:4px; background:#fff; box-shadow:0 2px 12px rgba(0,0,0,0.15); display:flex; align-items:center; gap:8px; z-index:200; font-size:14px; animation:msg-in .3s; }
+    @keyframes msg-in { from{opacity:0; transform:translate(-50%,-10px)} to{opacity:1; transform:translate(-50%,0)} }
+    .bp-message.success { color:var(--bp-success); }
+    .bp-message.warning { color:var(--bp-warning); }
+    .bp-message.error { color:var(--bp-danger); }
+    .bp-message .msg-link { color:var(--bp-primary); text-decoration:underline; cursor:pointer; margin:0 2px; font-weight:500; }
+    .bp-message .msg-link:hover { color:#40a9ff; }
+    .spin { animation:spin 1.2s linear infinite; }
+    @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+  </style>
+</head>
+<body>
+
+<!-- 顶部状态栏 -->
+<div class="status-bar">
+  <span><i class="fa fa-download" style="margin-right:6px;color:#52C41A"></i>导出文件下载</span>
+  <span class="divider">|</span>
+  <span>PRD:<span class="tag-prd">V0.1</span></span>
+  <span>Prototype:<span class="tag-proto">V1.0</span></span>
+  <span class="divider">|</span>
+  <span>创建者：Zero skill</span>
+  <span class="divider">|</span>
+  <span style="margin-left:auto">2026-10-08</span>
+</div>
+
+<!-- 主容器 -->
+<div class="px-6 py-4" style="min-width:1200px;">
+
+  <!-- 面包屑 -->
+  <div class="flex items-center gap-2 text-sm mb-3" style="color:var(--bp-text-secondary)">
+    <span><i class="fa fa-home" style="margin-right:4px"></i>首页</span>
+    <span style="color:var(--bp-text-placeholder)">/</span>
+    <span>报表管理</span>
+    <span style="color:var(--bp-text-placeholder)">/</span>
+    <span style="color:var(--bp-text-primary)">导出文件下载</span>
+  </div>
+
+  <!-- 页面卡片 -->
+  <div class="bp-card">
+
+    <!-- 标题 + 工具栏 -->
+    <div class="flex items-center px-4 py-3" style="border-bottom:1px solid var(--bp-border-lighter)">
+      <span class="font-medium" style="font-size:16px">导出任务列表</span>
+      <span class="text-xs ml-3" style="color:var(--bp-text-secondary)">查看导出进度并下载文件</span>
+      <div class="ml-auto flex items-center gap-2">
+        <button class="bp-btn" onclick="refreshTasks()"><i class="fa fa-refresh"></i>刷新</button>
+        <button class="bp-btn bp-btn-primary" onclick="goQueryPage()"><i class="fa fa-arrow-left"></i>返回查询页</button>
+      </div>
+    </div>
+
+    <!-- 筛选条件 -->
+    <div class="px-4 py-3" style="border-bottom:1px solid var(--bp-border-lighter)">
+      <div class="flex items-center gap-4 flex-wrap">
+        <div class="flex items-center">
+          <span class="bp-label">任务名称</span>
+          <input type="text" class="bp-input" id="filterName" placeholder="请输入任务名称" style="width:220px" oninput="renderTable()" />
+        </div>
+        <div class="flex items-center">
+          <span class="bp-label">状态</span>
+          <select class="bp-select" id="filterStatus" style="width:140px" onchange="renderTable()">
+            <option value="">全部</option>
+            <option value="generating">生成中</option>
+            <option value="success">已完成</option>
+            <option value="failed">失败</option>
+          </select>
+        </div>
+        <button class="bp-btn" onclick="resetFilter()"><i class="fa fa-undo"></i>重置</button>
+      </div>
+    </div>
+
+    <!-- 表格 -->
+    <div style="padding:0 4px">
+      <table class="bp-table" id="taskTable">
+        <thead>
+          <tr>
+            <th class="col-num">序号</th>
+            <th>导出任务名称</th>
+            <th style="width:170px">创建时间</th>
+            <th style="width:110px">状态</th>
+            <th style="width:170px">导出完成时间</th>
+            <th style="width:90px">文件大小</th>
+            <th style="width:110px">数据条数</th>
+            <th>异常信息</th>
+            <th class="col-action">操作</th>
+          </tr>
+        </thead>
+        <tbody id="taskBody"></tbody>
+      </table>
+      <div id="emptyBox" class="empty-state" style="display:none">
+        <i class="fa fa-inbox"></i>
+        <div>暂无导出任务</div>
+        <div style="margin-top:8px">请前往「小渠道合并报表」页面执行导出</div>
+      </div>
+    </div>
+
+    <!-- 分页 + 统计 -->
+    <div class="flex items-center px-4 py-3" style="border-top:1px solid var(--bp-border-lighter)">
+      <span class="text-xs" style="color:var(--bp-text-secondary)">共 <span id="totalCount">0</span> 条任务</span>
+      <div class="ml-auto text-xs" style="color:var(--bp-text-secondary)">
+        <i class="fa fa-info-circle"></i> 文件生成中请耐心等待，完成后点击「下载」获取文件
+      </div>
+    </div>
+
+    <!-- 底部说明 -->
+    <div class="px-4 py-2" style="border-top:1px solid var(--bp-border-lighter);background:#FAFAFA">
+      <div class="flex items-center gap-3 text-xs" style="color:var(--bp-text-secondary)">
+        <span><i class="fa fa-clock-o"></i> 最后更新：2026-10-08</span>
+        <span><i class="fa fa-user"></i> 创建者：Zero skill</span>
+        <span><i class="fa fa-tag"></i> 版本：V1.0（导出文件下载页，闭环演示）</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===================== 任务存储（按用户隔离，与查询页共享） =====================
+  const CURRENT_USER = 'user_zero';
+  const TASKS_KEY = `small_channel_export_tasks_${CURRENT_USER}`;
+
+  // 预置历史 mock 任务（让页面首次进入不空）
+  const MOCK_HISTORY_TASKS = [
+    {
+      id: 'mock-001',
+      name: '小渠道合并报表-20261007',
+      createTime: '2026-10-07 18:24:31',
+      finishTime: '2026-10-07 18:25:02',
+      totalRows: 156,
+      colCount: 15,
+      colLabels: ['发运扣减','广东仓','高盾仓(*)','福州连江1仓','备货渠道','CT','sku','style','color','size'],
+      fileSize: '128 KB',
+      status: 'success',
+      error: ''
+    },
+    {
+      id: 'mock-002',
+      name: '小渠道合并报表-20261006',
+      createTime: '2026-10-06 09:15:44',
+      finishTime: '2026-10-06 09:16:10',
+      totalRows: 89,
+      colCount: 19,
+      colLabels: ['备货渠道','CT','商品类目','销售季节','sku','style','color','size','海外在库总计'],
+      fileSize: '76 KB',
+      status: 'success',
+      error: ''
+    },
+    {
+      id: 'mock-003',
+      name: '小渠道合并报表-20261005',
+      createTime: '2026-10-05 14:02:11',
+      finishTime: '',
+      totalRows: 0,
+      colCount: 15,
+      colLabels: [],
+      fileSize: '-',
+      status: 'failed',
+      error: '数据查询超时，请缩小范围重试'
+    }
+  ];
+
+  // 读取全部任务（localStorage 优先，无则用 mock 历史）
+  function loadTasks() {
+    try {
+      const raw = localStorage.getItem(TASKS_KEY);
+      if (raw) {
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) return arr;
+      }
+    } catch (e) {}
+    // 首次进入：写入 mock 历史并返回
+    saveTasks(MOCK_HISTORY_TASKS);
+    return MOCK_HISTORY_TASKS;
+  }
+
+  function saveTasks(tasks) {
+    try { localStorage.setItem(TASKS_KEY, JSON.stringify(tasks)); } catch (e) {}
+  }
+
+  // 当前内存中的任务列表
+  let TASKS = [];
+  // 生成中任务的定时器
+  const timers = {};
+
+  // ===================== 渲染 =====================
+  function renderTable() {
+    const nameKw = (document.getElementById('filterName').value || '').trim();
+    const statusVal = document.getElementById('filterStatus').value;
+    let list = TASKS.filter(t => {
+      if (nameKw && !(t.name || '').includes(nameKw)) return false;
+      if (statusVal && t.status !== statusVal) return false;
+      return true;
+    });
+    // 倒序：最新在前
+    list.sort((a, b) => (b.createTime || '').localeCompare(a.createTime || ''));
+
+    const body = document.getElementById('taskBody');
+    const emptyBox = document.getElementById('emptyBox');
+    document.getElementById('totalCount').textContent = list.length;
+
+    if (list.length === 0) {
+      body.innerHTML = '';
+      document.getElementById('taskTable').style.display = 'none';
+      emptyBox.style.display = 'block';
+      return;
+    }
+    document.getElementById('taskTable').style.display = 'table';
+    emptyBox.style.display = 'none';
+
+    body.innerHTML = list.map((t, i) => {
+      const statusTag = renderStatusTag(t);
+      const downloadBtn = t.status === 'success'
+        ? `<button class="bp-btn-link" onclick="downloadTask('${t.id}')"><i class="fa fa-download"></i>下载</button>`
+        : (t.status === 'failed'
+            ? `<button class="bp-btn-link" onclick="retryTask('${t.id}')"><i class="fa fa-repeat"></i>重试</button>`
+            : `<span class="bp-btn-link disabled">生成中</span>`);
+      return `
+        <tr>
+          <td class="col-num">${i+1}</td>
+          <td title="${t.name}">${t.name}</td>
+          <td>${t.createTime}</td>
+          <td>${statusTag}</td>
+          <td>${t.finishTime || '-'}</td>
+          <td>${t.fileSize || '-'}</td>
+          <td>${t.totalRows} 条</td>
+          <td style="color:var(--bp-danger)">${t.error || '-'}</td>
+          <td class="col-action">${downloadBtn}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function renderStatusTag(t) {
+    if (t.status === 'generating') {
+      const pct = t.progress || 0;
+      return `
+        <span class="status-tag status-generating"><i class="fa fa-refresh spin"></i>生成中 ${pct}%</span>
+        <div class="progress-bar"><div class="bar" style="width:${pct}%"></div></div>
+      `;
+    }
+    if (t.status === 'success') {
+      return `<span class="status-tag status-success"><i class="fa fa-check"></i>已完成</span>`;
+    }
+    return `<span class="status-tag status-failed"><i class="fa fa-close"></i>失败</span>`;
+  }
+
+  // ===================== 模拟生成进度 =====================
+  // 对所有"生成中"任务启动进度推进，100% 后转为已完成
+  function startGeneratingTimers() {
+    TASKS.forEach(t => {
+      if (t.status === 'generating' && !timers[t.id]) {
+        t.progress = t.progress || 0;
+        timers[t.id] = setInterval(() => {
+          t.progress = Math.min(100, t.progress + Math.floor(Math.random() * 18) + 8);
+          if (t.progress >= 100) {
+            clearInterval(timers[t.id]);
+            delete timers[t.id];
+            t.status = 'success';
+            t.finishTime = formatNow();
+            t.fileSize = estimateFileSize(t.totalRows, t.colCount);
+            saveTasks(TASKS);
+            showMessage(`任务「${t.name}」已生成完成，可下载`, 'success', 4000);
+          }
+          saveTasks(TASKS);
+          renderTable();
+        }, 800);
+      }
+    });
+  }
+
+  // ===================== 操作 =====================
+  function downloadTask(id) {
+    const t = TASKS.find(x => x.id === id);
+    if (!t || t.status !== 'success') return;
+    const cols = (t.colLabels && t.colLabels.length) ? t.colLabels : ['示例列'];
+    // 优先用导出时携带的真实数据行；无则按列名生成贴近业务的示例数据
+    let rows;
+    if (t.dataRows && t.dataRows.length) {
+      rows = t.dataRows;
+    } else {
+      const n = Math.min(t.totalRows || 10, 20);
+      rows = [];
+      for (let i = 0; i < n; i++) {
+        rows.push(cols.map(c => generateSampleValue(c, i)));
+      }
+    }
+    // 生成 CSV（含 BOM，Excel 正确识别中文）
+    let csv = '\uFEFF' + cols.map(escapeCsv).join(',') + '\n';
+    rows.forEach(r => {
+      csv += (Array.isArray(r) ? r : cols.map((c, i) => generateSampleValue(c, i))).map(escapeCsv).join(',') + '\n';
+    });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${t.name}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showMessage(`文件「${t.name}.csv」已开始下载（${rows.length} 行 · ${cols.length} 列）`, 'success', 3000);
+  }
+
+  // CSV 单元格转义（含逗号/引号/换行）
+  function escapeCsv(val) {
+    if (val == null) return '';
+    const s = String(val);
+    if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+
+  // 根据列名生成贴近业务的示例值（用于无真实数据的历史任务）
+  function generateSampleValue(label, idx) {
+    const i = idx + 1;
+    if (label === '备货渠道') return ['AMAZON US','AMAZON EU','SHOPEE','TIKTOK','WALMART'][idx % 5];
+    if (label === 'CT') return ['Bruno Marc','Dream Pairs Boots','Dream Pairs Sandals','Nortiv8','运动组'][idx % 5];
+    if (label === '商品类目') return ['KIDS>ATHLETIC>FASHION SNEAKERS','BAGS>Bags & Accessories>Accessories','KIDS>FASHION>BOOTS','Health Care>Foot Health>Inserts & Insoles'][idx % 4];
+    if (label === '销售季节') return ['冬季','四季','夏季'][idx % 3];
+    if (label === 'sku') return 'SKU' + String(10000 + i).padStart(6,'0');
+    if (label === 'style') return ['151014-K','DS-A001','YH-1001','BM-2025','NK-308'][idx % 5];
+    if (label === 'color') return ['BLACK','WHITE','RED/BLUE','GREY','NAVY'][idx % 5];
+    if (label === 'size') return ['S','M','L','2','3','007','008','009'][idx % 8];
+    // 数字类列（仓/扣减/在途/在库/锁定/可补）
+    if (/仓|扣减|在途|在库|锁定|可补|总计/.test(label)) return Math.floor(Math.random() * 5000) + i * 10;
+    return '示例' + i;
+  }
+
+  function retryTask(id) {
+    const t = TASKS.find(x => x.id === id);
+    if (!t) return;
+    t.status = 'generating';
+    t.progress = 0;
+    t.error = '';
+    t.finishTime = '';
+    saveTasks(TASKS);
+    renderTable();
+    startGeneratingTimers();
+    showMessage(`任务「${t.name}」正在重新生成`, 'warning', 3000);
+  }
+
+  function refreshTasks() {
+    TASKS = loadTasks();
+    renderTable();
+    startGeneratingTimers();
+    showMessage('任务列表已刷新', 'success');
+  }
+
+  function resetFilter() {
+    document.getElementById('filterName').value = '';
+    document.getElementById('filterStatus').value = '';
+    renderTable();
+  }
+
+  function goQueryPage() {
+    location.href = 'query-export-page.html';
+  }
+
+  // ===================== 工具 =====================
+  function formatNow() {
+    const d = new Date();
+    const p = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+  }
+
+  function estimateFileSize(rows, cols) {
+    const bytes = rows * cols * 12; // 粗略估算
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+  }
+
+  function showMessage(text, type = 'success', duration = 2500) {
+    const icons = { success:'fa-check-circle', warning:'fa-exclamation-triangle', error:'fa-times-circle' };
+    const msg = document.createElement('div');
+    msg.className = `bp-message ${type}`;
+    msg.innerHTML = `<i class="fa ${icons[type]||icons.success}"></i><span>${text}</span>`;
+    document.body.appendChild(msg);
+    if (duration > 0) {
+      setTimeout(() => {
+        msg.style.opacity = '0';
+        msg.style.transition = 'opacity .3s';
+        setTimeout(() => msg.remove(), 300);
+      }, duration);
+    }
+  }
+
+  // ===================== 初始化 =====================
+  function init() {
+    TASKS = loadTasks();
+    renderTable();
+    startGeneratingTimers();
+    // 检查是否从查询页带参数跳转（URL hash 标记新任务）
+    if (location.hash === '#new') {
+      setTimeout(() => showMessage('新导出任务已加入列表，正在生成中...', 'warning', 4000), 200);
+      history.replaceState(null, '', location.pathname);
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
