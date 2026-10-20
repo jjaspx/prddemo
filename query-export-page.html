@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>小渠道合并报表 - Prototype V1.0</title>
+  <title>小渠道合并报表 - Prototype V1.2</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <style>
@@ -307,9 +307,10 @@
     @keyframes bp-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 
     /* 折叠/展开过渡 */
-    .collapsible { transition: max-height .3s ease, opacity .2s; overflow: hidden; }
-    .collapsible.collapsed { max-height: 0; opacity: 0; }
-    .collapsible.expanded { max-height: 500px; opacity: 1; }
+    /* expanded 必须 overflow:visible，否则高级筛选内 Color/Size 的下拉候选会被裁剪 */
+    .collapsible { transition: max-height .3s ease, opacity .2s; }
+    .collapsible.collapsed { max-height: 0; opacity: 0; overflow: hidden; }
+    .collapsible.expanded { max-height: 500px; opacity: 1; overflow: visible; }
 
     /* Tag 多选输入组件 */
     .tag-select {
@@ -444,7 +445,7 @@
   <span><i class="fa fa-cube" style="margin-right:6px;color:#409EFF"></i>小渠道合并报表</span>
   <span class="divider">|</span>
   <span>PRD:<span class="tag-prd">V0.1</span></span>
-  <span>Prototype:<span class="tag-proto">V1.0</span></span>
+  <span>Prototype:<span class="tag-proto">V1.2</span></span>
   <span class="divider">|</span>
   <span>创建者：Zero skill</span>
   <span class="divider">|</span>
@@ -529,6 +530,24 @@
             <span class="bp-label">销售季节</span>
             <select class="bp-select" id="filterSeason"><option value="">请选择</option><option value="冬季">冬季</option><option value="四季">四季</option><option value="夏季">夏季</option></select>
           </div>
+          <!-- Color：输入自动匹配多选，候选联动已选 Style -->
+          <div class="flex items-center">
+            <span class="bp-label">Color</span>
+            <div class="tag-select" id="colorTagSelect">
+              <div class="tag-select-tags" id="colorTags"></div>
+              <input type="text" class="tag-select-input" id="colorInput" placeholder="请输入，自动匹配" autocomplete="off" />
+              <div class="tag-select-dropdown" id="colorDropdown"></div>
+            </div>
+          </div>
+          <!-- Size：输入自动匹配多选，候选联动已选 Style + Color -->
+          <div class="flex items-center">
+            <span class="bp-label">Size</span>
+            <div class="tag-select" id="sizeTagSelect">
+              <div class="tag-select-tags" id="sizeTags"></div>
+              <input type="text" class="tag-select-input" id="sizeInput" placeholder="请输入，自动匹配" autocomplete="off" />
+              <div class="tag-select-dropdown" id="sizeDropdown"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -605,7 +624,7 @@
     <div class="flex items-center gap-3">
       <span><i class="fa fa-clock-o"></i> 最后更新：2026-10-08</span>
       <span><i class="fa fa-user"></i> 创建者：Zero skill</span>
-      <span><i class="fa fa-tag"></i> 版本：V1.0（移除图钉固定列与列顺序预览，精简交互）</span>
+      <span><i class="fa fa-tag"></i> 版本：V1.2（Color/Size 改为自动匹配多选，与 Style 级联联动）</span>
     </div>
   </div>
 </div>
@@ -742,27 +761,41 @@
     dragSrcIndex: null
   };
 
+  // ===================== Style→Color→Size 目录（联动候选与 mock 数据共用） =====================
+  // Color 候选 = 已选 Style 下的 color；Size 候选 = 已选 Style+Color 下的 size
+  const STYLE_COLOR_SIZE = {
+    '151014-K': { colors: { 'ALL/BLACK': ['S','M','L','2'],   'GREY':   ['M','L','3'] } },
+    '151015-A': { colors: { 'WHITE':     ['S','M','007'],     'BEIGE':  ['L','008'] } },
+    '151016-B': { colors: { 'RED/BLUE':  ['S','L','009'],     'NAVY':   ['M','2','3'] } },
+    '151017-C': { colors: { 'PINK':      ['S','M','L'],       'BLACK':  ['2','3'] } },
+    'DS-A001':  { colors: { 'BROWN':     ['007','008'],       'TAN':    ['M','L'] } },
+    'YH-1001':  { colors: { 'GREEN':     ['S','3'],           'WHITE':  ['L','009'] } }
+  };
+
   // ===================== Mock 数据生成 =====================
   function generateMockData(count = 28) {
     const channels = ['AMAZON US','AMAZON EU','AMAZON CA','SHOPEE','TIKTOK'];
     const cts = ['/','Bruno Marc','Dream Pairs Boots','Dream Pairs Comfort','Dream Pairs Flats & Pumps','Dream Pairs Kids','Dream Pairs Sandals','Justfab','Nortiv8','运动组'];
     const categories = ['BAGS>Bags & Accessories>Accessories','BAGS>Bags & Accessories>Bags & Handbags','BAGS>CLOTHING>Activewear','Health Care>Foot Health>Inserts & Insoles','KIDS>ATHLETIC>FASHION SNEAKERS','KIDS>ATHLETIC>RUNNING SHOES','KIDS>ATHLETIC>SPORT SANDALS & SLIDES','KIDS>ATHLETIC>SPORTS SHOES>BASKETBALL SHOES','KIDS>ATHLETIC>SPORTS SHOES>SOCCER SHOES','KIDS>FASHION>BOOTS','KIDS>FASHION>BOYS BOOTS'];
     const seasons = ['冬季','四季','夏季'];
-    const styles = ['151014-K','151015-A','151016-B'];
-    const colors = ['ALL/BLACK','WHITE','RED/BLUE'];
-    const sizes = ['S','M','L','2','3','007','008','009'];
     const whNames = ['广东仓','高盾仓(*)','高盾临时1仓','福州连江1仓','东南亚仓'];
+    const styleKeys = Object.keys(STYLE_COLOR_SIZE);
     const data = [];
     for (let i=1; i<=count; i++) {
+      // style→color→size 组合必须来自目录，保证联动关系与数据一致
+      const style = styleKeys[i % styleKeys.length];
+      const colorEntries = Object.entries(STYLE_COLOR_SIZE[style].colors);
+      const [color, sizeList] = colorEntries[(i + Math.floor(i / styleKeys.length)) % colorEntries.length];
+      const size = sizeList[i % sizeList.length];
       data.push({
         stockChannel: channels[i % channels.length],
         ct: cts[i % cts.length],
         category: categories[i % categories.length],
         season: seasons[i % seasons.length],
-        sku: `${styles[i%styles.length]}-${colors[i%colors.length].split('/')[0]}-SZ-${String(100+i).slice(-3)}`,
-        style: styles[i % styles.length],
-        color: colors[i % colors.length],
-        size: sizes[i % sizes.length],
+        sku: `${style}-${color.split('/')[0]}-SZ-${String(100+i).slice(-3)}`,
+        style: style,
+        color: color,
+        size: size,
         shipDeduct: Math.floor(Math.random()*200),
         turnDeduct: Math.floor(Math.random()*100),
         wh_gd: Math.floor(Math.random()*500),
@@ -993,6 +1026,14 @@
       // 按销售季节过滤
       const seasonVal = document.getElementById('filterSeason').value;
       if (seasonVal) data = data.filter(r => r.season === seasonVal);
+      // 按 Color 多选过滤（精确匹配）
+      if (colorState.selected.length > 0) {
+        data = data.filter(r => colorState.selected.includes(r.color));
+      }
+      // 按 Size 多选过滤（精确匹配）
+      if (sizeState.selected.length > 0) {
+        data = data.filter(r => sizeState.selected.includes(r.size));
+      }
       // 按备货渠道多选过滤
       if (channelState.selected.length > 0) {
         data = data.filter(r => channelState.selected.includes(r.stockChannel));
@@ -1010,6 +1051,8 @@
       if (ctVal) filters.push(`CT: ${ctVal}`);
       if (catVal) filters.push(`类目: ${catVal}`);
       if (seasonVal) filters.push(`销售季节: ${seasonVal}`);
+      if (colorState.selected.length) filters.push(`Color: ${colorState.selected.join(', ')}`);
+      if (sizeState.selected.length) filters.push(`Size: ${sizeState.selected.join(', ')}`);
       if (channelState.selected.length) filters.push(`渠道: ${channelState.selected.join(', ')}`);
       if (styleState.selected.length) filters.push(`Style: ${styleState.selected.join(', ')}`);
       const filterInfo = filters.length ? ` · ${filters.join(' · ')}` : '';
@@ -1031,6 +1074,16 @@
     styleInput.value = '';
     renderStyleTags();
     styleDropdown.classList.remove('show');
+    // 清空 Color 多选
+    colorState.selected = [];
+    colorInput.value = '';
+    renderColorTags();
+    colorDropdown.classList.remove('show');
+    // 清空 Size 多选
+    sizeState.selected = [];
+    sizeInput.value = '';
+    renderSizeTags();
+    sizeDropdown.classList.remove('show');
     // 清空高级筛选（销售季节）
     document.querySelectorAll('#advancedFilter input, #advancedFilter select').forEach(el => { el.value = ''; });
     updateFilterActiveCount();
@@ -1044,7 +1097,9 @@
     if (document.getElementById('filterCategory').value) n++;
     if (channelState.selected.length) n++;
     if (styleState.selected.length) n++;
-    document.querySelectorAll('#advancedFilter input, #advancedFilter select').forEach(el => { if (el.value) n++; });
+    if (colorState.selected.length) n++;
+    if (sizeState.selected.length) n++;
+    if (document.getElementById('filterSeason').value) n++;
     const el = document.getElementById('filterActiveCount');
     if (el) el.textContent = n;
   }
@@ -1413,6 +1468,7 @@
         styleState.selected.splice(idx, 1);
         renderStyleTags();
         renderStyleDropdown(styleInput.value);
+        syncCascadeFromStyle(); // Style 变更 → 级联校验 Color/Size
       });
     });
     updateFilterActiveCount();
@@ -1463,6 +1519,7 @@
     renderStyleTags();
     renderStyleDropdown('');
     styleInput.focus();
+    syncCascadeFromStyle(); // Style 变更 → 级联校验 Color/Size
   }
 
   function getActiveStyleOption() {
@@ -1513,6 +1570,7 @@
         styleState.selected.pop();
         renderStyleTags();
         renderStyleDropdown('');
+        syncCascadeFromStyle(); // Style 变更 → 级联校验 Color/Size
       }
     } else if (e.key === 'Escape') {
       styleDropdown.classList.remove('show');
@@ -1530,6 +1588,313 @@
       styleWrap.classList.remove('focus');
     }
   });
+
+  // ===================== Color 输入自动匹配多选（候选联动已选 Style） =====================
+  const colorState = { selected: [], activeIdx: -1 };
+  const colorInput = document.getElementById('colorInput');
+  const colorTags = document.getElementById('colorTags');
+  const colorDropdown = document.getElementById('colorDropdown');
+  const colorWrap = document.getElementById('colorTagSelect');
+
+  // Color 候选：已选 Style（有目录数据）下的 color 并集；未选 Style 时为全部目录 color
+  function getColorCandidates() {
+    const styles = styleState.selected.filter(s => STYLE_COLOR_SIZE[s]);
+    const pool = styles.length ? styles.map(s => STYLE_COLOR_SIZE[s]) : Object.values(STYLE_COLOR_SIZE);
+    const set = new Set();
+    pool.forEach(e => Object.keys(e.colors).forEach(c => set.add(c)));
+    return [...set];
+  }
+
+  function renderColorTags() {
+    colorTags.innerHTML = colorState.selected.map((s, i) => `
+      <span class="tag-item">
+        <span class="tag-text">${escapeHtml(s)}</span>
+        <i class="fa fa-close tag-close" data-idx="${i}"></i>
+      </span>
+    `).join('');
+    colorTags.querySelectorAll('.tag-close').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(el.getAttribute('data-idx'));
+        colorState.selected.splice(idx, 1);
+        renderColorTags();
+        renderColorDropdown(colorInput.value);
+        syncSizeAfterColorChange(); // Color 变更 → 级联校验 Size
+      });
+    });
+    updateFilterActiveCount();
+  }
+
+  function renderColorDropdown(keyword = '') {
+    const kw = (keyword || '').trim().toLowerCase();
+    let candidates = getColorCandidates().filter(s => !colorState.selected.includes(s));
+    if (kw) candidates = candidates.filter(s => s.toLowerCase().includes(kw));
+    colorState.activeIdx = -1;
+    if (candidates.length === 0) {
+      // 联动约束下不支持自定义新值
+      colorDropdown.innerHTML = `<div class="tag-select-empty">
+        ${kw ? `无匹配项，仅可选择当前 Style 下的 Color` : (styleState.selected.length ? '当前 Style 下暂无可选 Color' : '暂无可选 Color')}
+      </div>`;
+      colorDropdown.classList.add('show');
+      return;
+    }
+    colorDropdown.innerHTML = candidates.map((s, i) => `
+      <div class="tag-option" data-val="${escapeHtml(s)}" data-idx="${i}">
+        <span class="opt-label">${escapeHtml(s)}</span>
+        <span class="opt-tag">Color</span>
+      </div>
+    `).join('');
+    colorDropdown.classList.add('show');
+    colorDropdown.querySelectorAll('.tag-option').forEach(el => {
+      el.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        addColorTag(el.getAttribute('data-val'));
+      });
+    });
+  }
+
+  function addColorTag(val) {
+    val = (val || '').trim();
+    if (!val) return;
+    if (colorState.selected.includes(val)) {
+      showMessage('该 Color 已选择', 'warning');
+      return;
+    }
+    if (!getColorCandidates().includes(val)) {
+      showMessage('该 Color 不在当前 Style 可选范围内', 'warning');
+      return;
+    }
+    colorState.selected.push(val);
+    colorInput.value = '';
+    renderColorTags();
+    renderColorDropdown('');
+    colorInput.focus();
+    syncSizeAfterColorChange(); // Color 变更 → 级联校验 Size
+  }
+
+  function getActiveColorOption() { return colorDropdown.querySelectorAll('.tag-option'); }
+
+  function updateActiveColorOption() {
+    const opts = getActiveColorOption();
+    opts.forEach((el, i) => el.classList.toggle('active', i === colorState.activeIdx));
+    if (colorState.activeIdx >= 0 && opts[colorState.activeIdx]) {
+      opts[colorState.activeIdx].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  colorWrap.addEventListener('click', () => colorInput.focus());
+  colorInput.addEventListener('focus', () => {
+    colorWrap.classList.add('focus');
+    renderColorDropdown(colorInput.value);
+  });
+  colorInput.addEventListener('input', (e) => renderColorDropdown(e.target.value));
+  colorInput.addEventListener('keydown', (e) => {
+    const opts = getActiveColorOption();
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (opts.length === 0) return;
+      colorState.activeIdx = Math.min(colorState.activeIdx + 1, opts.length - 1);
+      updateActiveColorOption();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (opts.length === 0) return;
+      colorState.activeIdx = Math.max(colorState.activeIdx - 1, 0);
+      updateActiveColorOption();
+    } else if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      if (colorState.activeIdx >= 0 && opts[colorState.activeIdx]) {
+        addColorTag(opts[colorState.activeIdx].getAttribute('data-val'));
+      } else if (e.key === ',') {
+        const v = colorInput.value.trim();
+        if (v) addColorTag(v);
+      } else {
+        showMessage('仅可选择当前 Style 下的 Color，请从下拉中选择', 'warning');
+      }
+    } else if (e.key === 'Backspace') {
+      if (colorInput.value === '' && colorState.selected.length > 0) {
+        colorState.selected.pop();
+        renderColorTags();
+        renderColorDropdown('');
+        syncSizeAfterColorChange();
+      }
+    } else if (e.key === 'Escape') {
+      colorDropdown.classList.remove('show');
+      colorInput.blur();
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!colorWrap.contains(e.target)) {
+      colorDropdown.classList.remove('show');
+      colorWrap.classList.remove('focus');
+    }
+  });
+
+  // ===================== Size 输入自动匹配多选（候选联动已选 Style + Color） =====================
+  const sizeState = { selected: [], activeIdx: -1 };
+  const sizeInput = document.getElementById('sizeInput');
+  const sizeTags = document.getElementById('sizeTags');
+  const sizeDropdown = document.getElementById('sizeDropdown');
+  const sizeWrap = document.getElementById('sizeTagSelect');
+
+  // Size 候选：已选 Style（有目录数据）+ 已选 Color 过滤后的 size 并集；未选时为全量
+  function getSizeCandidates() {
+    const styles = styleState.selected.filter(s => STYLE_COLOR_SIZE[s]);
+    const stylePool = styles.length ? styles.map(s => STYLE_COLOR_SIZE[s]) : Object.values(STYLE_COLOR_SIZE);
+    const colors = colorState.selected;
+    const set = new Set();
+    stylePool.forEach(e => {
+      Object.entries(e.colors).forEach(([c, sizes]) => {
+        if (colors.length === 0 || colors.includes(c)) sizes.forEach(z => set.add(z));
+      });
+    });
+    return [...set];
+  }
+
+  function renderSizeTags() {
+    sizeTags.innerHTML = sizeState.selected.map((s, i) => `
+      <span class="tag-item">
+        <span class="tag-text">${escapeHtml(s)}</span>
+        <i class="fa fa-close tag-close" data-idx="${i}"></i>
+      </span>
+    `).join('');
+    sizeTags.querySelectorAll('.tag-close').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(el.getAttribute('data-idx'));
+        sizeState.selected.splice(idx, 1);
+        renderSizeTags();
+        renderSizeDropdown(sizeInput.value);
+      });
+    });
+    updateFilterActiveCount();
+  }
+
+  function renderSizeDropdown(keyword = '') {
+    const kw = (keyword || '').trim().toLowerCase();
+    let candidates = getSizeCandidates().filter(s => !sizeState.selected.includes(s));
+    if (kw) candidates = candidates.filter(s => s.toLowerCase().includes(kw));
+    sizeState.activeIdx = -1;
+    if (candidates.length === 0) {
+      sizeDropdown.innerHTML = `<div class="tag-select-empty">
+        ${kw ? `无匹配项，仅可选择当前 Color 下的 Size` : (colorState.selected.length ? '当前 Color 下暂无可选 Size' : '暂无可选 Size')}
+      </div>`;
+      sizeDropdown.classList.add('show');
+      return;
+    }
+    sizeDropdown.innerHTML = candidates.map((s, i) => `
+      <div class="tag-option" data-val="${escapeHtml(s)}" data-idx="${i}">
+        <span class="opt-label">${escapeHtml(s)}</span>
+        <span class="opt-tag">Size</span>
+      </div>
+    `).join('');
+    sizeDropdown.classList.add('show');
+    sizeDropdown.querySelectorAll('.tag-option').forEach(el => {
+      el.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        addSizeTag(el.getAttribute('data-val'));
+      });
+    });
+  }
+
+  function addSizeTag(val) {
+    val = (val || '').trim();
+    if (!val) return;
+    if (sizeState.selected.includes(val)) {
+      showMessage('该 Size 已选择', 'warning');
+      return;
+    }
+    if (!getSizeCandidates().includes(val)) {
+      showMessage('该 Size 不在当前 Color 可选范围内', 'warning');
+      return;
+    }
+    sizeState.selected.push(val);
+    sizeInput.value = '';
+    renderSizeTags();
+    renderSizeDropdown('');
+    sizeInput.focus();
+  }
+
+  function getActiveSizeOption() { return sizeDropdown.querySelectorAll('.tag-option'); }
+
+  function updateActiveSizeOption() {
+    const opts = getActiveSizeOption();
+    opts.forEach((el, i) => el.classList.toggle('active', i === sizeState.activeIdx));
+    if (sizeState.activeIdx >= 0 && opts[sizeState.activeIdx]) {
+      opts[sizeState.activeIdx].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  sizeWrap.addEventListener('click', () => sizeInput.focus());
+  sizeInput.addEventListener('focus', () => {
+    sizeWrap.classList.add('focus');
+    renderSizeDropdown(sizeInput.value);
+  });
+  sizeInput.addEventListener('input', (e) => renderSizeDropdown(e.target.value));
+  sizeInput.addEventListener('keydown', (e) => {
+    const opts = getActiveSizeOption();
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (opts.length === 0) return;
+      sizeState.activeIdx = Math.min(sizeState.activeIdx + 1, opts.length - 1);
+      updateActiveSizeOption();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (opts.length === 0) return;
+      sizeState.activeIdx = Math.max(sizeState.activeIdx - 1, 0);
+      updateActiveSizeOption();
+    } else if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      if (sizeState.activeIdx >= 0 && opts[sizeState.activeIdx]) {
+        addSizeTag(opts[sizeState.activeIdx].getAttribute('data-val'));
+      } else if (e.key === ',') {
+        const v = sizeInput.value.trim();
+        if (v) addSizeTag(v);
+      } else {
+        showMessage('仅可选择当前 Color 下的 Size，请从下拉中选择', 'warning');
+      }
+    } else if (e.key === 'Backspace') {
+      if (sizeInput.value === '' && sizeState.selected.length > 0) {
+        sizeState.selected.pop();
+        renderSizeTags();
+        renderSizeDropdown('');
+      }
+    } else if (e.key === 'Escape') {
+      sizeDropdown.classList.remove('show');
+      sizeInput.blur();
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!sizeWrap.contains(e.target)) {
+      sizeDropdown.classList.remove('show');
+      sizeWrap.classList.remove('focus');
+    }
+  });
+
+  // ===================== 级联联动：Style → Color → Size =====================
+  // Style 变更后：重算 Color 候选，自动移除越界已选项；再级联校验 Size
+  function syncCascadeFromStyle() {
+    const cands = getColorCandidates();
+    const before = colorState.selected.length;
+    colorState.selected = colorState.selected.filter(c => cands.includes(c));
+    if (colorState.selected.length < before) {
+      showMessage('部分已选 Color 不在当前 Style 范围内，已自动移除', 'warning');
+    }
+    renderColorTags();
+    if (colorDropdown.classList.contains('show')) renderColorDropdown(colorInput.value);
+    syncSizeAfterColorChange(true); // Style 引起的 Color 清理，Size 静默校验
+  }
+
+  // Color 变更后：重算 Size 候选，自动移除越界已选项
+  function syncSizeAfterColorChange(silent) {
+    const cands = getSizeCandidates();
+    const before = sizeState.selected.length;
+    sizeState.selected = sizeState.selected.filter(s => cands.includes(s));
+    if (sizeState.selected.length < before && !silent) {
+      showMessage('部分已选 Size 不在当前 Color 范围内，已自动移除', 'warning');
+    }
+    renderSizeTags();
+    if (sizeDropdown.classList.contains('show')) renderSizeDropdown(sizeInput.value);
+  }
 
   // ===================== 初始化 =====================
   function init() {
